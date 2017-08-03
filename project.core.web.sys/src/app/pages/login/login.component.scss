@@ -1,0 +1,143 @@
+@import "../../../assets/scss/mixin";
+.panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    height: 15rem;
+    border-radius: 3px;
+    z-index: 20;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 10px 60px, rgba(0, 0, 0, 0.1) 0 0 20px;
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%);
+    transition: all .5s ease-in-out;
+}
+
+.panel.open {
+    height: 22.5rem;
+    transform: translate(-50%, -50%) rotateY(180deg);
+}
+
+.free-panel-front,
+.free-panel-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: .75rem;
+    background: #fff;
+    backface-visibility: hidden;
+}
+
+.free-panel-back {
+    transform: rotateY(-180deg);
+}
+
+.btn-block {
+    margin: 0;
+    height: 2rem;
+}
+
+.panel-body form {
+    padding: 0 1rem;
+}
+
+.panel-body form input {
+    width: 100%;
+    height: 1.75rem;
+    padding: 0 .5rem;
+    background: transparent;
+    outline: none;
+    border-radius: .25rem;
+}
+
+.panel-footer {
+    text-align: center;
+}
+
+.panel-footer a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #666;
+}
+
+.panel-footer a:hover {
+    color: #333;
+}
+
+.particle-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.logo,
+.subtitle {
+    text-align: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: .5rem 0 1rem;
+    background-color: #666;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    //background-image: linear-gradient(90deg, #115d8e 0, #347eff 100%);
+}
+
+.subtitle {
+    padding: .5rem 0 1rem;
+}
+
+@media (max-width: 900px) {
+    .panel {
+        width: 80%;
+    }
+}
+
+.login-input-wrap {
+    position: relative;
+    width: 100%;
+    label {
+        position: absolute;
+        display: block;
+        max-width: 100%;
+        line-height: 35px;
+        color: #eee;
+        font-size: 1rem;
+        bottom: 0;
+        transition: all .2s cubic-bezier(.25, .8, .25, 1);
+    }
+    input {
+        height: 35px;
+        line-height: 35px;
+        border-width: 0 0 1px;
+        background-color: transparent;
+        border-color: #eee;
+        width: 100%;
+        outline: none;
+    }
+    .login-input-line {
+        display: block;
+        width: 0;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        background-color: #115d8e;
+        transition: all 0.2s linear;
+    }
+    input:focus+label {
+        color: #115d8e;
+        transform: scale(0.7, 0.7) translateY(-20px);
+        transform-origin: left top;
+    }
+    input:focus+.login-input-line {
+        width: 100%;
+        left: 0;
+    }
+}

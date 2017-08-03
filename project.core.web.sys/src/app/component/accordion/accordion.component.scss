@@ -1,0 +1,51 @@
+@import "../../../assets/scss/variables";
+@import "../../../assets/scss/mixin";
+free-accordion-group {
+    flex: 1 0 auto;
+}
+
+:host /deep/ {
+    .accordion-item {
+        background: #fff;
+    }
+    .accordion-toggle {
+        display: flex;
+        align-items: center;
+        position: relative;
+        min-height: 2rem;
+        padding: .25rem .75rem;
+        color: #fff;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(120, 130, 140, 0.13);
+        user-select: none;
+        &:after {
+            font: normal normal normal .8rem/1 FontAwesome;
+            content: "\f105";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            padding: 0 .8rem;
+            transform: translate(0, -50%);
+            transition: all .2s linear;
+        }
+        &.accordion-item-expand:after {
+            transform: translate(0, -50%) rotate(90deg);
+        }
+        .accordion-toggle-title {
+            transition: all .2s linear;
+        }
+    }
+    .accordion-toggle-inner {
+        @include flexbox;
+        align-items: center;
+    }
+    .accordion-content {
+        position: relative;
+        overflow: hidden;
+        font-size: .7rem;
+        .accordion-inner,
+        &>div {
+            padding: .5rem;
+        }
+    }
+}

@@ -1,0 +1,167 @@
+<aside class="left-menu iscroll">
+    <ul class="left-menu-item">
+        <li fRipple>
+            <a routerLink="/main" routerLinkActive="active">
+                <free-icon icon="desktop"></free-icon>
+                <span class="accordion-toggle-title">控制台首页</span>
+            </a>
+        </li>
+        <li fRipple>
+            <a routerLink="getting-started" routerLinkActive="active">
+                <free-icon icon="download"></free-icon>
+                <span class="accordion-toggle-title">开始使用</span>
+            </a>
+        </li>
+    </ul>
+    <free-accordion-group [closeOthers]="true">
+        <free-accordion class="let-menu-item" header="UI 元素" iconName="dashboard">
+            <ul>
+                <li fRipple>
+                    <a routerLink="grid" routerLinkActive="active">
+                        <cite>栅格系统</cite>
+                        <em>grid</em>
+                    </a>
+                </li>
+            </ul>
+        </free-accordion>
+        <free-accordion class="let-menu-item" header="基础组件" iconName="th-large">
+            <ul>
+                <li fRipple>
+                    <a routerLink="buttons" routerLinkActive="active">
+                        <cite>按钮</cite>
+                        <em>Button组</em>
+                    </a>
+                </li>
+            </ul>
+        </free-accordion>
+        <free-accordion class="let-menu-item" header="拓展组件" iconName="support">
+            <ul>
+                <li fRipple>
+                    <a routerLink="accordion" routerLinkActive="active">
+                        <cite>面板</cite>
+                        <em>折叠面板/手风琴</em>
+                    </a>
+                </li>
+            </ul>
+        </free-accordion>
+        <free-accordion class="let-menu-item" header="设置" iconName="wrench">
+            <ul>
+                <li fRipple>
+                    <a routerLink="/login" routerLinkActive="active">
+                        <cite>登录页</cite>
+                        <em>Login</em>
+                    </a>
+                </li>
+                <li fRipple>
+                    <a routerLink="error" routerLinkActive="active">
+                        <cite>404页面</cite>
+                        <em>Error 404</em>
+                    </a>
+                </li>
+                <li fRipple>
+                    <a routerLink="parameterManage" routerLinkActive="active">
+                        <cite>参数管理</cite>
+                    </a>
+                </li>
+                <li fRipple>
+                    <a routerLink="apidoc" routerLinkActive="active">
+                        <cite>API管理</cite>
+                    </a>
+                </li>
+            </ul>
+        </free-accordion>
+    </free-accordion-group>
+</aside>
+<div class="top-menu">
+    <div class="aside-header">
+        <div class="aside-header-inner">
+            <ul>
+                <li class="toggle-btn">
+                    <a (click)="toggleAside()" fRipple>
+                        <!--<free-hamburge type="line"></free-hamburge>-->
+                        <free-icon icon="navicon"></free-icon>
+                    </a>
+                </li>
+            </ul>
+            <span class="top-logo-mini">F</span>
+            <span class="top-logo">biubiubiu</span>
+        </div>
+    </div>
+    <nav class="navbar-header">
+        <ul class="navbar-header-right pull-right">
+            <li>
+                <a class="color-white" (click)="toggleSearch()">
+                    <free-icon icon="search"></free-icon>
+                </a>
+            </li>
+            <li>
+                <a class="color-white" (click)="fullscreenToggle()">
+                    <free-icon icon="expand"></free-icon>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a>
+                    <free-dropdown color="blue" [caret]="false" direction="bottom-right">
+                        <f-header>
+                            <free-icon icon="envelope"></free-icon>
+                            <free-badge content="9" [up]="true"></free-badge>
+                        </f-header>
+                        <free-list>
+                            <free-list-item>
+                                inBox
+                            </free-list-item>
+                            <free-list-item>
+                                inBox
+                            </free-list-item>
+                            <free-list-item>
+                                inBox
+                            </free-list-item>
+                            <free-list-item>
+                                inBox
+                            </free-list-item>
+                        </free-list>
+                    </free-dropdown>
+                </a>
+            </li>
+            <li>
+                <a class="color-white">
+                    <free-icon icon="bell"></free-icon>
+                    <free-badge content="1" [up]="true"></free-badge>
+                </a>
+            </li>
+            <li class="nav-user">
+                <free-dropdown direction="bottom-right" [menus]="dropdownItem" [caret]="false">
+                    <f-header><img src="/assets/Images/t_me.png"></f-header>
+                </free-dropdown>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="search-box" [class.open]="searchState">
+        <div class="row middle-lg middle-md center-lg center-md center-xs">
+            <div class="search-input">
+                <free-icon icon="search"></free-icon>
+                <input type="text" class="pull-center">
+            </div>
+            <free-icon icon="close" (click)="toggleSearch()" class="search-box-close"></free-icon>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="theme-setting" #setting (click)="open()">
+    <free-icon icon="cog" [spin]="true"></free-icon>
+</div> -->
+
+<main class="main-layout-container iscroll" #main>
+    <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"></router-outlet>
+</main>
+
+<!-- <free-sidebar [open]="sidebarActive" direction="right" [top]="60">
+    <h4>主题设置</h4>
+    <div class="row">
+        <ul class="theme-color-list">
+            <li *ngFor="let t of theme" class="theme-color-item" (click)="selectTheme(t.name)" [ngStyle]="{background: t.color}">
+            </li>
+        </ul>
+    </div>
+</free-sidebar> -->

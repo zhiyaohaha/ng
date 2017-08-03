@@ -1,0 +1,94 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.main-loading {
+    background: #000;
+    width: 100%;
+    height: 100%;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    width: 120px;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.spinner>div {
+    width: 12px;
+    height: 12px;
+    background-color: #67CF22;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: bouncedelay 2.8s infinite ease-in-out;
+    animation: bouncedelay 2.8s infinite ease-in-out;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+    background-color: #cd402e;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+    background-color: #b07da8;
+}
+
+.spinner .bounce3 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+    background-color: #f1b428;
+}
+
+.spinner .bounce4 {
+    -webkit-animation-delay: -0.48s;
+    animation-delay: -0.48s;
+    background-color: #06AAA2;
+}
+
+.spinner .bounce5 {
+    -webkit-animation-delay: -0.64s;
+    animation-delay: -0.64s;
+    background-color: #FF0909;
+}
+
+@-webkit-keyframes bouncedelay {
+    0% {
+        -webkit-transform: translate(-400px, 0);
+        opacity: 0;
+    }
+    35%,
+    65% {
+        -webkit-transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translate(400px, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes bouncedelay {
+    0% {
+        transform: translate(-400px, 0);
+        opacity: 0;
+    }
+    35%,
+    65% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(400px, 0);
+        opacity: 0;
+    }
+}

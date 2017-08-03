@@ -1,0 +1,119 @@
+<md-sidenav-container class="example-container" [@fadeInUpState]="'active'">
+    <!-- <td-search-input placeholder="Search here" [showUnderline]="true" [debounce]="500" (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
+    </td-search-input>
+    <td-search-box placeholder="Search here" [showUnderline]="true" [debounce]="500" [alwaysVisible]="false" (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
+    </td-search-box> -->
+    <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open)="sidenavOpen()">
+        <div class="row">
+            <div class="col-lg-4 sidenav-left">
+                <div class="sidenav-container">
+                    <!-- <free-tree [menus]="menus"></free-tree> -->
+                    <tree [tree]="tree" (nodeSelected)="treeSelected($event)"></tree>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <button md-button [disabled]="!selectNode">编辑</button>
+                <button md-button [disabled]="!selectNode">添加</button>
+                <button md-button [disabled]="!selectNode">删除</button>
+                <form [formGroup]="paramsForm" (ngSubmit)="onSubmitParams()">
+                    <div class="form-group">
+                        <md-input-container>
+                            <input mdInput id="" formControlName="para1" placeholder="xxxx">
+                        </md-input-container>
+                    </div>
+                    <div class="form-group">
+                        <md-input-container>
+                            <input mdInput id="" formControlName="para2" placeholder="aaaaaa">
+                        </md-input-container>
+                    </div>
+
+                    <div class="form-group">
+                        <md-select placeholder="Favorite food" formControlName="para3">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                                {{ food.viewValue }}
+                            </md-option>
+                        </md-select>
+                    </div>
+                    <div class="form-group">
+                        <button fButton color="blue">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </md-sidenav>
+
+    <div class="main-container">
+        <ul class="search-ul">
+            <li>
+                <md-input-container>
+                    <input mdInput placeholder="搜索" [value]="searchValue">
+                </md-input-container>
+            </li>
+            <li>
+                <md-select placeholder="Favorite food" (change)="changed($event)">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                        {{ food.viewValue }}
+                    </md-option>
+                </md-select>
+            </li>
+            <li>
+                <button fButton color="deepblue" (click)="searchParams()">搜索</button>
+            </li>
+        </ul>
+
+    </div>
+
+    <td-data-table #dataTable [data]="filteredData" [columns]="columns" [clickable]="true" (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
+        <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
+            <div layout="row">
+                <span flex>{{value}}</span>
+                <md-icon>star</md-icon>
+            </div>
+        </ng-template>
+        <ng-template tdDataTableTemplate="op" let-value="value" let-row="row" let-column="column">
+            <div layout="row">
+                <div class="example-sidenav-content">
+                    <button type="button" md-button (click)="sidenav.open();">查看更多</button>
+                </div>
+            </div>
+        </ng-template> -->
+    </td-data-table>
+
+    <table td-data-table style="display:none;">
+        <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
+            {{column.label}}
+        </th>
+        <th td-data-table-column>
+            <span>Comments</span>
+        </th>
+        <th td-data-table-column>
+            操作
+        </th>
+        <tr td-data-table-row *ngFor="let row of filteredData">
+            <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
+                {{column.format ? column.format(row[column.name]) : row[column.name]}}
+            </td>
+            <td td-data-table-cell>
+                <a href="javascript:;" (click)="addComment(row, 'comments')" [class.mat-accent]="!row['comments']">{{row['comments'] || 'Add Comment'}}</a>
+            </td>
+            <td td-data-table-cell>
+                <div class="example-sidenav-content">
+                    <button type="button" md-button (click)="sidenav.open();onOpen()">查看更多</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+        <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="filteredTotal" (change)="page($event)" [pageLinkCount]="pageLinkCount">
+        <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+    </td-paging-bar>
+
+    <button fButton color="red" (click)="openDialog()">打开弹窗</button>
+    <button md-button (click)="openDialog()">Open dialog</button>
+    <button md-button (click)="openConfirm()">Open dialog</button>
+    <button md-button (click)="openPrompt()">Open dialog</button>
+
+</md-sidenav-container>

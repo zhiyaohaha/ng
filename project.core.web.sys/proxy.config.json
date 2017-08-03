@@ -1,0 +1,6 @@
+{
+    "/api": {
+        "target": "http://api.cpf360.com",
+        "secure": false
+    }
+}

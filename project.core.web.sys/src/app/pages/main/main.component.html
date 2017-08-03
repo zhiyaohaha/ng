@@ -1,0 +1,9 @@
+<div [@fadeInUpState]="'active'">
+    <h1 class="aaaa">工作台首页内容</h1>
+    <a fButton icon="home" size="big" color="green" circle>default</a>
+    <router-outlet></router-outlet>
+    <a [routerLink]="['/main/personal']" fButton size="big" color="green" circle>个人中心</a>
+
+    <a fButton size="big" color="green" (click)="loginOut()">登出</a>
+
+</div>

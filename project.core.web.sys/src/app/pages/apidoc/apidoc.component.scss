@@ -1,0 +1,24 @@
+ul,
+li {
+    list-style: none;
+}
+
+.api-list {
+    word-wrap: break-word;
+    background-color: #eee;
+}
+
+.api-wrap {
+    padding: 10px;
+    border-bottom: 2px solid red;
+    dd {
+        padding-left: 30px;
+    }
+    dt span {
+        font-weight: 600;
+    }
+}
+
+code {
+    background-color: #eee;
+}
