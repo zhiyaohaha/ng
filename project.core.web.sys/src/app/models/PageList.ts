@@ -2,12 +2,12 @@
   * 列表
   * author sunpengfei
   */
-export class PageList {
+export class PageList<T> {
 
     /**
       * 数据
       */
-    Data : object;
+    Data : T;
 
     /**
       * 总数
