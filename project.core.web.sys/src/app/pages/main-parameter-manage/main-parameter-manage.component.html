@@ -44,12 +44,39 @@
 
     <div class="main-container">
         <ul class="search-ul">
-            <li>
+            <li *ngFor="let item of searchFilters">
+                <div [ngSwitch]="item.ui.displayType">
+                    <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? none : show}">
+                        <input mdInput placeholder="{{item.ui.placeholder}}" [value]="Keywords" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
+                    </md-input-container>
+                    <div *ngSwitchCase="'daterange'">
+                        <md-input-container>
+                            <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        </md-input-container>
+                        <md-datepicker #picker></md-datepicker>
+                        &nbsp;&nbsp;--&nbsp;&nbsp;
+                        <md-input-container>
+                            <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                            <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                        </md-input-container>
+                        <md-datepicker #picker2></md-datepicker>
+                    </div>
+                    <div *ngSwitchCase="'select'">
+                        <md-select placeholder="Favorite food" (change)="changed($event)">
+                            <md-option *ngFor="let food of foods" [value]="food.value">
+                                {{ food.viewValue }}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </li>
+            <li style="display:none;">
                 <md-input-container>
                     <input mdInput placeholder="搜索" [value]="searchValue">
                 </md-input-container>
             </li>
-            <li>
+            <li style="display:none;">
                 <md-select placeholder="Favorite food" (change)="changed($event)">
                     <md-option *ngFor="let food of foods" [value]="food.value">
                         {{ food.viewValue }}
@@ -107,7 +134,7 @@
     <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
         <h3>No results to display.</h3>
     </div>
-    <td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="filteredTotal" (change)="page($event)" [pageLinkCount]="pageLinkCount">
+    <td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="filteredTotal" (change)="page($event)" [pageLinkCount]="pageLinkCount" [ngStyle]="{'display': filteredTotal ? 'block': 'none' }">
         <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
     </td-paging-bar>
 

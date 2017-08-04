@@ -27,7 +27,7 @@ export class ParamsDataModel {
     /**
      * 过滤信息
      */
-    filters: ParamsFiltersModel;
+    filters: ParamsFiltersModel[];
 }
 
 export class ParamsBindDataModel {
@@ -143,11 +143,6 @@ export class ParamsFiltersModel {
     name: string;
 
     /**
-     * 标题
-     */
-    label: string;
-
-    /**
      * 绑定字段
      */
     bindField: string[];
@@ -163,16 +158,6 @@ export class ParamsFiltersModel {
     value: string;
 
     /**
-     * 展示类型
-     */
-    displayType: string;
-
-    /**
-     * 是否禁用
-     */
-    isDisabled: string;
-
-    /**
      * 绑定数据
      */
     bindData: object;
@@ -181,6 +166,34 @@ export class ParamsFiltersModel {
      * 绑定数据类型
      */
     bindDataType: string;
+
+    /**
+     * 页面搜索的条件内容
+     */
+    ui: UIModel;
+
+}
+
+export class UIModel {
+    /**
+     * 标题
+     */
+    label: string;
+
+    /**
+     * 展示类型
+     */
+    displayType: string;
+
+    /**
+     * 是否禁用
+     */
+    isDisabled: boolean;
+
+    /**
+     * 是否显示
+     */
+    isHidden: boolean;
 
     /**
      * 占位符

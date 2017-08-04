@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule } from '@angular/material';
+import { MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule } from '@angular/material';
 
 import { CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule } from '@covalent/core';
 
@@ -19,7 +19,7 @@ import { TreeModule } from '../../../../node_modules/ng2-tree';
     CommonModule,
     FormsModule, ReactiveFormsModule,
     MainParameterManageRoutingModule,
-    MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule,
+    MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule,
     CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule,
     TreeModule, ContextmenuModule,
     ButtonModule

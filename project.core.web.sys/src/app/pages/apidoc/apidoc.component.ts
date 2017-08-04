@@ -1,11 +1,13 @@
 import { Http } from '@angular/http';
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from '../../services/base.service';
+import { fadeInUp } from '../../common/animations';
 
 @Component({
   selector: 'app-apidoc',
   templateUrl: './apidoc.component.html',
-  styleUrls: ['./apidoc.component.scss']
+  styleUrls: ['./apidoc.component.scss'],
+  animations: [fadeInUp]
 })
 export class ApidocComponent implements OnInit {
 

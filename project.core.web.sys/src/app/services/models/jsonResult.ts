@@ -3,7 +3,7 @@ export class JsonResult<T> {
     /**
      * 返回码
      */
-    code: number;
+    code: string;
 
     /**
      * 返回信息

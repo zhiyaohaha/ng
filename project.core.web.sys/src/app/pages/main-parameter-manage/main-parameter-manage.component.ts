@@ -16,7 +16,7 @@ import { globalVar } from '../../common/global.config';
 import { TableSearch } from '../../common/search/table.search';
 
 import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
-import { ParamsModel } from '../../models/params.model';
+import { ParamsModel, UIModel } from '../../models/params.model';
 import { JsonResult } from '../../services/models/jsonResult';
 
 @Component({
@@ -41,24 +41,18 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 表格title
    */
-  columns: ITdDataTableColumn[] = [
-    { name: 'food.name', label: 'Dessert (100g serving)', tooltip: 'dessert' },
-    { name: 'food.type', label: 'Type' },
-    { name: 'calories', label: 'Calories', format: v => v.toFixed(2) },
-    { name: 'fat', label: 'Fat (g)', numeric: true },
-    { name: 'carbs', label: 'Carbs (g)', numeric: true },
-    { name: 'protein', label: 'Protein (g)', numeric: true },
-    { name: 'sodium', label: 'Sodium (mg)', numeric: true },
-    { name: 'calcium', label: 'Calcium (%)', numeric: true },
-    { name: 'iron', label: 'Iron (%)', numeric: true },
-    { name: 'op', label: '操作' }
-  ];
-
+  columns: ITdDataTableColumn[];
 
   /**
    * 表格数据
    */
   basicData: any[];
+
+  /**
+   * 搜索条件
+   */
+  searchFilters;
+
   fromRow: number = 1;//当前页第一行的总行数
   currentPage: number = 1;//当前页码
   pageSizes = globalVar.pageSizes;//可选的每页条数
@@ -77,16 +71,22 @@ export class MainParameterManageComponent implements OnInit {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: '[{"Key":"Keywords","Value":""}]'
+    filters: ''
   };
   getParamsList(params) {
 
     this._paramsManageService.getParams("filters=" + params.filters + "&index=" + params.index + "&size=" + params.size)
       .subscribe(res => {
-        var r = res as JsonResult<ParamsModel>;
-        this.columns = r.data.data.fields;
-        this.basicData = r.data.data.bindData;
-        console.log(r.data.data.bindData)
+        if (res.code == "0") {
+          var r = res as JsonResult<ParamsModel>;
+          this.columns = r.data.data.fields;
+          this.basicData = r.data.data.bindData;
+          r.data.data.filters.forEach(i => {
+            this.filters.push({ "key": i.name, "value": i.value });
+          })
+          this.searchFilters = r.data.data.filters;
+          console.log(r.data.data.bindData)
+        }
       })
   }
 
@@ -95,8 +95,24 @@ export class MainParameterManageComponent implements OnInit {
    */
   searchValue: string = "";
   searchType: string;
+  Keywords: string = "";
+  filters = [{ "key": "", "value": "" }];
+  searchParam($event) {
+    let name = $event.target.name;
+    this.filters.filter(i => {
+      if (i.key == name) {
+        i.value = $event.target.value;
+      }
+    });
+  }
   searchParams() {
-
+    let str = JSON.stringify(this.filters);
+    this.listparam = {
+      size: this.pageSize,
+      index: 0,
+      filters: str
+    }
+    this.getParamsList(this.listparam);
   }
 
 

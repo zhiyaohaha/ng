@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { ConvertUtil } from './../common/convert-util';
 import { JsonResult } from './models/jsonResult';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http';
 
 import 'rxjs/Rx';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class BaseService {
@@ -11,7 +13,7 @@ export class BaseService {
   private private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
   private urlPrefix = "http://api.cpf360.com";
 
-  constructor(private http: Http, private util: ConvertUtil) { }
+  constructor(private http: Http, private util: ConvertUtil, private router: Router) { }
 
 
   /**
@@ -57,8 +59,19 @@ export class BaseService {
     let callback = this.http.get(this.urlPrefix + url, {
       params: option,
       withCredentials: true
-    }).map(res => res.json());
+    }).map(res => res.json()).filter(r => {
+      if (r.code == "NeedLogin") {
+        this.NeedLogin();
+        return false;
+      } else {
+        return true;
+      }
+    });
     return callback;
+  }
+
+  private NeedLogin() {
+    this.router.navigateByUrl("/login");
   }
 
 }
