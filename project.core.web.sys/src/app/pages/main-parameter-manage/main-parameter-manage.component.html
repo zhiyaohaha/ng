@@ -3,7 +3,7 @@
     </td-search-input>
     <td-search-box placeholder="Search here" [showUnderline]="true" [debounce]="500" [alwaysVisible]="false" (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
     </td-search-box> -->
-    <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open)="sidenavOpen()">
+    <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
         <div class="row">
             <div class="col-lg-4 sidenav-left">
                 <div class="sidenav-container">
@@ -12,22 +12,39 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <button md-button [disabled]="!selectNode">编辑</button>
-                <button md-button [disabled]="!selectNode">添加</button>
-                <button md-button [disabled]="!selectNode">删除</button>
+                <button md-button [disabled]="!selectNode" style="display:none;">编辑</button>
+                <button md-button [disabled]="!selectNode" style="display:none;">添加</button>
+                <button md-button [disabled]="!selectNode" style="display:none;">删除</button>
                 <form [formGroup]="paramsForm" (ngSubmit)="onSubmitParams()">
-                    <div class="form-group">
-                        <md-input-container>
-                            <input mdInput id="" formControlName="para1" placeholder="xxxx">
-                        </md-input-container>
-                    </div>
-                    <div class="form-group">
-                        <md-input-container>
-                            <input mdInput id="" formControlName="para2" placeholder="aaaaaa">
-                        </md-input-container>
-                    </div>
+                    <md-list>
+                        <md-list-item>
+                            <div class="form-group">
+                                <md-input-container>
+                                    <input mdInput id="" placeholder="code" disabled value="{{treeNode.code}}">
+                                </md-input-container>
+                            </div>
+                        </md-list-item>
+                        <md-list-item>
+                            <div class="form-group">
+                                <md-input-container>
+                                    <input mdInput id="" placeholder="名称" formControlName="para1" value="{{treeNode.value}}">
+                                </md-input-container>
+                            </div>
+                        </md-list-item>
+                        <md-list-item>
+                            <div class="form-group">
+                                <md-input-container>
+                                    <input mdInput id="" placeholder="描述" formControlName="para2" value="{{treeNode.desc}}">
+                                </md-input-container>
+                            </div>
+                        </md-list-item>
+                        <md-list-item>
+                            <free-chip-group [chips]="treeNode.label" placeholder="添加标签" (chipsChange)="chipsChange($event)"></free-chip-group>
+                        </md-list-item>
+                    </md-list>
 
-                    <div class="form-group">
+
+                    <div class="form-group" style="display:none;">
                         <md-select placeholder="Favorite food" formControlName="para3">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                                 {{ food.viewValue }}

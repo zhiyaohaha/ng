@@ -78,4 +78,21 @@ export class ConvertUtil {
     public firstLetterToLowerCase(str: string): string {
         return str.substr(0, 1).toLowerCase() + str.substr(1);
     }
+
+    /**
+     * 对象按KEY排序，返回字符串
+     * @param obj 排序传入的对象
+     */
+    public firstLetterSort(obj: any):string {
+        let params = [];
+        for (var key in obj) {
+            params.push(key)
+        }
+        params.sort();
+        let _params = "";
+        for (var i = 0; i < params.length; i++) {
+            _params += params[i] + "=" + obj[params[i]] + (i == params.length - 1 ? "" : "&");
+        }
+        return _params;
+    }
 }

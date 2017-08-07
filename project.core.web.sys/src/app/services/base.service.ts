@@ -34,8 +34,9 @@ export class BaseService {
    */
   public setAuthGet<T>(_params: T): string {
     let timestamp = this.util.timestamp();
-    let sign = _params ? this.util.toMd5(_params + timestamp + this.private_key) : this.util.toMd5(timestamp + this.private_key);
-    return _params ? _params + '&timestamp=' + timestamp + '&sign=' + sign : 'timestamp=' + timestamp + '&sign=' + sign;
+    let params = this.util.firstLetterSort(_params);
+    let sign = _params ? this.util.toMd5(params + timestamp + this.private_key) : this.util.toMd5(timestamp + this.private_key);
+    return _params ? params + '&timestamp=' + timestamp + '&sign=' + sign : 'timestamp=' + timestamp + '&sign=' + sign;
   }
 
   /**

@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataSource } from '@angular/cdk';
 import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent, ITdDataTableColumn } from '@covalent/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -21,6 +21,8 @@ import { PageList } from '../../models/PageList';
 import { HtmlTableTemplate } from '../../models/HtmlTableTemplate';
 import { HttpCallback } from './../../models/HttpCallback';
 import { ConvertUtil } from '../../common/convert-util';
+import { SysParam } from '../../models/SysParam';
+
 
 @Component({
   selector: 'app-main-parameter-manage',
@@ -31,6 +33,14 @@ import { ConvertUtil } from '../../common/convert-util';
 })
 export class MainParameterManageComponent implements OnInit {
   bool: boolean = false;
+
+
+  treeNode = {
+    code: ' ',
+    value: '',
+    desc: '',
+    label: []
+  }
 
   /**
    * 下拉框值
@@ -74,16 +84,16 @@ export class MainParameterManageComponent implements OnInit {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: null
+    filters: null,
+    name: "SysParam"
   };
   getParamsList(params) {
 
-    this._paramsManageService.getParams("filters=" + params.filters + "&index=" + params.index + "&size=" + params.size)
+    this._paramsManageService.getParams(params)
       .subscribe(res => {
         if (res.code == "0") {
           var r = res as HttpCallback<PageList<HtmlTableTemplate>>;
           this.columns = r.data.data.fields;
-          console.log(this.columns)
           this.filteredData = this.basicData = r.data.data.bindData;
           r.data.data.filters.forEach(i => {
             this.filters.push({ "Key": i.name, "Value": i.value || '' });
@@ -113,7 +123,8 @@ export class MainParameterManageComponent implements OnInit {
     this.listparam = {
       size: this.pageSize,
       index: 0,
-      filters: str
+      filters: str,
+      name: "SysParam"
     }
     this.getParamsList(this.listparam);
   }
@@ -159,32 +170,7 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 树结构
    */
-  public tree: TreeModel = {
-    value: 'Programming languages by ',
-    children: [
-      {
-        value: 'Object-oriented programming',
-        id: 1,
-        children: [
-          { value: 'Java', id: 10 },
-          { value: 'C++', id: 20 },
-          { value: 'C#', id: 30 }
-        ]
-      },
-      {
-        value: 'Prototype-based programming',
-        id: 2,
-        children: [
-          { value: 'JavaScript' },
-          { value: 'CoffeeScript' },
-          { value: 'Lua' }
-        ]
-      }
-    ],
-    settings: {
-      rightMenu: false
-    }
-  };
+  public tree: TreeModel;
 
   /**
    * 选择的树节点
@@ -214,18 +200,33 @@ export class MainParameterManageComponent implements OnInit {
     this.getParamsList(this.listparam);
 
     this.paramsForm = this.fb.group({
-      para1: [],
-      para2: [],
+      para1: ["",Validators.required],
+      para2: ["",Validators.required],
       para3: []
     })
   }
 
   /**
-   * 所选择的节点
+   * 所选择的tree节点
    * @param  
    */
   treeSelected($event): void {
     this.selectNode = $event.node.node;
+    console.log(this.selectNode);
+    this.treeNode.value = this.selectNode.value;
+    let tags = [];
+    if(this.selectNode.tags && this.selectNode.tags.length > 0 ){
+      for(var i = 0; i < this.selectNode.tags.length; i++){
+        tags.push({"value":this.selectNode.tags[i],"delete": true});
+      }
+    }
+    this.treeNode.label = tags;
+    this.treeNode.desc = this.selectNode.description;
+    this.treeNode.code = this.selectNode.code;
+  }
+
+  chipsChange($event){
+    this.treeNode.label = $event;
   }
 
 
@@ -237,7 +238,15 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单
    */
   onSubmitParams() {
-    console.log(this.paramsForm.value);
+    console.log(this.paramsForm.valid);
+    this.selectNode.value = this.paramsForm.value.para1;
+    this.selectNode.description = this.paramsForm.value.para2;
+    let tags = [];
+    this.treeNode.label.map(r=>tags.push(r.value));
+    this.selectNode.tags = tags;
+    console.log(this.selectNode)
+    //console.log(this.treeNode);
+    this._paramsManageService.saveParams({"name": "SysParam", "id":"598800d8a42d1345045b8fa5"});
   }
 
   /**
@@ -261,6 +270,35 @@ export class MainParameterManageComponent implements OnInit {
    */
   sidenavOpen() {
     console.log(`点击的Id是${this.clickNode}`)
+    let treeData = this.filteredData.filter(item => item.id == this.clickNode);
+    this.tree = this.toTreeModel(treeData[0]) as TreeModel;
+  }
+
+  /**
+   * 关闭sidenav
+   */
+  closeEnd(){
+    this.treeNode.value = "";
+    this.treeNode.desc = "";
+    this.treeNode.label = [];
+  }
+
+  toTreeModel(data){
+    let treeData = {};
+    treeData["code"] = data.code;
+    treeData["value"] = data.name;
+    treeData["id"] = data.id;
+    treeData["parentId"] = data.parentId;
+    if(data.childrens.length > 0){
+      treeData["children"] = [];
+      for(var i = 0; i < data.childrens.length; i++){
+        treeData["children"].push(this.toTreeModel(data.childrens[i]));
+      }
+    }
+    treeData["description"] = data.description;
+    treeData["tags"] = data.tags;
+    treeData["settings"] = {rightMenu: false};
+    return treeData;
   }
 
 
