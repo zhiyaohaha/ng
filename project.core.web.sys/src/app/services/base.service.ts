@@ -22,9 +22,9 @@ export class BaseService {
    */
   public setAuth<T>(_params: T): HttpParams<T> {
     let params = new HttpParams<T>();
-    params.data = _params;
-    params.timestamp = this.util.timestamp();
-    params.sign = this.util.toMd5(this.util.toJsonStr(params.data) + params.timestamp + this.private_key);
+    params.Data = _params;
+    params.Timestamp = this.util.timestamp();
+    params.Sign = this.util.toMd5(this.util.toJsonStr(params.Data) + params.Timestamp + this.private_key);
     return params;
   }
 
@@ -35,7 +35,7 @@ export class BaseService {
   public setAuthGet<T>(_params: T): string {
     let timestamp = this.util.timestamp();
     let sign = _params ? this.util.toMd5(_params + timestamp + this.private_key) : this.util.toMd5(timestamp + this.private_key);
-    return _params ? _params + '&timestamp=' + timestamp + '&sign=' + sign : 'timestamp=' + timestamp + '&sign=' + sign;
+    return _params ? _params + '&Timestamp=' + timestamp + '&Sign=' + sign : 'Timestamp=' + timestamp + '&Sign=' + sign;
   }
 
   /**
@@ -60,7 +60,7 @@ export class BaseService {
       params: option,
       withCredentials: true
     }).map(res => res.json()).filter(r => {
-      if (r.code == "NeedLogin") {
+      if (r.Code == "NeedLogin") {
         this.NeedLogin();
         return false;
       } else {
@@ -77,7 +77,7 @@ export class BaseService {
 }
 
 export class HttpParams<T> {
-  public data: T;
-  public timestamp: string;
-  public sign: string;
+  public Data: T;
+  public Timestamp: string;
+  public Sign: string;
 }

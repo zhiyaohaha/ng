@@ -30,14 +30,19 @@ export class HtmlFieldTemplate {
     Format : string;
 
     /**
+      * 嵌套
+      */
+    Nested : boolean;
+
+    /**
       * 排序
       */
-    Sortable : string;
+    Sortable : boolean;
 
     /**
       * 筛选
       */
-    Filter : string;
+    Filter : boolean;
 
     /**
       * 是否隐藏

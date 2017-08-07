@@ -50,7 +50,7 @@ export class SysUser extends BaseTemplate implements ILoginer {
     /**
       * 生日
       */
-    Birthday : Nullable<Date>;
+    Birthday : string;
 
     /**
       * 职位

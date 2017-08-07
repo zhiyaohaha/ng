@@ -6,14 +6,14 @@
   */
 export class ChatGroup extends BaseTemplate {
 
-    /**
-      * 群名
-      */
-    Name : string;
+  /**
+    * 群名
+    */
+  Name: string;
 
-    /**
-      * 描述
-      */
-    Description : string;
+  /**
+    * 描述
+    */
+  Description: string;
 
 }

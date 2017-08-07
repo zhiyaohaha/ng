@@ -1,4 +1,5 @@
-﻿import { BaseTemplate } from "./BaseTemplate";
+﻿import { ITdDataTableColumn } from '@covalent/core';
+import { BaseTemplate } from "./BaseTemplate";
 import { HtmlFilterDomTemplate } from "./HtmlFilterDomTemplate";
 import { HtmlSortTemplate } from "./HtmlSortTemplate";
 import { HtmlFieldTemplate } from "./HtmlFieldTemplate";
@@ -47,6 +48,6 @@ export class HtmlTableTemplate extends BaseTemplate {
     /**
       * 字段集合
       */
-    Fields : HtmlFieldTemplate[];
+    Fields : ITdDataTableColumn[];
 
 }

@@ -42,4 +42,28 @@ export class ConvertUtil {
     public toJsonStr<T>(t: T): string {
         return JSON.stringify(t);
     }
+
+    /**
+     * 对象Key转小写
+     * @param obj 
+     */
+    public objToLowerCase(obj: object): object {
+        for (var key in obj) {
+            obj[key.toLowerCase()] = obj[key];
+        }
+        return obj
+    }
+
+    /**
+     * 数组对象Key转小写
+     * @param array 
+     */
+    public arrayToLowerCase(array: object[]): object[] {
+        for (var index = 0; index < array.length; index++) {
+            for (var key in array[index]) {
+                array[index][key.toLowerCase()] = array[index][key];
+            }
+        }
+        return array
+    }
 }

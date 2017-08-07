@@ -4,7 +4,7 @@
   * UI级联
   * author sunpengfei
   */
-export interface IUICascadeTemplate<T> implements ICascadeTemplate<T> {
+export interface IUICascadeTemplate<T>{
 
     /**
       * 图标

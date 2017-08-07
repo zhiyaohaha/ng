@@ -45,11 +45,11 @@
     <div class="main-container">
         <ul class="search-ul">
             <li *ngFor="let item of searchFilters">
-                <div [ngSwitch]="item.ui.displayType">
-                    <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? none : show}">
-                        <input mdInput placeholder="{{item.ui.placeholder}}" [value]="Keywords" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
+                <div [ngSwitch]="item.Ui.DisplayType">
+                    <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.Ui.IsHidden ? none : show}">
+                        <input mdInput placeholder="{{item.Ui.Placeholder}}" [value]="Keywords" [name]="item.Name" (input)="searchParam($event)" [disabled]="item.Ui.IsDisabled">
                     </md-input-container>
-                    <div *ngSwitchCase="'daterange'">
+                    <div *ngSwitchCase="'Daterange'">
                         <md-input-container>
                             <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
                             <button mdSuffix [mdDatepickerToggle]="picker"></button>
@@ -62,7 +62,7 @@
                         </md-input-container>
                         <md-datepicker #picker2></md-datepicker>
                     </div>
-                    <div *ngSwitchCase="'select'">
+                    <div *ngSwitchCase="'Select'">
                         <md-select placeholder="Favorite food" (change)="changed($event)">
                             <md-option *ngFor="let food of foods" [value]="food.value">
                                 {{ food.viewValue }}

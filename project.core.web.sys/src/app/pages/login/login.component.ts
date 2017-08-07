@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    let loginInfo = { "account": this.loginForm.value.account, "password": this.loginForm.value.password };
+    let loginInfo = { "Account": this.loginForm.value.account, "Password": this.loginForm.value.password };
     this.loginService.login(loginInfo);
   }
 

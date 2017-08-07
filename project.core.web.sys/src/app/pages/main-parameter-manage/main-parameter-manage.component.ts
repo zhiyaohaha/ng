@@ -1,14 +1,12 @@
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DataSource } from '@angular/cdk';
-import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent } from '@covalent/core';
+import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent, ITdDataTableColumn } from '@covalent/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
-
-import { ITdDataTableColumn } from '@covalent/core';
 
 import { TreeModel, Ng2TreeSettings } from '../../../../node_modules/ng2-tree';
 import { fadeInUp } from '../../common/animations';
@@ -16,8 +14,12 @@ import { globalVar } from '../../common/global.config';
 import { TableSearch } from '../../common/search/table.search';
 
 import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
-import { ParamsModel, UIModel } from '../../models/params.model';
 import { JsonResult } from '../../services/models/jsonResult';
+import { HtmlFieldTemplate } from '../../models/HtmlFieldTemplate';
+import { HtmlFilterDomTemplate } from '../../models/HtmlFilterDomTemplate';
+import { PageList } from '../../models/PageList';
+import { HtmlTableTemplate } from '../../models/HtmlTableTemplate';
+import { HttpCallback } from './../../models/HttpCallback';
 
 @Component({
   selector: 'app-main-parameter-manage',
@@ -46,7 +48,7 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 表格数据
    */
-  basicData: any[];
+  basicData;
 
   /**
    * 搜索条件
@@ -54,7 +56,7 @@ export class MainParameterManageComponent implements OnInit {
   searchFilters;
 
   fromRow: number = 1;//当前页第一行的总行数
-  currentPage: number = 1;//当前页码
+  currentPage: number = 0;//当前页码
   pageSizes = globalVar.pageSizes;//可选的每页条数
   pageSize: number = globalVar.pageSize; //每页显示条数
   pageLinkCount = globalVar.pageLinkCount;//显示多少页码
@@ -69,23 +71,22 @@ export class MainParameterManageComponent implements OnInit {
    * @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
    */
   listparam = {
-    size: this.pageSize,
-    index: this.currentPage,
-    filters: ''
+    Size: this.pageSize,
+    Index: this.currentPage,
+    Filters: null
   };
   getParamsList(params) {
 
-    this._paramsManageService.getParams("filters=" + params.filters + "&index=" + params.index + "&size=" + params.size)
+    this._paramsManageService.getParams("Filters=" + params.Filters + "&Index=" + params.Index + "&Size=" + params.Size)
       .subscribe(res => {
-        if (res.code == "0") {
-          var r = res as JsonResult<ParamsModel>;
-          this.columns = r.data.data.fields;
-          this.basicData = r.data.data.bindData;
-          r.data.data.filters.forEach(i => {
-            this.filters.push({ "key": i.name, "value": i.value });
+        if (res.Code == "0") {
+          var r = res as HttpCallback<PageList<HtmlTableTemplate>>;
+          this.columns = r.Data.Data.Fields;
+          this.filteredData = this.basicData = r.Data.Data.BindData;
+          r.Data.Data.Filters.forEach(i => {
+            this.filters.push({ "Key": i.Name, "Value": i.Value || '' });
           })
-          this.searchFilters = r.data.data.filters;
-          console.log(r.data.data.bindData)
+          this.searchFilters = r.Data.Data.Filters;
         }
       })
   }
@@ -96,7 +97,7 @@ export class MainParameterManageComponent implements OnInit {
   searchValue: string = "";
   searchType: string;
   Keywords: string = "";
-  filters = [{ "key": "", "value": "" }];
+  filters = [];
   searchParam($event) {
     let name = $event.target.name;
     this.filters.filter(i => {
@@ -108,9 +109,9 @@ export class MainParameterManageComponent implements OnInit {
   searchParams() {
     let str = JSON.stringify(this.filters);
     this.listparam = {
-      size: this.pageSize,
-      index: 0,
-      filters: str
+      Size: this.pageSize,
+      Index: 0,
+      Filters: str
     }
     this.getParamsList(this.listparam);
   }
