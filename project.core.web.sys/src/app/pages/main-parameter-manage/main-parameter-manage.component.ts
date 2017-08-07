@@ -246,7 +246,7 @@ export class MainParameterManageComponent implements OnInit {
     this.selectNode.tags = tags;
     console.log(this.selectNode)
     //console.log(this.treeNode);
-    this._paramsManageService.saveParams({"name": "SysParam", "id":"598800d8a42d1345045b8fa5"});
+    this._paramsManageService.saveParams({"name": "SysParam", "id":"598800d8a42d1345045b8fa5"}).subscribe(res=>console.log(res));
   }
 
   /**
