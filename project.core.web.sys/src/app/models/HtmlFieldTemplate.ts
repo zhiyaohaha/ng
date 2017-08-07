@@ -25,11 +25,6 @@ export class HtmlFieldTemplate {
   numeric : boolean;
 
   /**
-    * 格式化
-    */
-  format : string;
-
-  /**
     * 嵌套
     */
   nested : boolean;
