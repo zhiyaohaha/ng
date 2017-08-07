@@ -20,7 +20,7 @@ export class LoginService {
   public login(loginObj) {
     let _self = this.router;
     this.service.post("/api/auth/login", loginObj).subscribe(res => {
-      if (res.Code == "0") {
+      if (res.code == "0") {
         _self.navigateByUrl('/main');
       }
     })

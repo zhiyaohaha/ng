@@ -72,24 +72,23 @@ export class MainParameterManageComponent implements OnInit {
    * @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
    */
   listparam = {
-    Size: this.pageSize,
-    Index: this.currentPage,
-    Filters: null
+    size: this.pageSize,
+    index: this.currentPage,
+    filters: null
   };
   getParamsList(params) {
 
-    this._paramsManageService.getParams("Filters=" + params.Filters + "&Index=" + params.Index + "&Size=" + params.Size)
+    this._paramsManageService.getParams("filters=" + params.filters + "&index=" + params.index + "&size=" + params.size)
       .subscribe(res => {
-        if (res.Code == "0") {
-          console.log(this._util.objToLowerCase(r));
+        if (res.code == "0") {
           var r = res as HttpCallback<PageList<HtmlTableTemplate>>;
-          this.columns = this._util.arrayToLowerCase(r.Data.Data.Fields as object[]) as ITdDataTableColumn[];
-          console.log(this.columns);
-          this.filteredData = this.basicData = r.Data.Data.BindData;
-          r.Data.Data.Filters.forEach(i => {
-            this.filters.push({ "Key": i.Name, "Value": i.Value || '' });
+          this.columns = r.data.data.fields;
+          console.log(this.columns)
+          this.filteredData = this.basicData = r.data.data.bindData;
+          r.data.data.filters.forEach(i => {
+            this.filters.push({ "Key": i.name, "Value": i.value || '' });
           })
-          this.searchFilters = r.Data.Data.Filters;
+          this.searchFilters = r.data.data.filters;
         }
       })
   }
@@ -112,9 +111,9 @@ export class MainParameterManageComponent implements OnInit {
   searchParams() {
     let str = JSON.stringify(this.filters);
     this.listparam = {
-      Size: this.pageSize,
-      Index: 0,
-      Filters: str
+      size: this.pageSize,
+      index: 0,
+      filters: str
     }
     this.getParamsList(this.listparam);
   }

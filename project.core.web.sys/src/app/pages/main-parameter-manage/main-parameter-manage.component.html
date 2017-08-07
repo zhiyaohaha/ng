@@ -45,9 +45,9 @@
     <div class="main-container">
         <ul class="search-ul">
             <li *ngFor="let item of searchFilters">
-                <div [ngSwitch]="item.Ui.DisplayType">
-                    <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.Ui.IsHidden ? none : show}">
-                        <input mdInput placeholder="{{item.Ui.Placeholder}}" [value]="Keywords" [name]="item.Name" (input)="searchParam($event)" [disabled]="item.Ui.IsDisabled">
+                <div [ngSwitch]="item.ui.displayType">
+                    <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? none : show}">
+                        <input mdInput placeholder="{{item.ui.placeholder}}" [value]="Keywords" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
                     </md-input-container>
                     <div *ngSwitchCase="'Daterange'">
                         <md-input-container>
@@ -96,14 +96,14 @@
                 <span flex>{{value}}</span>
                 <md-icon>star</md-icon>
             </div>
-        </ng-template>
+        </ng-template>-->
         <ng-template tdDataTableTemplate="op" let-value="value" let-row="row" let-column="column">
             <div layout="row">
                 <div class="example-sidenav-content">
                     <button type="button" md-button (click)="sidenav.open();">查看更多</button>
                 </div>
             </div>
-        </ng-template> -->
+        </ng-template>
     </td-data-table>
 
     <table td-data-table style="display:none;">
