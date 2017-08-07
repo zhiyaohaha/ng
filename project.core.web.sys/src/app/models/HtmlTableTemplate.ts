@@ -10,44 +10,44 @@ import { HtmlFieldTemplate } from "./HtmlFieldTemplate";
   */
 export class HtmlTableTemplate extends BaseTemplate {
 
-    /**
-      * 模板名称
-      */
-    Name : string;
+  /**
+    * 模板名称
+    */
+  Name: string;
 
-    /**
-      * 模板标题
-      */
-    Title : string;
+  /**
+    * 模板标题
+    */
+  Title: string;
 
-    /**
-      * 绑定集合
-      */
-    BindCollection : string;
+  /**
+    * 绑定集合
+    */
+  BindCollection: string;
 
-    /**
-      * 绑定数据
-      */
-    BindData : object;
+  /**
+    * 绑定数据
+    */
+  BindData: object;
 
-    /**
-      * 标签
-      */
-    Tags : string[];
+  /**
+    * 标签
+    */
+  Tags: string[];
 
-    /**
-      * 筛选集合
-      */
-    Filters : HtmlFilterDomTemplate[];
+  /**
+    * 筛选集合
+    */
+  Filters: HtmlFilterDomTemplate[];
 
-    /**
-      * 排序
-      */
-    Sorts : HtmlSortTemplate[];
+  /**
+    * 排序
+    */
+  Sorts: HtmlSortTemplate[];
 
-    /**
-      * 字段集合
-      */
-    Fields : ITdDataTableColumn[];
+  /**
+    * 字段集合
+    */
+  Fields: object;
 
 }
