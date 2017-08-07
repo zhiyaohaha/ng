@@ -7,36 +7,36 @@ export interface ICascadeTemplate<T> {
   /**
     * 父Id
     */
-  ParentId : string;
+  parentId : string;
 
   /**
     * Id
     */
-  Id : string;
+  id : string;
 
   /**
     * 标题
     */
-  Name : string;
+  name : string;
 
   /**
     * 代号
     */
-  Code : string;
+  code : string;
 
   /**
     * 深度
     */
-  Depth : number;
+  depth : number;
 
   /**
     * 排序
     */
-  Sort : number;
+  sort : number;
 
   /**
     * 子集
     */
-  Childrens : T[];
+  childrens : T[];
 
 }

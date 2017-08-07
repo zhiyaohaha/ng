@@ -7,11 +7,11 @@ export class PageList<T> {
   /**
     * 数据
     */
-  Data : T;
+  data : T;
 
   /**
     * 总数
     */
-  Total : number;
+  total : number;
 
 }

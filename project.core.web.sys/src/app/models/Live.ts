@@ -9,31 +9,31 @@ export class Live extends BaseTemplate {
   /**
     * 应用名称
     */
-  AppName : string;
+  appName : string;
 
   /**
     * 流名称
     */
-  StreamName : string;
+  streamName : string;
 
   /**
     * 绑定Id
     */
-  BindId : string;
+  bindId : string;
 
   /**
     * 直播类型
     */
-  Type : string;
+  type : string;
 
   /**
     * 推流地址
     */
-  PushUrl : string;
+  pushUrl : string;
 
   /**
     * 拉流地址
     */
-  PullUrl : string;
+  pullUrl : string;
 
 }

@@ -10,81 +10,81 @@ export class SysUser extends BaseTemplate implements ILoginer {
   /**
     * 账号
     */
-  Accounts : string[];
+  accounts : string[];
 
   /**
     * 密码
     */
-  Password : string;
+  password : string;
 
   /**
     * 姓名
     */
-  Name : string;
+  name : string;
 
   /**
     * 头像
     */
-  Avatar : string;
+  avatar : string;
 
   /**
     * 手机号码
     */
-  MobilePhone : string[];
+  mobilePhone : string[];
 
   /**
     * 邮箱
     */
-  Email : string[];
+  email : string[];
 
   /**
     * 身份证
     */
-  IdCard : string;
+  idCard : string;
 
   /**
     * 性别
     */
-  Sex : string;
+  sex : string;
 
   /**
     * 生日
     */
-  Birthday? : Date;
+  birthday? : Date;
 
   /**
     * 职位
     */
-  Jobs : string[];
+  jobs : string[];
 
   /**
     * 角色
     */
-  Roles : string[];
+  roles : string[];
 
   /**
     * 组
     */
-  Groups : string[];
+  groups : string[];
 
   /**
     * 权限
     */
-  Permissions : string[];
+  permissions : string[];
 
   /**
     * 账号状态
     */
-  Status : string;
+  status : string;
 
   /**
     * 登陆状态
     */
-  LoginStatus : string;
+  loginStatus : string;
 
   /**
     * 等级
     */
-  Level : number;
+  level : number;
 
 }

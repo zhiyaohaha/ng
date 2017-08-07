@@ -9,31 +9,31 @@ export class SysLog extends BaseTemplate {
   /**
     * 级别
     */
-  Level : string;
+  level : string;
 
   /**
     * 异常类型
     */
-  ExceptionType : string;
+  exceptionType : string;
 
   /**
     * 描述
     */
-  Description : string;
+  description : string;
 
   /**
     * 堆栈跟踪
     */
-  StackTrace : string;
+  stackTrace : string;
 
   /**
     * 路由
     */
-  Route : string;
+  route : string;
 
   /**
     * 请求参数Json
     */
-  ParamsJson : string;
+  paramsJson : string;
 
 }

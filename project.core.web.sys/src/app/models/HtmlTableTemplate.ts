@@ -12,41 +12,41 @@ export class HtmlTableTemplate extends BaseTemplate {
   /**
     * 模板名称
     */
-  Name : string;
+  name : string;
 
   /**
     * 模板标题
     */
-  Title : string;
+  title : string;
 
   /**
     * 绑定集合
     */
-  BindCollection : string;
+  bindCollection : string;
 
   /**
     * 绑定数据
     */
-  BindData : object;
+  bindData : object;
 
   /**
     * 标签
     */
-  Tags : string[];
+  tags : string[];
 
   /**
     * 筛选集合
     */
-  Filters : HtmlFilterDomTemplate[];
+  filters : HtmlFilterDomTemplate[];
 
   /**
     * 排序
     */
-  Sorts : HtmlSortTemplate[];
+  sorts : HtmlSortTemplate[];
 
   /**
     * 字段集合
     */
-  Fields : HtmlFieldTemplate[];
+  fields : HtmlFieldTemplate[];
 
 }

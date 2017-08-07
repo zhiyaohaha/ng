@@ -9,21 +9,21 @@ export class Chat extends BaseTemplate {
   /**
     * 发送人Id
     */
-  SenderId : string;
+  senderId : string;
 
   /**
     * 内容类型
     */
-  Scene : string;
+  scene : string;
 
   /**
     * 内容
     */
-  Content : string;
+  content : string;
 
   /**
     * 内容类型
     */
-  ContentType : string;
+  contentType : string;
 
 }

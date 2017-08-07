@@ -7,11 +7,11 @@ export interface ILoginer {
   /**
     * 编号
     */
-  Id : string;
+  id : string;
 
   /**
     * 姓名
     */
-  Name : string;
+  name : string;
 
 }

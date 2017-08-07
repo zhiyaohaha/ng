@@ -8,48 +8,48 @@ import { ICascadeTemplate } from "./ICascadeTemplate";
 export class SysArea extends BaseTemplate implements ICascadeTemplate<SysArea> {
 
   /**
+    * 全称
+    */
+  fullName : string;
+
+  /**
     * 缩写
     */
-  Addr : string;
+  addr : string;
 
   /**
     * 区域
     */
-  Region : string;
+  region : string;
 
   /**
     * 父Id
     */
-  ParentId : string;
+  parentId : string;
 
   /**
     * 名称
     */
-  Name : string;
-
-  /**
-    * 全称
-    */
-  FullName : string;
+  name : string;
 
   /**
     * 代号
     */
-  Code : string;
+  code : string;
 
   /**
     * 深度
     */
-  Depth : number;
+  depth : number;
 
   /**
     * 排序
     */
-  Sort : number;
+  sort : number;
 
   /**
     * 子集
     */
-  Childrens : SysArea[];
+  childrens : SysArea[];
 
 }

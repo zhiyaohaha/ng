@@ -9,41 +9,41 @@ export class SysOperationLog extends BaseTemplate {
   /**
     * 操作人
     */
-  Config : string;
+  config : string;
 
   /**
     * 操作人
     */
-  User : string;
+  user : string;
 
   /**
     * 参数集合
     */
-  Params : string[];
+  paramsList : string[];
 
   /**
     * IP地址
     */
-  IPAddress : string;
+  ipAddress : string;
 
   /**
     * 端口号
     */
-  Port : number;
+  port : number;
 
   /**
     * IP地址位置
     */
-  IPLocation : string;
+  ipLocation : string;
 
   /**
     * UA
     */
-  UA : string;
+  ua : string;
 
   /**
     * 设备
     */
-  Device : string[];
+  device : string[];
 
 }

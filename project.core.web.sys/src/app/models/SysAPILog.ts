@@ -9,36 +9,36 @@ export class SysAPILog extends BaseTemplate {
   /**
     * 接受方Url
     */
-  ReceiveUrl : string;
+  receiveUrl : string;
 
   /**
     * 发送方Url
     */
-  SendUrl : string;
+  sendUrl : string;
 
   /**
     * 传递数据
     */
-  SendData : string;
+  sendData : string;
 
   /**
     * 回调码
     */
-  CallbackCode : string;
+  callbackCode : string;
 
   /**
     * 回调消息
     */
-  CallbackMessage : string;
+  callbackMessage : string;
 
   /**
     * 回调数据
     */
-  CallbackData : string;
+  callbackData : string;
 
   /**
     * 状态
     */
-  Status : string;
+  status : string;
 
 }

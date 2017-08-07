@@ -9,11 +9,11 @@ export class NotesXmlDocMemberSummary {
   /**
     * 参数
     */
-  Params : NotesXmlDocMemberSummaryPara[];
+  paramsList : NotesXmlDocMemberSummaryPara[];
 
   /**
     * 标题
     */
-  Title : string;
+  title : string;
 
 }

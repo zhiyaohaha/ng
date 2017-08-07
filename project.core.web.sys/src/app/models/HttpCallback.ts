@@ -7,21 +7,21 @@ export class HttpCallback<T> {
   /**
     * 回调码
     */
-  Code : string;
+  code : string;
 
   /**
     * 回调消息
     */
-  Message : string;
+  message : string;
 
   /**
     * 回调结果
     */
-  Data : T;
+  data : T;
 
   /**
     * 是否成功
     */
-  IsSuccess : boolean;
+  isSuccess : boolean;
 
 }

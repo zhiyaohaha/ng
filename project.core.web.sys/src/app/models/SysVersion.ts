@@ -9,21 +9,21 @@ export class SysVersion extends BaseTemplate {
   /**
     * 版本号
     */
-  VersionNumber : string;
+  versionNumber : string;
 
   /**
     * 内容
     */
-  Content : string;
+  content : string;
 
   /**
     * 详细
     */
-  Detail : string;
+  detail : string;
 
   /**
     * 预计发布时间
     */
-  ReleaseDate : Date;
+  releaseDate : Date;
 
 }

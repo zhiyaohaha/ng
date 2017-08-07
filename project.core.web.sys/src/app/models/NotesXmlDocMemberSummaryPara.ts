@@ -7,11 +7,11 @@ export class NotesXmlDocMemberSummaryPara {
   /**
     * 类型
     */
-  Type : string;
+  type : string;
 
   /**
     * 值
     */
-  Value : string;
+  value : string;
 
 }

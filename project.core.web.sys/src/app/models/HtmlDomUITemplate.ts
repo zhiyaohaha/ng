@@ -7,26 +7,26 @@ export class HtmlDomUITemplate {
   /**
     * 标题
     */
-  Label : string;
+  label : string;
 
   /**
     * 展示类型
     */
-  DisplayType : string;
+  displayType : string;
 
   /**
     * 是否禁用
     */
-  IsDisabled : boolean;
+  isDisabled : boolean;
 
   /**
     * 是否隐藏
     */
-  IsHidden : boolean;
+  isHidden : boolean;
 
   /**
     * 占位符
     */
-  Placeholder : string;
+  placeholder : string;
 
 }

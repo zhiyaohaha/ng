@@ -7,46 +7,46 @@ export class HtmlFieldTemplate {
   /**
     * 绑定字段
     */
-  Name : string;
+  name : string;
 
   /**
     * 标题
     */
-  Label : string;
+  label : string;
 
   /**
     * 提示
     */
-  Tooltip : string;
+  tooltip : string;
 
   /**
     * 是数字
     */
-  Numeric : boolean;
+  numeric : boolean;
 
   /**
     * 格式化
     */
-  Format : string;
+  format : string;
 
   /**
     * 嵌套
     */
-  Nested : boolean;
+  nested : boolean;
 
   /**
     * 排序
     */
-  Sortable : boolean;
+  sortable : boolean;
 
   /**
     * 筛选
     */
-  Filter : boolean;
+  filter : boolean;
 
   /**
     * 是否隐藏
     */
-  Hidden : boolean;
+  hidden : boolean;
 
 }

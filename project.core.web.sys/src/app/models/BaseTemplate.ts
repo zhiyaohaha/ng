@@ -7,36 +7,36 @@ export class BaseTemplate {
   /**
     * Mongodb编号(无视)
     */
-  ObjectId : object;
+  objectId : object;
 
   /**
     * 编号
     */
-  Id : string;
+  id : string;
 
   /**
     * 是否删除
     */
-  IsDelete : boolean;
+  isDelete : boolean;
 
   /**
     * 创建时间
     */
-  CreatedDate : Date;
+  createdDate : Date;
 
   /**
     * 创建人
     */
-  Creater : string;
+  creater : string;
 
   /**
     * 最后操作时间
     */
-  OperatedDate : Date;
+  operatedDate : Date;
 
   /**
     * 最后操作人
     */
-  Operater : string;
+  operater : string;
 
 }

@@ -7,11 +7,11 @@ export class NotesXmlDocMemberParam {
   /**
     * 名称
     */
-  Name : string;
+  name : string;
 
   /**
     * 描述
     */
-  Description : string;
+  description : string;
 
 }

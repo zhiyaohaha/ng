@@ -9,46 +9,46 @@ export class SysFile extends BaseTemplate {
   /**
     * 文件名
     */
-  Name : string;
+  name : string;
 
   /**
     * 原始文件名
     */
-  OriginalName : string;
+  originalName : string;
 
   /**
     * 图标
     */
-  Icon : string;
+  icon : string;
 
   /**
     * 后缀
     */
-  Suffix : string;
+  suffix : string;
 
   /**
     * 大小
     */
-  Length : number;
+  length : number;
 
   /**
     * 域名
     */
-  Domain : string;
+  domain : string;
 
   /**
     * 地址
     */
-  Path : string;
+  path : string;
 
   /**
     * 文件类型
     */
-  Type : string;
+  type : string;
 
   /**
     * 绑定数据
     */
-  BindData : object;
+  bindData : object;
 
 }

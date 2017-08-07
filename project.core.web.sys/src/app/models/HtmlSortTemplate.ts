@@ -7,11 +7,11 @@ export class HtmlSortTemplate {
   /**
     * 绑定字段
     */
-  BindField : string;
+  bindField : string;
 
   /**
     * 是否倒序
     */
-  IsDesc : boolean;
+  isDesc : boolean;
 
 }

@@ -7,16 +7,16 @@ export class PageListParams {
   /**
     * 总数
     */
-  Total : number;
+  total : number;
 
   /**
     * 当前页
     */
-  Index : number;
+  index : number;
 
   /**
     * 每页数
     */
-  Size : number;
+  size : number;
 
 }

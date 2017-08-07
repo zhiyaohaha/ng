@@ -9,16 +9,16 @@ export interface IUICascadeTemplate<T> extends ICascadeTemplate<T> {
   /**
     * 图标
     */
-  Icon : string;
+  icon : string;
 
   /**
     * 绑定数据
     */
-  BindData : object;
+  bindData : object;
 
   /**
     * 是否可见
     */
-  IsVisable : boolean;
+  isVisable : boolean;
 
 }

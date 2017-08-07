@@ -9,21 +9,21 @@ export class SysSocket extends BaseTemplate {
   /**
     * 命令
     */
-  Cmd : string;
+  cmd : string;
 
   /**
     * 发送人
     */
-  SenderId : string;
+  senderId : string;
 
   /**
     * 接受方
     */
-  ReceiverId : string;
+  receiverId : string;
 
   /**
     * 数据
     */
-  Data : object;
+  data : object;
 
 }

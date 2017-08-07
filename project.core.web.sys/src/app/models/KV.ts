@@ -7,11 +7,11 @@ export class KV<T> {
   /**
     * 键
     */
-  Key : string;
+  key : string;
 
   /**
     * 值
     */
-  Value : T;
+  value : T;
 
 }

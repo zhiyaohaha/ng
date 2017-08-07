@@ -9,11 +9,11 @@ export class HtmlFilterDomTemplate extends HtmlDomTemplate {
   /**
     * 绑定字段
     */
-  FilterFields : string[];
+  filterFields : string[];
 
   /**
     * 筛选类型
     */
-  FilterType : string;
+  filterType : string;
 
 }

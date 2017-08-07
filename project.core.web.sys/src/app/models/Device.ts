@@ -7,21 +7,21 @@ export class Device {
   /**
     * UA
     */
-  UA : string;
+  ua : string;
 
   /**
     * IP地址
     */
-  IPAddress : string;
+  ipAddress : string;
 
   /**
     * 端口号
     */
-  Port : number;
+  port : number;
 
   /**
     * IP地理位置
     */
-  IPLocation : string;
+  ipLocation : string;
 
 }

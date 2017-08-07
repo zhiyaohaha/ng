@@ -10,41 +10,41 @@ export class SysParam extends BaseTemplate implements ICascadeTemplate<SysParam>
   /**
     * 描述
     */
-  Description : string;
+  description : string;
 
   /**
     * 标签
     */
-  Tags : string[];
+  tags : string[];
 
   /**
     * 父Id
     */
-  ParentId : string;
+  parentId : string;
 
   /**
     * 名称
     */
-  Name : string;
+  name : string;
 
   /**
     * 代号
     */
-  Code : string;
+  code : string;
 
   /**
     * 深度
     */
-  Depth : number;
+  depth : number;
 
   /**
     * 排序
     */
-  Sort : number;
+  sort : number;
 
   /**
     * 子集
     */
-  Childrens : SysParam[];
+  childrens : SysParam[];
 
 }

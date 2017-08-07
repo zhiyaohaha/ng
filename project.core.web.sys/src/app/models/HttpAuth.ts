@@ -7,16 +7,16 @@ export class HttpAuth<T> {
   /**
     * 参数
     */
-  Data : T;
+  data : T;
 
   /**
     * 时间戳
     */
-  Timestamp : number;
+  timestamp : number;
 
   /**
     * 签名
     */
-  Sign : string;
+  sign : string;
 
 }

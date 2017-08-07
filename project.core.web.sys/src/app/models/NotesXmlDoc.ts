@@ -9,6 +9,6 @@ export class NotesXmlDoc {
   /**
     * 成员
     */
-  Members : NotesXmlDocMember[];
+  members : NotesXmlDocMember[];
 
 }

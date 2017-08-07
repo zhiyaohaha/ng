@@ -10,46 +10,46 @@ export class LoanOrder extends BaseTemplate {
   /**
     * 用户
     */
-  User : string;
+  user : string;
 
   /**
     * 姓名
     */
-  Name : string;
+  name : string;
 
   /**
     * 手机号
     */
-  MobilePhone : string;
+  mobilePhone : string;
 
   /**
     * 身份证
     */
-  IdCard : string;
+  idCard : string;
 
   /**
     * 申请金额
     */
-  ApplyAmount : string;
+  applyAmount : string;
 
   /**
     * 申请期限
     */
-  ApplyTerm : number;
+  applyTerm : number;
 
   /**
     * 申请产品
     */
-  ApplyProduct : string;
+  applyProduct : string;
 
   /**
     * 申请地区
     */
-  ApplyArea : string;
+  applyArea : string;
 
   /**
     * Html模板
     */
-  HtmlFormTemplate : HtmlFormTemplate;
+  htmlFormTemplate : HtmlFormTemplate;
 
 }

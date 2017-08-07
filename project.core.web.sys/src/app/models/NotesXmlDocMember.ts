@@ -10,31 +10,31 @@ export class NotesXmlDocMember {
   /**
     * 名称
     */
-  Name : string;
+  name : string;
 
   /**
     * 总结
     */
-  Summary : NotesXmlDocMemberSummary;
+  summary : NotesXmlDocMemberSummary;
 
   /**
     * 参数集合
     */
-  Params : NotesXmlDocMemberParam[];
+  paramsList : NotesXmlDocMemberParam[];
 
   /**
     * 返回内容
     */
-  Return : string;
+  returnContent : string;
 
   /**
     * 备注
     */
-  Remark : string;
+  remark : string;
 
   /**
     * 例子
     */
-  Example : string;
+  example : string;
 
 }

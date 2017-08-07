@@ -9,16 +9,16 @@ export class LoanProduct extends BaseTemplate {
   /**
     * (暂无描述)
     */
-  Name : string;
+  name : string;
 
   /**
     * (暂无描述)
     */
-  Logo : string;
+  logo : string;
 
   /**
     * (暂无描述)
     */
-  Group : string;
+  group : string;
 
 }

@@ -9,16 +9,16 @@ export class ChatGroupMember extends BaseTemplate {
   /**
     * 用户编号
     */
-  UserId : string;
+  userId : string;
 
   /**
     * 群名片
     */
-  CardName : string;
+  cardName : string;
 
   /**
     * 群角色
     */
-  GroupRole : string;
+  groupRole : string;
 
 }
