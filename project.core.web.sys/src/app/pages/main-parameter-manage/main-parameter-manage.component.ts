@@ -278,9 +278,14 @@ export class MainParameterManageComponent implements OnInit {
    * 关闭sidenav
    */
   closeEnd(){
-    this.treeNode.value = "";
-    this.treeNode.desc = "";
-    this.treeNode.label = [];
+    this.treeNode = {
+      code: ' ',
+      value: '',
+      desc: '',
+      label: []
+    }
+    this.selectNode = null;
+    console.log(this.treeNode)
   }
 
   toTreeModel(data){
