@@ -7,39 +7,39 @@ import { HtmlDomTemplate } from "./HtmlDomTemplate";
   */
 export class HtmlFormTemplate extends BaseTemplate {
 
-    /**
-      * (暂无描述)
-      */
-    OperateCmd : string;
+  /**
+    * (暂无描述)
+    */
+  OperateCmd : string;
 
-    /**
-      * 名称
-      */
-    Name : string;
+  /**
+    * 名称
+    */
+  Name : string;
 
-    /**
-      * 绑定数据
-      */
-    Title : string;
+  /**
+    * 绑定数据
+    */
+  Title : string;
 
-    /**
-      * 绑定集合
-      */
-    BindCollection : string;
+  /**
+    * 绑定集合
+    */
+  BindCollection : string;
 
-    /**
-      * 绑定数据
-      */
-    BindData : object;
+  /**
+    * 绑定数据
+    */
+  BindData : object;
 
-    /**
-      * 标签
-      */
-    Tags : string[];
+  /**
+    * 标签
+    */
+  Tags : string[];
 
-    /**
-      * Dom集合
-      */
-    Doms : HtmlDomTemplate[];
+  /**
+    * Dom集合
+    */
+  Doms : HtmlDomTemplate[];
 
 }

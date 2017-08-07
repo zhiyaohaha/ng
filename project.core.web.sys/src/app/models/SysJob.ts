@@ -6,9 +6,9 @@
   */
 export class SysJob extends BaseTemplate {
 
-    /**
-      * 账号
-      */
-    Name : string;
+  /**
+    * 账号
+    */
+  Name : string;
 
 }

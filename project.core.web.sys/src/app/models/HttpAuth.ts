@@ -4,19 +4,19 @@
   */
 export class HttpAuth<T> {
 
-    /**
-      * 参数
-      */
-    Data : T;
+  /**
+    * 参数
+    */
+  Data : T;
 
-    /**
-      * 时间戳
-      */
-    Timestamp : number;
+  /**
+    * 时间戳
+    */
+  Timestamp : number;
 
-    /**
-      * 签名
-      */
-    Sign : string;
+  /**
+    * 签名
+    */
+  Sign : string;
 
 }

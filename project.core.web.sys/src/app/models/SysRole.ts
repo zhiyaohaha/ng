@@ -6,9 +6,9 @@
   */
 export class SysRole extends BaseTemplate {
 
-    /**
-      * 角色名称
-      */
-    Name : string;
+  /**
+    * 角色名称
+    */
+  Name : string;
 
 }

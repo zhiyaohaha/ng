@@ -6,29 +6,29 @@
   */
 export class SysOperationLogConfig extends BaseTemplate {
 
-    /**
-      * 平台
-      */
-    Platform : string;
+  /**
+    * 平台
+    */
+  Platform : string;
 
-    /**
-      * 路由
-      */
-    Route : string;
+  /**
+    * 路由
+    */
+  Route : string;
 
-    /**
-      * 标题
-      */
-    Title : string;
+  /**
+    * 标题
+    */
+  Title : string;
 
-    /**
-      * 内容
-      */
-    Content : string;
+  /**
+    * 内容
+    */
+  Content : string;
 
-    /**
-      * 标签
-      */
-    Tags : string[];
+  /**
+    * 标签
+    */
+  Tags : string[];
 
 }

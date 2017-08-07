@@ -6,14 +6,14 @@
   */
 export class NotesXmlDocMemberSummary {
 
-    /**
-      * 参数
-      */
-    Params : NotesXmlDocMemberSummaryPara[];
+  /**
+    * 参数
+    */
+  Params : NotesXmlDocMemberSummaryPara[];
 
-    /**
-      * 标题
-      */
-    Title : string;
+  /**
+    * 标题
+    */
+  Title : string;
 
 }

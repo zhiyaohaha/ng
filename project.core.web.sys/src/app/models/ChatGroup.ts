@@ -9,11 +9,11 @@ export class ChatGroup extends BaseTemplate {
   /**
     * 群名
     */
-  Name: string;
+  Name : string;
 
   /**
     * 描述
     */
-  Description: string;
+  Description : string;
 
 }

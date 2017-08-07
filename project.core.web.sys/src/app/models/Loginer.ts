@@ -6,14 +6,14 @@
   */
 export class Loginer implements ILoginer {
 
-    /**
-      * 编号
-      */
-    Id : string;
+  /**
+    * 编号
+    */
+  Id : string;
 
-    /**
-      * 姓名
-      */
-    Name : string;
+  /**
+    * 姓名
+    */
+  Name : string;
 
 }

@@ -4,14 +4,14 @@
   */
 export class NotesXmlDocMemberParam {
 
-    /**
-      * 名称
-      */
-    Name : string;
+  /**
+    * 名称
+    */
+  Name : string;
 
-    /**
-      * 描述
-      */
-    Description : string;
+  /**
+    * 描述
+    */
+  Description : string;
 
 }

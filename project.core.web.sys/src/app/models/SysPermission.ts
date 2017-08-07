@@ -7,39 +7,39 @@ import { ICascadeTemplate } from "./ICascadeTemplate";
   */
 export class SysPermission extends BaseTemplate implements ICascadeTemplate<SysPermission> {
 
-    /**
-      * 依赖项
-      */
-    DependencyIds : string[];
+  /**
+    * 依赖项
+    */
+  DependencyIds : string[];
 
-    /**
-      * 父Id
-      */
-    ParentId : string;
+  /**
+    * 父Id
+    */
+  ParentId : string;
 
-    /**
-      * 名称
-      */
-    Name : string;
+  /**
+    * 名称
+    */
+  Name : string;
 
-    /**
-      * 代号
-      */
-    Code : string;
+  /**
+    * 代号
+    */
+  Code : string;
 
-    /**
-      * 深度
-      */
-    Depth : number;
+  /**
+    * 深度
+    */
+  Depth : number;
 
-    /**
-      * 排序
-      */
-    Sort : number;
+  /**
+    * 排序
+    */
+  Sort : number;
 
-    /**
-      * 子集
-      */
-    Childrens : SysPermission[];
+  /**
+    * 子集
+    */
+  Childrens : SysPermission[];
 
 }

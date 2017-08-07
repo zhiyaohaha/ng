@@ -6,29 +6,29 @@
   */
 export class HtmlDomTemplate {
 
-    /**
-      * 名称
-      */
-    Name : string;
+  /**
+    * 名称
+    */
+  Name : string;
 
-    /**
-      * 值
-      */
-    Value : string;
+  /**
+    * 值
+    */
+  Value : string;
 
-    /**
-      * 绑定数据
-      */
-    BindData : object;
+  /**
+    * 绑定数据
+    */
+  BindData : object;
 
-    /**
-      * 绑定数据类型
-      */
-    BindDataType : string;
+  /**
+    * 绑定数据类型
+    */
+  BindDataType : string;
 
-    /**
-      * UI
-      */
-    UI : HtmlDomUITemplate;
+  /**
+    * UI
+    */
+  UI : HtmlDomUITemplate;
 
 }

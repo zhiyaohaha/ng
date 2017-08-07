@@ -4,14 +4,14 @@
   */
 export class NotesXmlDocMemberSummaryPara {
 
-    /**
-      * 类型
-      */
-    Type : string;
+  /**
+    * 类型
+    */
+  Type : string;
 
-    /**
-      * 值
-      */
-    Value : string;
+  /**
+    * 值
+    */
+  Value : string;
 
 }

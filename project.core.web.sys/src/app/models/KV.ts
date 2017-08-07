@@ -4,14 +4,14 @@
   */
 export class KV<T> {
 
-    /**
-      * 键
-      */
-    Key : string;
+  /**
+    * 键
+    */
+  Key : string;
 
-    /**
-      * 值
-      */
-    Value : T;
+  /**
+    * 值
+    */
+  Value : T;
 
 }

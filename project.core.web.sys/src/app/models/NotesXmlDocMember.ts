@@ -7,34 +7,34 @@ import { NotesXmlDocMemberParam } from "./NotesXmlDocMemberParam";
   */
 export class NotesXmlDocMember {
 
-    /**
-      * 名称
-      */
-    Name : string;
+  /**
+    * 名称
+    */
+  Name : string;
 
-    /**
-      * 总结
-      */
-    Summary : NotesXmlDocMemberSummary;
+  /**
+    * 总结
+    */
+  Summary : NotesXmlDocMemberSummary;
 
-    /**
-      * 参数集合
-      */
-    Params : NotesXmlDocMemberParam[];
+  /**
+    * 参数集合
+    */
+  Params : NotesXmlDocMemberParam[];
 
-    /**
-      * 返回内容
-      */
-    Return : string;
+  /**
+    * 返回内容
+    */
+  Return : string;
 
-    /**
-      * 备注
-      */
-    Remark : string;
+  /**
+    * 备注
+    */
+  Remark : string;
 
-    /**
-      * 例子
-      */
-    Example : string;
+  /**
+    * 例子
+    */
+  Example : string;
 
 }

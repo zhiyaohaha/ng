@@ -4,14 +4,14 @@
   */
 export class PageList<T> {
 
-    /**
-      * 数据
-      */
-    Data : T;
+  /**
+    * 数据
+    */
+  Data : T;
 
-    /**
-      * 总数
-      */
-    Total : number;
+  /**
+    * 总数
+    */
+  Total : number;
 
 }

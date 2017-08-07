@@ -6,9 +6,9 @@
   */
 export class Sys extends BaseTemplate {
 
-    /**
-      * 版本号
-      */
-    VersionNumber : string;
+  /**
+    * 版本号
+    */
+  VersionNumber : string;
 
 }

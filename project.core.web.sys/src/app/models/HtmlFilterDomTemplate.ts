@@ -6,14 +6,14 @@
   */
 export class HtmlFilterDomTemplate extends HtmlDomTemplate {
 
-    /**
-      * 绑定字段
-      */
-    FilterFields : string[];
+  /**
+    * 绑定字段
+    */
+  FilterFields : string[];
 
-    /**
-      * 筛选类型
-      */
-    FilterType : string;
+  /**
+    * 筛选类型
+    */
+  FilterType : string;
 
 }
