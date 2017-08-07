@@ -90,7 +90,7 @@
 
     </div>
 
-    <td-data-table #dataTable [data]="filteredData" [columns]="columns" [clickable]="true" (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
+    <td-data-table #dataTable [data]="filteredData" [columns]="columns" [clickable]="true" (rowClick)="rowClickEvent($event);sidenav.open();" (rowSelect)="rowSelectEvent($event)">
         <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
             <div layout="row">
                 <span flex>{{value}}</span>
