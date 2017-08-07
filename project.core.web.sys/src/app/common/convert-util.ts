@@ -49,7 +49,11 @@ export class ConvertUtil {
      */
     public objToLowerCase(obj: object): object {
         for (var key in obj) {
-            obj[key.toLowerCase()] = obj[key];
+            if (Array.isArray(obj[key]) && obj[key][0] === "object") {
+                this.arrayToLowerCase(obj[key]);
+            } else {
+                obj[this.firstLetterToLowerCase(key)] = obj[key];
+            }
         }
         return obj
     }
@@ -61,9 +65,17 @@ export class ConvertUtil {
     public arrayToLowerCase(array: object[]): object[] {
         for (var index = 0; index < array.length; index++) {
             for (var key in array[index]) {
-                array[index][key.toLowerCase()] = array[index][key];
+                array[index][this.firstLetterToLowerCase(key)] = array[index][key];
             }
         }
         return array
+    }
+
+    /**
+     * 字符串首字母小写
+     * @param str 
+     */
+    public firstLetterToLowerCase(str: string): string {
+        return str.substr(0, 1).toLowerCase() + str.substr(1);
     }
 }

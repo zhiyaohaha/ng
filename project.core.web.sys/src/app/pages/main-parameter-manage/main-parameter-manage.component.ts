@@ -20,6 +20,7 @@ import { HtmlFilterDomTemplate } from '../../models/HtmlFilterDomTemplate';
 import { PageList } from '../../models/PageList';
 import { HtmlTableTemplate } from '../../models/HtmlTableTemplate';
 import { HttpCallback } from './../../models/HttpCallback';
+import { ConvertUtil } from '../../common/convert-util';
 
 @Component({
   selector: 'app-main-parameter-manage',
@@ -80,8 +81,10 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.getParams("Filters=" + params.Filters + "&Index=" + params.Index + "&Size=" + params.Size)
       .subscribe(res => {
         if (res.Code == "0") {
+          console.log(this._util.objToLowerCase(r));
           var r = res as HttpCallback<PageList<HtmlTableTemplate>>;
-          this.columns = r.Data.Data.Fields;
+          this.columns = this._util.arrayToLowerCase(r.Data.Data.Fields as object[]) as ITdDataTableColumn[];
+          console.log(this.columns);
           this.filteredData = this.basicData = r.Data.Data.BindData;
           r.Data.Data.Filters.forEach(i => {
             this.filters.push({ "Key": i.Name, "Value": i.Value || '' });
@@ -201,7 +204,8 @@ export class MainParameterManageComponent implements OnInit {
     private _dataTableService: TdDataTableService,
     private _viewContainerRef: ViewContainerRef,
     private _tableSearch: TableSearch,
-    private _paramsManageService: ParamsManageService) {
+    private _paramsManageService: ParamsManageService,
+    private _util: ConvertUtil) {
 
   }
   ngOnInit() {
