@@ -59,13 +59,13 @@ $color in $theme {
             color: #262626;
             &:hover {
                 color: #262626 !important;
-                background-color: #eee !important;
+                background-color: #ddd !important;
             }
         }
         .left-menu-item li a.active,
         .accordion-inner ul li>a.active {
             color: #262626 !important;
-            background-color: #eee !important;
+            background-color: #ddd !important;
         }
     }
     .top-menu {

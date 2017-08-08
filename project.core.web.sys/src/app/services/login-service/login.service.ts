@@ -9,7 +9,7 @@ export class LoginService {
 
   data: any;
 
-  constructor(private service: BaseService, private router: Router) {
+  constructor(private service: BaseService) {
 
   }
 
@@ -18,12 +18,7 @@ export class LoginService {
    * @param loginObj 登录传递的参数
    */
   public login(loginObj) {
-    let _self = this.router;
-    this.service.post("/api/auth/login", loginObj).subscribe(res => {
-      if (res.code == "0") {
-        _self.navigateByUrl('/main');
-      }
-    })
+    return this.service.post("/api/auth/login", loginObj);
   }
 
 }

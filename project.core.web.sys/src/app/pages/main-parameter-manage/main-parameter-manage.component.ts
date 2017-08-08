@@ -34,7 +34,9 @@ import { SysParam } from '../../models/SysParam';
 export class MainParameterManageComponent implements OnInit {
   bool: boolean = false;
 
-
+  /**
+   * 右侧编辑的具体内容
+   */
   treeNode = {
     code: ' ',
     value: '',
@@ -96,9 +98,10 @@ export class MainParameterManageComponent implements OnInit {
           this.columns = r.data.data.fields;
           this.filteredData = this.basicData = r.data.data.bindData;
           r.data.data.filters.forEach(i => {
-            this.filters.push({ "Key": i.name, "Value": i.value || '' });
+            this.filters.push({ "key": i.name, "value": i.value || '' });
           })
           this.searchFilters = r.data.data.filters;
+          this.filteredTotal = r.data.total;
         }
       })
   }
@@ -126,6 +129,7 @@ export class MainParameterManageComponent implements OnInit {
       filters: str,
       name: "SysParam"
     }
+    console.log(this.listparam)
     this.getParamsList(this.listparam);
   }
 
@@ -157,10 +161,20 @@ export class MainParameterManageComponent implements OnInit {
     this.pageOptions.fromRow = pagingEvent.fromRow;
     this.pageOptions.currentPage = pagingEvent.page;
     this.pageOptions.pageSize = pagingEvent.pageSize;
-    this.loadData();
-
+    //this.loadData();
+    this.listparam = {
+      size: pagingEvent.pageSize,
+      index: pagingEvent.page - 1,
+      filters: null,
+      name: "SysParam"
+    }
+    console.log(this.listparam);
+    this.getParamsList(this.listparam);
   }
 
+  /**
+   * 表格过滤 排序
+   */
   loadData() {
     let result = this._tableSearch.tableFilter(this.pageOptions);
     this.filteredData = result[0];
@@ -200,8 +214,8 @@ export class MainParameterManageComponent implements OnInit {
     this.getParamsList(this.listparam);
 
     this.paramsForm = this.fb.group({
-      para1: ["",Validators.required],
-      para2: ["",Validators.required],
+      para1: [""],
+      para2: [""],
       para3: []
     })
   }
@@ -215,9 +229,9 @@ export class MainParameterManageComponent implements OnInit {
     console.log(this.selectNode);
     this.treeNode.value = this.selectNode.value;
     let tags = [];
-    if(this.selectNode.tags && this.selectNode.tags.length > 0 ){
-      for(var i = 0; i < this.selectNode.tags.length; i++){
-        tags.push({"value":this.selectNode.tags[i],"delete": true});
+    if (this.selectNode.tags && this.selectNode.tags.length > 0) {
+      for (var i = 0; i < this.selectNode.tags.length; i++) {
+        tags.push({ "value": this.selectNode.tags[i], "delete": true });
       }
     }
     this.treeNode.label = tags;
@@ -225,7 +239,7 @@ export class MainParameterManageComponent implements OnInit {
     this.treeNode.code = this.selectNode.code;
   }
 
-  chipsChange($event){
+  chipsChange($event) {
     this.treeNode.label = $event;
   }
 
@@ -237,16 +251,15 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 提交树表单
    */
-  onSubmitParams() {
-    console.log(this.paramsForm.valid);
-    this.selectNode.value = this.paramsForm.value.para1;
-    this.selectNode.description = this.paramsForm.value.para2;
+  onSubmitParams($event) {
+    console.log(this.treeNode)
+    this.selectNode.value = this.treeNode.value;
+    this.selectNode.description = this.treeNode.desc;
     let tags = [];
-    this.treeNode.label.map(r=>tags.push(r.value));
+    this.treeNode.label.map(r => tags.push(r.value));
     this.selectNode.tags = tags;
     console.log(this.selectNode)
-    //console.log(this.treeNode);
-    this._paramsManageService.saveParams({"name": "SysParam", "id":"598800d8a42d1345045b8fa5"}).subscribe(res=>console.log(res));
+    this._paramsManageService.saveParams({ "name": "SysParam", "id": "598800d8a42d1345045b8fa5" }).subscribe(res => console.log(res));
   }
 
   /**
@@ -277,7 +290,7 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 关闭sidenav
    */
-  closeEnd(){
+  closeEnd() {
     this.treeNode = {
       code: ' ',
       value: '',
@@ -288,21 +301,21 @@ export class MainParameterManageComponent implements OnInit {
     console.log(this.treeNode)
   }
 
-  toTreeModel(data){
+  toTreeModel(data) {
     let treeData = {};
     treeData["code"] = data.code;
     treeData["value"] = data.name;
     treeData["id"] = data.id;
     treeData["parentId"] = data.parentId;
-    if(data.childrens.length > 0){
+    if (data.childrens.length > 0) {
       treeData["children"] = [];
-      for(var i = 0; i < data.childrens.length; i++){
+      for (var i = 0; i < data.childrens.length; i++) {
         treeData["children"].push(this.toTreeModel(data.childrens[i]));
       }
     }
     treeData["description"] = data.description;
     treeData["tags"] = data.tags;
-    treeData["settings"] = {rightMenu: false};
+    treeData["settings"] = { rightMenu: false };
     return treeData;
   }
 

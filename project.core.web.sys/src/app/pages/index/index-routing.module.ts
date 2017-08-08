@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { IndexComponent } from './index.component';
 
 const childRoutes: Routes = [
-  { path: '', loadChildren: '../main/main.module#MainModule' },
+  { path: 'dashboard', loadChildren: '../main/main.module#MainModule' },
+  { path: 'main', loadChildren: '../main/main.module#MainModule' },
   { path: 'apidoc', loadChildren: '../apidoc/apidoc.module#ApidocModule' },
   { path: 'personal', loadChildren: '../personal/personal.module#PersonalModule' },
   { path: 'parameterManage', loadChildren: '../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule' },
+  { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }
 ];
 

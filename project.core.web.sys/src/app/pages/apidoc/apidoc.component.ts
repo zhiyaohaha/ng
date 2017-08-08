@@ -2,6 +2,7 @@ import { Http } from '@angular/http';
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from '../../services/base.service';
 import { fadeInUp } from '../../common/animations';
+import { NotesXmlDocMember } from '../../models/NotesXmlDocMember';
 
 @Component({
   selector: 'app-apidoc',
@@ -11,9 +12,9 @@ import { fadeInUp } from '../../common/animations';
 })
 export class ApidocComponent implements OnInit {
 
-  list: ListModel;
+  list: NotesXmlDocMember;
 
-  result: ListModel[];
+  result: NotesXmlDocMember[];
 
   constructor(private service: BaseService) {
   }
@@ -32,18 +33,4 @@ export class ApidocComponent implements OnInit {
     this.list = this.result[num];
   }
 
-}
-
-export class ListModel {
-  example: string;
-  name: string;
-  params: object[];
-  remark: string;
-  return: string;
-  summary: SummaryModel;
-}
-
-export class SummaryModel {
-  title: string;
-  params: any[];
 }

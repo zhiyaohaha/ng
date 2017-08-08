@@ -5,7 +5,7 @@
                 <li *ngFor="let item of result,let i = index"><a href="javascript:;" (click)="goTo(i)">{{i+1}}.{{item.summary.title}}</a></li>
             </ul>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9" *ngIf="list">
             <ul>
                 <li class="api-wrap">
                     <dl>
@@ -13,7 +13,7 @@
                         <dt>参数列表</dt>
                         <dd>
                             <ul>
-                                <li *ngFor="let param of list.summary.params">
+                                <li *ngFor="let param of list.summary.paramsList">
                                     <label>{{param.type}}</label><span>: {{param.value}}</span>
                                 </li>
                             </ul>
@@ -21,13 +21,13 @@
                         <dt>入参</dt>
                         <dd>
                             <ul>
-                                <li *ngFor="let param of list.params">
+                                <li *ngFor="let param of list.paramsList">
                                     <label>{{param.name}}</label><span>: {{param.description}}</span>
                                 </li>
                             </ul>
                         </dd>
                         <dt>返回的参数</dt>
-                        <dd><pre>{{list.return}}</pre></dd>
+                        <dd><pre>{{list.returnContent}}</pre></dd>
                         <dt>备注</dt>
                         <dd>{{list.remark}}</dd>
                         <dt>例如：</dt>

@@ -42,7 +42,7 @@ export class ChipGroupComponent implements OnInit {
   focus: boolean;
   groups: ChipComponent[] = [];
   value: any[] = [];
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.setChipClass();
@@ -104,7 +104,7 @@ export class ChipComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() delete: boolean;
   @ViewChild('container') container: ElementRef;
   constructor(private renderer2: Renderer2,
-              group: ChipGroupComponent) {
+    group: ChipGroupComponent) {
     this.group = group;
   }
 
@@ -142,5 +142,5 @@ export class ChipComponent implements OnInit, AfterViewInit, OnDestroy {
   exports: [ChipComponent, ChipGroupComponent]
 })
 
-export class ChipModule {}
+export class ChipModule { }
 

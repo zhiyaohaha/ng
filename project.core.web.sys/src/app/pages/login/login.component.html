@@ -3,7 +3,9 @@
     <div class="panel-body">
         <div class="free-panel-front">
             <p class="logo">汉力贷款超市后台管理系统</p>
-            <p class="subtitle"></p>
+            <p class="subtitle">
+                <span *ngIf="errors" class="errors">{{msgErrors}}</span>
+            </p>
             <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
                 <!-- <div class="form-group">
                     <label for="account" class="sr-only">账号</label>
@@ -31,7 +33,7 @@
                 </div> -->
 
                 <div class="form-group">
-                    <button type="submit" color="deepblue" class="btn btn-deepblue btn-block">登陆</button>
+                    <button type="submit" color="deepblue" class="btn btn-deepblue btn-block" [disabled]="logining">登陆</button>
                 </div>
             </form>
         </div>
