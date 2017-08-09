@@ -72,17 +72,22 @@ export class MainComponent implements OnInit {
     this.sign = this.util.toMd5(this.timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
     this.uploader.options.headers = [{ name: "timestamp", value: this.timestamp }, { name: "sign", value: this.sign }];
     this.uploader.uploadAll();
+    let _self = this;
 
 
     this.uploader.onErrorItem = function (e) {
       console.log("onErrorItem");
-      console.log(e)
+      e.progress = 0;
+      console.log(_self.uploader)
     }
 
     this.uploader.onCompleteItem = function (e) {
       console.log("onCompleteItem");
     }
 
+    this.uploader.onCompleteAll = function () {
+      console.log("onCompleteAll");
+    }
   }
 
   /**

@@ -15,12 +15,20 @@
             <h2>Upload a File</h2>
             <ul>
                 <li *ngFor="let item of uploader.queue;let i = index;" class="file-item">
-                    <img src="{{item.base}}" alt="" class="thumbnail">
-                    <span>{{item.file.name}}</span>
-                    <i class="fa fa-trash" (click)="removeItem(item)"></i>
-                    <p>
-                        <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img src="{{item.base}}" alt="" class="thumbnail">
+                        </div>
+                        <div class="col-sm-8">
+                            <span>{{item.file.name | strlength}}</span>
+                            <div class="item-progress">
+                                <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <i class="fa fa-trash" (click)="removeItem(item)"></i>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
