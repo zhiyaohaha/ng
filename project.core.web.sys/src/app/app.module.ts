@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpModule } from '@angular/http';
-import { MdInputModule, MdNativeDateModule,MdListModule } from '@angular/material';
+import { MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule } from '@angular/material';
 import "hammerjs";
 
 import { CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule } from '@covalent/core';
@@ -23,7 +23,7 @@ import { ConvertUtil } from './common/convert-util';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    MdInputModule, MdNativeDateModule,MdListModule,
+    MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
     CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule,
     ReactiveFormsModule,
     HttpModule,

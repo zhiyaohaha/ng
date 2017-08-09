@@ -10,6 +10,9 @@ import { PanelModule } from './../../component/panel/panel.component';
 import { AccordionModule } from './../../component/accordion/accordion.component';
 import { ShareModule } from './../../common/share';
 
+import { FileUploadModule } from 'ng2-file-upload';
+import { MdProgressBarModule, MdButtonModule } from '@angular/material';
+
 @NgModule({
   imports: [
     MainRoutingModule,
@@ -19,7 +22,10 @@ import { ShareModule } from './../../common/share';
     AccordionModule,
     PanelModule,
     GridModule,
-    ButtonModule
+    ButtonModule,
+    FileUploadModule,
+    MdProgressBarModule,
+    MdButtonModule
   ],
   exports: [],
   declarations: [MainComponent]

@@ -6,4 +6,25 @@
 
     <a fButton size="big" color="green" (click)="loginOut()">登出</a>
 
+    <div class="container">
+        <!-- <div class="beforeDrop" ng2FileDrop [ngClass]="{dropping: isDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropOver($event)" [uploader]="uploader">
+            <p>点击或拖拽上传</p>
+            <input type="file" class="ng2-file-select" ng2FileSelect [uploader]="uploader" />
+        </div> -->
+        <input type="file" ng2FileSelect [uploader]="uploader">
+        <ul>
+            <li *ngFor="let item of uploader.queue">
+                <p>文件名：{{item.file.name}}</p>
+                <p>文件大小：{{item.file.size/1024}}KB</p>
+                <p><button md-button (click)="removeItem(item)">移除</button></p>
+            </li>
+        </ul>
+        <div>
+            <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
+        </div>
+        <button md-button (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
+        <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
+        <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
+    </div>
+
 </div>
