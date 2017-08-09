@@ -11,18 +11,25 @@
             <p>点击或拖拽上传</p>
             <input type="file" class="ng2-file-select" ng2FileSelect [uploader]="uploader" />
         </div> -->
-        <input type="file" ng2FileSelect [uploader]="uploader">
-        <ul>
-            <li *ngFor="let item of uploader.queue">
-                <p>文件名：{{item.file.name}}</p>
-                <p>文件大小：{{item.file.size/1024}}KB</p>
-                <p><button md-button (click)="removeItem(item)">移除</button></p>
-            </li>
-        </ul>
-        <div>
-            <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
+        <div class="upload-file-wrap">
+            <h2>Upload a File</h2>
+            <ul>
+                <li *ngFor="let item of uploader.queue;let i = index;" class="file-item">
+                    <img src="{{item.base}}" alt="" class="thumbnail">
+                    <span>{{item.file.name}}</span>
+                    <i class="fa fa-trash" (click)="removeItem(item)"></i>
+                    <p>
+                        <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
+                    </p>
+                </li>
+            </ul>
+            <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
         </div>
-        <button md-button (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
+
+        <!-- <div>
+            <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
+        </div> -->
+        <button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
         <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
         <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
     </div>

@@ -46,7 +46,14 @@ export class BaseService {
    */
   public post<T>(url: string, params?: object) {
     let options = new RequestOptions({ "withCredentials": true });
-    let callback = this.http.post(this.urlPrefix + url, this.setAuth(params), options).map(res => res.json());
+    let callback = this.http.post(this.urlPrefix + url, this.setAuth(params), options).map(res => res.json()).filter(r => {
+      if (r.code == "NeedLogin") {
+        this.NeedLogin();
+        return false;
+      } else {
+        return true;
+      }
+    });
     return callback;
   }
 
