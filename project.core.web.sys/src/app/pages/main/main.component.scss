@@ -30,9 +30,12 @@
     border-radius: 4px;
     box-shadow: 0 0 2px 2px #eee;
     padding: 10px;
+    h2 {
+        text-align: center;
+    }
     .file-item {
         margin: 0 20px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 2px solid #ccc;
         height: 70px;
         line-height: 70px;
         list-style: none;
@@ -41,16 +44,33 @@
             top: -14px;
             border-radius: 10px;
         }
+        i {
+            font-size: 16px;
+            cursor: pointer;
+        }
     }
     span {}
-    i {
-        font-size: 16px;
-        cursor: pointer;
-    }
     .thumbnail {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         vertical-align: middle;
+    }
+    .fa-cloud-upload {
+        font-size: 30px;
+        margin: 20px 0 0 30px;
+        position: relative;
+        overflow: hidden;
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+    .upload-btn {
+        text-align: right;
+        button {
+            margin-top: 20px;
+        }
     }
 }

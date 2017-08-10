@@ -31,7 +31,18 @@
                     </div>
                 </li>
             </ul>
-            <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
+            <div class="row">
+                <div class="col-sm-2">
+                    <i class="fa fa-cloud-upload deepblue">
+                        <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple style="opacity:0;">
+                    </i>
+                </div>
+                <div class="col-sm-10 upload-btn">
+                    <button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
+                    <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
+                    <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
+                </div>
+            </div>
         </div>
 
         <!-- <div>
