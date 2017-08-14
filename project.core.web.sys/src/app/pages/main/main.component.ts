@@ -84,7 +84,7 @@ export class MainComponent implements OnInit {
     this.uploader.onErrorItem = function (e) {
       console.log(e)
     }
-    console.log(this.uploader.getReadyItems());
+
     this.uploader.onCompleteItem = function (e) {
       console.log("onCompleteItem");
     }

@@ -48,9 +48,6 @@
         <!-- <div>
             <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
         </div> -->
-        <button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
-        <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
-        <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
     </div>
 
 </div>
