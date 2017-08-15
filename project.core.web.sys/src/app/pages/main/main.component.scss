@@ -99,6 +99,15 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            .item-alias {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                &:focus {
+                    border-bottom-color: purple;
+                }
+            }
         }
         i {
             display: none;

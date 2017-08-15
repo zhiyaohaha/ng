@@ -104,6 +104,13 @@ export class MainComponent implements OnInit {
     console.log("移除某一项");
   }
 
+  /**
+   * 修改文件名
+   */
+  onBlur($event, item) {
+    item.alias = $event.target.value;
+  }
+
 
 
 }
