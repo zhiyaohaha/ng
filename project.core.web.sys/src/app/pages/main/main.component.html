@@ -45,6 +45,23 @@
             </div>
         </div>
 
+        <div class="upload-wrap">
+            <ul>
+                <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}">
+                    <div class="preview-box">
+                        <img src="{{item.base}}" alt="{{item.file.name}}">
+                    </div>
+                    <div class="item-name">
+                        <input value="{{item.file.name}}">
+                    </div>
+                    <div class="item-progress" *ngIf="item.progress < 100">
+                        <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
+                    </div>
+                    <i class="fa fa-close" (click)="removeItem(item)"></i>
+                </li>
+            </ul>
+        </div>
+
         <!-- <div>
             <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
         </div> -->

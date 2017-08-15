@@ -74,3 +74,49 @@
         }
     }
 }
+
+.upload-wrap {
+    .item {
+        box-sizing: border-box;
+        float: left;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 4px 2px #eee;
+        padding: 4px;
+        margin: 10px;
+        list-style: none;
+        position: relative;
+        border-radius: 2px;
+        .preview-box {
+            img {
+                width: 100px;
+                height: 100px;
+                display: block;
+            }
+        }
+        .item-name {
+            display: block;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        i {
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            cursor: pointer;
+            color: #666;
+        }
+        &:hover i {
+            display: block;
+            &:hover {
+                color: #cf000d;
+            }
+        }
+    }
+    .item-success {
+        border-color: green;
+        box-shadow: 0 0 4px 0 green;
+    }
+}

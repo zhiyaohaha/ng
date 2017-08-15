@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
   uploader: FileUploader = new FileUploader({
     url: "http://api.cpf360.com/api/file/upload",
     isHTML5: true,
+    allowedFileType: ["image", "video"],
     method: "POST"
   })
 
