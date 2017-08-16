@@ -19,6 +19,6 @@ export class SysImage extends SysFile {
   /**
     * 比例
     */
-  scale : Double;
+  scale : number;
 
 }

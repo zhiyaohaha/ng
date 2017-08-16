@@ -1,4 +1,5 @@
-﻿import { ILoginer } from "./ILoginer";
+﻿import { User } from "./User";
+import { ILoginer } from "./ILoginer";
 
 /**
   * 用户
