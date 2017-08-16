@@ -20,7 +20,7 @@ export class BaseService {
    * POST鉴权
    * @param options 请求参数
    */
-  public setAuth<T>(_params: T): HttpParams<T> {
+  private setAuth<T>(_params: T): HttpParams<T> {
     let params = new HttpParams<T>();
     params.data = _params;
     params.timestamp = this.util.timestamp();
@@ -32,7 +32,7 @@ export class BaseService {
    * GET鉴权
    * @param _params 请求参数
    */
-  public setAuthGet<T>(_params: T): string {
+  private setAuthGet<T>(_params: T): string {
     let timestamp = this.util.timestamp();
     let params = this.util.firstLetterSort(_params);
     let sign = _params ? this.util.toMd5(params + timestamp + this.private_key) : this.util.toMd5(timestamp + this.private_key);
@@ -62,7 +62,7 @@ export class BaseService {
    * @param url       请求地址
    * @param param     请求参数
    */
-  public get<T>(url: string, param?: string) {
+  public get<T>(url: string, param?: any) {
     let option = this.setAuthGet(param);
     let callback = this.http.get(this.urlPrefix + url, {
       params: option,

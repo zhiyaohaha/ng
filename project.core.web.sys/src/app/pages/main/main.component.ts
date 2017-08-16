@@ -4,6 +4,7 @@ import { LoginOutService } from '../../services/loginOut-service/loginOut.servic
 
 import { FileUploader } from 'ng2-file-upload';
 import { ConvertUtil } from '../../common/convert-util';
+import { BaseService } from '../../services/base.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ export class MainComponent implements OnInit {
   // @HostBinding('style.display') display = 'block';
   imgSrc: any[];
 
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil) { }
+  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService) { }
 
   ngOnInit() {
   }
@@ -34,7 +35,7 @@ export class MainComponent implements OnInit {
   uploader: FileUploader = new FileUploader({
     url: "http://api.cpf360.com/api/file/upload",
     isHTML5: true,
-    allowedFileType: ["image", "video"],
+    allowedFileType: ["image"],
     method: "POST"
   })
 
@@ -52,20 +53,6 @@ export class MainComponent implements OnInit {
    */
   fileDropOver($event) {
     console.log($event);
-  }
-
-  selectedFileOnChanged($event) {
-    let _self = this;
-    this.uploader.queue.map((item, index) => {
-      console.log(item)
-      if (item.file.type.substr(0, 5) == "image") {
-        let reader = new FileReader();
-        reader.readAsDataURL(item.some);
-        reader.onload = function () {
-          item["base"] = this.result;
-        }
-      }
-    })
   }
 
   uploadAllFiles() {
@@ -92,6 +79,7 @@ export class MainComponent implements OnInit {
 
     this.uploader.onCompleteAll = function () {
       console.log("onCompleteAll");
+      console.log(_self.uploader);
     }
   }
 
@@ -109,8 +97,17 @@ export class MainComponent implements OnInit {
    */
   onBlur($event, item) {
     item.alias = $event.target.value;
+    if ($event.target.id) {
+      this.renameFile($event.target.id, $event.target.value);
+    }
   }
 
+  /**
+   * 提交成功过后修改文件名
+   */
+  renameFile(id, name) {
+    this.http.post("/api/file/rename", { key: id, value: name }).subscribe(r => console.log(r));
+  }
 
 
 }

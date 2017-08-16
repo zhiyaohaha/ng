@@ -22,6 +22,8 @@ import { HtmlTableTemplate } from '../../models/HtmlTableTemplate';
 import { HttpCallback } from './../../models/HttpCallback';
 import { ConvertUtil } from '../../common/convert-util';
 import { SysParam } from '../../models/SysParam';
+import { BaseService } from '../../services/base.service';
+import { HtmlDomTemplate } from '../../models/HtmlDomTemplate';
 
 
 @Component({
@@ -204,7 +206,9 @@ export class MainParameterManageComponent implements OnInit {
     private _viewContainerRef: ViewContainerRef,
     private _tableSearch: TableSearch,
     private _paramsManageService: ParamsManageService,
-    private _util: ConvertUtil) {
+    private _util: ConvertUtil,
+    private http: BaseService
+  ) {
 
   }
   ngOnInit() {
@@ -218,6 +222,8 @@ export class MainParameterManageComponent implements OnInit {
       para2: [""],
       para3: []
     })
+
+    this.loadModal();
   }
 
   /**
@@ -380,6 +386,14 @@ export class MainParameterManageComponent implements OnInit {
         console.log(newValue);
       }
     });
+  }
+
+  /**
+   * 修改模版
+   */
+  modalDOMS: HtmlDomTemplate;
+  loadModal() {
+    this.http.get("/api/Customized/GetConfig", { name: 'SysParam' }).subscribe(r => this.modalDOMS = r.data.value.doms);
   }
 
 }

@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-sm-2">
                     <i class="fa fa-cloud-upload deepblue">
-                        <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple style="opacity:0;">
+                        <input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;">
                     </i>
                 </div>
                 <div class="col-sm-10 upload-btn">
@@ -47,12 +47,12 @@
 
         <div class="upload-wrap">
             <ul>
-                <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}">
+                <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}" [ngClass]="{'item-error':ite.isError}">
                     <div class="preview-box">
                         <img src="{{item.base}}" alt="{{item.file.name}}">
                     </div>
                     <div class="item-name">
-                        <input class="item-alias" value="{{item.file.name}}" (blur)="onBlur($event,item)">
+                        <input class="item-alias" value="{{item.file.name}}" (blur)="onBlur($event,item)" id="{{item?.id}}">
                     </div>
                     <div class="item-progress" *ngIf="item.isUploading">
                         <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>

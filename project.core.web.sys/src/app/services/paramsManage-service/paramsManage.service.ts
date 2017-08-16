@@ -20,7 +20,7 @@ export class ParamsManageService {
         return this.service.get("/api/Customized/List", param);
     }
 
-    public saveParams(param){
+    public saveParams(param) {
         return this.service.get("/api/Customized/Detail", param);
     }
 
