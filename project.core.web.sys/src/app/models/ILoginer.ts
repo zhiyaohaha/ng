@@ -1,4 +1,6 @@
-﻿/**
+﻿import { SysImage } from "./SysImage";
+
+/**
   * 当前登陆用户
   * author sunpengfei
   */
@@ -15,8 +17,13 @@ export interface ILoginer {
   name : string;
 
   /**
+    * 头像编号
+    */
+  _avatar : string;
+
+  /**
     * 头像
     */
-  avatar : string;
+  avatar : SysImage;
 
 }

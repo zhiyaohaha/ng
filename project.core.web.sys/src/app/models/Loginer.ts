@@ -1,4 +1,5 @@
 ﻿import { ILoginer } from "./ILoginer";
+import { SysImage } from "./SysImage";
 
 /**
   * 编号
@@ -17,8 +18,13 @@ export class Loginer implements ILoginer {
   name : string;
 
   /**
+    * 头像编号
+    */
+  _avatar : string;
+
+  /**
     * 头像
     */
-  avatar : string;
+  avatar : SysImage;
 
 }

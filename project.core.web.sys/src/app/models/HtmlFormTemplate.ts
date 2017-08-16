@@ -21,7 +21,7 @@ export class HtmlFormTemplate extends BaseTemplate {
   /**
     * 平台编号
     */
-  platformId : string;
+  _platform : string;
 
   /**
     * 平台

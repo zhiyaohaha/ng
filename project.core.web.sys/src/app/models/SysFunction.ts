@@ -11,7 +11,7 @@ export class SysFunction extends BaseTemplate implements ICascadeTemplate<SysFun
   /**
     * 功能类型编号
     */
-  typeId : string;
+  _type : string;
 
   /**
     * 功能类型

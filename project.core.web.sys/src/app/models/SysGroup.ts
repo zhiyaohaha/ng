@@ -11,7 +11,7 @@ export class SysGroup extends BaseTemplate implements ICascadeTemplate<SysGroup>
   /**
     * 类型编号
     */
-  typeId : string;
+  _type : string;
 
   /**
     * 类型

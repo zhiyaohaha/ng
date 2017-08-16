@@ -10,7 +10,7 @@ export class SysPermission extends BaseTemplate implements ICascadeTemplate<SysP
   /**
     * 依赖项集合编号
     */
-  dependencysIds : string[];
+  _dependencys : string[];
 
   /**
     * 依赖项集合

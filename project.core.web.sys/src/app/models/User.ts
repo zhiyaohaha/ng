@@ -1,5 +1,6 @@
 ﻿import { People } from "./People";
 import { ILoginer } from "./ILoginer";
+import { SysImage } from "./SysImage";
 import { UserDynamicTemplate } from "./UserDynamicTemplate";
 
 /**
@@ -9,9 +10,14 @@ import { UserDynamicTemplate } from "./UserDynamicTemplate";
 export class User extends People implements ILoginer {
 
   /**
+    * 头像编号
+    */
+  _avatar : string;
+
+  /**
     * 头像
     */
-  avatar : string;
+  avatar : SysImage;
 
   /**
     * 账号

@@ -10,7 +10,7 @@ export class SysOperationLog extends BaseTemplate {
   /**
     * 配置编号
     */
-  configId : string;
+  _config : string;
 
   /**
     * 配置
