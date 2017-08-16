@@ -14,6 +14,11 @@ export class SysMenu extends BaseTemplate implements ICascadeTemplate<SysMenu> {
   icon : string;
 
   /**
+    * 隐藏
+    */
+  hidden : boolean;
+
+  /**
     * 功能
     */
   functions : SysFunction[];

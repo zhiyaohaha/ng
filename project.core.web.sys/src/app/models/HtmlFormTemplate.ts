@@ -1,5 +1,6 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
 import { SysParam } from "./SysParam";
+import { SysCollection } from "./SysCollection";
 import { HtmlFormBindTemplate } from "./HtmlFormBindTemplate";
 
 /**
@@ -29,19 +30,14 @@ export class HtmlFormTemplate extends BaseTemplate {
   platform : SysParam;
 
   /**
-    * 绑定程序集
+    * 集合名称
     */
-  bindAssembly : string;
+  _collection : string;
 
   /**
-    * 绑定服务
+    * 集合
     */
-  bindService : string;
-
-  /**
-    * 绑定集合
-    */
-  bindCollection : string;
+  collection : SysCollection;
 
   /**
     * 描述

@@ -1,5 +1,6 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
 import { SysParam } from "./SysParam";
+import { SysCollection } from "./SysCollection";
 import { HtmlFilterDomTemplate } from "./HtmlFilterDomTemplate";
 import { HtmlSortTemplate } from "./HtmlSortTemplate";
 import { HtmlFieldTemplate } from "./HtmlFieldTemplate";
@@ -31,19 +32,14 @@ export class HtmlTableTemplate extends BaseTemplate {
   platform : SysParam;
 
   /**
-    * 绑定程序集
+    * 集合名称
     */
-  bindAssembly : string;
+  _collection : string;
 
   /**
-    * 绑定服务
+    * 集合
     */
-  bindService : string;
-
-  /**
-    * 绑定集合
-    */
-  bindCollection : string;
+  collection : SysCollection;
 
   /**
     * 绑定数据

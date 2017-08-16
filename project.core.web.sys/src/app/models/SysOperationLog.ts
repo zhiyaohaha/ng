@@ -1,5 +1,6 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
 import { SysOperationLogConfig } from "./SysOperationLogConfig";
+import { Loginer } from "./Loginer";
 
 /**
   * 操作日志
@@ -20,7 +21,7 @@ export class SysOperationLog extends BaseTemplate {
   /**
     * 操作人
     */
-  user : string;
+  user : Loginer;
 
   /**
     * 参数集合

@@ -13,6 +13,11 @@ export class SysCollection extends BaseTemplate {
   name : string;
 
   /**
+    * 全称
+    */
+  fullname : string;
+
+  /**
     * 描述
     */
   description : string;
