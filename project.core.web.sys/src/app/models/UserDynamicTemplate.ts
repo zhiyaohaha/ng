@@ -16,7 +16,7 @@ export class UserDynamicTemplate {
 
   /**
     * 经验
-    */
+    */ 
   experience : number;
 
   /**
