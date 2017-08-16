@@ -14,7 +14,7 @@ export class SysFile extends BaseTemplate {
   /**
     * 原始文件名
     */
-  originalName : string;
+  filename : string;
 
   /**
     * 图标
@@ -32,23 +32,18 @@ export class SysFile extends BaseTemplate {
   length : number;
 
   /**
-    * 域名
-    */
-  domain : string;
-
-  /**
     * 地址
     */
   path : string;
 
   /**
-    * 文件类型
+    * md5
     */
-  type : string;
+  md5 : string;
 
   /**
-    * 绑定数据
+    * 文件类型
     */
-  bindData : object;
+  contentType : string;
 
 }

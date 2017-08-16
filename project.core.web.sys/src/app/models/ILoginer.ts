@@ -14,4 +14,9 @@ export interface ILoginer {
     */
   name : string;
 
+  /**
+    * 头像
+    */
+  avatar : string;
+
 }

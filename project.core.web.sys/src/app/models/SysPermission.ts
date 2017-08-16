@@ -8,9 +8,14 @@ import { ICascadeTemplate } from "./ICascadeTemplate";
 export class SysPermission extends BaseTemplate implements ICascadeTemplate<SysPermission> {
 
   /**
-    * 依赖项
+    * 依赖项集合编号
     */
-  dependencyIds : string[];
+  dependencysIds : string[];
+
+  /**
+    * 依赖项集合
+    */
+  dependencys : SysPermission[];
 
   /**
     * 父Id

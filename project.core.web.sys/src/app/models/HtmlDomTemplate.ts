@@ -14,7 +14,7 @@ export class HtmlDomTemplate {
   /**
     * 值
     */
-  value : string;
+  value : object;
 
   /**
     * 绑定数据

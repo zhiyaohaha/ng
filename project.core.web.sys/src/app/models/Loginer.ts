@@ -1,7 +1,7 @@
 ﻿import { ILoginer } from "./ILoginer";
 
 /**
-  * 当前登陆用户
+  * 编号
   * author sunpengfei
   */
 export class Loginer implements ILoginer {
@@ -15,5 +15,10 @@ export class Loginer implements ILoginer {
     * 姓名
     */
   name : string;
+
+  /**
+    * 头像
+    */
+  avatar : string;
 
 }

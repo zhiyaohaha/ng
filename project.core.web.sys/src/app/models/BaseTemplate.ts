@@ -1,4 +1,6 @@
-﻿/**
+﻿import { Loginer } from "./Loginer";
+
+/**
   * 基模板
   * author sunpengfei
   */
@@ -27,7 +29,7 @@ export class BaseTemplate {
   /**
     * 创建人
     */
-  creater : string;
+  creater : Loginer;
 
   /**
     * 最后操作时间
@@ -37,6 +39,6 @@ export class BaseTemplate {
   /**
     * 最后操作人
     */
-  operater : string;
+  operater : Loginer;
 
 }

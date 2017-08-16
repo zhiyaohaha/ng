@@ -1,5 +1,6 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
-import { HtmlDomTemplate } from "./HtmlDomTemplate";
+import { SysParam } from "./SysParam";
+import { HtmlFormBindTemplate } from "./HtmlFormBindTemplate";
 
 /**
   * 表单模板
@@ -8,19 +9,34 @@ import { HtmlDomTemplate } from "./HtmlDomTemplate";
 export class HtmlFormTemplate extends BaseTemplate {
 
   /**
-    * (暂无描述)
-    */
-  operateCmd : string;
-
-  /**
     * 名称
     */
   name : string;
 
   /**
-    * 绑定数据
+    * 标题
     */
   title : string;
+
+  /**
+    * 平台编号
+    */
+  platformId : string;
+
+  /**
+    * 平台
+    */
+  platform : SysParam;
+
+  /**
+    * 绑定程序集
+    */
+  bindAssembly : string;
+
+  /**
+    * 绑定服务
+    */
+  bindService : string;
 
   /**
     * 绑定集合
@@ -28,9 +44,9 @@ export class HtmlFormTemplate extends BaseTemplate {
   bindCollection : string;
 
   /**
-    * 绑定数据
+    * 描述
     */
-  bindData : object;
+  description : string;
 
   /**
     * 标签
@@ -38,8 +54,8 @@ export class HtmlFormTemplate extends BaseTemplate {
   tags : string[];
 
   /**
-    * Dom集合
+    * 表单绑定
     */
-  doms : HtmlDomTemplate[];
+  formBind : HtmlFormBindTemplate;
 
 }

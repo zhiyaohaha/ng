@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { SysParam } from "./SysParam";
 
 /**
   * 操作日志配置
@@ -7,9 +8,14 @@
 export class SysOperationLogConfig extends BaseTemplate {
 
   /**
+    * 平台编号
+    */
+  platformId : string;
+
+  /**
     * 平台
     */
-  platform : string;
+  platform : SysParam;
 
   /**
     * 路由

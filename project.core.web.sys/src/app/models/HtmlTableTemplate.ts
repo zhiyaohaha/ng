@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { SysParam } from "./SysParam";
 import { HtmlFilterDomTemplate } from "./HtmlFilterDomTemplate";
 import { HtmlSortTemplate } from "./HtmlSortTemplate";
 import { HtmlFieldTemplate } from "./HtmlFieldTemplate";
@@ -20,6 +21,26 @@ export class HtmlTableTemplate extends BaseTemplate {
   title : string;
 
   /**
+    * 平台编号
+    */
+  platformId : string;
+
+  /**
+    * 平台
+    */
+  platform : SysParam;
+
+  /**
+    * 绑定程序集
+    */
+  bindAssembly : string;
+
+  /**
+    * 绑定服务
+    */
+  bindService : string;
+
+  /**
     * 绑定集合
     */
   bindCollection : string;
@@ -28,6 +49,11 @@ export class HtmlTableTemplate extends BaseTemplate {
     * 绑定数据
     */
   bindData : object;
+
+  /**
+    * 描述
+    */
+  description : string;
 
   /**
     * 标签

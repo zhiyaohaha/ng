@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { SysOperationLogConfig } from "./SysOperationLogConfig";
 
 /**
   * 操作日志
@@ -7,9 +8,14 @@
 export class SysOperationLog extends BaseTemplate {
 
   /**
-    * 操作人
+    * 配置编号
     */
-  config : string;
+  configId : string;
+
+  /**
+    * 配置
+    */
+  config : SysOperationLogConfig;
 
   /**
     * 操作人
