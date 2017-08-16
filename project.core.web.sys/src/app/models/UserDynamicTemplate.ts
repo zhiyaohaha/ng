@@ -32,17 +32,17 @@ export class UserDynamicTemplate {
   /**
     * 余额
     */
-  balance : Decimal;
+  balance : number;
 
   /**
     * 累计余额
     */
-  totalBalance : Decimal;
+  totalBalance : number;
 
   /**
     * 可提现余额
     */
-  withdrawBalance : Decimal;
+  withdrawBalance : number;
 
   /**
     * 累计交易次数
