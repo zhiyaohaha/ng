@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
   uploader: FileUploader = new FileUploader({
     url: "http://api.cpf360.com/api/file/upload",
     isHTML5: true,
+    allowedFileType: ["image", "video"],
     method: "POST"
   })
 
@@ -72,10 +73,16 @@ export class MainComponent implements OnInit {
     this.sign = this.util.toMd5(this.timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
     this.uploader.options.headers = [{ name: "timestamp", value: this.timestamp }, { name: "sign", value: this.sign }];
     this.uploader.uploadAll();
+    let _self = this;
 
 
     this.uploader.onErrorItem = function (e) {
       console.log("onErrorItem");
+      e.progress = 0;
+      console.log(_self.uploader)
+    }
+
+    this.uploader.onErrorItem = function (e) {
       console.log(e)
     }
 
@@ -83,6 +90,9 @@ export class MainComponent implements OnInit {
       console.log("onCompleteItem");
     }
 
+    this.uploader.onCompleteAll = function () {
+      console.log("onCompleteAll");
+    }
   }
 
   /**
@@ -92,6 +102,13 @@ export class MainComponent implements OnInit {
   removeItem(item) {
     item.remove();
     console.log("移除某一项");
+  }
+
+  /**
+   * 修改文件名
+   */
+  onBlur($event, item) {
+    item.alias = $event.target.value;
   }
 
 

@@ -15,23 +15,56 @@
             <h2>Upload a File</h2>
             <ul>
                 <li *ngFor="let item of uploader.queue;let i = index;" class="file-item">
-                    <img src="{{item.base}}" alt="" class="thumbnail">
-                    <span>{{item.file.name}}</span>
-                    <i class="fa fa-trash" (click)="removeItem(item)"></i>
-                    <p>
-                        <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img src="{{item.base}}" alt="" class="thumbnail">
+                        </div>
+                        <div class="col-sm-8">
+                            <span>{{item.file.name | strlength}}</span>
+                            <div class="item-progress">
+                                <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <i class="fa fa-trash" (click)="removeItem(item)"></i>
+                        </div>
+                    </div>
                 </li>
             </ul>
-            <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
+            <div class="row">
+                <div class="col-sm-2">
+                    <i class="fa fa-cloud-upload deepblue">
+                        <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple style="opacity:0;">
+                    </i>
+                </div>
+                <div class="col-sm-10 upload-btn">
+                    <button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
+                    <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
+                    <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-wrap">
+            <ul>
+                <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}">
+                    <div class="preview-box">
+                        <img src="{{item.base}}" alt="{{item.file.name}}">
+                    </div>
+                    <div class="item-name">
+                        <input class="item-alias" value="{{item.file.name}}" (blur)="onBlur($event,item)">
+                    </div>
+                    <div class="item-progress" *ngIf="item.isUploading">
+                        <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
+                    </div>
+                    <i class="fa fa-close" (click)="removeItem(item)"></i>
+                </li>
+            </ul>
         </div>
 
         <!-- <div>
             <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
         </div> -->
-        <button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>
-        <button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>
-        <button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>
     </div>
 
 </div>

@@ -12,6 +12,7 @@ import { ShareModule } from './../../common/share';
 
 import { FileUploadModule } from 'ng2-file-upload';
 import { MdProgressBarModule, MdButtonModule } from '@angular/material';
+import { strLength } from '../../common/pipe/strLength';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { MdProgressBarModule, MdButtonModule } from '@angular/material';
     MdButtonModule
   ],
   exports: [],
-  declarations: [MainComponent]
+  declarations: [MainComponent, strLength]
 })
 
 export class MainModule {
