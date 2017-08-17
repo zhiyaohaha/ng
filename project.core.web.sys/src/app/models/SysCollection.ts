@@ -1,5 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
-import { SysCollectionFieldTemplate } from "./SysCollectionFieldTemplate";
+import { SysCollectionField } from "./SysCollectionField";
 
 /**
   * 数据集合
@@ -35,7 +35,7 @@ export class SysCollection extends BaseTemplate {
   /**
     * 字段集合
     */
-  fields : SysCollectionFieldTemplate[];
+  fields : SysCollectionField[];
 
   /**
     * 依赖项数量

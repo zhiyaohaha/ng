@@ -33,6 +33,11 @@ export class SysOperationLogConfig extends BaseTemplate {
   content : string;
 
   /**
+    * 内容参数
+    */
+  contentArgs : object[];
+
+  /**
     * 标签
     */
   tags : string[];

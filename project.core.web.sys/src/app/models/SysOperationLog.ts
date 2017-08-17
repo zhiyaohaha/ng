@@ -1,6 +1,6 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
 import { SysOperationLogConfig } from "./SysOperationLogConfig";
-import { Loginer } from "./Loginer";
+import { ClientAgent } from "./ClientAgent";
 
 /**
   * 操作日志
@@ -19,38 +19,18 @@ export class SysOperationLog extends BaseTemplate {
   config : SysOperationLogConfig;
 
   /**
-    * 操作人
+    * 请求参数
     */
-  user : Loginer;
+  requestParams : object;
 
   /**
-    * 参数集合
+    * 回调结果
     */
-  paramsList : string[];
+  callbackResult : object;
 
   /**
-    * IP地址
+    * 客户端代理
     */
-  ipAddress : string;
-
-  /**
-    * 端口号
-    */
-  port : number;
-
-  /**
-    * IP地址位置
-    */
-  ipLocation : string;
-
-  /**
-    * UA
-    */
-  ua : string;
-
-  /**
-    * 设备
-    */
-  device : string[];
+  clientAgent : ClientAgent;
 
 }
