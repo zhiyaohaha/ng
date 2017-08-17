@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule } from '@angular/material';
+import { MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule, MdTabsModule } from '@angular/material';
 
 import { CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule } from '@covalent/core';
 
@@ -20,7 +20,7 @@ import { ChipModule } from '../../component/chip/chip.component';
     CommonModule,
     FormsModule, ReactiveFormsModule,
     MainParameterManageRoutingModule,
-    MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule,MdChipsModule,
+    MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule, MdTabsModule,
     CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule,
     TreeModule, ContextmenuModule,
     ButtonModule,

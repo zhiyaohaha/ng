@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ConvertUtil } from './../common/convert-util';
 import { JsonResult } from './models/jsonResult';
 import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http';
+import { Http, RequestOptionsArgs, RequestOptions, Headers, URLSearchParams } from '@angular/http';
 
 import 'rxjs/Rx';
 import { Router } from '@angular/router';
@@ -20,11 +20,18 @@ export class BaseService {
    * POST鉴权
    * @param options 请求参数
    */
-  private setAuth<T>(_params: T): HttpParams<T> {
-    let params = new HttpParams<T>();
-    params.data = _params;
-    params.timestamp = this.util.timestamp();
-    params.sign = this.util.toMd5(this.util.toJsonStr(params.data) + params.timestamp + this.private_key);
+  private setAuth<T>(_params: T): any {
+    // let params: string;
+    // let temp: any = {};
+    // temp.data = _params;
+    let timestamp = this.util.timestamp();
+    let sign = this.util.toMd5(this.util.toJsonStr(_params) + timestamp + this.private_key);
+    //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;
+    let params = new URLSearchParams();
+    params.set('data', this.util.toJsonStr(_params));
+    params.set('sign', sign);
+    params.set('timestamp', timestamp);
+    console.log(params)
     return params;
   }
 
