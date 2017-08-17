@@ -282,6 +282,21 @@ export class MainParameterManageComponent implements OnInit {
   }
 
   /**
+   * 添加
+   */
+  onSubmitAddParams($event) {
+    console.log("添加参数：")
+    console.log($event);
+    $event.parentId = $event.id;
+    let datas = this._util.JSONtoKV($event);
+    var bind = new HtmlFormBindTemplateData();
+    bind.name = "SysParam";
+    bind.bindId = "";
+    bind.datas = datas;
+    this._paramsManageService.addParams(bind).subscribe(res => console.log(res));
+  }
+
+  /**
    * 选择表格的行
    * @param  
    */
@@ -327,7 +342,8 @@ export class MainParameterManageComponent implements OnInit {
     treeData["name"] = data.name;
     treeData["id"] = data.id;
     treeData["parentId"] = data.parentId;
-    if (data.childrens.length > 0) {
+    console.log(treeData)
+    if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
       for (var i = 0; i < data.childrens.length; i++) {
         treeData["children"].push(this.toTreeModel(data.childrens[i]));

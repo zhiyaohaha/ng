@@ -24,4 +24,11 @@ export class ParamsManageService {
         return this.service.post("/api/Customized/Update", param);
     }
 
+    /**
+     * 添加参数
+     */
+    public addParams(param) {
+        return this.service.post("/api/Customized/Add", param);
+    }
+
 }
