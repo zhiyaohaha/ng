@@ -1,7 +1,8 @@
-import { KV } from './kv';
 import { URLSearchParams, RequestOptionsArgs, RequestOptions } from '@angular/http';
 
 import { Md5 } from '../../../node_modules/ts-md5/dist/md5';
+
+import { KV } from '../models/KV';
 
 export class ConvertUtil {
     /**
@@ -83,7 +84,7 @@ export class ConvertUtil {
      * 对象按KEY排序，返回字符串
      * @param obj 排序传入的对象
      */
-    public firstLetterSort(obj: any):string {
+    public firstLetterSort(obj: any): string {
         let params = [];
         for (var key in obj) {
             params.push(key)
@@ -95,4 +96,19 @@ export class ConvertUtil {
         }
         return _params;
     }
+
+    /**
+     * JSON对象转成KV对象数组
+     * @param json 传入JSON
+     */
+    public JSONtoKV(json): KV[] {
+        let arr: KV[] = [];
+        for (let key in json) {
+            let obj: KV;
+            obj = { "key": key, "value": json[key] };
+            arr.push(obj);
+        }
+        return arr;
+    }
+
 }

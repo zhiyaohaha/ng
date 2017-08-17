@@ -21,7 +21,7 @@ export class ParamsManageService {
     }
 
     public saveParams(param) {
-        return this.service.get("/api/Customized/Detail", param);
+        return this.service.post("/api/Customized/Update", param);
     }
 
 }
