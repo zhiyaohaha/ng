@@ -1,17 +1,9 @@
-﻿/**
+﻿import { KVT } from "./KVT";
+
+/**
   * 键值对
   * author sunpengfei
   */
-export class KV<T> {
-
-  /**
-    * 键
-    */
-  key : string;
-
-  /**
-    * 值
-    */
-  value : T;
+export class KV extends KVT<object> {
 
 }
