@@ -24,6 +24,7 @@ import { ConvertUtil } from '../../common/convert-util';
 import { SysParam } from '../../models/SysParam';
 import { BaseService } from '../../services/base.service';
 import { HtmlDomTemplate } from '../../models/HtmlDomTemplate';
+import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class MainParameterManageComponent implements OnInit {
     desc: '',
     label: []
   }
+  tags: string[];
 
   /**
    * 下拉框值
@@ -193,7 +195,6 @@ export class MainParameterManageComponent implements OnInit {
    */
   selectNode;
 
-
   /**
    * 表单
    */
@@ -244,9 +245,15 @@ export class MainParameterManageComponent implements OnInit {
     this.treeNode.desc = this.selectNode.description;
     this.treeNode.code = this.selectNode.code;
   }
+  addChild(e) {
+    console.log(e)
+  }
 
   chipsChange($event) {
     this.treeNode.label = $event;
+    let arr = [];
+    this.treeNode.label.map(r => arr.push(r.value));
+    this.tags = arr;
   }
 
 
@@ -255,17 +262,23 @@ export class MainParameterManageComponent implements OnInit {
   }
 
   /**
-   * 提交树表单
+   * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    console.log(this.treeNode)
+    console.log($event)
+    //console.log(this.treeNode)
     this.selectNode.value = this.treeNode.value;
     this.selectNode.description = this.treeNode.desc;
     let tags = [];
     this.treeNode.label.map(r => tags.push(r.value));
     this.selectNode.tags = tags;
-    console.log(this.selectNode)
-    this._paramsManageService.saveParams({ "name": "SysParam", "id": "598800d8a42d1345045b8fa5" }).subscribe(res => console.log(res));
+    //console.log(this.selectNode)
+    let datas = this._util.JSONtoKV($event);
+    var bind = new HtmlFormBindTemplateData();
+    bind.name = "SysParam";
+    bind.bindId = $event.id;
+    bind.datas = datas;
+    this._paramsManageService.saveParams(bind).subscribe(res => console.log(res));
   }
 
   /**
@@ -311,6 +324,7 @@ export class MainParameterManageComponent implements OnInit {
     let treeData = {};
     treeData["code"] = data.code;
     treeData["value"] = data.name;
+    treeData["name"] = data.name;
     treeData["id"] = data.id;
     treeData["parentId"] = data.parentId;
     if (data.childrens.length > 0) {
