@@ -273,7 +273,7 @@ export class MainParameterManageComponent implements OnInit {
     this.treeNode.label.map(r => tags.push(r.value));
     this.selectNode.tags = tags;
     //console.log(this.selectNode)
-    $event.tags = $event.tags.join(",");
+    $event.tags = $event.tags.length > 0 ? $event.tags.join(",") : "";
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
     bind.name = "SysParam";
