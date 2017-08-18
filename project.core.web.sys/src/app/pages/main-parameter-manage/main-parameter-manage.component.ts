@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewContainerRef, Output } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataSource } from '@angular/cdk';
 import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent, ITdDataTableColumn } from '@covalent/core';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 
 import { TreeModel, Ng2TreeSettings } from '../../../../node_modules/ng2-tree';
 import { fadeInUp } from '../../common/animations';
-import { globalVar } from '../../common/global.config';
+import { globalVar, customized } from '../../common/global.config';
 import { TableSearch } from '../../common/search/table.search';
 
 import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
@@ -36,6 +36,20 @@ import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData'
 })
 export class MainParameterManageComponent implements OnInit {
   bool: boolean = false;
+
+  testArr: string[] = [
+    'stepper',
+    'expansion-panel',
+    'markdown',
+    'highlight',
+    'loading',
+    'media',
+    'chips',
+    'http',
+    'json-formatter',
+    'pipes',
+    'need more?',
+  ];
 
   /**
    * 右侧编辑的具体内容
@@ -91,10 +105,9 @@ export class MainParameterManageComponent implements OnInit {
     size: this.pageSize,
     index: this.currentPage,
     filters: null,
-    name: "SysParam"
+    name: customized.SysParam
   };
   getParamsList(params) {
-
     this._paramsManageService.getParams(params)
       .subscribe(res => {
         if (res.code == "0") {
@@ -131,7 +144,7 @@ export class MainParameterManageComponent implements OnInit {
       size: this.pageSize,
       index: 0,
       filters: str,
-      name: "SysParam"
+      name: customized.SysParam
     }
     console.log(this.listparam)
     this.getParamsList(this.listparam);
@@ -170,7 +183,7 @@ export class MainParameterManageComponent implements OnInit {
       size: pagingEvent.pageSize,
       index: pagingEvent.page - 1,
       filters: null,
-      name: "SysParam"
+      name: customized.SysParam
     }
     console.log(this.listparam);
     this.getParamsList(this.listparam);
@@ -233,14 +246,16 @@ export class MainParameterManageComponent implements OnInit {
    */
   treeSelected($event): void {
     this.selectNode = $event.node.node;
-    console.log(this.selectNode);
+    console.log("treeSelected:", this.selectNode);
     this.treeNode.value = this.selectNode.value;
     let tags = [];
     if (this.selectNode.tags && this.selectNode.tags.length > 0) {
+      this.selectNode.tags = this.selectNode.tags.toString().split(",");
       for (var i = 0; i < this.selectNode.tags.length; i++) {
         tags.push({ "value": this.selectNode.tags[i], "delete": true });
       }
     }
+    console.log("tags:", tags)
     this.treeNode.label = tags;
     this.treeNode.desc = this.selectNode.description;
     this.treeNode.code = this.selectNode.code;
@@ -254,6 +269,7 @@ export class MainParameterManageComponent implements OnInit {
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = arr;
+    console.log("chipschange:", this.tags);
   }
 
 
@@ -276,31 +292,48 @@ export class MainParameterManageComponent implements OnInit {
     $event.tags = $event.tags.length > 0 ? $event.tags.join(",") : "";
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
-    bind.name = "SysParam";
+    bind.name = "SysArea";
     bind.bindId = $event.id;
     bind.datas = datas;
     console.log("保存修改：", bind);
-    this._paramsManageService.saveParams(bind).subscribe(res => console.log(res));
+    this._paramsManageService.saveParams(bind).subscribe(res => {
+      if (res.code == "0") {
+        this.filteredData.map(r => this.editTreeData(r, $event.id, $event));
+        console.log(this.filteredData)
+      } else {
+        this.openInfoMessage("出错啦", res.message);
+      }
+
+    });
   }
 
   /**
    * 添加
    */
   onSubmitAddParams($event) {
-    console.log("添加参数：")
-    console.log($event);
+    console.log("添加参数：", $event)
     let id = $event.id;
     $event.parentId = id;
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
-    bind.name = "SysParam";
+    bind.name = "SysArea";
     bind.bindId = "";
     bind.datas = datas;
     this._paramsManageService.addParams(bind).subscribe(res => {
       if (res.code == "0") {
-        this.tree.children.filter
+        this.editTreeData(this.tree, id, $event);
+      } else {
+        this.openInfoMessage("出错啦", res.message);
       }
     });
+  }
+
+  editTreeData(obj, id, treeData) {
+    if (obj.id == id) {
+      obj.children.append(treeData);
+    } else if (obj.children && obj.children.length > 0) {
+      obj.children.map(r => this.editTreeData(r, id, treeData));
+    }
   }
 
   /**
@@ -432,6 +465,15 @@ export class MainParameterManageComponent implements OnInit {
   modalDOMS: HtmlDomTemplate;
   loadModal() {
     this.http.get("/api/Customized/GetConfig", { name: 'SysParam' }).subscribe(r => this.modalDOMS = r.data.value.doms);
+  }
+
+  messages: any[] = [];
+
+  openInfoMessage(title, message) {
+    this.messages.push({
+      title: title,
+      content: message
+    });
   }
 
 }

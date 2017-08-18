@@ -152,6 +152,9 @@
                     <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
                         <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
                     </md-input-container>
+                    <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
+                        <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" [disabled]="item.ui.isDisabled">
+                    </md-input-container>
                     <div *ngSwitchCase="'daterange'">
                         <md-input-container>
                             <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
@@ -173,18 +176,6 @@
                         </md-select>
                     </div>
                 </div>
-            </li>
-            <li style="display:none;">
-                <md-input-container>
-                    <input mdInput placeholder="搜索" [value]="searchValue">
-                </md-input-container>
-            </li>
-            <li style="display:none;">
-                <md-select placeholder="Favorite food" (change)="changed($event)">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                        {{ food.viewValue }}
-                    </md-option>
-                </md-select>
             </li>
             <li>
                 <button fButton color="deepblue" (click)="searchParams()">搜索</button>
@@ -245,5 +236,8 @@
     <button md-button (click)="openDialog()">Open dialog</button>
     <button md-button (click)="openConfirm()">Open dialog</button>
     <button md-button (click)="openPrompt()">Open dialog</button> -->
+
+    <button fButton (click)="openInfoMessage('','123')">消息通知</button>
+    <free-notification [messages]="messages" [delay]="5000" theme="success"></free-notification>
 
 </md-sidenav-container>

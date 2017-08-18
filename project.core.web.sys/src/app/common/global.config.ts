@@ -7,3 +7,8 @@ export const globalVar = {
     pageSize: 10,//每页条数
     pageLinkCount: 5,//显示多少页码
 }
+
+export const customized = {
+    SysParam: "SysParam",
+    SysArea: "SysArea"
+}

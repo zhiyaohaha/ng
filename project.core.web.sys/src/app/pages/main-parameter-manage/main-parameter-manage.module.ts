@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule, MdTabsModule } from '@angular/material';
 
-import { CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule } from '@covalent/core';
+import { CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule, CovalentChipsModule } from '@covalent/core';
 
 
 import { MainParameterManageRoutingModule } from './main-parameter-manage-routing.module';
@@ -14,6 +14,7 @@ import { ContextmenuModule } from '../../component/contextmenu/contextmenu.compo
 import { ButtonModule } from './../../component/button/button.directive';
 import { TreeModule } from '../../../../node_modules/ng2-tree';
 import { ChipModule } from '../../component/chip/chip.component';
+import { NotificationModule } from '../../component/notification/notification.component';
 
 @NgModule({
   imports: [
@@ -21,8 +22,8 @@ import { ChipModule } from '../../component/chip/chip.component';
     FormsModule, ReactiveFormsModule,
     MainParameterManageRoutingModule,
     MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule, MdTabsModule,
-    CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule,
-    TreeModule, ContextmenuModule,
+    CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule, CovalentChipsModule,
+    TreeModule, ContextmenuModule, NotificationModule,
     ButtonModule,
     ChipModule
   ],

@@ -6,6 +6,8 @@ import { Injectable, Renderer2 } from '@angular/core';
 @Injectable()
 export class DomRenderer {
 
+  public static zIndex: number = 9990;
+
   constructor(private renderer2: Renderer2) { }
 
   public addClass(dom, className): void {
