@@ -273,11 +273,13 @@ export class MainParameterManageComponent implements OnInit {
     this.treeNode.label.map(r => tags.push(r.value));
     this.selectNode.tags = tags;
     //console.log(this.selectNode)
+    $event.tags = $event.tags.join(",");
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
     bind.name = "SysParam";
     bind.bindId = $event.id;
     bind.datas = datas;
+    console.log("保存修改：", bind);
     this._paramsManageService.saveParams(bind).subscribe(res => console.log(res));
   }
 
@@ -287,13 +289,18 @@ export class MainParameterManageComponent implements OnInit {
   onSubmitAddParams($event) {
     console.log("添加参数：")
     console.log($event);
-    $event.parentId = $event.id;
+    let id = $event.id;
+    $event.parentId = id;
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
     bind.name = "SysParam";
     bind.bindId = "";
     bind.datas = datas;
-    this._paramsManageService.addParams(bind).subscribe(res => console.log(res));
+    this._paramsManageService.addParams(bind).subscribe(res => {
+      if (res.code == "0") {
+        this.tree.children.filter
+      }
+    });
   }
 
   /**
@@ -319,6 +326,7 @@ export class MainParameterManageComponent implements OnInit {
     console.log(`点击的Id是${this.clickNode}`)
     let treeData = this.filteredData.filter(item => item.id == this.clickNode);
     this.tree = this.toTreeModel(treeData[0]) as TreeModel;
+    console.log("this.tree:", this.tree)
   }
 
   /**
