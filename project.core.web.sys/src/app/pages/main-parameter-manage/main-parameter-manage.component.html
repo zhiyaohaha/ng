@@ -1,20 +1,12 @@
 <md-sidenav-container class="example-container" [@fadeInUpState]="'active'">
-    <!-- <td-search-input placeholder="Search here" [showUnderline]="true" [debounce]="500" (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
-    </td-search-input>
-    <td-search-box placeholder="Search here" [showUnderline]="true" [debounce]="500" [alwaysVisible]="false" (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
-    </td-search-box> -->
     <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
         <div class="row">
             <div class="col-lg-4 sidenav-left">
                 <div class="sidenav-container">
-                    <!-- <free-tree [menus]="menus"></free-tree> -->
                     <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree>
                 </div>
             </div>
             <div class="col-lg-8" *ngIf="selectNode">
-                <button md-button style="display:none;">编辑</button>
-                <button md-button style="display:none;">添加</button>
-                <button md-button style="display:none;">删除</button>
                 <md-tab-group>
                     <md-tab label="修改">
                         <form #sysParams="ngForm">
@@ -28,7 +20,6 @@
                                             <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.isDisabled}}">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <!-- <input mdInput id="" placeholder="{{item.ui.placeholder}}" value="{{item.value}}" disabled="{{item.ui.isDisabled}}"> -->
                                             <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" [disabled]="item.ui.isDisabled"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">

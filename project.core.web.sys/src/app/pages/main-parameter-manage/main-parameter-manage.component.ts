@@ -251,11 +251,13 @@ export class MainParameterManageComponent implements OnInit {
     let tags = [];
     if (this.selectNode.tags && this.selectNode.tags.length > 0) {
       this.selectNode.tags = this.selectNode.tags.toString().split(",");
+      this.tags = this.selectNode.tags;
+      console.log("1111111111111111", this.tags)
       for (var i = 0; i < this.selectNode.tags.length; i++) {
         tags.push({ "value": this.selectNode.tags[i], "delete": true });
       }
     }
-    console.log("tags:", tags)
+    console.log("tags:11", tags)
     this.treeNode.label = tags;
     this.treeNode.desc = this.selectNode.description;
     this.treeNode.code = this.selectNode.code;
@@ -266,6 +268,7 @@ export class MainParameterManageComponent implements OnInit {
 
   chipsChange($event) {
     this.treeNode.label = $event;
+    console.log("chipschanges:", $event)
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = arr;
@@ -281,18 +284,17 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
+    console.log("xiugai xiugai ", this.tags)
     console.log($event)
     //console.log(this.treeNode)
     this.selectNode.value = this.treeNode.value;
     this.selectNode.description = this.treeNode.desc;
-    let tags = [];
-    this.treeNode.label.map(r => tags.push(r.value));
-    this.selectNode.tags = tags;
+    this.selectNode.tags = this.tags;
     //console.log(this.selectNode)
-    $event.tags = $event.tags.length > 0 ? $event.tags.join(",") : "";
+    $event.tags = this.tags.join(",");
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
-    bind.name = "SysArea";
+    bind.name = customized.SysParam;
     bind.bindId = $event.id;
     bind.datas = datas;
     console.log("保存修改：", bind);
@@ -312,15 +314,18 @@ export class MainParameterManageComponent implements OnInit {
    */
   onSubmitAddParams($event) {
     console.log("添加参数：", $event)
+    console.log(this.tags)
     let id = $event.id;
     $event.parentId = id;
+    $event.tags = this.tags.join(",");
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
-    bind.name = "SysArea";
+    bind.name = customized.SysParam;
     bind.bindId = "";
     bind.datas = datas;
     this._paramsManageService.addParams(bind).subscribe(res => {
       if (res.code == "0") {
+        this.openInfoMessage("", "操作成功");
         this.editTreeData(this.tree, id, $event);
       } else {
         this.openInfoMessage("出错啦", res.message);
