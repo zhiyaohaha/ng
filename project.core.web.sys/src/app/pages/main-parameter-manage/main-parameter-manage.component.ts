@@ -111,9 +111,6 @@ export class MainParameterManageComponent implements OnInit {
   /**
    * 搜索参数列表
    */
-  searchValue: string = "";
-  searchType: string;
-  Keywords: string = "";
   filters = [];
   searchParam($event) {
     let name = $event.target.name;
@@ -193,11 +190,6 @@ export class MainParameterManageComponent implements OnInit {
    */
   selectNode;
 
-  /**
-   * 表单
-   */
-  paramsForm: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private _dialogService: TdDialogService,
@@ -215,12 +207,6 @@ export class MainParameterManageComponent implements OnInit {
     //this.loadData();
 
     this.getParamsList(this.listparam);
-
-    this.paramsForm = this.fb.group({
-      para1: [""],
-      para2: [""],
-      para3: []
-    })
 
     this.loadModal();
   }

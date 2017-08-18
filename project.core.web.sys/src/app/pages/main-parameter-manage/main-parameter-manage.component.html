@@ -223,11 +223,6 @@
         <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
     </td-paging-bar>
 
-    <!-- <button fButton color="red" (click)="openDialog()">打开弹窗</button>
-    <button md-button (click)="openDialog()">Open dialog</button>
-    <button md-button (click)="openConfirm()">Open dialog</button>
-    <button md-button (click)="openPrompt()">Open dialog</button> -->
-
     <button fButton (click)="openInfoMessage('','123')">消息通知</button>
     <free-notification [messages]="messages" [delay]="5000" theme="success"></free-notification>
 
