@@ -35,21 +35,6 @@ import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData'
   animations: [fadeInUp]
 })
 export class MainParameterManageComponent implements OnInit {
-  bool: boolean = false;
-
-  testArr: string[] = [
-    'stepper',
-    'expansion-panel',
-    'markdown',
-    'highlight',
-    'loading',
-    'media',
-    'chips',
-    'http',
-    'json-formatter',
-    'pipes',
-    'need more?',
-  ];
 
   /**
    * 右侧编辑的具体内容
@@ -284,7 +269,6 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    console.log("xiugai xiugai ", this.tags)
     console.log($event)
     //console.log(this.treeNode)
     this.selectNode.value = this.treeNode.value;
@@ -300,7 +284,6 @@ export class MainParameterManageComponent implements OnInit {
     console.log("保存修改：", bind);
     this._paramsManageService.saveParams(bind).subscribe(res => {
       if (res.code == "0") {
-        this.filteredData.map(r => this.editTreeData(r, $event.id, $event));
         console.log(this.filteredData)
       } else {
         this.openInfoMessage("出错啦", res.message);
@@ -314,7 +297,6 @@ export class MainParameterManageComponent implements OnInit {
    */
   onSubmitAddParams($event) {
     console.log("添加参数：", $event)
-    console.log(this.tags)
     let id = $event.id;
     $event.parentId = id;
     $event.tags = this.tags.join(",");
@@ -326,19 +308,10 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.addParams(bind).subscribe(res => {
       if (res.code == "0") {
         this.openInfoMessage("", "操作成功");
-        this.editTreeData(this.tree, id, $event);
       } else {
         this.openInfoMessage("出错啦", res.message);
       }
     });
-  }
-
-  editTreeData(obj, id, treeData) {
-    if (obj.id == id) {
-      obj.children.append(treeData);
-    } else if (obj.children && obj.children.length > 0) {
-      obj.children.map(r => this.editTreeData(r, id, treeData));
-    }
   }
 
   /**
@@ -346,7 +319,7 @@ export class MainParameterManageComponent implements OnInit {
    * @param  
    */
   rowSelectEvent($event) {
-    console.log($event);
+    console.log("选择表格的行", $event);
   }
 
   /**
@@ -364,6 +337,7 @@ export class MainParameterManageComponent implements OnInit {
     console.log(`点击的Id是${this.clickNode}`)
     let treeData = this.filteredData.filter(item => item.id == this.clickNode);
     this.tree = this.toTreeModel(treeData[0]) as TreeModel;
+    console.log("treeData:", treeData);
     console.log("this.tree:", this.tree)
   }
 
@@ -381,6 +355,8 @@ export class MainParameterManageComponent implements OnInit {
     console.log(this.treeNode)
   }
 
+
+  //树数据生成
   toTreeModel(data) {
     let treeData = {};
     treeData["code"] = data.code;
@@ -388,7 +364,6 @@ export class MainParameterManageComponent implements OnInit {
     treeData["name"] = data.name;
     treeData["id"] = data.id;
     treeData["parentId"] = data.parentId;
-    console.log(treeData)
     if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
       for (var i = 0; i < data.childrens.length; i++) {
@@ -399,69 +374,6 @@ export class MainParameterManageComponent implements OnInit {
     treeData["tags"] = data.tags;
     treeData["settings"] = { rightMenu: false };
     return treeData;
-  }
-
-
-  addComment(row, msg): void {
-    this._dialogService.openPrompt({
-      message: "",
-      viewContainerRef: this._viewContainerRef,
-      title: "添加备注",
-      acceptButton: "确定"
-    }).afterClosed().subscribe((value: string) => {
-      if (value) {
-        this.basicData.map((v) => {
-          if (v.id === row.id) {
-            row["comments"] = value;
-          }
-        })
-      }
-    })
-  }
-
-  openDialog(): void {
-    this._dialogService.openAlert({
-      message: 'This is how simple it is to create an alert with this wrapper service.',
-      disableClose: false, // defaults to false
-      viewContainerRef: this._viewContainerRef, //OPTIONAL
-      title: 'Alert', //OPTIONAL, hides if not provided
-      closeButton: 'Close', //OPTIONAL, defaults to 'CLOSE'
-    });
-  }
-
-  openConfirm(): void {
-    this._dialogService.openConfirm({
-      message: 'This is how simple it is to create a confirm with this wrapper service. Do you agree?',
-      disableClose: true, // defaults to false
-      viewContainerRef: this._viewContainerRef, //OPTIONAL
-      title: 'Confirm', //OPTIONAL, hides if not provided
-      cancelButton: 'Disagree', //OPTIONAL, defaults to 'CANCEL'
-      acceptButton: 'Agree', //OPTIONAL, defaults to 'ACCEPT'
-    }).afterClosed().subscribe((accept: boolean) => {
-      if (accept) {
-        console.log(accept);
-      } else {
-        console.log(1111111)
-      }
-    });
-  }
-
-  openPrompt(): void {
-    this._dialogService.openPrompt({
-      message: 'This is how simple it is to create a prompt with this wrapper service. Prompt something.',
-      disableClose: true, // defaults to false
-      viewContainerRef: this._viewContainerRef, //OPTIONAL
-      title: 'Prompt', //OPTIONAL, hides if not provided
-      value: 'Prepopulated value', //OPTIONAL
-      cancelButton: 'Cancel', //OPTIONAL, defaults to 'CANCEL'
-      acceptButton: 'Ok', //OPTIONAL, defaults to 'ACCEPT'
-    }).afterClosed().subscribe((newValue: string) => {
-      if (newValue) {
-        console.log("newValue");
-      } else {
-        console.log(newValue);
-      }
-    });
   }
 
   /**
