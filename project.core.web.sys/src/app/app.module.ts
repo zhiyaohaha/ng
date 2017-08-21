@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { App } from './pages/app';
 import { BaseService } from './services/base.service';
 import { ConvertUtil } from './common/convert-util';
+import { WebSocketService } from './services/share/web-socket.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ConvertUtil } from './common/convert-util';
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     App,
     BaseService,
-    ConvertUtil
+    ConvertUtil,
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })

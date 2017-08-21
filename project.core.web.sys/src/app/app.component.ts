@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { App } from './pages/app';
+import { WebSocketService } from './services/share/web-socket.service';
 
 
 @Component({
@@ -7,7 +8,7 @@ import { App } from './pages/app';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('modalPortal', { read: ViewContainerRef }) _modalPortal;
   @ViewChild('overlayPortal', { read: ViewContainerRef }) _overlayPortal;
@@ -15,9 +16,18 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('toastPortal', { read: ViewContainerRef }) _toastPortal;
   viewContainerRef: ViewContainerRef;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private app: App) {
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private app: App, private wsService: WebSocketService) {
     this.app.intance = this;
   }
+
+  ngOnInit() {
+    this.wsService.createObservableSocket("ws://120.26.39.240:8181/").subscribe(
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log("ws结束！")
+    )
+  }
+
 
   ngAfterViewInit() {
 
