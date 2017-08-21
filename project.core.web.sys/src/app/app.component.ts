@@ -26,6 +26,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       err => console.log(err),
       () => console.log("ws结束！")
     )
+    setInterval(() => {
+      this.wsService.sendMesssage("asdfasdfdf21314564");
+    }, 2000)
   }
 
 
