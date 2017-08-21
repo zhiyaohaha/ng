@@ -41,4 +41,9 @@ export class BaseTemplate {
     */
   operater : Loginer;
 
+  /**
+    * 备注
+    */
+  remark : string;
+
 }

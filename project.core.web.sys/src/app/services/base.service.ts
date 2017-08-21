@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class BaseService {
 
   private private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
-  private urlPrefix = "http://api.cpf360.com";
+  private urlPrefix = "http://localhost:51494";
 
   constructor(private http: Http, private util: ConvertUtil, private router: Router) { }
 

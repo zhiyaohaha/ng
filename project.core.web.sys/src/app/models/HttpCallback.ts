@@ -2,7 +2,7 @@
   * http回调
   * author sunpengfei
   */
-export class HttpCallback<T> {
+export class HttpCallback {
 
   /**
     * 回调码
@@ -17,7 +17,7 @@ export class HttpCallback<T> {
   /**
     * 回调结果
     */
-  data : T;
+  data : object;
 
   /**
     * 是否成功

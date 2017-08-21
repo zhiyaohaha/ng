@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { SysParam } from "./SysParam";
 
 /**
   * 聊天
@@ -7,14 +8,24 @@
 export class Chat extends BaseTemplate {
 
   /**
-    * 发送人Id
+    * 场景编号
     */
-  senderId : string;
+  _scene : string;
+
+  /**
+    * 场景
+    */
+  scene : SysParam;
+
+  /**
+    * 内容类型编号
+    */
+  _contentType : string;
 
   /**
     * 内容类型
     */
-  scene : string;
+  contentType : string;
 
   /**
     * 内容
@@ -22,8 +33,8 @@ export class Chat extends BaseTemplate {
   content : string;
 
   /**
-    * 内容类型
+    * 接收方Id
     */
-  contentType : string;
+  receiveId : string;
 
 }

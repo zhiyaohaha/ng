@@ -15,7 +15,7 @@ export class SysParam extends BaseTemplate implements ICascadeTemplate<SysParam>
   /**
     * 标签
     */
-  tags : string[];
+  tags : string;
 
   /**
     * 父Id

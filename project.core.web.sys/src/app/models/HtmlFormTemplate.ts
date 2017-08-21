@@ -47,7 +47,7 @@ export class HtmlFormTemplate extends BaseTemplate {
   /**
     * 标签
     */
-  tags : string[];
+  tags : string;
 
   /**
     * 表单绑定

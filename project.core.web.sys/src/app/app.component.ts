@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.wsService.createObservableSocket("ws://120.26.39.240:8181/").subscribe(
+    this.wsService.createObservableSocket("ws://localhost:51494/ws").subscribe(
       data => console.log(data),
       err => console.log(err),
       () => console.log("ws结束！")

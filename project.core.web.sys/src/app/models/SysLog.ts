@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { KV } from "./KV";
 
 /**
   * 日志
@@ -34,6 +35,6 @@ export class SysLog extends BaseTemplate {
   /**
     * 请求参数Json
     */
-  paramsJson : string;
+  paramsJson : KV[];
 
 }

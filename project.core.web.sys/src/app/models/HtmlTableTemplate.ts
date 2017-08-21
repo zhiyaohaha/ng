@@ -54,7 +54,7 @@ export class HtmlTableTemplate extends BaseTemplate {
   /**
     * 标签
     */
-  tags : string[];
+  tags : string;
 
   /**
     * 筛选集合
