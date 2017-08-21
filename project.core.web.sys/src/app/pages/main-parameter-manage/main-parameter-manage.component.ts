@@ -66,10 +66,7 @@ export class MainParameterManageComponent implements OnInit {
    */
   basicData;
 
-  /**
-   * 搜索条件
-   */
-  searchFilters;
+  searchFilters;//页面显示的搜索条件
 
   fromRow: number = 1;//当前页第一行的总行数
   currentPage: number = 0;//当前页码
@@ -112,26 +109,10 @@ export class MainParameterManageComponent implements OnInit {
    * 搜索参数列表
    */
   filters = [];
-  searchParam($event) {
-    let name = $event.target.name;
-    this.filters.filter(i => {
-      if (i.key == name) {
-        i.value = $event.target.value;
-      }
-    });
-  }
-  searchParams() {
-    let str = JSON.stringify(this.filters);
-    this.listparam = {
-      size: this.pageSize,
-      index: 0,
-      filters: str,
-      name: customized.SysParam
-    }
-    console.log(this.listparam)
+  onSearch($event) {
+    this.listparam.filters = $event;
     this.getParamsList(this.listparam);
   }
-
 
   /**
    * 点击的表格所在行

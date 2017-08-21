@@ -15,6 +15,7 @@ import { ButtonModule } from './../../component/button/button.directive';
 import { TreeModule } from '../../../../node_modules/ng2-tree';
 import { ChipModule } from '../../component/chip/chip.component';
 import { NotificationModule } from '../../component/notification/notification.component';
+import { SearchFormModule } from '../../component/search-form/searchform.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { NotificationModule } from '../../component/notification/notification.co
     CovalentDataTableModule, CovalentSearchModule, CovalentPagingModule, CovalentChipsModule,
     TreeModule, ContextmenuModule, NotificationModule,
     ButtonModule,
-    ChipModule
+    ChipModule,
+    SearchFormModule
   ],
   declarations: [
     MainParameterManageComponent

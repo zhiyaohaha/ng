@@ -1,0 +1,18 @@
+.search-ul {
+    padding: 10px;
+    overflow: hidden;
+    li {
+        list-style: none;
+        float: left;
+        min-width: 200px;
+        md-select {
+            position: relative;
+            bottom: -25px;
+            width: 200px;
+        }
+        button {
+            position: relative;
+            bottom: -10px;
+        }
+    }
+}

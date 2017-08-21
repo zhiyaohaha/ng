@@ -5,6 +5,8 @@ import { LoginOutService } from '../../services/loginOut-service/loginOut.servic
 import { FileUploader } from 'ng2-file-upload';
 import { ConvertUtil } from '../../common/convert-util';
 import { BaseService } from '../../services/base.service';
+import { WebSocketService } from '../../services/share/web-socket.service';
+import { HttpSign } from '../../models/HttpSign';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +21,22 @@ export class MainComponent implements OnInit {
   // @HostBinding('style.display') display = 'block';
   imgSrc: any[];
 
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService) { }
+  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService) { }
 
   ngOnInit() {
+    this.wsService.createObservableSocket("ws://120.26.39.240:8181/").subscribe(
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log("ws结束！")
+    )
+
+    let data = '{"account":"administrator","password":"1"}';
+    setTimeout(() => {
+      this.wsService.loginSocket(this.wsService, data);
+    }, 1000)
+  }
+  sendMsg() {
+    this.wsService.sendMesssage("asdfasdfdf21314564");
   }
 
   loginOut() {
