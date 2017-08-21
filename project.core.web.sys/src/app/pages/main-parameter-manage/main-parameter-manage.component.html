@@ -140,53 +140,7 @@
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
     </div>
 
-    <td-data-table #dataTable [data]="filteredData" [columns]="columns" [clickable]="true" (rowClick)="rowClickEvent($event);sidenav.open();" (rowSelect)="rowSelectEvent($event)">
-        <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
-            <div layout="row">
-                <span flex>{{value}}</span>
-                <md-icon>star</md-icon>
-            </div>
-        </ng-template>-->
-        <ng-template tdDataTableTemplate="op" let-value="value" let-row="row" let-column="column">
-            <div layout="row">
-                <div class="example-sidenav-content">
-                    <button type="button" md-button (click)="sidenav.open();">查看更多</button>
-                </div>
-            </div>
-        </ng-template>
-    </td-data-table>
-
-    <table td-data-table style="display:none;">
-        <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
-            {{column.label}}
-        </th>
-        <th td-data-table-column>
-            <span>Comments</span>
-        </th>
-        <th td-data-table-column>
-            操作
-        </th>
-        <tr td-data-table-row *ngFor="let row of filteredData">
-            <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
-                {{column.format ? column.format(row[column.name]) : row[column.name]}}
-            </td>
-            <td td-data-table-cell>
-                <a href="javascript:;" (click)="addComment(row, 'comments')" [class.mat-accent]="!row['comments']">{{row['comments'] || 'Add Comment'}}</a>
-            </td>
-            <td td-data-table-cell>
-                <div class="example-sidenav-content">
-                    <button type="button" md-button (click)="sidenav.open();onOpen()">查看更多</button>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
-        <h3>No results to display.</h3>
-    </div>
-    <td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="filteredTotal" (change)="page($event)" [pageLinkCount]="pageLinkCount">
-        <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
-    </td-paging-bar>
+    <app-table [data]="filteredData" [columns]="columns" [pageSizes]="pageSizes" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
     <button fButton (click)="openInfoMessage('','123')">消息通知</button>
     <free-notification [messages]="messages" [delay]="5000" theme="success"></free-notification>

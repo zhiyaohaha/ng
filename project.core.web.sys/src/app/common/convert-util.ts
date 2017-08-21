@@ -111,4 +111,34 @@ export class ConvertUtil {
         return arr;
     }
 
+    /**
+     * 时间对象转具体日期
+     * @param date 时间对象
+     */
+    public getFullDate(date: Date): string {
+        let Y = date.getFullYear();
+        let M = date.getMonth() + 1;
+        let D = date.getDate();
+        return Y + "-" + M + "-" + D;
+    }
+
+    /**
+     * 时间对象转具体时间
+     * @param date 时间对象
+     */
+    public getFullTime(date: Date): string {
+        let h = date.getHours();
+        let m = date.getMinutes();
+        let s = date.getSeconds();
+        return h + ":" + m + ":" + s;
+    }
+
+    /**
+     * 时间对象转具体年月日时分秒
+     * @param date 时间对象
+     */
+    public getFullDateTime(date: Date): string {
+        return this.getFullDate + " " + this.getFullTime;
+    }
+
 }

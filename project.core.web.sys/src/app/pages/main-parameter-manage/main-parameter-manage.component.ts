@@ -93,7 +93,7 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.getParams(params)
       .subscribe(res => {
         if (res.code == "0") {
-          var r = res as HttpCallback<PageList<HtmlTableTemplate>>;
+          var r = res;
           this.columns = r.data.data.fields;
           this.filteredData = this.basicData = r.data.data.bindData;
           r.data.data.filters.forEach(i => {
@@ -295,6 +295,7 @@ export class MainParameterManageComponent implements OnInit {
    */
   rowClickEvent($event) {
     this.clickNode = $event.row.id;
+
   }
 
   /**
@@ -303,8 +304,8 @@ export class MainParameterManageComponent implements OnInit {
   sidenavOpen() {
     console.log(`点击的Id是${this.clickNode}`)
     let treeData = this.filteredData.filter(item => item.id == this.clickNode);
-    this.tree = this.toTreeModel(treeData[0]) as TreeModel;
     console.log("treeData:", treeData);
+    this.tree = this.toTreeModel(treeData[0]) as TreeModel;
     console.log("this.tree:", this.tree)
   }
 

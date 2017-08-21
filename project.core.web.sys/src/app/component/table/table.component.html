@@ -1,0 +1,16 @@
+<td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="true" (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
+    <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
+            <div layout="row">
+                <span flex>{{value}}</span>
+                <md-icon>star</md-icon>
+            </div>
+        </ng-template>-->
+</td-data-table>
+
+<div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+    <h3>No results to display.</h3>
+</div>
+
+<td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="totals" (change)="page($event)" [pageLinkCount]="pageLinkCount">
+    <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+</td-paging-bar>

@@ -7,6 +7,7 @@ import {
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { MdInputModule, MdDatepickerModule } from '@angular/material';
 import { ButtonModule } from '../button/button.directive';
+import { ConvertUtil } from '../../common/convert-util';
 
 @Component({
     selector: "search-form",
@@ -19,10 +20,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
     @Input() filters: any;//搜索UIDOM
     @Input() condition: any[];//搜索关键字KV
     @Output() onSearch: EventEmitter<any> = new EventEmitter();
-    StartTime: string;
-    EndTime: string;
+    StartTime: Date;
+    EndTime: Date;
 
-    constructor() { }
+    constructor(private util: ConvertUtil) { }
 
     ngOnInit() { }
 
@@ -46,7 +47,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
     searchParams() {
         this.condition.filter(i => {
             if (i.key == "createdDate") {
-                i.value = this.StartTime + this.EndTime;
+                //i.value = this.StartTime + this.EndTime;
+                i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
             }
         });
         let str = JSON.stringify(this.condition);
