@@ -3,12 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import { CommonModule } from '@angular/common';
 import { HttpSign } from '../../models/HttpSign';
 import { ConvertUtil } from '../../common/convert-util';
+import { globalUrl } from '../../common/global.config';
 
 @Injectable()
 export class WebSocketService {
 
   ws: WebSocket;
-  protected private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
+  protected private_key = globalUrl.private_key;
 
   constructor(private util: ConvertUtil) { }
 

@@ -6,12 +6,13 @@ import { Http, RequestOptionsArgs, RequestOptions, Headers, URLSearchParams } fr
 
 import 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { globalUrl } from '../common/global.config';
 
 @Injectable()
 export class BaseService {
 
-  protected private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
-  private urlPrefix = "http://api.cpf360.com";
+  protected private_key = globalUrl.private_key;
+  private urlPrefix = globalUrl.baseUrl;
 
   constructor(private http: Http, private util: ConvertUtil, private router: Router) { }
 

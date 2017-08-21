@@ -12,3 +12,9 @@ export const customized = {
     SysParam: "SysParam",
     SysArea: "SysArea"
 }
+
+export const globalUrl = {
+    private_key: "84qudMIhOkX5JMQXVd0f4jneqfP2Lp",
+    baseUrl: "http://api.cpf360.com",
+    wsUrl: "ws://120.26.39.240:8181/"
+}

@@ -7,6 +7,7 @@ import { ConvertUtil } from '../../common/convert-util';
 import { BaseService } from '../../services/base.service';
 import { WebSocketService } from '../../services/share/web-socket.service';
 import { HttpSign } from '../../models/HttpSign';
+import { globalUrl } from '../../common/global.config';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class MainComponent implements OnInit {
   constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService) { }
 
   ngOnInit() {
-    this.wsService.createObservableSocket("ws://120.26.39.240:8181/").subscribe(
+    this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
       data => console.log(data),
       err => console.log(err),
       () => console.log("ws结束！")
