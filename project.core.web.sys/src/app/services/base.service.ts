@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class BaseService {
 
-  private private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
+  protected private_key = "84qudMIhOkX5JMQXVd0f4jneqfP2Lp";
   private urlPrefix = "http://api.cpf360.com";
 
   constructor(private http: Http, private util: ConvertUtil, private router: Router) { }

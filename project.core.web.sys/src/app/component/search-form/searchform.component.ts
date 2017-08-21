@@ -19,6 +19,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
     @Input() filters: any;//搜索UIDOM
     @Input() condition: any[];//搜索关键字KV
     @Output() onSearch: EventEmitter<any> = new EventEmitter();
+    StartTime: string;
+    EndTime: string;
 
     constructor() { }
 
@@ -42,6 +44,11 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
 
     //搜索
     searchParams() {
+        this.condition.filter(i => {
+            if (i.key == "createdDate") {
+                i.value = this.StartTime + this.EndTime;
+            }
+        });
         let str = JSON.stringify(this.condition);
         this.onSearch.emit(str);
     }

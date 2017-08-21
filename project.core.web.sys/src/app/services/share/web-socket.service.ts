@@ -29,6 +29,7 @@ export class WebSocketService {
     sign.cmd = "AuthLogin";
     sign.timestamp = Number(this.util.timestamp());
     sign.sign = this.util.toMd5(this.util.toJsonStr(data) + sign.timestamp + this.private_key);
+    console.log(this.util.toJsonStr(data) + sign.timestamp + this.private_key)
     sign.data = data;
     loginService.sendMesssage(JSON.stringify(sign));
   }
