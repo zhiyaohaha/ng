@@ -253,7 +253,7 @@ export class MainParameterManageComponent implements OnInit {
       data[r.key] = r.value;
     })
     this.modalData.value.bindId = data.id;
-    this.modalData.value.bindJsonData = data;
+    this.modalData.value.bindJsonData = JSON.stringify(data);
     console.log("保存修改：", this.modalData)
     this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
