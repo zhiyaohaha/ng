@@ -242,14 +242,19 @@ export class MainParameterManageComponent implements OnInit {
     this.selectNode.description = this.treeNode.desc;
     this.selectNode.tags = this.tags;
     //console.log(this.selectNode)
-    $event.tags = this.tags.join(",");
+    $event.tags = this.tags ? this.tags.join(",") : "";
     let datas = this._util.JSONtoKV($event);
-    var bind = new HtmlFormBindTemplateData();
-    bind.name = customized.SysParam;
-    bind.bindId = $event.id;
-    bind.datas = datas;
-    console.log("保存修改：", bind);
-    this._paramsManageService.saveParams(bind).subscribe(res => {
+    // var bind = new HtmlFormBindTemplateData();
+    // bind.name = customized.SysParam;
+    // bind.bindId = $event.id;
+    // bind.datas = datas;
+    let data = JSON.parse(this.modalData.value.bindJsonData);
+    datas.map(r => {
+      data[r.key] = r.value;
+    })
+    this.modalData.value.bindJsonData = data;
+    console.log("保存修改：", this.modalData)
+    this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         console.log(this.filteredData)
       } else {
@@ -266,7 +271,7 @@ export class MainParameterManageComponent implements OnInit {
     console.log("添加参数：", $event)
     let id = $event.id;
     $event.parentId = id;
-    $event.tags = this.tags.join(",");
+    $event.tags = this.tags ? this.tags.join(",") : "";
     let datas = this._util.JSONtoKV($event);
     var bind = new HtmlFormBindTemplateData();
     bind.name = customized.SysParam;
@@ -348,8 +353,9 @@ export class MainParameterManageComponent implements OnInit {
    * 修改模版
    */
   modalDOMS: HtmlDomTemplate;
+  modalData;
   loadModal() {
-    this.http.get("/api/Customized/GetConfig", { name: 'SysParam' }).subscribe(r => this.modalDOMS = r.data.value.doms);
+    this.http.get("/api/Customized/GetConfig", { name: 'SysParam' }).subscribe(r => { this.modalDOMS = r.data.value.doms; this.modalData = r.data });
   }
 
   messages: any[] = [];
