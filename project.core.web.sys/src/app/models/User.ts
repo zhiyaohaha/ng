@@ -2,6 +2,7 @@
 import { ILoginer } from "./ILoginer";
 import { SysImage } from "./SysImage";
 import { UserDynamic } from "./UserDynamic";
+import { ChatConversation } from "./ChatConversation";
 
 /**
   * 用户
@@ -68,5 +69,10 @@ export class User extends People implements ILoginer {
     * 动态
     */
   dynamic : UserDynamic;
+
+  /**
+    * 聊天列表
+    */
+  chatConversations : ChatConversation[];
 
 }
