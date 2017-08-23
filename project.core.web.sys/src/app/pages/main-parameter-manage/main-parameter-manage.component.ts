@@ -255,7 +255,7 @@ export class MainParameterManageComponent implements OnInit {
     this.modalData.value.bindId = data.id;
     this.modalData.value.bindJsonData = data;
     console.log("保存修改：", this.modalData)
-    this._paramsManageService.saveParams(JSON.stringify(this.modalData)).subscribe(res => {
+    this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         console.log(this.filteredData)
       } else {
