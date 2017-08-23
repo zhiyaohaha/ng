@@ -1,0 +1,14 @@
+:host /deep/ {
+    md-list {
+        md-list-item {
+            border-bottom: 1px solid #000000;
+            i {
+                width: 30px;
+                height: 30px;
+            }
+            .mat-list-item-content {
+                height: 80px !important;
+            }
+        }
+    }
+}

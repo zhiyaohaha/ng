@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { PersonalRoutingModule } from './personal-routing.module';
 import { PersonalComponent } from '../personal/personal.component';
+import { MdSidenavModule, MdToolbarModule, MdListModule, MdButtonModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    PersonalRoutingModule
+    PersonalRoutingModule,
+    MdSidenavModule, MdToolbarModule, MdListModule, MdButtonModule
   ],
   declarations: [PersonalComponent]
 })
