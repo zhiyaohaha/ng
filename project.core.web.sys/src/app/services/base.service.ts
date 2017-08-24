@@ -25,11 +25,11 @@ export class BaseService {
     let timestamp = this.util.timestamp();
     console.log('参数：', this.util.toJsonStr(_params));
     console.log("time:", timestamp);
-    let sign = this.util.toMd5(this.util.toJsonStr(_params) + timestamp + this.private_key);
+    let sign = this.util.toMd5(this.util.toJsonStr(_params).replace(/\+/g, " ") + timestamp + this.private_key);
     console.log("sign:", sign)
     //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;
     let params = new URLSearchParams();
-    params.set('data', encodeURI(this.util.toJsonStr(_params)));
+    params.set('data', this.util.toJsonStr(_params));
     params.set('sign', sign);
     params.set('timestamp', timestamp);
     console.log(params)

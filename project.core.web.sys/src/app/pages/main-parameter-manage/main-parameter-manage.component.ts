@@ -258,19 +258,17 @@ export class MainParameterManageComponent implements OnInit {
    * 添加
    */
   onSubmitAddParams($event) {
-    let id = $event.id;
-    $event.parentId = id;
+    $event.parentId = this.selectNode.JSONdata.id;
     $event.tags = this.tags ? this.tags.join(",") : "";
     //this.editAddMiddleVar($event);
     console.log("$event", $event)
-    console.log("添加参数：", this.modalData);
-    // this._paramsManageService.addParams(this.modalData).subscribe(res => {
-    //   if (res.code == "0") {
-    //     this.openInfoMessage("", "操作成功");
-    //   } else {
-    //     this.openInfoMessage("出错啦", res.message);
-    //   }
-    // });
+    this._paramsManageService.addParams($event).subscribe(res => {
+      if (res.code == "0") {
+        this.openInfoMessage("", "操作成功");
+      } else {
+        this.openInfoMessage("出错啦", res.message);
+      }
+    });
   }
 
   /**
