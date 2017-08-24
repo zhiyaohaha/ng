@@ -238,7 +238,6 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    this.selectNode.value = this.selectNode.JSONdata.name;
     this.selectNode.description = this.treeNode.desc;
     this.selectNode.tags = this.tags;
     $event.tags = this.tags || "";
@@ -253,6 +252,7 @@ export class MainParameterManageComponent implements OnInit {
     console.log("保存修改：", this.selectNode.JSONdata)
     this._paramsManageService.saveParams(this.selectNode.JSONdata).subscribe(res => {
       if (res.code == "0") {
+        this.selectNode.value = this.selectNode.JSONdata.name;
         alert(res.message);
       } else {
         this.openInfoMessage("出错啦", res.message);

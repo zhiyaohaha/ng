@@ -23,7 +23,10 @@ export class BaseService {
    */
   private setAuth<T>(_params: T): any {
     let timestamp = this.util.timestamp();
+    console.log('参数：', this.util.toJsonStr(_params));
+    console.log("time:", timestamp);
     let sign = this.util.toMd5(this.util.toJsonStr(_params) + timestamp + this.private_key);
+    console.log("sign:", sign)
     //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;
     let params = new URLSearchParams();
     params.set('data', this.util.toJsonStr(_params));
