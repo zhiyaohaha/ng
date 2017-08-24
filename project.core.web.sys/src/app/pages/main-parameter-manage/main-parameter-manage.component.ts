@@ -242,8 +242,16 @@ export class MainParameterManageComponent implements OnInit {
     this.selectNode.tags = this.tags;
     $event.tags = this.tags || "";
     //this.editAddMiddleVar($event);
-    console.log("保存修改：", this.selectNode.JSONdata)
-    this._paramsManageService.saveParams(this.selectNode.JSONdata).subscribe(res => {
+    // let data = {
+    //   bindId: this.selectNode.JSONdata.id,
+    //   name: customized.SysParam,
+    //   bindDataJson: this.selectNode.JSONdata
+    // }
+    this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
+    this.modalData.bindId = this.selectNode.JSONdata.id;
+    this.modalData.doms = "";
+    console.log("保存修改：", this.modalData)
+    this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         this.selectNode.value = this.selectNode.JSONdata.name;
         alert(res.message);
