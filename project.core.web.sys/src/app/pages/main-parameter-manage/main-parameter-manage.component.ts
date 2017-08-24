@@ -40,9 +40,6 @@ export class MainParameterManageComponent implements OnInit {
    * 右侧编辑的具体内容
    */
   treeNode = {
-    code: ' ',
-    value: '',
-    desc: '',
     label: []
   }
   tags: string[];
@@ -199,21 +196,17 @@ export class MainParameterManageComponent implements OnInit {
   treeSelected($event): void {
     this.selectNode = $event.node.node;
     console.log("treeSelected:", this.selectNode);
-    this.treeNode.value = this.selectNode.value;
     let tags = [];
-    if (this.selectNode.tags && this.selectNode.tags.length > 0) {
-      this.selectNode.tags = this.selectNode.tags.toString().split(",");
-      this.tags = this.selectNode.tags;
+    if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
+      this.tags = this.selectNode.JSONdata.tags;
       console.log("1111111111111111", this.tags)
-      for (var i = 0; i < this.selectNode.tags.length; i++) {
-        tags.push({ "value": this.selectNode.tags[i], "delete": true });
+      for (var i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
+        tags.push({ "value": this.selectNode.JSONdata.tags[i], "delete": true });
       }
     }
     console.log("tags:11", tags)
     this.selectNode.JSONdata.tags = tags;
     this.treeNode.label = tags;
-    this.treeNode.desc = this.selectNode.description;
-    this.treeNode.code = this.selectNode.code;
   }
   addChild(e) {
     console.log(e)
@@ -226,6 +219,7 @@ export class MainParameterManageComponent implements OnInit {
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = arr;
     this.selectNode.JSONdata.tags = arr;
+    console.log(this.selectNode);
     console.log("chipschange:", this.tags);
   }
 
@@ -238,7 +232,6 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    this.selectNode.description = this.treeNode.desc;
     this.selectNode.tags = this.tags;
     $event.tags = this.tags || "";
     //this.editAddMiddleVar($event);
@@ -253,7 +246,8 @@ export class MainParameterManageComponent implements OnInit {
     console.log("保存修改：", this.modalData)
     this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
-        this.selectNode.value = this.selectNode.JSONdata.name;
+        //this.selectNode.value = this.selectNode.JSONdata.name;
+        this.getDetailParams();
         alert(res.message);
       } else {
         this.openInfoMessage("出错啦", res.message);
@@ -314,6 +308,13 @@ export class MainParameterManageComponent implements OnInit {
    */
   sidenavOpen() {
     console.log(`点击的Id是${this.clickNode}`);
+    this.getDetailParams();
+  }
+
+  /**
+   * 获取详细的参数
+   */
+  getDetailParams() {
     this._paramsManageService.getEditParams({ name: customized.SysParam, id: this.clickNode }).subscribe(r => {
       this.tree = this.toTreeModel(r.data) as TreeModel;
     });
@@ -350,9 +351,12 @@ export class MainParameterManageComponent implements OnInit {
    */
   modalDOMS: HtmlDomTemplate;
   modalData;
+  newModalData;
   loadModal() {
     this._paramsManageService.editParamsModal({ name: 'SysParam' }).subscribe(r => {
-      this.modalDOMS = r.data.doms; this.modalData = r.data
+      this.modalDOMS = r.data.doms;
+      this.modalData = r.data;
+      this.newModalData = r.bindDataJson;
     })
   }
 
