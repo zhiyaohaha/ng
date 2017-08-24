@@ -241,13 +241,6 @@ export class MainParameterManageComponent implements OnInit {
     this.selectNode.description = this.treeNode.desc;
     this.selectNode.tags = this.tags;
     $event.tags = this.tags || "";
-    // let datas = this._util.JSONtoKV($event);
-    // let data = this._util.toJSON(this.modalData.value.bindDataJson);
-    // datas.map(r => {
-    //   data[r.key] = r.value;
-    // })
-    // this.modalData.value.bindId = data.id;
-    // this.modalData.value.bindDataJson = this._util.toJsonStr(data);
     //this.editAddMiddleVar($event);
     console.log("保存修改：", this.selectNode.JSONdata)
     this._paramsManageService.saveParams(this.selectNode.JSONdata).subscribe(res => {
@@ -268,15 +261,16 @@ export class MainParameterManageComponent implements OnInit {
     let id = $event.id;
     $event.parentId = id;
     $event.tags = this.tags ? this.tags.join(",") : "";
-    this.editAddMiddleVar($event);
+    //this.editAddMiddleVar($event);
+    console.log("$event", $event)
     console.log("添加参数：", this.modalData);
-    this._paramsManageService.addParams(this.modalData).subscribe(res => {
-      if (res.code == "0") {
-        this.openInfoMessage("", "操作成功");
-      } else {
-        this.openInfoMessage("出错啦", res.message);
-      }
-    });
+    // this._paramsManageService.addParams(this.modalData).subscribe(res => {
+    //   if (res.code == "0") {
+    //     this.openInfoMessage("", "操作成功");
+    //   } else {
+    //     this.openInfoMessage("出错啦", res.message);
+    //   }
+    // });
   }
 
   /**

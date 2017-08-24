@@ -29,7 +29,7 @@ export class BaseService {
     console.log("sign:", sign)
     //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;
     let params = new URLSearchParams();
-    params.set('data', this.util.toJsonStr(_params));
+    params.set('data', encodeURI(this.util.toJsonStr(_params)));
     params.set('sign', sign);
     params.set('timestamp', timestamp);
     console.log(params)
