@@ -1,4 +1,5 @@
 ﻿import { BaseTemplate } from "./BaseTemplate";
+import { SysParam } from "./SysParam";
 
 /**
   * API日志
@@ -37,8 +38,13 @@ export class SysAPILog extends BaseTemplate {
   callbackData : string;
 
   /**
+    * 状态编号
+    */
+  statusId : string;
+
+  /**
     * 状态
     */
-  status : string;
+  status : SysParam;
 
 }

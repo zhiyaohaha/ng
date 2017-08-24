@@ -12,6 +12,11 @@ export class HtmlFormBindTemplate {
   bindId : string;
 
   /**
+    * 绑定json数据
+    */
+  bindJsonData : string;
+
+  /**
     * Dom集合
     */
   doms : HtmlDomTemplate[];

@@ -1,17 +1,10 @@
-﻿/**
+﻿import { KeyValue } from "./KeyValue";
+import { IKeyValue } from "./IKeyValue";
+
+/**
   * 键值对
   * author sunpengfei
   */
-export class KVT<T> {
-
-  /**
-    * 键
-    */
-  key : string;
-
-  /**
-    * 值
-    */
-  value : T;
+export class KVT<TValue> extends KeyValue<string, TValue> implements IKeyValue<string, TValue> {
 
 }
