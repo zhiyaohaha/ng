@@ -260,7 +260,8 @@ export class MainParameterManageComponent implements OnInit {
    * 添加
    */
   onSubmitAddParams($event) {
-    $event.parentId = this.selectNode.JSONdata.id;
+    this.newModalData.parentId = this.selectNode.JSONdata.id;
+    this.newModalData.depth = this.selectNode.JSONdata.depth + 1;
     $event.tags = this.tags ? this.tags.join(",") : "";
     //this.editAddMiddleVar($event);
     console.log("$event", $event)
@@ -356,7 +357,7 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.editParamsModal({ name: 'SysParam' }).subscribe(r => {
       this.modalDOMS = r.data.doms;
       this.modalData = r.data;
-      this.newModalData = r.bindDataJson;
+      this.newModalData = this._util.toJsonStr(r.bindDataJson);
     })
   }
 
