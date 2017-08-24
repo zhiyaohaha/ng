@@ -210,6 +210,7 @@ export class MainParameterManageComponent implements OnInit {
       }
     }
     console.log("tags:11", tags)
+    this.selectNode.JSONdata.tags = tags;
     this.treeNode.label = tags;
     this.treeNode.desc = this.selectNode.description;
     this.treeNode.code = this.selectNode.code;
@@ -224,6 +225,7 @@ export class MainParameterManageComponent implements OnInit {
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = arr;
+    this.selectNode.JSONdata.tags = arr;
     console.log("chipschange:", this.tags);
   }
 
@@ -236,28 +238,22 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    console.log($event)
-    //console.log(this.treeNode)
-    this.selectNode.value = this.treeNode.value;
+    this.selectNode.value = this.selectNode.JSONdata.name;
     this.selectNode.description = this.treeNode.desc;
     this.selectNode.tags = this.tags;
-    //console.log(this.selectNode)
-    $event.tags = this.tags ? this.tags.join(",") : "";
-    let datas = this._util.JSONtoKV($event);
-    // var bind = new HtmlFormBindTemplateData();
-    // bind.name = customized.SysParam;
-    // bind.bindId = $event.id;
-    // bind.datas = datas;
-    let data = JSON.parse(this.modalData.value.bindJsonData);
-    datas.map(r => {
-      data[r.key] = r.value;
-    })
-    this.modalData.value.bindId = data.id;
-    this.modalData.value.bindJsonData = JSON.stringify(data);
-    console.log("保存修改：", this.modalData)
-    this._paramsManageService.saveParams(this.modalData).subscribe(res => {
+    $event.tags = this.tags || "";
+    // let datas = this._util.JSONtoKV($event);
+    // let data = this._util.toJSON(this.modalData.value.bindDataJson);
+    // datas.map(r => {
+    //   data[r.key] = r.value;
+    // })
+    // this.modalData.value.bindId = data.id;
+    // this.modalData.value.bindDataJson = this._util.toJsonStr(data);
+    //this.editAddMiddleVar($event);
+    console.log("保存修改：", this.selectNode.JSONdata)
+    this._paramsManageService.saveParams(this.selectNode.JSONdata).subscribe(res => {
       if (res.code == "0") {
-        console.log(this.filteredData)
+        alert(res.message);
       } else {
         this.openInfoMessage("出错啦", res.message);
       }
@@ -269,22 +265,32 @@ export class MainParameterManageComponent implements OnInit {
    * 添加
    */
   onSubmitAddParams($event) {
-    console.log("添加参数：", $event)
     let id = $event.id;
     $event.parentId = id;
     $event.tags = this.tags ? this.tags.join(",") : "";
-    let datas = this._util.JSONtoKV($event);
-    var bind = new HtmlFormBindTemplateData();
-    bind.name = customized.SysParam;
-    bind.bindId = "";
-    bind.datas = datas;
-    this._paramsManageService.addParams(bind).subscribe(res => {
+    this.editAddMiddleVar($event);
+    console.log("添加参数：", this.modalData);
+    this._paramsManageService.addParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         this.openInfoMessage("", "操作成功");
       } else {
         this.openInfoMessage("出错啦", res.message);
       }
     });
+  }
+
+  /**
+   * 修改和添加的中间变量转换
+   * @param  
+   */
+  editAddMiddleVar($event) {
+    let datas = this._util.JSONtoKV($event);
+    let data = this._util.toJSON(this.modalData.bindDataJson);
+    datas.map(r => {
+      data[r.key] = r.value;
+    })
+    this.modalData.bindId = data.id;
+    this.modalData.bindDataJson = this._util.toJsonStr(data);
   }
 
   /**
@@ -301,52 +307,41 @@ export class MainParameterManageComponent implements OnInit {
    */
   rowClickEvent($event) {
     this.clickNode = $event.row.id;
-
   }
 
   /**
    * 当打开sidenav触发的事件
    */
   sidenavOpen() {
-    console.log(`点击的Id是${this.clickNode}`)
-    let treeData = this.filteredData.filter(item => item.id == this.clickNode);
-    console.log("treeData:", treeData);
-    this.tree = this.toTreeModel(treeData[0]) as TreeModel;
-    console.log("this.tree:", this.tree)
+    console.log(`点击的Id是${this.clickNode}`);
+    this._paramsManageService.getEditParams({ name: customized.SysParam, id: this.clickNode }).subscribe(r => {
+      this.tree = this.toTreeModel(r.data) as TreeModel;
+    });
   }
 
   /**
-   * 关闭sidenav
+   * 关闭sidenav 清空数据
    */
   closeEnd() {
-    this.treeNode = {
-      code: ' ',
-      value: '',
-      desc: '',
-      label: []
-    }
     this.selectNode = null;
-    console.log(this.treeNode)
+    this.tree = null;
+    console.log("关闭sildenav", this.treeNode)
   }
 
 
   //树数据生成
   toTreeModel(data) {
-    let treeData = {};
-    treeData["code"] = data.code;
-    treeData["value"] = data.name;
-    treeData["name"] = data.name;
-    treeData["id"] = data.id;
-    treeData["parentId"] = data.parentId;
+    let treeData = {
+      JSONdata: data,
+      value: data.name,
+      settings: { rightMenu: false }
+    };
     if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
       for (var i = 0; i < data.childrens.length; i++) {
         treeData["children"].push(this.toTreeModel(data.childrens[i]));
       }
     }
-    treeData["description"] = data.description;
-    treeData["tags"] = data.tags;
-    treeData["settings"] = { rightMenu: false };
     return treeData;
   }
 
@@ -356,7 +351,9 @@ export class MainParameterManageComponent implements OnInit {
   modalDOMS: HtmlDomTemplate;
   modalData;
   loadModal() {
-    this.http.get("/api/Customized/GetConfig", { name: 'SysParam' }).subscribe(r => { this.modalDOMS = r.data.value.doms; this.modalData = r.data });
+    this._paramsManageService.editParamsModal({ name: 'SysParam' }).subscribe(r => {
+      this.modalDOMS = r.data.doms; this.modalData = r.data
+    })
   }
 
   messages: any[] = [];

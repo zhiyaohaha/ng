@@ -32,7 +32,7 @@ export class ConvertUtil {
      * 字符串转JSON
      * @param str 
      */
-    public toT<T>(str: string): T {
+    public toJSON(str: string) {
         return JSON.parse(str);
     }
 
@@ -41,7 +41,7 @@ export class ConvertUtil {
      * @param t 
      */
     public toJsonStr<T>(t: T): string {
-        return JSON.stringify(t);
+        return t ? JSON.stringify(t) : "";
     }
 
     /**

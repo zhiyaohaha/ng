@@ -1,3 +1,4 @@
+import { globalUrl } from './common/global.config';
 import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { App } from './pages/app';
 import { WebSocketService } from './services/share/web-socket.service';
@@ -21,13 +22,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.wsService.createObservableSocket("ws://localhost:51494/ws").subscribe(
+    this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
       data => console.log(data),
       err => console.log(err),
       () => console.log("ws结束！")
     )
     setInterval(() => {
-      this.wsService.sendMesssage("asdfasdfdf21314564");
+      //this.wsService.sendMesssage("asdfasdfdf21314564");
     }, 2000)
   }
 

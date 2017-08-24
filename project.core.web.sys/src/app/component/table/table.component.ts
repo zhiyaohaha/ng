@@ -1,10 +1,10 @@
-import { globalVar } from './../../common/global.config';
 import { CommonModule } from '@angular/common';
 import { ITdDataTableColumn, CovalentDataTableModule, CovalentPagingModule } from '@covalent/core';
 import {
   NgModule, Component, OnInit, Input, Output, ViewChild, ViewChildren,
   ContentChildren, ElementRef, QueryList, EventEmitter, Renderer2, TemplateRef, ContentChild,
 } from '@angular/core';
+import { globalVar } from './../../common/global.config';
 
 @Component({
   selector: 'app-table',
@@ -14,11 +14,11 @@ import {
 
 export class TableComponent implements OnInit {
 
-  @Input() data;
-  @Input() columns: ITdDataTableColumn[];
-  @Input() totals;
-  @Input() pageSizes;
-  @Input() pageLinkCount;
+  @Input() data;//表格数据内容
+  @Input() columns: ITdDataTableColumn[];//表头
+  @Input() totals; //总条数
+  @Input() pageSizes = globalVar.pageSizes;//可选的每页条数
+  @Input() pageLinkCount = globalVar.pageLinkCount;//显示多少页码
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
   @Output() rowSelect: EventEmitter<any> = new EventEmitter();
   @Output() change: EventEmitter<any> = new EventEmitter();

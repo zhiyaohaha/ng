@@ -22,9 +22,6 @@ export class BaseService {
    * @param options 请求参数
    */
   private setAuth<T>(_params: T): any {
-    // let params: string;
-    // let temp: any = {};
-    // temp.data = _params;
     let timestamp = this.util.timestamp();
     let sign = this.util.toMd5(this.util.toJsonStr(_params) + timestamp + this.private_key);
     //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;

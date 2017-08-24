@@ -14,13 +14,13 @@
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" [disabled]="item.ui.isDisabled">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled">
                                         </md-input-container>
                                         <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.isDisabled}}">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.isDisabled}}">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" [disabled]="item.ui.isDisabled"></textarea>
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">
@@ -41,7 +41,7 @@
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
                                         <md-list-item *ngSwitchCase="'tags'">
-                                            <free-chip-group [chips]="treeNode.label" placeholder="回车添加标签" (chipsChange)="chipsChange($event)"></free-chip-group>
+                                            <free-chip-group [chips]="treeNode.label" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
                                             <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
                                         </md-list-item>
                                     </div>
@@ -119,7 +119,7 @@
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
                                         <md-list-item *ngSwitchCase="'tags'">
-                                            <free-chip-group [chips]="" placeholder="回车添加标签" (chipsChange)="chipsChange($event)"></free-chip-group>
+                                            <free-chip-group [chips]="" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
                                             <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
                                         </md-list-item>
                                     </div>
@@ -140,7 +140,7 @@
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
     </div>
 
-    <app-table [data]="filteredData" [columns]="columns" [pageSizes]="pageSizes" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
     <button fButton (click)="openInfoMessage('','123')">消息通知</button>
     <free-notification [messages]="messages" [delay]="5000" theme="success"></free-notification>

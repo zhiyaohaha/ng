@@ -20,6 +20,9 @@ export class ParamsManageService {
         return this.service.get("/api/Customized/List", param);
     }
 
+    /**
+     * 修改参数
+     */
     public saveParams(param) {
         return this.service.post("/api/Customized/Update", param);
     }
@@ -29,6 +32,20 @@ export class ParamsManageService {
      */
     public addParams(param) {
         return this.service.post("/api/Customized/Add", param);
+    }
+
+    /**
+     * 获取修改参数模版
+     */
+    public editParamsModal(param) {
+        return this.service.get("/api/Customized/GetConfig", param);
+    }
+
+    /**
+     * 获取修改参数模版的详细数据
+     */
+    public getEditParams(param) {
+        return this.service.get("/api/Customized/Detail", param);
     }
 
 }
