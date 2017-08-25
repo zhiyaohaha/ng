@@ -1,6 +1,68 @@
 <md-sidenav-container [@fadeInUpState]="'active'">
-    <md-toolbar>个人中心</md-toolbar>
-    <md-list>
+    <md-toolbar>基础资料</md-toolbar>
+    <div class="container-fluid">
+        <div class="row basic-container">
+            <div class="col-lg-4">
+                <md-card>
+                    <div class="person-head">
+                        <img src="https://sfault-avatar.b0.upaiyun.com/245/864/2458645307-59701d16778bd_huge256" alt="头像" class="person-img">
+                        <div>
+                            <button md-raised-button>点击更换</button>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled login-info">
+                        <li>
+                            <p>本次登录</p>
+                            <span>2017年8月25日 10:32:57</span>
+                            <p>北京市海淀区</p>
+                            <span>windows-10 Firefox</span>
+                        </li>
+                        <li>
+                            <p>上次登录</p>
+                            <span>2017年8月25日 10:32:57</span>
+                            <p>北京市海淀区</p>
+                            <span>windows-10 Firefox</span>
+                        </li>
+                    </ul>
+                </md-card>
+            </div>
+            <div class="col-lg-8">
+                <md-card class="container-right">
+                    <div class="form-group">
+                        <timi-input labelName="账号" disabled="true" placeholder="" value="无敌小猪"></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="姓名" disabled="true" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="所在组" disabled="true" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="职位" disabled="true" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="角色" disabled="true" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="身份证" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="手机" placeholder=""></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="邮箱" placeholder="" pattern="email" (blur)="onBlur($event)" errorTips="请输入正确的邮箱"></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="QQ" placeholder="" (blur)="onBlur($event)"></timi-input>
+                    </div>
+                    <div class="form-group">
+                        <timi-input labelName="微信" placeholder="" (blur)="onBlur($event)"></timi-input>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+    </div>
+    <md-list style="display:none;">
         <md-list-item>
             <div>
                 <i></i>

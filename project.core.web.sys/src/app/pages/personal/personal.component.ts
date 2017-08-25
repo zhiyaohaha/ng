@@ -14,4 +14,8 @@ export class PersonalComponent implements OnInit {
   ngOnInit() {
   }
 
+  onBlur($event) {
+    console.log($event);
+  }
+
 }

@@ -1,13 +1,32 @@
 :host /deep/ {
-    md-list {
-        md-list-item {
-            border-bottom: 1px solid #000000;
-            i {
-                width: 30px;
-                height: 30px;
+    .basic-container {
+        padding: 20px 0;
+    }
+    .container-right {
+        padding: 20px 0
+    }
+    .person-head {
+        text-align: center;
+        padding: 20px 0;
+        .person-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+    }
+    .login-info {
+        padding: 20px 40px;
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #E0DADA;
+            &:last-child {
+                border-bottom: none;
             }
-            .mat-list-item-content {
-                height: 80px !important;
+            p {
+                color: #333;
+            }
+            span {
+                color: #666;
             }
         }
     }

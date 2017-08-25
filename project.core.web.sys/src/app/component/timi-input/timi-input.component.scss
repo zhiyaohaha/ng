@@ -1,0 +1,52 @@
+:host /deep/ {
+    label {
+        display: inline-block;
+        width: 100px;
+        text-align: end;
+    }
+    .timi-input-wrap {
+        display: inline-block;
+        position: relative;
+        width: 300px;
+    }
+    .timi-input {
+        height: 35px;
+        line-height: 35px;
+        border-width: 0 0 1px;
+        background-color: transparent;
+        border-color: #fff;
+        color: #999;
+        width: 100%;
+        outline: none;
+        text-decoration: none;
+        &:focus+.timi-span-line {
+            width: 100%;
+            left: 0;
+        }
+    }
+    .timi-input-error {
+        color: #cf000d;
+        font-size: 12px;
+        position: absolute;
+        top: 28px;
+        display: none;
+    }
+    .timi-span-line {
+        display: block;
+        width: 0;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        background-color: #115d8e;
+        transition: all 0.2s linear;
+    }
+    .error {
+        .timi-input {
+            border-color: #cf000d !important;
+        }
+        .timi-input-error {
+            display: block !important;
+        }
+    }
+}
