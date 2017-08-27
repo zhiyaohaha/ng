@@ -9,6 +9,8 @@ import { fadeInUp } from '../../common/animations';
 })
 export class PersonalComponent implements OnInit {
 
+  personImg: string = 'https://sfault-avatar.b0.upaiyun.com/245/864/2458645307-59701d16778bd_huge256';
+
   constructor() { }
 
   ngOnInit() {

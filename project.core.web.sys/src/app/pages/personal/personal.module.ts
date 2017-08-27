@@ -5,12 +5,14 @@ import { PersonalRoutingModule } from './personal-routing.module';
 import { PersonalComponent } from '../personal/personal.component';
 import { MdSidenavModule, MdToolbarModule, MdListModule, MdButtonModule, MdCardModule, MdInputModule } from '@angular/material';
 import { TimiModule } from '../../component/timi-input/timi-input.component';
+import { CommonShareModule } from '../../common/share.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PersonalRoutingModule,
-    MdSidenavModule, MdToolbarModule, MdListModule, MdButtonModule, MdCardModule, MdInputModule,
+    CommonShareModule,
+    MdSidenavModule, MdToolbarModule, MdListModule, MdCardModule,
     TimiModule
   ],
   declarations: [PersonalComponent]
