@@ -6,7 +6,7 @@ import { DomRenderer } from '../../common/dom';
     selector: 'timi-input',
     template: `<label #label>{{labelName}}：</label>
                 <div #wrap class="timi-input-wrap">
-                    <input #input type="text" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false">
+                    <input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off">
                     <span class="timi-span-line"></span>
                     <span class="timi-input-error">{{errorTips}}</span>
                 </div>`,
@@ -15,6 +15,7 @@ import { DomRenderer } from '../../common/dom';
 })
 export class TimiInputComponent implements OnInit {
 
+    @Input() type: string = "text";
     @Input() labelWidth: string;
     @Input() labelName: string;
     @Input() value: string;
@@ -72,6 +73,9 @@ export class TimiInputComponent implements OnInit {
             case 'rate':
                 regexp = /^(([1-9]\d{0,2})|0)(\.\d{1,4})?$/;
                 break;
+            case 'password':
+                regexp = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+                break;
             default:
                 regexp = new RegExp(this.pattern, 'i');
         }
@@ -90,4 +94,4 @@ export class TimiInputComponent implements OnInit {
     exports: [TimiInputComponent]
 })
 
-export class TimiModule { }
+export class TimiInputModule { }

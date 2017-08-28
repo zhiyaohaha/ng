@@ -1,13 +1,17 @@
-<md-sidenav-container [@fadeInUpState]="'active'">
-    <md-toolbar>基础资料</md-toolbar>
+<md-sidenav-container [@fadeInState]="'active'">
     <div class="container-fluid">
+        <div class="timi-title">
+            基础资料
+        </div>
+        <div class="line"></div>
         <div class="row basic-container">
             <div class="col-lg-4">
                 <md-card>
                     <div class="person-head">
                         <img src="{{personImg}}" alt="头像" class="person-img">
                         <div>
-                            <button md-raised-button>点击更换</button><br>
+                            <!-- <button md-raised-button>点击更换<input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;"></button><br> -->
+                            <timi-file-uploader url="http://api.cpf360.com/api/file/upload" btnName="点击更换" (files)="onFilesChanges($event)" (success)="onSuccessItem($event)" allowFiles="image.*"></timi-file-uploader><br>
                             <span class="tipi-text">推荐尺寸：100*100</span>
                         </div>
                     </div>

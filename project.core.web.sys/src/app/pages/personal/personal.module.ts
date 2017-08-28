@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { PersonalRoutingModule } from './personal-routing.module';
 import { PersonalComponent } from '../personal/personal.component';
-import { MdSidenavModule, MdToolbarModule, MdListModule, MdButtonModule, MdCardModule, MdInputModule } from '@angular/material';
-import { TimiModule } from '../../component/timi-input/timi-input.component';
+import { MdSidenavModule, MdToolbarModule, MdListModule, MdCardModule, MdInputModule } from '@angular/material';
+import { TimiInputModule } from '../../component/timi-input/timi-input.component';
 import { CommonShareModule } from '../../common/share.module';
+import { TimiFileUploaderModule } from '../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { CommonShareModule } from '../../common/share.module';
     PersonalRoutingModule,
     CommonShareModule,
     MdSidenavModule, MdToolbarModule, MdListModule, MdCardModule,
-    TimiModule
+    TimiInputModule, TimiFileUploaderModule
   ],
   declarations: [PersonalComponent]
 })

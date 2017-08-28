@@ -43,10 +43,11 @@
     }
     .error {
         .timi-input {
-            border-color: #cf000d !important;
+            border-bottom-width: 2px;
+            border-color: #cf000d;
         }
         .timi-input-error {
-            display: block !important;
+            display: block;
         }
     }
 }

@@ -7,6 +7,7 @@ const childRoutes: Routes = [
   { path: 'main', loadChildren: '../main/main.module#MainModule' },
   { path: 'apidoc', loadChildren: '../apidoc/apidoc.module#ApidocModule' },
   { path: 'personal', loadChildren: '../personal/personal.module#PersonalModule' },
+  { path: 'updatePassword', loadChildren: '../update-password/update-password.module#UpdatePasswordModule' },
   { path: 'parameterManage', loadChildren: '../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule' },
   { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }

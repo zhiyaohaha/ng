@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInUp } from '../../common/animations';
+import { fadeInUp, fadeIn } from '../../common/animations';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.scss'],
-  animations: [fadeInUp]
+  animations: [fadeIn]
 })
 export class PersonalComponent implements OnInit {
 
@@ -15,6 +16,15 @@ export class PersonalComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  /**
+   * 上传头像
+   */
+  onFilesChanges($event) {
+    console.log($event);
+  }
+
+  onSuccessItem($event) { }
 
   onBlur($event) {
     console.log($event);

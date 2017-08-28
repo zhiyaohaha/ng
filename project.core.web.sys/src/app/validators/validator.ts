@@ -63,8 +63,18 @@ export function emailValidator(control: FormControl): any {
 export function passwordValidator(control: FormControl): any {
     let myreg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/;
     let valid = myreg.test(control.value);
-    console.log("passwordValidator校验结果是：" + valid);
     return valid ? null : { password: true };
+}
+
+/**
+ * 修改密码输入两次是否相同
+ * @param control 
+ */
+export function equalValidator(group: FormGroup): any {
+    let password: FormControl = group.get("password") as FormControl;
+    let confirm: FormControl = group.get("confirm") as FormControl;
+    let valid: boolean = (password.value === confirm.value);
+    return valid ? null : { equal: true };
 }
 
 /**

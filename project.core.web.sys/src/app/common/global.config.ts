@@ -10,7 +10,8 @@ export const globalVar = {
 
 export const customized = {
     SysParam: "SysParam",
-    SysArea: "SysArea"
+    SysArea: "SysArea",
+    SysParamDetail: "SysParamDetail"
 }
 
 export const globalUrl = {

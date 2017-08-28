@@ -316,7 +316,7 @@ export class MainParameterManageComponent implements OnInit {
    * 获取详细的参数
    */
   getDetailParams() {
-    this._paramsManageService.getEditParams({ name: customized.SysParam, id: this.clickNode }).subscribe(r => {
+    this._paramsManageService.getEditParams({ name: customized.SysParamDetail, id: this.clickNode }).subscribe(r => {
       this.tree = this.toTreeModel(r.data) as TreeModel;
     });
   }
