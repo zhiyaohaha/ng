@@ -14,13 +14,13 @@
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
                                         </md-input-container>
                                         <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.isDisabled}}">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled"></textarea>
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">
@@ -92,13 +92,13 @@
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false">
                                         </md-input-container>
                                         <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.isDisabled}}">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled"></textarea>
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">

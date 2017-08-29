@@ -196,17 +196,15 @@ export class MainParameterManageComponent implements OnInit {
   treeSelected($event): void {
     this.selectNode = $event.node.node;
     console.log("treeSelected:", this.selectNode);
-    let tags = [];
+    let _tags = [];
     if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
       this.tags = this.selectNode.JSONdata.tags;
-      console.log("1111111111111111", this.tags)
       for (var i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
-        tags.push({ "value": this.selectNode.JSONdata.tags[i], "delete": true });
+        _tags.push({ "value": this.selectNode.JSONdata.tags[i], "delete": true });
       }
     }
-    console.log("tags:11", tags)
-    this.selectNode.JSONdata.tags = tags;
-    this.treeNode.label = tags;
+    this.treeNode.label = _tags;
+    console.log("treelabe:", this.treeNode.label);
   }
   addChild(e) {
     console.log(e)
@@ -214,11 +212,9 @@ export class MainParameterManageComponent implements OnInit {
 
   chipsChange($event) {
     this.treeNode.label = $event;
-    console.log("chipschanges:", $event)
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = arr;
-    this.selectNode.JSONdata.tags = arr;
     console.log(this.selectNode);
     console.log("chipschange:", this.tags);
   }
@@ -232,23 +228,15 @@ export class MainParameterManageComponent implements OnInit {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    this.selectNode.tags = this.tags;
-    $event.tags = this.tags || "";
-    //this.editAddMiddleVar($event);
-    // let data = {
-    //   bindId: this.selectNode.JSONdata.id,
-    //   name: customized.SysParam,
-    //   bindDataJson: this.selectNode.JSONdata
-    // }
+    this.selectNode.JSONdata.tags = this.tags;
     this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
     this.modalData.bindId = this.selectNode.JSONdata.id;
     this.modalData.doms = "";
     console.log("保存修改：", this.modalData)
     this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
-        //this.selectNode.value = this.selectNode.JSONdata.name;
+        this.openAlert(res.message);
         this.getDetailParams();
-        alert(res.message);
       } else {
         this.openInfoMessage("出错啦", res.message);
       }
@@ -262,14 +250,13 @@ export class MainParameterManageComponent implements OnInit {
   onSubmitAddParams($event) {
     this.newModalData.parentId = this.selectNode.JSONdata.id;
     this.newModalData.depth = this.selectNode.JSONdata.depth + 1;
-    $event.tags = this.tags ? this.tags.join(",") : "";
+    this.newModalData.tags = this.tags ? this.tags.join(",") : "";
     //this.editAddMiddleVar($event);
-    console.log("$event", $event)
-    this._paramsManageService.addParams($event).subscribe(res => {
+    this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code == "0") {
-        this.openInfoMessage("", "操作成功");
+        this.openAlert("添加成功");
       } else {
-        this.openInfoMessage("出错啦", res.message);
+        this.openAlert("添加失败");
       }
     });
   }
@@ -355,9 +342,12 @@ export class MainParameterManageComponent implements OnInit {
   newModalData;
   loadModal() {
     this._paramsManageService.editParamsModal({ name: 'SysParam' }).subscribe(r => {
-      this.modalDOMS = r.data.doms;
-      this.modalData = r.data;
-      this.newModalData = this._util.toJsonStr(r.bindDataJson);
+      if (r.code == "0") {
+        this.modalDOMS = r.data.doms;
+        this.modalData = r.data;
+        this.newModalData = this._util.toJSON(r.data.bindDataJson);
+        console.log("this.newdata", this.newModalData);
+      }
     })
   }
 
@@ -367,6 +357,15 @@ export class MainParameterManageComponent implements OnInit {
     this.messages.push({
       title: title,
       content: message
+    });
+  }
+
+  openAlert(msg): void {
+    this._dialogService.openAlert({
+      message: msg,
+      disableClose: false,
+      viewContainerRef: this._viewContainerRef,
+      closeButton: '确定'
     });
   }
 

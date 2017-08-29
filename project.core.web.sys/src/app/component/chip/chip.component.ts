@@ -130,7 +130,8 @@ export class ChipComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.group) {
-      this.group.removeGroup(this);
+      this.value = '';
+      //this.group.removeGroup(this);
     }
   }
 
