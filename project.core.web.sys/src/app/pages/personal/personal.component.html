@@ -34,34 +34,34 @@
             <div class="col-lg-8">
                 <md-card class="container-right">
                     <div class="form-group">
-                        <timi-input labelName="账号" disabled="true" placeholder="" value="无敌小猪"></timi-input>
+                        <timi-input labelName="账号" disabled="true" placeholder="" value="{{personInfo.accounts[0]}}"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="姓名" disabled="true" placeholder=""></timi-input>
+                        <timi-input labelName="姓名" disabled="true" placeholder="" value="{{personInfo.name}}"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="所在组" disabled="true" placeholder=""></timi-input>
+                        <timi-input labelName="所在组" disabled="true" placeholder="" value="{{personInfo._groups}}"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="职位" disabled="true" placeholder=""></timi-input>
+                        <timi-input labelName="职位" disabled="true" placeholder="" value="{{personInfo._job.name}}"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="角色" disabled="true" placeholder=""></timi-input>
+                        <timi-input labelName="角色" disabled="true" placeholder="" value="{{personInfo._role.name}}"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="身份证" placeholder="" pattern="card" errorTips="请正确输入身份证号码"></timi-input>
+                        <timi-input labelName="身份证" placeholder="" pattern="card" value="{{personInfo.idCard}}" errorTips="请正确输入身份证号码"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="手机" placeholder="" pattern="tel" errorTips="请输入正确的手机号码"></timi-input>
+                        <timi-input labelName="手机" placeholder="" pattern="tel" value="{{personInfo.mobilePhone}}" errorTips="请输入正确的手机号码"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="邮箱" placeholder="" pattern="email" (blur)="onBlur($event)" errorTips="请输入正确的邮箱"></timi-input>
+                        <timi-input labelName="邮箱" placeholder="" pattern="email" value="{{personInfo.email}}" (blur)="onBlur($event)" errorTips="请输入正确的邮箱"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="QQ" placeholder="" (blur)="onBlur($event)"></timi-input>
+                        <timi-input labelName="QQ" placeholder="" value="{{personInfo.qq}}" (blur)="onBlur($event)"></timi-input>
                     </div>
                     <div class="form-group">
-                        <timi-input labelName="微信" placeholder="" (blur)="onBlur($event)"></timi-input>
+                        <timi-input labelName="微信" placeholder="" value="{{personInfo.wechat}}" (blur)="onBlur($event)"></timi-input>
                     </div>
                 </md-card>
             </div>

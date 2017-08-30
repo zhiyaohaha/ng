@@ -1,3 +1,4 @@
+import { PersonalService } from './../../services/personal/personal.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -16,6 +17,7 @@ import { TimiFileUploaderModule } from '../../component/timi-ng2-file-uploader/t
     MdSidenavModule, MdToolbarModule, MdListModule, MdCardModule,
     TimiInputModule, TimiFileUploaderModule
   ],
-  declarations: [PersonalComponent]
+  declarations: [PersonalComponent],
+  providers: [PersonalService]
 })
 export class PersonalModule { }
