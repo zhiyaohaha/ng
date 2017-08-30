@@ -50,7 +50,7 @@ export class TimiInputComponent implements OnInit {
      * @param  
      */
     onBlur($event) {
-        if (!this.require) return;
+        if (!$event.target.value) return;
         let regexp: any;
         switch (this.pattern) {
             case 'tel':
