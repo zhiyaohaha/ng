@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { ConvertUtil } from './../../common/convert-util';
 import { Component, OnInit } from '@angular/core';
 import { fadeInUp, fadeIn, flyInOut } from './../../common/animations';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -14,7 +16,7 @@ export class UpdatePasswordComponent implements OnInit {
 
   passwordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _service: BaseService) {
+  constructor(private fb: FormBuilder, private _service: BaseService, private _util: ConvertUtil, private router: Router) {
     this.passwordForm = fb.group({
       oldPassword: ["", [Validators.required]],
       passwordGroup: fb.group({
@@ -28,9 +30,15 @@ export class UpdatePasswordComponent implements OnInit {
 
   onSubmit() {
     if (this.passwordForm.valid) {
-      this._service.post('/api/Loginer/RePassword', this.passwordForm.value).subscribe(r =>
-        console.log(r)
-      );
+      let obj = { oldPassword: this.passwordForm.value.oldPassword, newPassword: this.passwordForm.value.passwordGroup.password };
+      this._service.post('/api/Loginer/RePassword', obj).subscribe(r => {
+        if (r == "0") {
+          alert("修改成功");
+          this.router.navigateByUrl("/login");
+        } else {
+          alert(r.message);
+        }
+      });
     }
   }
 

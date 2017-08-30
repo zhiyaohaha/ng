@@ -32,7 +32,9 @@ export class PersonalComponent implements OnInit {
     console.log($event);
   }
 
-  onSuccessItem($event) { }
+  onSuccessItem($event) {
+    console.log($event)
+  }
 
   onBlur($event) {
     console.log($event);

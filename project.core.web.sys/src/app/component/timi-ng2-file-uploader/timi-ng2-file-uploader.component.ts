@@ -30,8 +30,8 @@ export class TimiFileUploaderComponent implements OnInit {
         this.uploader = new FileUploader({
             url: this.url,
             method: "POST",
-            allowedFileType: this.allowFiles.split(",")
-            // autoUpload: true
+            // allowedFileType: this.allowFiles.split(","),
+            autoUpload: true
         });
     }
 
@@ -41,7 +41,7 @@ export class TimiFileUploaderComponent implements OnInit {
         let timestamp = this.util.timestamp();
         let sign = this.util.toMd5(timestamp + globalUrl.private_key);
         this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }];
-        this.uploader.uploadAll();
+        //this.uploader.uploadAll();
 
         let _self = this;
 
