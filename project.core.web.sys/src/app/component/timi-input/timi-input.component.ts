@@ -22,6 +22,7 @@ export class TimiInputComponent implements OnInit {
     @Input() inputWidth: string;
     @Input() placeholder: string;
     @Input() disabled: boolean;
+    @Input() require: boolean;
     @Input() pattern: string;
     @Input() errorTips: string;
 
@@ -49,6 +50,7 @@ export class TimiInputComponent implements OnInit {
      * @param  
      */
     onBlur($event) {
+        if (!this.require) return;
         let regexp: any;
         switch (this.pattern) {
             case 'tel':
