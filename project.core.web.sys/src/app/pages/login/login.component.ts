@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
       this.logining = true;
       let loginInfo = { "account": account, "password": password };
       this.loginService.login(loginInfo).subscribe(res => {
+        console.log(res);
         if (res.code == "0") {
           this.router.navigateByUrl('/main');
         } else {

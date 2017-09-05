@@ -1,10 +1,11 @@
 .search-ul {
     padding: 10px;
     overflow: hidden;
+    float: left;
     li {
         list-style: none;
         float: left;
-        min-width: 200px;
+        margin-left: 10px;
         md-select {
             position: relative;
             bottom: -25px;

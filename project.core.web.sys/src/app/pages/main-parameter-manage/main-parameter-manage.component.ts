@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataSource } from '@angular/cdk';
@@ -43,6 +44,11 @@ export class MainParameterManageComponent implements OnInit {
     label: []
   }
   tags: string[];
+
+  /**
+   * 区分外部的添加和滑块里面的添加
+   */
+  isNew: boolean;
 
   /**
    * 下拉框值
@@ -145,7 +151,6 @@ export class MainParameterManageComponent implements OnInit {
       filters: null,
       name: customized.SysParam
     }
-    console.log(this.listparam);
     this.getParamsList(this.listparam);
   }
 
@@ -176,14 +181,14 @@ export class MainParameterManageComponent implements OnInit {
     private _tableSearch: TableSearch,
     private _paramsManageService: ParamsManageService,
     private _util: ConvertUtil,
-    private http: BaseService
+    private http: BaseService,
+    private router: Router
   ) {
 
   }
   ngOnInit() {
 
     //this.loadData();
-
     this.getParamsList(this.listparam);
 
     this.loadModal();
@@ -236,7 +241,8 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         this.openAlert(res.message);
-        this.getDetailParams();
+        //this.getDetailParams();
+        this.getParamsList(this.listparam);
       } else {
         this.openInfoMessage("出错啦", res.message);
       }
@@ -245,16 +251,33 @@ export class MainParameterManageComponent implements OnInit {
   }
 
   /**
-   * 添加
+   * 页面上搜索边的添加
+   */
+  newAdd() {
+    this.isNew = true;
+  }
+
+  /**
+   * 滑块里面的添加
    */
   onSubmitAddParams($event) {
-    this.newModalData.parentId = this.selectNode.JSONdata.id;
-    this.newModalData.depth = this.selectNode.JSONdata.depth + 1;
-    this.newModalData.tags = this.tags ? this.tags.join(",") : "";
-    //this.editAddMiddleVar($event);
+    let arr = [];
+    let data = this._util.toJSON(this.newModalData.bindDataJson);
+    for (let key in $event) {
+      arr.push(key);
+    }
+    arr.forEach((value, index, arry) => {
+      data[value] = $event[value];
+    })
+    data.id = "";
+    data.description = $event.description;
+    data.parentId = this.selectNode.JSONdata.id;
+    data.depth = this.selectNode.JSONdata.depth + 1;
+    this.newModalData.bindDataJson = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code == "0") {
         this.openAlert("添加成功");
+        this.getDetailParams();
       } else {
         this.openAlert("添加失败");
       }
@@ -262,17 +285,28 @@ export class MainParameterManageComponent implements OnInit {
   }
 
   /**
-   * 修改和添加的中间变量转换
-   * @param  
+   * 确定新增
    */
-  editAddMiddleVar($event) {
-    let datas = this._util.JSONtoKV($event);
-    let data = this._util.toJSON(this.modalData.bindDataJson);
-    datas.map(r => {
-      data[r.key] = r.value;
+  onSubmitNewAdd($event) {
+    let arr = [];
+    let data = this._util.toJSON(this.newModalData.bindDataJson);
+    for (let key in $event) {
+      arr.push(key);
+    }
+    arr.forEach((value, index, arry) => {
+      data[value] = $event[value];
     })
-    this.modalData.bindId = data.id;
-    this.modalData.bindDataJson = this._util.toJsonStr(data);
+    data.id = "";
+    data.description = $event.description;
+    data.parentId = "";
+    this.newModalData.bindDataJson = this._util.toJsonStr(data);
+    this._paramsManageService.addParams(this.newModalData).subscribe(res => {
+      if (res.code == "0") {
+        this.openAlert("添加成功");
+      } else {
+        this.openAlert("添加失败");
+      }
+    });
   }
 
   /**
@@ -289,14 +323,15 @@ export class MainParameterManageComponent implements OnInit {
    */
   rowClickEvent($event) {
     this.clickNode = $event.row.id;
+    this.getDetailParams();
   }
 
   /**
    * 当打开sidenav触发的事件
    */
   sidenavOpen() {
-    console.log(`点击的Id是${this.clickNode}`);
-    this.getDetailParams();
+    console.log(`当前Id是${this.clickNode}`);
+    // this.getDetailParams();
   }
 
   /**
@@ -304,7 +339,7 @@ export class MainParameterManageComponent implements OnInit {
    */
   getDetailParams() {
     this._paramsManageService.getEditParams({ name: customized.SysParamDetail, id: this.clickNode }).subscribe(r => {
-      this.tree = this.toTreeModel(r.data) as TreeModel;
+      if (r.code == "0" && r.data) this.tree = this.toTreeModel(r.data) as TreeModel;
     });
   }
 
@@ -314,6 +349,7 @@ export class MainParameterManageComponent implements OnInit {
   closeEnd() {
     this.selectNode = null;
     this.tree = null;
+    this.isNew = false;
     console.log("关闭sildenav", this.treeNode)
   }
 
@@ -345,7 +381,7 @@ export class MainParameterManageComponent implements OnInit {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
-        this.newModalData = this._util.toJSON(r.data.bindDataJson);
+        this.newModalData = r.data;
         console.log("this.newdata", this.newModalData);
       }
     })

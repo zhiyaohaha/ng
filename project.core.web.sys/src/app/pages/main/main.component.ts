@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { fadeInUp } from "../../common/animations";
+import { MdSnackBar } from "@angular/material";
+import { fadeIn } from './../../common/animations';
 import { LoginOutService } from '../../services/loginOut-service/loginOut.service';
 
 import { FileUploader } from 'ng2-file-upload';
@@ -13,7 +14,7 @@ import { globalUrl } from '../../common/global.config';
   selector: 'app-root',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  animations: [fadeInUp],
+  animations: [fadeIn],
   providers: [LoginOutService]
 })
 export class MainComponent implements OnInit {
@@ -22,7 +23,7 @@ export class MainComponent implements OnInit {
   // @HostBinding('style.display') display = 'block';
   imgSrc: any[];
 
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService) { }
+  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, public snack: MdSnackBar) { }
 
   ngOnInit() {
     this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
@@ -37,7 +38,11 @@ export class MainComponent implements OnInit {
     }, 1000)
   }
   sendMsg() {
-    this.wsService.sendMesssage("asdfasdfdf21314564");
+    //this.snack.open("哈哈");
+    setTimeout(() => {
+      this.snack.open("嘿嘿");
+    }, 2000);
+    //this.wsService.sendMesssage("asdfasdfdf21314564");
   }
 
   loginOut() {
@@ -124,6 +129,8 @@ export class MainComponent implements OnInit {
   renameFile(id, name) {
     this.http.post("/api/file/rename", { key: id, value: name }).subscribe(r => console.log(r));
   }
+
+
 
 
 }

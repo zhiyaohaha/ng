@@ -1,10 +1,13 @@
+import { Observable } from 'rxjs/Rx';
 import { CommonModule } from '@angular/common';
 import { ConvertUtil } from './../common/convert-util';
 import { JsonResult } from './models/jsonResult';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptionsArgs, RequestOptions, Headers, URLSearchParams } from '@angular/http';
+import { environment } from './../../environments/environment';
 
 import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import { globalUrl } from '../common/global.config';
 
@@ -12,7 +15,7 @@ import { globalUrl } from '../common/global.config';
 export class BaseService {
 
   protected private_key = globalUrl.private_key;
-  private urlPrefix = globalUrl.baseUrl;
+  private urlPrefix = environment.apiURL;
 
   constructor(private http: Http, private util: ConvertUtil, private router: Router) { }
 
@@ -23,13 +26,15 @@ export class BaseService {
    */
   private setAuth<T>(_params: T): any {
     let timestamp = this.util.timestamp();
-    console.log('参数：', this.util.toJsonStr(_params));
-    console.log("time:", timestamp);
-    let sign = this.util.toMd5(this.util.toJsonStr(_params).replace(/\+/g, " ") + timestamp + this.private_key);
-    console.log("sign:", sign)
-    //let paramsString = "data=" + this.util.toJsonStr(temp.data) + "&sign=" + temp.sign + "&timestamp=" + temp.timestamp;
+    let str;
+    if (typeof _params !== "string") {
+      str = this.util.toJsonStr(_params);
+    } else {
+      str = _params;
+    }
+    let sign = this.util.toMd5(str.replace(/\+/g, " ") + timestamp + this.private_key);
     let params = new URLSearchParams();
-    params.set('data', this.util.toJsonStr(_params));
+    params.set('data', str);
     params.set('sign', sign);
     params.set('timestamp', timestamp);
     console.log(params)
@@ -54,15 +59,10 @@ export class BaseService {
    */
   public post<T>(url: string, params?: object) {
     let options = new RequestOptions({ "withCredentials": true });
-    let callback = this.http.post(this.urlPrefix + url, this.setAuth(params), options).map(res => res.json()).filter(r => {
-      if (r.code == "NeedLogin") {
-        this.NeedLogin();
-        return false;
-      } else {
-        return true;
-      }
-    });
-    return callback;
+    return this.http.post(this.urlPrefix + url, this.setAuth(params), options)
+      .map(res => this.extractData(res))
+      .filter(r => this.NeedLogin(r))
+      .catch(this.handleError);
   }
 
   /**
@@ -72,22 +72,42 @@ export class BaseService {
    */
   public get<T>(url: string, param?: any) {
     let option = this.setAuthGet(param);
-    let callback = this.http.get(this.urlPrefix + url, {
+    return this.http.get(this.urlPrefix + url, {
       params: option,
       withCredentials: true
-    }).map(res => res.json()).filter(r => {
-      if (r.code == "NeedLogin") {
-        this.NeedLogin();
-        return false;
-      } else {
-        return true;
-      }
-    });
-    return callback;
+    }).map(res => this.extractData(res))
+      .filter(r => this.NeedLogin(r))
+      .catch(this.handleError);
   }
 
-  private NeedLogin() {
-    this.router.navigateByUrl("/login");
+  /**
+   * 格式化数据
+   */
+  private extractData(res) {
+    let body = res.json();
+    return body || {};
+  }
+
+  /**
+   * 错误handler
+   */
+  private handleError(error: any) {
+    console.log(error)
+    let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : `Server error`;
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+
+  /**
+   * 重新登录
+   */
+  private NeedLogin(r) {
+    if (r.code == "NeedLogin") {
+      this.router.navigateByUrl("/login");
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

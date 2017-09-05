@@ -12,7 +12,6 @@ import { MainParameterManageComponent } from './main-parameter-manage.component'
 import { ButtonModule } from './../../component/button/button.directive';
 import { TreeModule } from '../../../../node_modules/ng2-tree';
 import { ChipModule } from '../../component/chip/chip.component';
-import { NotificationModule } from '../../component/notification/notification.component';
 import { SearchFormModule } from '../../component/search-form/searchform.component';
 import { TableModule } from '../../component/table/table.component';
 
@@ -23,7 +22,7 @@ import { TableModule } from '../../component/table/table.component';
     MainParameterManageRoutingModule,
     MdInputModule, MdIconModule, MdSelectModule, MdButtonModule, MdSidenavModule, MdDatepickerModule, MdChipsModule, MdTabsModule,
     CovalentPagingModule, CovalentChipsModule,
-    TreeModule, NotificationModule,
+    TreeModule,
     ButtonModule,
     ChipModule,
     SearchFormModule,

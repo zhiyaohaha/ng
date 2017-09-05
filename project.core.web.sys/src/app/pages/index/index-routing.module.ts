@@ -9,6 +9,8 @@ const childRoutes: Routes = [
   { path: 'personal', loadChildren: '../personal/personal.module#PersonalModule' },
   { path: 'updatePassword', loadChildren: '../update-password/update-password.module#UpdatePasswordModule' },
   { path: 'parameterManage', loadChildren: '../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule' },
+  { path: 'setting-menu', loadChildren: '../setting-menu/setting-menu.module#SettingMenuModule' },
+  { path: 'onepage', loadChildren: '../onepage/onepage.module#OnepageModule' },
   { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }
 ];

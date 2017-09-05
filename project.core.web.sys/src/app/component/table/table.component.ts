@@ -1,5 +1,6 @@
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ITdDataTableColumn, CovalentDataTableModule, CovalentPagingModule } from '@covalent/core';
+import { ITdDataTableColumn, CovalentDataTableModule, CovalentPagingModule, IPageChangeEvent } from '@covalent/core';
 import {
   NgModule, Component, OnInit, Input, Output, ViewChild, ViewChildren,
   ContentChildren, ElementRef, QueryList, EventEmitter, Renderer2, TemplateRef, ContentChild,
@@ -23,7 +24,7 @@ export class TableComponent implements OnInit {
   @Output() rowSelect: EventEmitter<any> = new EventEmitter();
   @Output() change: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor(private router: Router) { }
   ngOnInit() { }
 
   /**
@@ -43,9 +44,18 @@ export class TableComponent implements OnInit {
   /**
    * 翻页
    */
-  page($event) {
-    this.change.emit($event);
+  page(pagingEvent: IPageChangeEvent) {
+    //this.setPagesizes(this.router.url, pagingEvent.pageSize);
+    this.change.emit(pagingEvent);
   }
+
+  /**
+   * 设置每页大小
+   */
+  setPagesizes(key, value) {
+    localStorage.setItem(key, value)
+  }
+
 }
 
 @NgModule({

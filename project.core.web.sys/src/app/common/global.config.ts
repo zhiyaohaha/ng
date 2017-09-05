@@ -11,7 +11,8 @@ export const globalVar = {
 export const customized = {
     SysParam: "SysParam",
     SysArea: "SysArea",
-    SysParamDetail: "SysParamDetail"
+    SysParamDetail: "SysParamDetail",
+    SysOperationLogConfig: "SysOperationLogConfig"
 }
 
 export const globalUrl = {

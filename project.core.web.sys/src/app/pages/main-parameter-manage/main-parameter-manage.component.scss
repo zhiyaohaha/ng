@@ -10,28 +10,15 @@
         height: 100%;
     }
     .example-sidenav {
-        width: 80%;
+        width: 60%;
     }
     .sidenav-left {
         background-color: #eee;
     }
-    .search-ul {
-        padding: 10px;
+    .main-container {
         overflow: hidden;
-        li {
-            list-style: none;
-            float: left;
-            min-width: 200px;
-            md-select {
-                position: relative;
-                bottom: -25px;
-                width: 200px;
-            }
-            button {
-                position: relative;
-                bottom: -10px;
-                margin-left: 30px;
-            }
+        .add-button {
+            margin-top: 30px;
         }
     }
     .node-menu {

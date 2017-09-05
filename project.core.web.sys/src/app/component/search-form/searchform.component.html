@@ -1,10 +1,10 @@
 <ul class="search-ul">
     <li *ngFor="let item of filters">
         <div [ngSwitch]="item.ui.displayType">
-            <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
+            <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
             </md-input-container>
-            <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.isHidden ? 'none' : 'show'}">
+            <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" [disabled]="item.ui.isDisabled">
             </md-input-container>
             <div *ngSwitchCase="'daterange'">

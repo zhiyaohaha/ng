@@ -16,7 +16,11 @@ export class UpdatePasswordComponent implements OnInit {
 
   passwordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _service: BaseService, private _util: ConvertUtil, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private _service: BaseService, 
+    private _util: ConvertUtil, 
+    private router: Router) {
     this.passwordForm = fb.group({
       oldPassword: ["", [Validators.required]],
       passwordGroup: fb.group({

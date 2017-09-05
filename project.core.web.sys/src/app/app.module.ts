@@ -22,12 +22,9 @@ import { WebSocketService } from './services/share/web-socket.service';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
+    BrowserAnimationsModule, HttpModule, FormsModule, ReactiveFormsModule,
     MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
     CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule,
-    ReactiveFormsModule,
-    HttpModule,
     AppRoutingModule
   ],
   providers: [

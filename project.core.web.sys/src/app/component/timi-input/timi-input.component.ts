@@ -6,7 +6,7 @@ import { DomRenderer } from '../../common/dom';
     selector: 'timi-input',
     template: `<label #label>{{labelName}}：</label>
                 <div #wrap class="timi-input-wrap">
-                    <input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off">
+                    <input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}" name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off">
                     <span class="timi-span-line"></span>
                     <span class="timi-input-error">{{errorTips}}</span>
                 </div>`,
@@ -18,6 +18,7 @@ export class TimiInputComponent implements OnInit {
     @Input() type: string = "text";
     @Input() labelWidth: string;
     @Input() labelName: string;
+    @Input() name: string;
     @Input() value: string;
     @Input() inputWidth: string;
     @Input() placeholder: string;
@@ -50,7 +51,7 @@ export class TimiInputComponent implements OnInit {
      * @param  
      */
     onBlur($event) {
-        if (!$event.target.value) return;
+        $event.isChange = this.isChange($event);
         let regexp: any;
         switch (this.pattern) {
             case 'tel':
@@ -81,11 +82,23 @@ export class TimiInputComponent implements OnInit {
             default:
                 regexp = new RegExp(this.pattern, 'i');
         }
-        if (regexp.test($event.target.value)) {
+        if (!$event.target.value || regexp.test($event.target.value)) {
             this.renderer.removeClass(this.wrapRef.nativeElement, "error");
             this.blur.emit($event);
         } else {
             this.renderer.addClass(this.wrapRef.nativeElement, "error");
+        }
+    }
+
+    /**
+     * 判断值是否改变
+     */
+    isChange($event): boolean {
+        if (this.value != $event.target.value) {
+            this.value = $event.target.value;
+            return true;
+        } else {
+            return false;
         }
     }
 }

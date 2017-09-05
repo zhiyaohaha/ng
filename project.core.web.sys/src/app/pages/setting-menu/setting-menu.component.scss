@@ -1,0 +1,18 @@
+:host /deep/ {
+    .menu-row {
+        list-style: none;
+        overflow: hidden;
+        padding: 20px;
+    }
+    .menu-card {
+        float: left;
+        margin-left: 10px;
+        text-align: right;
+        .pages-item {
+            width: 120px;
+        }
+        .authority-first {
+            margin-top: 6px;
+        }
+    }
+}

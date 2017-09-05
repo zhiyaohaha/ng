@@ -1,0 +1,21 @@
+<md-sidenav-container>
+    <md-sidenav #sidenav align="end">
+        good job!
+    </md-sidenav>
+    <div class="container-fluid">
+        <ul>
+            <li class="menu-row" *ngFor="let menu of menus">
+                <div class="menu-card" *ngFor="let page of menu">
+                    <button md-raised-button class="pages-item">{{page.name}}</button>
+                    <div class="authority-first" *ngFor="let item of page.functions">
+                        <button md-raised-button>{{item}}</button>
+                    </div>
+                    <button md-raised-button (click)="addAuthority();sidenav.open()">+</button>
+                </div>
+                <div class="menu-card">
+                    <button md-raised-button (click)="addPage();sidenav.open()">+</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</md-sidenav-container>
