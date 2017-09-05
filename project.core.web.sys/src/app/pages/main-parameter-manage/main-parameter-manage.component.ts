@@ -244,7 +244,7 @@ export class MainParameterManageComponent implements OnInit {
         //this.getDetailParams();
         this.getParamsList(this.listparam);
       } else {
-        this.openInfoMessage("出错啦", res.message);
+        alert("出错了")
       }
 
     });
@@ -388,13 +388,6 @@ export class MainParameterManageComponent implements OnInit {
   }
 
   messages: any[] = [];
-
-  openInfoMessage(title, message) {
-    this.messages.push({
-      title: title,
-      content: message
-    });
-  }
 
   openAlert(msg): void {
     this._dialogService.openAlert({

@@ -1,3 +1,5 @@
+import { ToastModule } from './component/toast/toast.component';
+import { ToastService } from './component/toast/toast.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -25,14 +27,16 @@ import { WebSocketService } from './services/share/web-socket.service';
     BrowserAnimationsModule, HttpModule, FormsModule, ReactiveFormsModule,
     MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
     CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ToastModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     App,
     BaseService,
     ConvertUtil,
-    WebSocketService
+    WebSocketService,
+    ToastService
   ],
   bootstrap: [AppComponent]
 })

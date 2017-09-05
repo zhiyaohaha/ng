@@ -1,3 +1,4 @@
+import { ToastService } from './../../component/toast/toast.service';
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { MdSnackBar } from "@angular/material";
 import { fadeIn } from './../../common/animations';
@@ -23,7 +24,7 @@ export class MainComponent implements OnInit {
   // @HostBinding('style.display') display = 'block';
   imgSrc: any[];
 
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, public snack: MdSnackBar) { }
+  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, public snack: MdSnackBar, private toastService: ToastService) { }
 
   ngOnInit() {
     this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
@@ -36,13 +37,6 @@ export class MainComponent implements OnInit {
     setTimeout(() => {
       this.wsService.loginSocket(this.wsService, data);
     }, 1000)
-  }
-  sendMsg() {
-    //this.snack.open("哈哈");
-    setTimeout(() => {
-      this.snack.open("嘿嘿");
-    }, 2000);
-    //this.wsService.sendMesssage("asdfasdfdf21314564");
   }
 
   loginOut() {
@@ -130,7 +124,8 @@ export class MainComponent implements OnInit {
     this.http.post("/api/file/rename", { key: id, value: name }).subscribe(r => console.log(r));
   }
 
-
-
+  sendMsg() {
+    this.toastService.creatNewMessage("123123123");
+  }
 
 }

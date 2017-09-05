@@ -1,3 +1,4 @@
+import { SettingMenuService } from 'app/services/setting-menu/setting-menu.service';
 import { CommonShareModule } from './../../common/share.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,6 +13,7 @@ import { SettingMenuComponent } from './setting-menu.component';
     SettingMenuRoutingModule, CommonShareModule,
     MdSidenavModule, MdGridListModule
   ],
-  declarations: [SettingMenuComponent]
+  declarations: [SettingMenuComponent],
+  providers: [SettingMenuService]
 })
 export class SettingMenuModule { }

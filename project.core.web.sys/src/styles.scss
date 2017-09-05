@@ -98,6 +98,24 @@ textarea {
     height: auto;
 }
 
+
+/**清缓存**/
+
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix::before,
+.clearfix::after {
+    display: table;
+    line-height: 0;
+    content: '';
+}
+
+.clearfix::after {
+    clear: both;
+}
+
 .message-container {
     position: fixed;
     width: 100%;

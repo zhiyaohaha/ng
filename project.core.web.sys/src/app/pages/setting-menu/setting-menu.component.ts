@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 
 @Component({
   selector: 'app-setting-menu',
@@ -16,9 +17,21 @@ export class SettingMenuComponent implements OnInit {
     { name: "页面三", functions: ["浏览", "编辑", "修改"] }]
   ];
 
-  constructor() { }
+  constructor(private getMenuListsService: SettingMenuService) { }
 
   ngOnInit() {
+    this.getMenuLists();
+  }
+
+  /**
+   * 获取菜单列表
+   */
+  getMenuLists() {
+    this.getMenuListsService.getMenuList().subscribe(r => {
+      if (r.data) {
+        this.menus = r.data;
+      }
+    })
   }
 
   /**

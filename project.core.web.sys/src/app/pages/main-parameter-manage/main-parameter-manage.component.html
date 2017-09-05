@@ -181,14 +181,12 @@
         </div>
     </md-sidenav>
 
-    <div class="main-container">
+    <div class="main-container clearfix">
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
         <button fButton color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
     </div>
 
     <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
-
-    <button fButton (click)="openInfoMessage('','123')">消息通知</button>
 
 </md-sidenav-container>
 <!-- <free-notification [messages]="messages" [delay]="50000" theme="success"></free-notification> -->

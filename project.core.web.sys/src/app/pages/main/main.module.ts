@@ -1,3 +1,4 @@
+import { ToastModule } from './../../component/toast/toast.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -27,7 +28,8 @@ import { strLength } from '../../common/pipe/strLength';
     FileUploadModule,
     MdProgressBarModule,
     MdButtonModule,
-    MdSnackBarModule
+    MdSnackBarModule,
+    ToastModule
   ],
   exports: [],
   declarations: [MainComponent, strLength]

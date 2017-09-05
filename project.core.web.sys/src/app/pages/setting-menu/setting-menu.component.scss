@@ -10,9 +10,14 @@
         text-align: right;
         .pages-item {
             width: 120px;
+            background-color: #cf000d;
+            color: #fff;
         }
         .authority-first {
-            margin-top: 6px;
+            width: 120px;
+            .authority-btn {
+                width: 100%;
+            }
         }
     }
 }
