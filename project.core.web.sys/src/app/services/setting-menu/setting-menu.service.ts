@@ -34,5 +34,25 @@ export class SettingMenuService {
         return this.baseService.post("/api/Template/Update/SysMenuData");
     }
 
+    /**
+     * 添加权限的模板
+     */
+    getAuthorityModel() {
+        return this.baseService.get("/api/Template/GetFormTemplat/SysFunctionData");
+    }
+    /**
+     * 添加权限
+     */
+    addAuthority() {
+        return this.baseService.get("/api/Template/Add/SysFunctionData");
+    }
+    /**
+     * 修改权限
+     */
+    updateAuthority() {
+        return this.baseService.get("/api/Template/Update/SysFunctionData");
+    }
+
+
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
+import { ConvertUtil } from './../../common/convert-util';
 
 @Component({
   selector: 'app-setting-menu',
@@ -12,9 +13,11 @@ export class SettingMenuComponent implements OnInit {
   menus = [];//菜单列表
   modalDOMS: HtmlDomTemplate;
 
+  menuBindData;//添加菜单需要提交的数据
+
   clickId;
 
-  constructor(private settingMenuService: SettingMenuService) { }
+  constructor(private settingMenuService: SettingMenuService, private util: ConvertUtil) { }
 
   ngOnInit() {
     this.getMenuLists();
@@ -38,6 +41,7 @@ export class SettingMenuComponent implements OnInit {
     this.settingMenuService.getMenuModel().subscribe(r => {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
+        this.menuBindData = this.util.toJSON(r.data.bindDataJson);
       }
     })
   }
@@ -58,9 +62,13 @@ export class SettingMenuComponent implements OnInit {
    * 确定添加页面
    */
   addNewPage($event) {
-    console.log($event);
-    $event.parentId = this.clickId;
-    this.settingMenuService.addMenuPage($event).subscribe(r => {
+    let data = this.menuBindData;
+    for (let key in $event) {
+      data[key] = $event[key];
+    }
+    data.parentId = this.clickId;
+    console.log('提交的数据：', data);
+    this.settingMenuService.addMenuPage(data).subscribe(r => {
       console.log(r);
     })
   }
