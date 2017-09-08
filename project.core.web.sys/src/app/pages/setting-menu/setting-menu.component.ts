@@ -41,7 +41,7 @@ export class SettingMenuComponent implements OnInit {
     this.settingMenuService.getMenuModel().subscribe(r => {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
-        this.menuBindData = this.util.toJSON(r.data.bindDataJson);
+        this.menuBindData = r.data;
       }
     })
   }
@@ -62,13 +62,15 @@ export class SettingMenuComponent implements OnInit {
    * 确定添加页面
    */
   addNewPage($event) {
-    let data = this.menuBindData;
+    let data = this.util.toJSON(this.menuBindData.bindDataJson);
+    let data2 = this.menuBindData;
     for (let key in $event) {
       data[key] = $event[key];
     }
     data.parentId = this.clickId;
-    console.log('提交的数据：', data);
-    this.settingMenuService.addMenuPage(data).subscribe(r => {
+    data2.bindDataJson = data;
+    console.log('提交的数据：', data2);
+    this.settingMenuService.addMenuPage(data2).subscribe(r => {
       console.log(r);
     })
   }

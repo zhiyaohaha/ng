@@ -91,6 +91,10 @@
 }
 
 .free-select .free-select-item-content {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
     white-space: nowrap;
     justify-content: space-between;

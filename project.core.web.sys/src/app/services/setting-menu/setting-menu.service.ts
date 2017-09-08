@@ -53,6 +53,4 @@ export class SettingMenuService {
         return this.baseService.get("/api/Template/Update/SysFunctionData");
     }
 
-
-
 }
