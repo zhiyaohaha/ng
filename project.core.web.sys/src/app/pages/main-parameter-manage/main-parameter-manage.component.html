@@ -13,14 +13,15 @@
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
+                                        <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false">
                                         </md-input-container>
-                                        <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
-                                        </md-input-container>
-                                        <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
+                                        <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                        <!-- <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
+                                        </md-input-container> -->
+                                        <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">
@@ -46,33 +47,7 @@
                                         </md-list-item>
                                     </div>
                                 </md-list-item>
-                                <!-- <md-list-item>
-                                <div class="form-group">
-                                    <md-input-container>
-                                        <input mdInput id="" placeholder="code" disabled value="{{treeNode.code}}">
-                                    </md-input-container>
-                                </div>
-                            </md-list-item>
-                            <md-list-item>
-                                <div class="form-group">
-                                    <md-input-container>
-                                        <input mdInput id="" placeholder="名称" [(ngModel)]="treeNode.value">
-                                    </md-input-container>
-                                </div>
-                            </md-list-item>
-                            <md-list-item>
-                                <div class="form-group">
-                                    <md-input-container>
-                                        <input mdInput id="" placeholder="描述" [(ngModel)]="treeNode.desc">
-                                    </md-input-container>
-                                </div>
-                            </md-list-item>
-                            <md-list-item>
-                                <free-chip-group [chips]="treeNode.label" placeholder="回车添加标签" (chipsChange)="chipsChange($event)"></free-chip-group>
-                            </md-list-item> -->
                             </md-list>
-
-
                             <div class="form-group" style="display:none;">
                                 <md-select placeholder="Favorite food">
                                     <md-option *ngFor="let food of foods" [value]="food.value">
@@ -87,18 +62,19 @@
                         </form>
                     </md-tab>
                     <md-tab label="添加">
-                        <form #addSysParams="ngForm">
+                        <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
+                        <!-- <form #addSysParams="ngForm">
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
                                         </md-input-container>
                                         <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">
@@ -118,17 +94,17 @@
                                             </md-input-container>
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
-                                        <md-list-item *ngSwitchCase="'tags'">
+                                        <ng-container *ngSwitchCase="'tags'">
                                             <free-chip-group [chips]="" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
                                             <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                                        </md-list-item>
+                                        </ng-container>
                                     </div>
                                 </md-list-item>
                             </md-list>
                             <div class="form-group">
                                 <button fButton color="blue" (click)="onSubmitAddParams(addSysParams.value)" type="button">确定增加</button>
                             </div>
-                        </form>
+                        </form> -->
                     </md-tab>
                 </md-tab-group>
 
@@ -136,15 +112,16 @@
             <div class="col-lg-8" *ngIf="isNew">
                 <md-tab-group>
                     <md-tab label="添加">
-                        <form #newAdd="ngForm">
+                        <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
+                        <!-- <form #newAdd="ngForm">
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false">
+                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
                                         </md-input-container>
                                         <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
+                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
                                         <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
                                             <md-option *ngFor="let food of foods" [value]="food.value">
@@ -174,7 +151,7 @@
                             <div class="form-group">
                                 <button fButton color="blue" (click)="onSubmitNewAdd(newAdd.value)" type="button">确定增加</button>
                             </div>
-                        </form>
+                        </form> -->
                     </md-tab>
                 </md-tab-group>
             </div>
@@ -189,4 +166,3 @@
     <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
 </md-sidenav-container>
-<!-- <free-notification [messages]="messages" [delay]="50000" theme="success"></free-notification> -->

@@ -1,0 +1,49 @@
+<form #form="ngForm">
+    <md-list dense>
+        <md-list-item *ngFor="let item of modalDOMS;let i = index;">
+            <div class="form-group" [ngSwitch]="item.ui.displayType">
+                <md-input-container *ngSwitchCase="'text' || 'imageupload'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                    <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false">
+                </md-input-container>
+                <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}"></textarea>
+                <free-select *ngSwitchCase="'select'" [(ngModel)]="selectedOption" name="{{item.name}}" (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData"></free-select>
+                <ng-container *ngSwitchCase="'radio'">
+                    <span>{{item.ui.label}}：</span>
+                    <free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>
+                </ng-container>
+                <ng-container *ngSwitchCase="'checkbox'">
+                    <ng-container *ngIf="item.bindData;else elseBlock">
+                        <span>{{item.ui.label}}：</span>
+                        <free-checkbox *ngFor="let c of item.bindData;" [(ngModel)]="aaaa" value="{{c.value}}" label="{{c.text}}" name="{{item.name}}"></free-checkbox>
+                        <!-- <input type="hidden" name="{{item.name}}" #cc> -->
+                    </ng-container>
+                    <ng-template #elseBlock>
+                        <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox></free-checkbox>
+                        <input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">
+                    </ng-template>
+                </ng-container>
+                <ng-container *ngSwitchCase="'datereange'">
+                    <md-input-container>
+                        <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                    </md-input-container>
+                    <md-datepicker #picker></md-datepicker>
+                    &nbsp;&nbsp;--&nbsp;&nbsp;
+                    <md-input-container>
+                        <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                        <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                    </md-input-container>
+                    <md-datepicker #picker2></md-datepicker>
+                </ng-container>
+                <ng-container *ngSwitchCase="'tags'">
+                    <free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
+                    <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
+                </ng-container>
+            </div>
+        </md-list-item>
+    </md-list>
+    <div class="form-group">
+        <button fButton color="blue" (click)="onSubmit(form.value)" type="button">{{btnValue}}</button>
+    </div>
+</form>

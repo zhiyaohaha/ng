@@ -1,0 +1,13 @@
+:host /deep/ {
+    ul,
+    li {
+        list-style: none;
+    }
+    ul>li {
+        margin-top: 40px;
+    }
+    li {
+        padding: 10px;
+        border: 1px solid red;
+    }
+}

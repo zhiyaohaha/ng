@@ -1,23 +1,57 @@
 :host /deep/ {
+    $btn1bgc: #c2181f;
+    $btn1fc: #fff;
+    $btn2bgc: #e6e6e6;
+    $btn2fc: #000;
+    $btn3bgc: #f6f6f6;
+    $btn3border: 1px solid #e6e6e6;
+    md-sidenav-container {
+        background-color: transparent;
+        height: 100%;
+        md-sidenav {
+            width: 50%;
+            padding: 20px;
+        }
+    }
     .menu-row {
         list-style: none;
         overflow: hidden;
-        padding: 20px;
+        margin: 10px 0;
     }
     .menu-card {
         float: left;
         margin-left: 10px;
-        text-align: right;
+        width: 110px;
+        text-align: center;
+        box-sizing: content-box;
         .pages-item {
-            width: 120px;
+            width: 100%;
             background-color: #cf000d;
             color: #fff;
+            font-size: 13px;
+            cursor: pointer;
         }
         .authority-first {
-            width: 120px;
+            width: 100%;
+            line-height: 26px;
+            background-color: $btn2bgc;
             .authority-btn {
                 width: 100%;
+                line-height: inherit;
+                background-color: $btn2bgc;
+                font-size: 12px;
+                cursor: pointer;
             }
+        }
+        .add-authority {
+            width: 100%;
+            line-height: 26px;
+            background-color: $btn3bgc;
+            border-bottom: $btn3border;
+            cursor: pointer;
+        }
+        .add-page {
+            background-color: $btn2bgc;
         }
     }
 }

@@ -10,6 +10,7 @@ import { BaseService } from '../../services/base.service';
 import { WebSocketService } from '../../services/share/web-socket.service';
 import { HttpSign } from '../../models/HttpSign';
 import { globalUrl } from '../../common/global.config';
+import { environment } from "environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -48,7 +49,7 @@ export class MainComponent implements OnInit {
 
   isDropZoneOver: boolean;
   uploader: FileUploader = new FileUploader({
-    url: "http://api.cpf360.com/api/file/upload",
+    url: environment.apiURL + "/api/file/upload",
     isHTML5: true,
     allowedFileType: ["image"],
     method: "POST"

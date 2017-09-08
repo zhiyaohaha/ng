@@ -1,0 +1,13 @@
+<ul>
+    <li *ngFor="let item of datas">
+        name:{{item.description}}
+        <ul>
+            <li *ngFor="let field of item.fields">
+                name:{{field.description}}
+                <ng-container *ngIf="field.target">1
+                    <!-- <app-main-member-map datas=""></app-main-member-map> -->
+                </ng-container>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -14,6 +14,7 @@ import { TreeModule } from '../../../../node_modules/ng2-tree';
 import { ChipModule } from '../../component/chip/chip.component';
 import { SearchFormModule } from '../../component/search-form/searchform.component';
 import { TableModule } from '../../component/table/table.component';
+import { ResponsiveModelModule } from './../../component/responsive-model/responsive-model.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { TableModule } from '../../component/table/table.component';
     ButtonModule,
     ChipModule,
     SearchFormModule,
-    TableModule
+    TableModule, ResponsiveModelModule
   ],
   declarations: [
     MainParameterManageComponent

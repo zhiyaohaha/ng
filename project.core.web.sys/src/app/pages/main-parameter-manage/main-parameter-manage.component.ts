@@ -1,3 +1,4 @@
+import { ToastService } from './../../component/toast/toast.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -182,7 +183,8 @@ export class MainParameterManageComponent implements OnInit {
     private _paramsManageService: ParamsManageService,
     private _util: ConvertUtil,
     private http: BaseService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
 
   }
@@ -244,7 +246,7 @@ export class MainParameterManageComponent implements OnInit {
         //this.getDetailParams();
         this.getParamsList(this.listparam);
       } else {
-        alert("出错了")
+        this.toastService.creatNewMessage("出错了")
       }
 
     });

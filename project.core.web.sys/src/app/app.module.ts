@@ -17,10 +17,12 @@ import { App } from './pages/app';
 import { BaseService } from './services/base.service';
 import { ConvertUtil } from './common/convert-util';
 import { WebSocketService } from './services/share/web-socket.service';
+import { FilterValuePipe } from './common/pipe/filterValue.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilterValuePipe
   ],
   imports: [
     BrowserModule,
