@@ -1,32 +1,23 @@
 <md-sidenav-container>
     <md-sidenav #sidenav align="end">
         <md-tab-group>
-            <md-tab label="添加">
-                <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="addNewPage($event)"></timi-responsive-form>
+            <md-tab [label]="label">
+                <timi-responsive-form [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData" btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
             </md-tab>
         </md-tab-group>
     </md-sidenav>
     <div class="container-fluid">
         <ul>
             <li class="menu-row" *ngFor="let menu of menus">
-                <!-- <div class="menu-card">
-                    <button md-button class="pages-item">{{menu.name}}</button>
-                    <div class="authority-first">
-                        <ng-container *ngFor="let item of menu._functions">
-                            <button md-button class="authority-btn">{{item.name}}</button>
-                        </ng-container>
-                    </div>
-                    <button md-button class="add-authority" (click)="addAuthority();sidenav.open()">+权限</button>
-                </div> -->
                 <div class="menu-card" *ngFor="let page of menu">
-                    <div class="pages-item">{{page.name}}</div>
+                    <div class="pages-item" (click)="update(page.id,'menu');sidenav.open();">{{page.name}}</div>
                     <div class="authority-first" *ngFor="let item of page._functions">
-                        <div class="authority-btn">{{item.name}}</div>
+                        <div class="authority-btn" (click)="update(item.id,'authority');sidenav.open();">{{item.name}}</div>
                     </div>
-                    <div class="add-authority" (click)="addAuthority();sidenav.open()">+</div>
+                    <div class="add-authority" (click)="add(page.id, 'authority');sidenav.open()">+</div>
                 </div>
                 <div class="menu-card">
-                    <div class="add-page" (click)="addPage(menu[0].id);sidenav.open()">+</div>
+                    <div class="add-page" (click)="add(menu[0].id, 'menu');sidenav.open()">+</div>
                 </div>
             </li>
         </ul>

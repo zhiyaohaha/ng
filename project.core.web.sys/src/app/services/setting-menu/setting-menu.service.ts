@@ -30,9 +30,11 @@ export class SettingMenuService {
     /**
      * 修改页面
      */
-    updateMenu() {
-        return this.baseService.post("/api/Template/Update/SysMenuData");
+    updateMenu(param) {
+        return this.baseService.post("/api/Template/Update/SysMenuData", param);
     }
+
+
 
     /**
      * 添加权限的模板
@@ -43,14 +45,14 @@ export class SettingMenuService {
     /**
      * 添加权限
      */
-    addAuthority() {
-        return this.baseService.get("/api/Template/Add/SysFunctionData");
+    addAuthority(param) {
+        return this.baseService.post("/api/Template/Add/SysFunctionData", param);
     }
     /**
      * 修改权限
      */
-    updateAuthority() {
-        return this.baseService.get("/api/Template/Update/SysFunctionData");
+    updateAuthority(param) {
+        return this.baseService.post("/api/Template/Update/SysFunctionData", param);
     }
 
 }

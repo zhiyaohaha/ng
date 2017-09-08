@@ -1,3 +1,4 @@
+import { ToastService } from './../../component/toast/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
@@ -11,18 +12,65 @@ import { ConvertUtil } from './../../common/convert-util';
 export class SettingMenuComponent implements OnInit {
 
   menus = [];//菜单列表
-  modalDOMS: HtmlDomTemplate;
+  modelDOMS: HtmlDomTemplate; //响应式表单的模版
+  modelMenu: HtmlDomTemplate; //菜单模板
+  modelAuthority: HtmlDomTemplate; //权限模板
 
-  menuBindData;//添加菜单需要提交的数据
+  label: string; //添加或者修改的tab
 
-  clickId;
+  menuBindData;//菜单提交数据模板
+  authorityBindData;//权限提交数据模板
 
-  constructor(private settingMenuService: SettingMenuService, private util: ConvertUtil) { }
+  modelBindData;//提交的数据模板
+
+  modelDOMSData;//当前修改项的原数据
+
+  addId;//当前激活的添加ID
+  updateId;//当前激活的修改ID
+  targetModel;//当前激活的模板
+  addOrUpdate: boolean; //添加false 修改true
+  menuOrAuthority; //菜单或权限
+
+  constructor(private settingMenuService: SettingMenuService, private util: ConvertUtil, private toastService: ToastService) { }
 
   ngOnInit() {
     this.getMenuLists();
-    this.getMenuModel();
+    this.getModel();
   }
+
+  /**
+   * 添加
+   */
+  add(parentId, target) {
+    this.label = '添加';
+    this.addOrUpdate = false;
+    this.addId = parentId;
+    this.getTargetModel(target);
+  }
+  /**
+   * 修改
+   */
+  update(id, target) {
+    this.label = '修改';
+    this.addOrUpdate = true;
+    this.updateId = id;
+    this.getTargetModel(target);
+    this.modelDOMSData = this.searchItem(id);
+  }
+  /**
+   * 当前需要显示的模板
+   */
+  getTargetModel(target) {
+    this.menuOrAuthority = target;
+    if (target == 'menu') {
+      this.modelDOMS = this.modelMenu;
+      this.modelBindData = this.menuBindData;
+    } else if (target == 'authority') {
+      this.modelDOMS = this.modelAuthority;
+      this.modelBindData = this.authorityBindData;
+    }
+  }
+
 
   /**
    * 获取菜单列表
@@ -35,43 +83,102 @@ export class SettingMenuComponent implements OnInit {
     })
   }
   /**
-   * 获取添加和修改的模版
+   * 获取模板
    */
-  getMenuModel() {
+  getModel() {
+    //菜单模板
     this.settingMenuService.getMenuModel().subscribe(r => {
-      if (r.code == "0") {
-        this.modalDOMS = r.data.doms;
-        this.menuBindData = r.data;
-      }
+      if (r.code == "0") this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson);
     })
+    //权限模板
+    this.settingMenuService.getAuthorityModel().subscribe(r => {
+      if (r.code == "0") this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson);
+    });
   }
 
   /**
    * 添加权限
    */
-  addAuthority() { }
+  addNewAuthority() { }
+
+
 
   /**
-   * 添加页面
+   * 确定添加页面或者权限
    */
-  addPage(id) {
-    this.clickId = id;
-  }
-
-  /**
-   * 确定添加页面
-   */
-  addNewPage($event) {
-    let data = this.util.toJSON(this.menuBindData.bindDataJson);
-    let data2 = this.menuBindData;
+  addNew($event) {
+    let data = this.modelBindData;
     for (let key in $event) {
       data[key] = $event[key];
     }
-    data.parentId = this.clickId;
-    data2.bindDataJson = data;
-    console.log('提交的数据：', data2);
-    this.settingMenuService.addMenuPage(data2).subscribe(r => {
-      console.log(r);
-    })
+    if (this.menuOrAuthority == 'menu') {
+      data.parentId = this.addId;
+      this.settingMenuService.addMenuPage(data).subscribe(r => this.cb(r));//添加页面
+    } else if (this.menuOrAuthority == 'authority') {
+      data.menu = this.addId;
+      this.settingMenuService.addAuthority(data).subscribe(r => this.cb(r));//添加权限
+    }
+
   }
+
+
+  /**
+   * 确定修改菜单或者权限
+   */
+  updateOld($event) {
+    let data = this.modelBindData;
+    for (let key in $event) {
+      data[key] = $event[key];
+    }
+    data.parentId = this.addId;
+    if (this.menuOrAuthority == 'menu') {
+      this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
+    } else if (this.menuOrAuthority == 'authority') {
+      this.settingMenuService.updateAuthority(data).subscribe(r => this.cb(r));//添加权限
+    }
+  }
+
+
+
+  /**
+   * 接口回调
+   */
+  cb(data) {
+    if (data.code == "0") {
+      this.toastService.creatNewMessage("添加成功");
+      this.getMenuLists();
+    } else {
+      this.toastService.creatNewMessage(data.message);
+    }
+  }
+
+  /**
+   * 确定修改或者添加
+   */
+  confirm($event) {
+    if (!this.addOrUpdate) {
+      this.addNew($event);
+    } else {
+      this.updateOld($event);
+    }
+  }
+
+  /**
+   * 根据ID查找对象
+   */
+  searchItem(id) {
+    let data;
+    this.menus.filter(r => {
+      r.filter(r => {
+        if (r.id == id) data = r;
+        if (r._functions) {
+          return r._functions.filter(r => {
+            if (r.id == id) data = r;
+          })
+        }
+      })
+    })
+    return data;
+  }
+
 }

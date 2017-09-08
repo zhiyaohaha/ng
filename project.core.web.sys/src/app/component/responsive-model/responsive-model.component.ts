@@ -20,6 +20,7 @@ export class ResponsiveModelComponent implements OnInit {
     @Input() modalDOMS;//模版
     @Input() btnValue;//确定按钮显示的文字
     @Input() tags;//标签
+    @Input() modelDOMSData;//需要修改的原数据
 
     selectedOption;//下拉框选中的值
 
