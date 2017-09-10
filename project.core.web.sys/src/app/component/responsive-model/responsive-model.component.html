@@ -9,7 +9,7 @@
                 <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>
                 <ng-container *ngSwitchCase="'select'">
                     <free-select #select (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
-                    <input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected.value || modelDOMSData[item.name]">
+                    <input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected?.value || modelDOMSData[item.name]">
                 </ng-container>
                 <ng-container *ngSwitchCase="'radio'">
                     <span>{{item.ui.label}}：</span>
