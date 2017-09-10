@@ -46,6 +46,7 @@ export class SettingMenuComponent implements OnInit {
     this.addOrUpdate = false;
     this.addId = parentId;
     this.getTargetModel(target);
+    this.modelDOMSData = '';
   }
   /**
    * 修改
@@ -179,6 +180,12 @@ export class SettingMenuComponent implements OnInit {
       })
     })
     return data;
+  }
+
+  /**
+   * 侧边栏关闭
+   */
+  onSidenavClose() {
   }
 
 }
