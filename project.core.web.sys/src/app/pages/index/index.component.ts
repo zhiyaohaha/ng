@@ -12,6 +12,7 @@ import { config } from './../../common/config';
   providers: [DomRenderer]
 })
 export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
+  leftNav: any[];
   ws: WebSocket;
   title: string;
   icon: string;
@@ -38,6 +39,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.leftNav = JSON.parse(localStorage.getItem("menus"));
 
     // this.ws = new WebSocket("ws://");
     // this.ws.onmessage = (event) => console.log(event);
