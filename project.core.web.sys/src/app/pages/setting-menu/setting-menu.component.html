@@ -10,9 +10,9 @@
         <ul>
             <li class="menu-row" *ngFor="let menu of menus">
                 <div class="menu-card" *ngFor="let page of menu">
-                    <div class="pages-item" (click)="update(page.id,'menu');sidenav.open();">{{page.name}}</div>
+                    <div class="pages-item" (click)="update(page.id, page.parentId,'menu');sidenav.open();">{{page.name}}</div>
                     <div class="authority-first" *ngFor="let item of page._functions">
-                        <div class="authority-btn" (click)="update(item.id,'authority');sidenav.open();">{{item.name}}</div>
+                        <div class="authority-btn" (click)="update(item.id, item.parentId,'authority');sidenav.open();">{{item.name}}</div>
                     </div>
                     <div class="add-authority" (click)="add(page.id, 'authority');sidenav.open()">+</div>
                 </div>

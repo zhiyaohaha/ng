@@ -3,11 +3,11 @@
         <md-list-item *ngFor="let item of modalDOMS;let i = index;">
             <div class="form-group" [ngSwitch]="item.ui.displayType">
                 <md-input-container *ngSwitchCase="'text' || 'imageupload'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                    <input mdInput ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false">
+                    <input mdInput ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" required>
                 </md-input-container>
                 <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}"></textarea>
-                <free-select *ngSwitchCase="'select'" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}" (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]"></free-select>
+                <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>
+                <free-select *ngSwitchCase="'select'" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}" (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
                 <ng-container *ngSwitchCase="'radio'">
                     <span>{{item.ui.label}}：</span>
                     <free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>
@@ -19,7 +19,7 @@
                         <!-- <input type="hidden" name="{{item.name}}" #cc> -->
                     </ng-container>
                     <ng-template #elseBlock>
-                        <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox checked="{{modelDOMSData[item.name]}}"></free-checkbox>
+                        <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox [checked]="modelDOMSData[item.name]"></free-checkbox>
                         <input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">
                     </ng-template>
                 </ng-container>

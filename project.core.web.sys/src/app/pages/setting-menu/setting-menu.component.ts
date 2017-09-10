@@ -51,10 +51,12 @@ export class SettingMenuComponent implements OnInit {
   /**
    * 修改
    */
-  update(id, target) {
+  update(id, parentId, target) {
     this.label = '修改';
     this.addOrUpdate = true;
     this.updateId = id;
+    console.log(parentId)
+    this.addId = parentId;
     this.getTargetModel(target);
     this.modelDOMSData = this.searchItem(id);
   }
@@ -146,12 +148,8 @@ export class SettingMenuComponent implements OnInit {
    * 接口回调
    */
   cb(data) {
-    if (data.code == "0") {
-      this.toastService.creatNewMessage("添加成功");
-      this.getMenuLists();
-    } else {
-      this.toastService.creatNewMessage(data.message);
-    }
+    this.toastService.creatNewMessage(data.message);
+    if (data.code == "0") this.getMenuLists();
   }
 
   /**
