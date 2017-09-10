@@ -127,7 +127,8 @@ export class SettingMenuComponent implements OnInit {
    * 确定修改菜单或者权限
    */
   updateOld($event) {
-    let data = this.modelBindData;
+    console.log("xiugai:", $event);
+    let data = this.searchItem($event.id);
     for (let key in $event) {
       data[key] = $event[key];
     }
