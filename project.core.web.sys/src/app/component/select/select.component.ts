@@ -64,7 +64,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
       })))
     ])
   ],
-  styleUrls: ['./select.component.scss'],
+  styleUrls: ['select.component.css'],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR, ObjectUtils]
 })
 export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
@@ -113,7 +113,11 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   }
 
   ngAfterViewInit() {
-    if (this.pholder) {
+    console.log("当前的选中项：", this.selected);
+    if (this.selected) {
+      let selected = this.options.filter(r => r.value == this.selected)[0]
+      this.value = selected.label;
+    } else if (this.pholder) {
       this.value = this.pholder;
     }
   }
@@ -284,7 +288,23 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
         <span>{{option.label}}</span>
       </div>
     </li>
-  `
+  `,
+  styles: [`
+    .free-select-item {
+      list-style: none;
+      cursor: pointer;
+      &.free-select-active {
+          background: #eee;
+          font-weight: bold;
+      }
+  }
+  .free-select-item-content {
+      @include flexbox;
+      white-space: nowrap;
+      justify-content: space-between;
+      align-items: center;
+  }
+  `]
 })
 
 export class SelectItemComponent implements OnInit {
@@ -302,7 +322,7 @@ export class SelectItemComponent implements OnInit {
   }
 
   itemClick() {
-    this.onClick.emit(this.option.value);
+    this.onClick.emit(this.option);
   }
 }
 

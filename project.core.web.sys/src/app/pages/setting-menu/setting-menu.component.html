@@ -1,8 +1,8 @@
 <md-sidenav-container>
-    <md-sidenav #sidenav align="end" (close)="onSidenavClose()">
+    <md-sidenav #sidenav align="end" (close)="onSidenavClose()" (open)="onSidenavOpen()">
         <md-tab-group>
             <md-tab [label]="label">
-                <timi-responsive-form [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData" btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
+                <timi-responsive-form *ngIf="sidenavActive" [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData" btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
             </md-tab>
         </md-tab-group>
     </md-sidenav>
@@ -18,6 +18,11 @@
                 </div>
                 <div class="menu-card">
                     <div class="add-page" (click)="add(menu[0].id, 'menu');sidenav.open()">+</div>
+                </div>
+            </li>
+            <li class="menu-row">
+                <div class="menu-card">
+                    <div class="add-page" (click)="add('', 'menu');sidenav.open()">+</div>
                 </div>
             </li>
         </ul>

@@ -11,6 +11,8 @@ import { ConvertUtil } from './../../common/convert-util';
 })
 export class SettingMenuComponent implements OnInit {
 
+  sidenavActive: boolean;
+
   menus = [];//菜单列表
   modelDOMS: HtmlDomTemplate; //响应式表单的模版
   modelMenu: HtmlDomTemplate; //菜单模板
@@ -136,7 +138,7 @@ export class SettingMenuComponent implements OnInit {
     }
     data.parentId = this.addId;
     if (this.menuOrAuthority == 'menu') {
-      this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
+      //this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
     } else if (this.menuOrAuthority == 'authority') {
       this.settingMenuService.updateAuthority(data).subscribe(r => this.cb(r));//添加权限
     }
@@ -185,6 +187,10 @@ export class SettingMenuComponent implements OnInit {
    * 侧边栏关闭
    */
   onSidenavClose() {
+    this.sidenavActive = false;
+  }
+  onSidenavOpen() {
+    this.sidenavActive = true;
   }
 
 }

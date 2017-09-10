@@ -7,7 +7,10 @@
                 </md-input-container>
                 <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                 <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>
-                <free-select *ngSwitchCase="'select'" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}" (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
+                <ng-container *ngSwitchCase="'select'">
+                    <free-select #select (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
+                    <input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected.value || modelDOMSData[item.name]">
+                </ng-container>
                 <ng-container *ngSwitchCase="'radio'">
                     <span>{{item.ui.label}}：</span>
                     <free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>
@@ -19,7 +22,7 @@
                         <!-- <input type="hidden" name="{{item.name}}" #cc> -->
                     </ng-container>
                     <ng-template #elseBlock>
-                        <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox [checked]="modelDOMSData[item.name]"></free-checkbox>
+                        <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox [checked]="modelDOMSData[item.name] || false"></free-checkbox>
                         <input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">
                     </ng-template>
                 </ng-container>
