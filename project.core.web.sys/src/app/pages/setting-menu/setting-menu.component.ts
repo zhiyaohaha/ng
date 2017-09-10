@@ -138,7 +138,7 @@ export class SettingMenuComponent implements OnInit {
     }
     data.parentId = this.addId;
     if (this.menuOrAuthority == 'menu') {
-      //this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
+      this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
     } else if (this.menuOrAuthority == 'authority') {
       this.settingMenuService.updateAuthority(data).subscribe(r => this.cb(r));//添加权限
     }
