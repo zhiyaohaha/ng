@@ -32,7 +32,9 @@ export class BaseService {
     } else {
       str = _params;
     }
-    let sign = this.util.toMd5(str.replace(/\+/g, " ") + timestamp + this.private_key);
+    str = str.replace(/\+/g, '%2B');
+    let sign = this.util.toMd5(str + timestamp + this.private_key);
+    //let sign = this.util.toMd5(str.replace(/\+/g, " ") + timestamp + this.private_key);
     let params = new URLSearchParams();
     params.set('data', str);
     params.set('sign', sign);
