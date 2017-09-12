@@ -18,10 +18,14 @@ export class FnUtil {
      */
     public getFunctions() {
         let functions;
-        let apis
+        let apis;
         let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
         this.menus.filter(r => {
-            apis = r.childrens.filter(cc => cc.code == pageCode)[0];
+            r.childrens.filter(cc => {
+                if (cc.code == pageCode) {
+                    apis = cc;
+                }
+            })[0];
         })
         return apis.functions;
     }
@@ -35,7 +39,11 @@ export class FnUtil {
         let apis;
         let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
         this.menus.filter(r => {
-            apis = r.childrens.filter(cc => cc.code == pageCode)[0];
+            r.childrens.filter(cc => {
+                if (cc.code == pageCode) {
+                    apis = cc;
+                }
+            })[0];
         })
         let api = apis._functions.filter(r => {
             if (param) {
@@ -47,6 +55,11 @@ export class FnUtil {
         return "/api" + api.url;
     }
 
+    /**
+     * 判断数组里面是否存在某一项字符串
+     * @param array 数组
+     * @param str 包含的字符串
+     */
     public arrayIsInclude(array: string[], str: string): boolean {
         let bool = array.map(r => r == str);
         if (bool) {
