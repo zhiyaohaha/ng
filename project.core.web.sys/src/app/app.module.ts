@@ -17,6 +17,7 @@ import { App } from './pages/app';
 import { BaseService } from './services/base.service';
 import { ConvertUtil } from './common/convert-util';
 import { WebSocketService } from './services/share/web-socket.service';
+import { FnUtil } from './common/fn-util';
 import { FilterValuePipe } from './common/pipe/filterValue.pipe';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { FilterValuePipe } from './common/pipe/filterValue.pipe';
     App,
     BaseService,
     ConvertUtil,
+    FnUtil,
     WebSocketService,
     ToastService
   ],

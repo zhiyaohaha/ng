@@ -1,37 +1,38 @@
-import { BaseService } from './../base.service';
 import { Injectable } from '@angular/core';
+import { FnUtil } from './../../common/fn-util';
+import { BaseService } from './../base.service';
 
 @Injectable()
 export class SettingMenuService {
 
-    constructor(private baseService: BaseService) { }
+    constructor(private baseService: BaseService, private fnUtil: FnUtil, ) { }
 
     /**
      * 获取菜单列表
      */
     getMenuList() {
-        return this.baseService.get("/api/Menu/list");
+        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.ViewMenu"));
     }
 
     /**
      * 修改添加页面的模版
      */
     getMenuModel() {
-        return this.baseService.get("/api/Template/GetFormTemplat/SysMenuData");
+        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.MenuFormTemplate"));
     }
 
     /**
      * 添加页面
      */
     addMenuPage(param) {
-        return this.baseService.post("/api/Template/Add/SysMenuData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.AddMenu"), param);
     }
 
     /**
      * 修改页面
      */
     updateMenu(param) {
-        return this.baseService.post("/api/Template/Update/SysMenuData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.UpdateMenu"), param);
     }
 
 
@@ -40,19 +41,19 @@ export class SettingMenuService {
      * 添加权限的模板
      */
     getAuthorityModel() {
-        return this.baseService.get("/api/Template/GetFormTemplat/SysFunctionData");
+        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.FunctionFormTemplate"));
     }
     /**
      * 添加权限
      */
     addAuthority(param) {
-        return this.baseService.post("/api/Template/Add/SysFunctionData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.AddFunction"), param);
     }
     /**
      * 修改权限
      */
     updateAuthority(param) {
-        return this.baseService.post("/api/Template/Update/SysFunctionData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.UpdateFunction"), param);
     }
 
 }

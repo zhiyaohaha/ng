@@ -1,5 +1,6 @@
+import { FnUtil } from './../../common/fn-util';
 import { ToastService } from './../../component/toast/toast.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataSource } from '@angular/cdk';
@@ -37,6 +38,9 @@ import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData'
   animations: [fadeInUp]
 })
 export class MainParameterManageComponent implements OnInit {
+
+  authorities: string[];//权限数组
+  authorityKey: string;//权限KEY
 
   /**
    * 右侧编辑的具体内容
@@ -90,8 +94,7 @@ export class MainParameterManageComponent implements OnInit {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: null,
-    name: customized.SysParam
+    filters: null
   };
   getParamsList(params) {
     this._paramsManageService.getParams(params)
@@ -149,8 +152,7 @@ export class MainParameterManageComponent implements OnInit {
     this.listparam = {
       size: pagingEvent.pageSize,
       index: pagingEvent.page - 1,
-      filters: null,
-      name: customized.SysParam
+      filters: null
     }
     this.getParamsList(this.listparam);
   }
@@ -184,9 +186,12 @@ export class MainParameterManageComponent implements OnInit {
     private _util: ConvertUtil,
     private http: BaseService,
     private router: Router,
-    private toastService: ToastService
+    private routerInfo: ActivatedRoute,
+    private toastService: ToastService,
+    private fnUtil: FnUtil
   ) {
-
+    this.authorities = this.fnUtil.getFunctions();
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
   }
   ngOnInit() {
 
@@ -340,7 +345,7 @@ export class MainParameterManageComponent implements OnInit {
    * 获取详细的参数
    */
   getDetailParams() {
-    this._paramsManageService.getEditParams({ name: customized.SysParamDetail, id: this.clickNode }).subscribe(r => {
+    this._paramsManageService.getEditParams({ id: this.clickNode }).subscribe(r => {
       if (r.code == "0" && r.data) this.tree = this.toTreeModel(r.data) as TreeModel;
     });
   }
@@ -352,6 +357,7 @@ export class MainParameterManageComponent implements OnInit {
     this.selectNode = null;
     this.tree = null;
     this.isNew = false;
+    this.tree = null;
     console.log("关闭sildenav", this.treeNode)
   }
 
@@ -379,11 +385,12 @@ export class MainParameterManageComponent implements OnInit {
   modalData;
   newModalData;
   loadModal() {
-    this._paramsManageService.editParamsModal({ name: 'SysParam' }).subscribe(r => {
+    this._paramsManageService.editParamsModal().subscribe(r => {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
         this.newModalData = r.data;
+        console.log("this.modalDOMS", this.modalDOMS);
         console.log("this.newdata", this.newModalData);
       }
     })

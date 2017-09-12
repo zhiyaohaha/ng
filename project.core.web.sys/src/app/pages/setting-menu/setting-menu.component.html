@@ -14,15 +14,15 @@
                     <div class="authority-first" *ngFor="let item of page._functions">
                         <div class="authority-btn" (click)="update(item.id, item.parentId,'authority');sidenav.open();">{{item.name}}</div>
                     </div>
-                    <div class="add-authority" (click)="add(page.id, 'authority');sidenav.open()">+</div>
+                    <div class="add-authority" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddFunction') != -1" (click)="add(page.id, 'authority');sidenav.open()">+</div>
                 </div>
                 <div class="menu-card">
-                    <div class="add-page" (click)="add(menu[0].id, 'menu');sidenav.open()">+</div>
+                    <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1" (click)="add(menu[0].id, 'menu');sidenav.open()">+</div>
                 </div>
             </li>
             <li class="menu-row">
                 <div class="menu-card">
-                    <div class="add-page" (click)="add('', 'menu');sidenav.open()">+</div>
+                    <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1" (click)="add('', 'menu');sidenav.open()">+</div>
                 </div>
             </li>
         </ul>

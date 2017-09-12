@@ -9,10 +9,11 @@ const childRoutes: Routes = [
   { path: 'personal', loadChildren: '../personal/personal.module#PersonalModule' },
   { path: 'updatePassword', loadChildren: '../update-password/update-password.module#UpdatePasswordModule' },
   { path: 'parameterManage', loadChildren: '../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule' },
+  { path: 'areaManage', loadChildren: '../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule' },
   { path: 'memberMap', loadChildren: '../main-member-map/main-member-map.module#MainMemberMapModule' },
   { path: 'setting-menu', loadChildren: '../setting-menu/setting-menu.module#SettingMenuModule' },
-  { path: 'operator-history', loadChildren: '../operator-history/operator-history.module#OperatorHistoryModule' },
-  { path: 'onepage', loadChildren: '../onepage/onepage.module#OnepageModule' },
+  { path: 'operator-history', loadChildren: '../sharepage/sharepage.module#SharepageModule' },
+  { path: 'sharepage', loadChildren: '../sharepage/sharepage.module#SharepageModule' },
   { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }
 ];

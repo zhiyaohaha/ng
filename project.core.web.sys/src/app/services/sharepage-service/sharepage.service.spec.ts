@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { OnepageService } from './onepage.service';
+import { SharepageService } from './sharepage.service';
 
-describe('Service: Onepage', () => {
+describe('Service: Sharepage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OnepageService]
+      providers: [SharepageService]
     });
   });
 
-  it('should ...', inject([OnepageService], (service: OnepageService) => {
+  it('should ...', inject([SharepageService], (service: SharepageService) => {
     expect(service).toBeTruthy();
   }));
 });

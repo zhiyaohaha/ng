@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OnepageComponent } from './onepage.component';
+import { SharepageComponent } from './sharepage.component';
 
-describe('OnepageComponent', () => {
-  let component: OnepageComponent;
-  let fixture: ComponentFixture<OnepageComponent>;
+describe('SharepageComponent', () => {
+  let component: SharepageComponent;
+  let fixture: ComponentFixture<SharepageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OnepageComponent ]
+      declarations: [SharepageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OnepageComponent);
+    fixture = TestBed.createComponent(SharepageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

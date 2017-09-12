@@ -13,7 +13,7 @@
                 <ng-container *ngFor="let m of item.childrens">
                     <ul>
                         <li fRipple>
-                            <a routerLink="{{m.url}}" routerLinkActive="active">
+                            <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
                                 <cite>{{m.name}}</cite>
                                 <em></em>
                             </a>
@@ -30,31 +30,6 @@
                     <a routerLink="/login" routerLinkActive="active">
                         <cite>登录页</cite>
                         <em>Login</em>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="parameterManage" routerLinkActive="active">
-                        <cite>参数管理</cite>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="onepage" routerLinkActive="active">
-                        <cite>onepage</cite>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="apidoc" routerLinkActive="active">
-                        <cite>API管理</cite>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="setting-menu" routerLinkActive="active">
-                        <cite>菜单模块</cite>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="memberMap" routerLinkActive="active">
-                        <cite>成员导图</cite>
                     </a>
                 </li>
             </ul>

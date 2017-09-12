@@ -15,6 +15,7 @@ import { globalVar } from './../../common/global.config';
 
 export class TableComponent implements OnInit {
 
+  @Input() clickAuthority;//点击权限
   @Input() data;//表格数据内容
   @Input() columns: ITdDataTableColumn[];//表头
   @Input() totals; //总条数

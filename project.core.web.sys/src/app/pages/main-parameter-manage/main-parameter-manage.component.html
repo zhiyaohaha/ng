@@ -3,18 +3,19 @@
         <div class="row">
             <div class="col-lg-4 sidenav-left" *ngIf="!isNew">
                 <div class="sidenav-container">
+                    <ng-container *ngIf="!tree">loading</ng-container>
                     <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree>
                 </div>
             </div>
             <div class="col-lg-8" *ngIf="selectNode">
                 <md-tab-group>
-                    <md-tab label="修改">
+                    <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
                         <form #sysParams="ngForm">
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
                                         <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false">
+                                            <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false">
                                         </md-input-container>
                                         <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                                         <!-- <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
@@ -61,7 +62,7 @@
                             </div>
                         </form>
                     </md-tab>
-                    <md-tab label="添加">
+                    <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
                         <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
                         <!-- <form #addSysParams="ngForm">
                             <md-list>
@@ -107,7 +108,6 @@
                         </form> -->
                     </md-tab>
                 </md-tab-group>
-
             </div>
             <div class="col-lg-8" *ngIf="isNew">
                 <md-tab-group>
@@ -160,9 +160,9 @@
 
     <div class="main-container clearfix">
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-        <button fButton color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
+        <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
     </div>
 
-    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
 </md-sidenav-container>

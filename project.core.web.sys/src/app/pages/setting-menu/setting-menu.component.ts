@@ -1,8 +1,10 @@
-import { ToastService } from './../../component/toast/toast.service';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ToastService } from './../../component/toast/toast.service';
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
 import { ConvertUtil } from './../../common/convert-util';
+import { FnUtil } from './../../common/fn-util';
 
 @Component({
   selector: 'app-setting-menu',
@@ -10,6 +12,8 @@ import { ConvertUtil } from './../../common/convert-util';
   styleUrls: ['./setting-menu.component.scss']
 })
 export class SettingMenuComponent implements OnInit {
+
+  authorities: string[];//权限
 
   sidenavActive: boolean;
 
@@ -33,7 +37,15 @@ export class SettingMenuComponent implements OnInit {
   addOrUpdate: boolean; //添加false 修改true
   menuOrAuthority; //菜单或权限
 
-  constructor(private settingMenuService: SettingMenuService, private util: ConvertUtil, private toastService: ToastService) { }
+  constructor(
+    private settingMenuService: SettingMenuService,
+    private util: ConvertUtil,
+    private toastService: ToastService,
+    private routerInfor: ActivatedRoute,
+    private fnUtil: FnUtil
+  ) {
+    this.authorities = this.fnUtil.getFunctions();
+  }
 
   ngOnInit() {
     this.getMenuLists();

@@ -1,13 +1,15 @@
 <ul>
-    <li *ngFor="let item of datas">
-        name:{{item.description}}
-        <ul>
-            <li *ngFor="let field of item.fields">
-                name:{{field.description}}
-                <ng-container *ngIf="field.target">1
-                    <!-- <app-main-member-map datas=""></app-main-member-map> -->
-                </ng-container>
-            </li>
-        </ul>
+    <li class="wrap-li" *ngFor="let item of datas">
+        {{item.description}}
+        <div class="wrap-div">
+            <ul>
+                <li [ngClass]="{'wrap-li' : field.target}" *ngFor="let field of item.fields">
+                    {{field.description}}
+                    <ng-container *ngIf="field.target">
+                        <app-main-member-map-list [data]="field.target"></app-main-member-map-list>
+                    </ng-container>
+                </li>
+            </ul>
+        </div>
     </li>
 </ul>

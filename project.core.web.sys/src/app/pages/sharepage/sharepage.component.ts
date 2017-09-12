@@ -1,24 +1,32 @@
+import { Component, OnInit } from '@angular/core';
 import { HtmlDomTemplate } from './../../models/HtmlDomTemplate';
 import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
-import { OnepageService } from './../../services/onepage-service/onepage.service';
+import { SharepageService } from './../../services/sharepage-service/sharepage.service';
 import { TdDataTableSortingOrder, ITdDataTableColumn } from '@covalent/core';
 import { globalVar, customized } from './../../common/global.config';
 import { fadeIn } from './../../common/animations';
-import { Component, OnInit } from '@angular/core';
+import { FnUtil } from './../../common/fn-util';
 
 @Component({
-  selector: 'app-onepage',
-  templateUrl: './onepage.component.html',
-  styleUrls: ['./onepage.component.scss'],
+  selector: 'app-sharepage',
+  templateUrl: './sharepage.component.html',
+  styleUrls: ['./sharepage.component.scss'],
   animations: [fadeIn]
 })
-export class OnepageComponent implements OnInit {
+export class SharepageComponent implements OnInit {
 
-  constructor(private onepageService: ParamsManageService) { }
+  //权限
+  authorities: string[];
+  authorityKey: string;//权限关键字
+
+  constructor(private sharepageService: SharepageService, private fnUtil: FnUtil) {
+    this.authorities = this.fnUtil.getFunctions();
+    //this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+  }
 
   ngOnInit() {
     this.getParamsList(this.listparam);
-    this.loadModal();
+    //this.loadModal();
   }
 
   /**
@@ -56,7 +64,7 @@ export class OnepageComponent implements OnInit {
     name: customized.SysOperationLogConfig
   };
   getParamsList(params) {
-    this.onepageService.getParams(params)
+    this.sharepageService.getParams(params)
       .subscribe(res => {
         if (res.code == "0") {
           var r = res;
@@ -67,7 +75,6 @@ export class OnepageComponent implements OnInit {
           })
           this.searchFilters = r.data.data.filters;
           this.filteredTotal = r.data.total;
-          console.log(this.columns)
         }
       })
   }
@@ -97,7 +104,7 @@ export class OnepageComponent implements OnInit {
   selectRow;
   rowClickEvent($event) {
     console.log("rowClick", $event);
-    this.onepageService.getEditParams({ name: customized.SysOperationLogConfig, id: $event.row.id })
+    this.sharepageService.getEditParams({ name: customized.SysOperationLogConfig, id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
         this.selectedValue = r.data.platform;
@@ -112,7 +119,7 @@ export class OnepageComponent implements OnInit {
   modalData;
   newModalData;
   loadModal() {
-    this.onepageService.editParamsModal({ name: customized.SysOperationLogConfig }).subscribe(r => {
+    this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
