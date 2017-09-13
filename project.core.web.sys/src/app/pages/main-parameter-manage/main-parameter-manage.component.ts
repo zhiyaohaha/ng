@@ -269,7 +269,7 @@ export class MainParameterManageComponent implements OnInit {
    */
   onSubmitAddParams($event) {
     let arr = [];
-    let data = this._util.toJSON(this.newModalData.bindDataJson);
+    let data = this._util.toJSON(this.newModalData);
     for (let key in $event) {
       arr.push(key);
     }
@@ -280,7 +280,7 @@ export class MainParameterManageComponent implements OnInit {
     data.description = $event.description;
     data.parentId = this.selectNode.JSONdata.id;
     data.depth = this.selectNode.JSONdata.depth + 1;
-    this.newModalData.bindDataJson = this._util.toJsonStr(data);
+    this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code == "0") {
         this.openAlert("添加成功");
@@ -296,7 +296,7 @@ export class MainParameterManageComponent implements OnInit {
    */
   onSubmitNewAdd($event) {
     let arr = [];
-    let data = this._util.toJSON(this.newModalData.bindDataJson);
+    let data = this._util.toJSON(this.newModalData);
     for (let key in $event) {
       arr.push(key);
     }
@@ -306,7 +306,7 @@ export class MainParameterManageComponent implements OnInit {
     data.id = "";
     data.description = $event.description;
     data.parentId = "";
-    this.newModalData.bindDataJson = this._util.toJsonStr(data);
+    this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code == "0") {
         this.openAlert("添加成功");
@@ -389,7 +389,7 @@ export class MainParameterManageComponent implements OnInit {
       if (r.code == "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
-        this.newModalData = r.data;
+        this.newModalData = r.data.bindDataJson;
         console.log("this.modalDOMS", this.modalDOMS);
         console.log("this.newdata", this.newModalData);
       }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Component, OnInit, Input} from '@angular/core';
+import { NgModule, Component, OnInit, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ShareModule } from '../../common/share';
 
@@ -11,7 +11,7 @@ import { ShareModule } from '../../common/share';
 export class AccordionGroupComponent {
   @Input() closeOthers: boolean;
   protected groups: AccordionComponent[] = [];
-  constructor() {}
+  constructor() { }
 
   closeOther(activeItem: AccordionComponent) {
     if (!this.closeOthers) {
@@ -26,6 +26,7 @@ export class AccordionGroupComponent {
 
   addGroup(item: AccordionComponent) {
     this.groups.push(item);
+    console.log(this.groups)
   }
 }
 
@@ -86,8 +87,8 @@ export class AccordionComponent implements OnInit {
     this.toggleClass();
   }
 
-  protected  _isExpanded = false;
-  protected  _icon: string;
+  protected _isExpanded = false;
+  protected _icon: string;
   isActive = 'inactive';
   itemClass = {};
   isAnimating: boolean;
@@ -132,4 +133,4 @@ export class AccordionComponent implements OnInit {
   exports: [AccordionComponent, AccordionGroupComponent]
 })
 
-export class AccordionModule {}
+export class AccordionModule { }

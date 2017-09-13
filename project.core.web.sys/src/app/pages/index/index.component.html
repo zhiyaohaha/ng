@@ -1,16 +1,16 @@
 <aside class="left-menu iscroll">
-    <ng-container *ngFor="let item of leftNav">
-        <ul class="left-menu-item" *ngIf="!item.hidden && item.childrens.length == 0">
-            <li fRipple>
-                <a routerLink="{{item.url}}" routerLinkActive="active">
-                    <free-icon icon="desktop"></free-icon>
-                    <span class="accordion-toggle-title">{{item.name}}</span>
-                </a>
-            </li>
-        </ul>
-        <free-accordion-group [closeOthers]="true" *ngIf="!item.hidden && item.childrens.length > 1">
-            <free-accordion class="let-menu-item" header="{{item.name}}" iconName="dashboard">
-                <ng-container *ngFor="let m of item.childrens">
+    <free-accordion-group [closeOthers]="true">
+        <ng-container *ngFor="let item of leftNav">
+            <ul class="left-menu-item" *ngIf="!item.hidden && item.childrens.length == 0">
+                <li fRipple>
+                    <a routerLink="{{item.url}}" routerLinkActive="active">
+                        <free-icon icon="desktop"></free-icon>
+                        <span class="accordion-toggle-title">{{item.name}}</span>
+                    </a>
+                </li>
+            </ul>
+            <free-accordion *ngIf="!item.hidden && item.childrens.length > 1" class="let-menu-item" header="{{item.name}}" iconName="dashboard">
+                <!-- <ng-container *ngFor="let m of item.childrens">
                     <ul>
                         <li fRipple>
                             <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
@@ -19,10 +19,18 @@
                             </a>
                         </li>
                     </ul>
-                </ng-container>
+                </ng-container> -->
+                <ul>
+                    <li fRipple *ngFor="let m of item.childrens">
+                        <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                            <cite>{{m.name}}</cite>
+                            <em></em>
+                        </a>
+                    </li>
+                </ul>
             </free-accordion>
-        </free-accordion-group>
-    </ng-container>
+        </ng-container>
+    </free-accordion-group>
     <free-accordion-group [closeOthers]="true">
         <free-accordion class="let-menu-item" header="设置" iconName="wrench">
             <ul>

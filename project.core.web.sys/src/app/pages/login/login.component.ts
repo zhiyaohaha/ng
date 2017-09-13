@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.code == "0") {
           this.router.navigateByUrl('/main');
-          if (res.data.menus) localStorage.setItem("menus", JSON.stringify(res.data.menus));
+          if (res.data && res.data.menus) localStorage.setItem("menus", JSON.stringify(res.data.menus));
         } else {
           this.logining = false;
           this.msgErrors = res.message;
