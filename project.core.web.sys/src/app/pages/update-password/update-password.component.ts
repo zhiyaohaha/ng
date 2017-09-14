@@ -5,6 +5,7 @@ import { fadeInUp, fadeIn, flyInOut } from './../../common/animations';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { passwordValidator, equalValidator } from '../../validators/validator';
 import { BaseService } from '../../services/base.service';
+import { FnUtil } from './../../common/fn-util';
 
 @Component({
   selector: 'app-update-password',
@@ -17,9 +18,10 @@ export class UpdatePasswordComponent implements OnInit {
   passwordForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder, 
-    private _service: BaseService, 
-    private _util: ConvertUtil, 
+    private fb: FormBuilder,
+    private _service: BaseService,
+    private _util: ConvertUtil,
+    private fnUtil: FnUtil,
     private router: Router) {
     this.passwordForm = fb.group({
       oldPassword: ["", [Validators.required]],
@@ -35,7 +37,7 @@ export class UpdatePasswordComponent implements OnInit {
   onSubmit() {
     if (this.passwordForm.valid) {
       let obj = { oldPassword: this.passwordForm.value.oldPassword, newPassword: this.passwordForm.value.passwordGroup.password };
-      this._service.post('/api/Loginer/RePassword', obj).subscribe(r => {
+      this._service.post(this.fnUtil.searchAPI("PersonalCenter.ModifyPassword.Update"), obj).subscribe(r => {
         if (r == "0") {
           alert("修改成功");
           this.router.navigateByUrl("/login");

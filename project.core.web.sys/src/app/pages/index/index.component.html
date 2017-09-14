@@ -10,16 +10,6 @@
                 </li>
             </ul>
             <free-accordion *ngIf="!item.hidden && item.childrens.length > 0" class="let-menu-item" header="{{item.name}}" iconName="{{item.icon}}">
-                <!-- <ng-container *ngFor="let m of item.childrens">
-                    <ul>
-                        <li fRipple>
-                            <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                                <cite>{{m.name}}</cite>
-                                <em></em>
-                            </a>
-                        </li>
-                    </ul>
-                </ng-container> -->
                 <ul>
                     <li fRipple *ngFor="let m of item.childrens">
                         <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
@@ -31,7 +21,7 @@
             </free-accordion>
         </ng-container>
     </free-accordion-group>
-    <free-accordion-group [closeOthers]="true">
+    <!-- <free-accordion-group [closeOthers]="true">
         <free-accordion class="let-menu-item" header="设置test" iconName="wrench">
             <ul>
                 <li fRipple>
@@ -56,7 +46,7 @@
                 </li>
             </ul>
         </free-accordion>
-    </free-accordion-group>
+    </free-accordion-group> -->
 </aside>
 <div class="top-menu">
     <div class="aside-header">

@@ -181,17 +181,22 @@ export class SettingMenuComponent implements OnInit {
    */
   deleteAuthority($event, id) {
     $event.stopPropagation();
-    console.log($event);
-    console.log($event.target.parentNode);
     this.settingMenuService.deleteAuthorty(id).subscribe(r => {
+      this.toastService.creatNewMessage(r.message);
       if (r.code == "0") {
-        this.renderer2.destroyNode($event.target.parentNode);
+        this.renderer2.setStyle($event.target.parentNode, "display", "none");
       }
     });
   }
   deletePage($event, id) {
     console.log(id);
     $event.stopPropagation();
+    this.settingMenuService.deletePage(id).subscribe(r => {
+      this.toastService.creatNewMessage(r.message);
+      if (r.code == "0") {
+        this.renderer2.setStyle($event.target.parentNode.parentNode.parentNode, "display", "none");
+      }
+    })
   }
 
   /**

@@ -1,16 +1,17 @@
-import { BaseService } from './../base.service';
 import { Injectable } from '@angular/core';
+import { BaseService } from './../base.service';
+import { FnUtil } from './../../common/fn-util';
 
 @Injectable()
 export class PersonalService {
 
-    constructor(private _baseSerive: BaseService) { }
+    constructor(private _baseSerive: BaseService, private fnUtil: FnUtil) { }
 
     /**
      * 获取个人信息
      */
     public getPersonalInfo() {
-        return this._baseSerive.get("/api/Loginer/GetPersonalBasicInfo");
+        return this._baseSerive.get(this.fnUtil.searchAPI("PersonalCenter.BasicInfo.View"));
     }
 
     /**
@@ -18,7 +19,7 @@ export class PersonalService {
      * @param params 头像的url
      */
     public setPersonalHeader(params) {
-        return this._baseSerive.post("/api/Loginer/ChangeAvatar", params);
+        return this._baseSerive.post(this.fnUtil.searchAPI("PersonalCenter.BasicInfo.UpdateAvatar"), params);
     }
 
     /**
@@ -26,7 +27,7 @@ export class PersonalService {
      * @param params { "key":"字段名称", "value":"字段值" }
      */
     public setPersonalInfo(params) {
-        return this._baseSerive.post("/api/Loginer/UpdatePersonalBasicInfo", params);
+        return this._baseSerive.post(this.fnUtil.searchAPI("PersonalCenter.BasicInfo.Update"), params);
     }
 
 }
