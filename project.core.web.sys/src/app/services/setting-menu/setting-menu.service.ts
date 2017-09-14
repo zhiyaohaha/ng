@@ -60,13 +60,13 @@ export class SettingMenuService {
      * 删除权限或者页面
      */
     deletePage(param) {
-        return this.baseService.post("/api/Template/Delete/SysFunctionData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.Delete"), param);
     }
     /**
      * 删除权限或者页面
      */
     deleteAuthorty(param) {
-        return this.baseService.post("/api/Template/Delete/SysFunctionData", param);
+        return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.DeleteFunction"), param);
     }
 
 }

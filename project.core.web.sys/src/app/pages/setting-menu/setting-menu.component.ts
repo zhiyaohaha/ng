@@ -183,7 +183,7 @@ export class SettingMenuComponent implements OnInit {
     $event.stopPropagation();
     console.log($event);
     console.log($event.target.parentNode);
-    this.settingMenuService.deleteAuthorty({ data: id }).subscribe(r => {
+    this.settingMenuService.deleteAuthorty(id).subscribe(r => {
       if (r.code == "0") {
         this.renderer2.destroyNode($event.target.parentNode);
       }
