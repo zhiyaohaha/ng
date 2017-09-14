@@ -3,6 +3,7 @@ import { PersonalService } from './../../services/personal/personal.service';
 import { Component, OnInit } from '@angular/core';
 import { fadeInUp, fadeIn } from '../../common/animations';
 import { FileUploader } from 'ng2-file-upload';
+import { CommunicationService } from './../../services/share/communication.service';
 
 @Component({
   selector: 'app-personal',
@@ -15,7 +16,7 @@ export class PersonalComponent implements OnInit {
   personImg: string = '';
   personInfo;
 
-  constructor(private _personalService: PersonalService, private util: ConvertUtil) { }
+  constructor(private _personalService: PersonalService, private util: ConvertUtil, private myService: CommunicationService) { }
 
   ngOnInit() {
     this._personalService.getPersonalInfo().subscribe(r => {
@@ -44,6 +45,8 @@ export class PersonalComponent implements OnInit {
       let url = data.data[0].path;
       this._personalService.setPersonalHeader(url).subscribe();
       this.personImg = url;
+      localStorage.setItem("avatar", url);
+      this.myService.avatar = url;
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from './../../component/toast/toast.service';
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
@@ -42,7 +42,8 @@ export class SettingMenuComponent implements OnInit {
     private util: ConvertUtil,
     private toastService: ToastService,
     private routerInfor: ActivatedRoute,
-    private fnUtil: FnUtil
+    private fnUtil: FnUtil,
+    private renderer2: Renderer2
   ) {
     this.authorities = this.fnUtil.getFunctions();
   }
@@ -105,11 +106,11 @@ export class SettingMenuComponent implements OnInit {
   getModel() {
     //菜单模板
     this.settingMenuService.getMenuModel().subscribe(r => {
-      if (r.code == "0") this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson);
+      if (r.code == "0") { this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson) };
     })
     //权限模板
     this.settingMenuService.getAuthorityModel().subscribe(r => {
-      if (r.code == "0") this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson);
+      if (r.code == "0") { this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson) };
     });
   }
 
@@ -156,8 +157,6 @@ export class SettingMenuComponent implements OnInit {
     }
   }
 
-
-
   /**
    * 接口回调
    */
@@ -175,6 +174,24 @@ export class SettingMenuComponent implements OnInit {
     } else {
       this.updateOld($event);
     }
+  }
+
+  /**
+   * 确定删除权限或者页面
+   */
+  deleteAuthority($event, id) {
+    $event.stopPropagation();
+    console.log($event);
+    console.log($event.target.parentNode);
+    this.settingMenuService.deleteAuthorty({ data: id }).subscribe(r => {
+      if (r.code == "0") {
+        this.renderer2.destroyNode($event.target.parentNode);
+      }
+    });
+  }
+  deletePage($event, id) {
+    console.log(id);
+    $event.stopPropagation();
   }
 
   /**

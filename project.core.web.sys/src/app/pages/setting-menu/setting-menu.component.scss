@@ -30,6 +30,18 @@
             color: #fff;
             font-size: 13px;
             cursor: pointer;
+            position: relative;
+            &:hover {
+                .close {
+                    display: block;
+                }
+            }
+            .close {
+                position: absolute;
+                top: 7px;
+                right: 7px;
+                display: none;
+            }
         }
         .authority-first {
             width: 100%;
@@ -41,6 +53,22 @@
                 background-color: $btn2bgc;
                 font-size: 12px;
                 cursor: pointer;
+                position: relative;
+                transition: all 0.2s;
+                &:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+                    z-index: 1;
+                    .close {
+                        display: block;
+                    }
+                }
+                .close {
+                    position: absolute;
+                    top: 7px;
+                    right: 7px;
+                    display: none;
+                }
             }
         }
         .add-authority {

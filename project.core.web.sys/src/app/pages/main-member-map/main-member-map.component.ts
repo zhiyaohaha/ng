@@ -33,7 +33,7 @@ export class MainMemberMapComponent implements OnInit {
           <div class="wrap-div">
             <ul>
                 <li *ngFor="let item of data.fields" [ngClass]="{'wrap-li' : item.target}">
-                    {{item.description}}
+                    {{item.description}}<span class="pull-right">{{item._type == 'string' ? '(string)' : ''}}</span>
                     <ng-container *ngIf="item.target">
                         <app-main-member-map-list [data]="item.target"></app-main-member-map-list>
                     </ng-container>

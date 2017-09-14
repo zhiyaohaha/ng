@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'timi-font';
+    src: url('./timi-font.eot?obgvqi');
+    src: url('./timi-font.eot?obgvqi#iefix') format('embedded-opentype'), url('./timi-font.ttf?obgvqi') format('truetype'), url('./timi-font.woff?obgvqi') format('woff'), url('./timi-font.svg?obgvqi#timi-font') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="timi-"],
+[class*=" timi-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'timi-font' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.timi-address-book:before {
+    content: "\e900";
+}
+
+.timi-close:before {
+    content: "\e901";
+}
+
+.timi-del:before {
+    content: "\e902";
+}
+
+.timi-delete:before {
+    content: "\e903";
+}
+
+.timi-email:before {
+    content: "\e904";
+}
+
+.timi-home:before {
+    content: "\e905";
+}
+
+.timi-lock:before {
+    content: "\e906";
+}
+
+.timi-phone:before {
+    content: "\e907";
+}
+
+.timi-quit:before {
+    content: "\e908";
+}
+
+.timi-gear:before {
+    content: "\e909";
+}

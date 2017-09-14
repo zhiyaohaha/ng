@@ -56,4 +56,17 @@ export class SettingMenuService {
         return this.baseService.post(this.fnUtil.searchAPI("SystemSetting.MenuSetting.UpdateFunction"), param);
     }
 
+    /**
+     * 删除权限或者页面
+     */
+    deletePage(param) {
+        return this.baseService.post("/api/Template/Delete/SysFunctionData", param);
+    }
+    /**
+     * 删除权限或者页面
+     */
+    deleteAuthorty(param) {
+        return this.baseService.post("/api/Template/Delete/SysFunctionData", param);
+    }
+
 }

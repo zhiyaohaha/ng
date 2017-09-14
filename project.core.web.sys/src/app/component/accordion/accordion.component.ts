@@ -26,7 +26,6 @@ export class AccordionGroupComponent {
 
   addGroup(item: AccordionComponent) {
     this.groups.push(item);
-    console.log(this.groups)
   }
 }
 
@@ -37,7 +36,7 @@ export class AccordionGroupComponent {
       <div (click)="toggle()" class="accordion-toggle" [ngClass]="itemClass">
         <span class="accordion-toggle-inner">
           <ng-container *ngIf="header">
-            <i class="fa {{'fa-' + _icon}}" *ngIf="!!_icon"></i>
+            <i class="{{'timi-' + _icon}}" *ngIf="!!_icon"></i>
             <span class="accordion-toggle-title">{{ header }}</span>
           </ng-container>
           <ng-content select="f-header"></ng-content>

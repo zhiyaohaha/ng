@@ -2,20 +2,20 @@
     <md-list dense>
         <md-list-item *ngFor="let item of modalDOMS;let i = index;">
             <div class="form-group" [ngSwitch]="item.ui.displayType">
-                <md-input-container *ngSwitchCase="'text' || 'imageupload'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                     <input mdInput ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" required>
                 </md-input-container>
-                <input *ngSwitchCase="'hidden'" ngModel type="hidden" name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                <textarea *ngSwitchCase="'textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>
-                <ng-container *ngSwitchCase="'select'">
+                <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                <textarea *ngSwitchCase="'HtmlDomDisplayType.Textarea'" ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>
+                <ng-container *ngSwitchCase="'HtmlDomDisplayType.Select'">
                     <free-select #select (onChange)="onSelectChange($event)" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
                     <input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected?.value || modelDOMSData[item.name]">
                 </ng-container>
-                <ng-container *ngSwitchCase="'radio'">
+                <ng-container *ngSwitchCase="'HtmlDomDisplayType.Radio'">
                     <span>{{item.ui.label}}：</span>
                     <free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>
                 </ng-container>
-                <ng-container *ngSwitchCase="'checkbox'">
+                <ng-container *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                     <ng-container *ngIf="item.bindData;else elseBlock">
                         <span>{{item.ui.label}}：</span>
                         <free-checkbox *ngFor="let c of item.bindData;" [(ngModel)]="aaaa" value="{{c.value}}" label="{{c.text}}" name="{{item.name}}"></free-checkbox>
@@ -26,7 +26,7 @@
                         <input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">
                     </ng-template>
                 </ng-container>
-                <ng-container *ngSwitchCase="'datereange'">
+                <ng-container *ngSwitchCase="'HtmlDomDisplayType.Datereange'">
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
                         <button mdSuffix [mdDatepickerToggle]="picker"></button>
@@ -39,7 +39,7 @@
                     </md-input-container>
                     <md-datepicker #picker2></md-datepicker>
                 </ng-container>
-                <ng-container *ngSwitchCase="'tags'">
+                <ng-container *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                     <free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
                     <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
                 </ng-container>

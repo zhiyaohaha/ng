@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 
 import { LoginService } from '../../services/login-service/login.service';
 import { userNameValidator } from '../../validators/validator';
+import { CommunicationService } from './../../services/share/communication.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   errors: boolean;
   logining: boolean;
 
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService) { }
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private myService: CommunicationService) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -28,6 +29,9 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  /**
+   * 登录
+   */
   onLogin() {
     let account = this.loginForm.value.account;
     let password = this.loginForm.value.password;
@@ -39,13 +43,33 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.code == "0") {
           this.router.navigateByUrl('/main');
-          if (res.data && res.data.menus) localStorage.setItem("menus", JSON.stringify(res.data.menus));
+          if (res.data && res.data.menus) {
+            localStorage.setItem("menus", JSON.stringify(res.data.menus));
+            localStorage.setItem("avatar", res.data.avatar);
+            this.writeMenus(res.data.menus);
+          };
         } else {
           this.logining = false;
           this.msgErrors = res.message;
         }
       })
     }
+  }
+
+
+
+  /**
+   * 菜单写入到localstorage
+   */
+  private pageApi = {};
+  private writeMenus(menus) {
+    menus.forEach(element => {
+      this.pageApi[element.code] = { a: element.functions, u: element._functions };
+      if (element.childrens) {
+        this.writeMenus(element.childrens);
+      }
+    });
+    localStorage.setItem("pa", JSON.stringify(this.pageApi));
   }
 
 }

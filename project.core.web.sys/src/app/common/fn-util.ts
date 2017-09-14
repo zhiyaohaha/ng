@@ -12,22 +12,12 @@ export class FnUtil {
         private routerInfo: ActivatedRoute
     ) { }
 
-
     /**
      * 获取当前页面权限
      */
     public getFunctions() {
-        let functions;
-        let apis;
         let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
-        this.menus.filter(r => {
-            r.childrens.filter(cc => {
-                if (cc.code == pageCode) {
-                    apis = cc;
-                }
-            })[0];
-        })
-        return apis.functions;
+        return this.convertUtil.toJSON(localStorage.getItem("pa"))[pageCode].a;
     }
 
     /**

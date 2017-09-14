@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomRenderer } from './../../common/dom';
 import { Title } from '@angular/platform-browser';
 import { config } from './../../common/config';
+import { CommunicationService } from './../../services/share/communication.service';
 
 @Component({
   selector: 'app-index',
@@ -12,6 +13,7 @@ import { config } from './../../common/config';
   providers: [DomRenderer]
 })
 export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
+  avatar: string;
   leftNav: any[];
   ws: WebSocket;
   title: string;
@@ -34,11 +36,15 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private domRenderer: DomRenderer,
-    private pageTitle: Title) {
+    private pageTitle: Title,
+    private myService: CommunicationService
+  ) {
     this.resize();
   }
 
   ngOnInit() {
+    this.avatar = this.myService.avatar;
+    this.avatar = localStorage.getItem("avatar");
     this.leftNav = JSON.parse(localStorage.getItem("menus"));
 
     // this.ws = new WebSocket("ws://");
@@ -67,7 +73,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     }, {
       'name': '登出',
       'icon': 'sign-out',
-      'routerLink': '/api/auth/loginout'
+      'url': 'http://api2.cpf360.com/api/auth/loginout'
     }];
 
     this.searchForm = this.fb.group({

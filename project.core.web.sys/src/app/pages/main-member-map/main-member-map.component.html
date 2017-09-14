@@ -4,7 +4,7 @@
         <div class="wrap-div">
             <ul>
                 <li [ngClass]="{'wrap-li' : field.target}" *ngFor="let field of item.fields">
-                    {{field.description}}
+                    {{field.description}}<span class="pull-right">{{field._type == 'string' ? '(string)' : ''}}</span>
                     <ng-container *ngIf="field.target">
                         <app-main-member-map-list [data]="field.target"></app-main-member-map-list>
                     </ng-container>
