@@ -6,6 +6,7 @@
     $btn3bgc: #f6f6f6;
     $btn3border: 1px solid #e6e6e6;
     md-sidenav-container {
+        user-select: none;
         background-color: transparent;
         height: 100%;
         md-sidenav {
@@ -59,6 +60,7 @@
                     transform: scale(1.05);
                     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
                     z-index: 1;
+                    filter: brightness(1.1);
                     .close {
                         display: block;
                     }

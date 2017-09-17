@@ -25,6 +25,23 @@
             </div>
         </div>
     </app-root>
+    <script language="Javascript">
+        document.onkeydown = function() {
+            if ((window.event.altKey) &&
+                ((window.event.keyCode == 37) || //屏蔽   Alt+   方向键   ←   
+                    (window.event.keyCode == 39))) //屏蔽   Alt+   方向键   →   
+            {
+                event.returnValue = false;
+            }
+
+            if ((event.keyCode == 8) || //屏蔽退格删除键   
+                (event.keyCode == 116) || //屏蔽   F5   刷新键   
+                (event.ctrlKey && event.keyCode == 82)) { //Ctrl   +   R   
+                event.keyCode = 0;
+                event.returnValue = false;
+            }
+        };
+    </script>
 </body>
 
 </html>
