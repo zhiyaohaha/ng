@@ -13,6 +13,9 @@ const childRoutes: Routes = [
   { path: 'memberMap', loadChildren: '../main-member-map/main-member-map.module#MainMemberMapModule' },
   { path: 'setting-menu', loadChildren: '../setting-menu/setting-menu.module#SettingMenuModule' },
   { path: 'operator-history', loadChildren: '../sharepage/sharepage.module#SharepageModule' },
+  { path: 'table-data-model', loadChildren: '../table-data-model/table-data-model.module#TableDataModelModule' },
+  { path: 'mutilple-select-data-model', loadChildren: '../mutilple-select-data-model/mutilple-select-data-model.module#MutilpleSelectDataModelModule' },
+  { path: 'form-data-model', loadChildren: '../form-data-model/form-data-model.module#FormDataModelModule' },
   { path: 'sharepage', loadChildren: '../sharepage/sharepage.module#SharepageModule' },
   { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }

@@ -1,0 +1,1 @@
+<app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>

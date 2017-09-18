@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TdDialogService } from '@covalent/core';
 import { ToastService } from './../../component/toast/toast.service';
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
@@ -43,7 +44,8 @@ export class SettingMenuComponent implements OnInit {
     private toastService: ToastService,
     private routerInfor: ActivatedRoute,
     private fnUtil: FnUtil,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private dialogService: TdDialogService
   ) {
     this.authorities = this.fnUtil.getFunctions();
   }
@@ -181,22 +183,60 @@ export class SettingMenuComponent implements OnInit {
    */
   deleteAuthority($event, id) {
     $event.stopPropagation();
-    this.settingMenuService.deleteAuthorty(id).subscribe(r => {
-      this.toastService.creatNewMessage(r.message);
-      if (r.code == "0") {
-        this.renderer2.setStyle($event.target.parentNode, "display", "none");
-      }
-    });
-  }
-  deletePage($event, id) {
-    console.log(id);
-    $event.stopPropagation();
-    this.settingMenuService.deletePage(id).subscribe(r => {
-      this.toastService.creatNewMessage(r.message);
-      if (r.code == "0") {
-        this.renderer2.setStyle($event.target.parentNode.parentNode.parentNode, "display", "none");
+    this.dialogService.openConfirm({
+      message: `确定删除该权限吗？删除后不可恢复`,
+      title: "警告",
+      cancelButton: "取消",
+      acceptButton: "确定"
+    }).afterClosed().subscribe((accept: boolean) => {
+      if (accept) {
+        this.settingMenuService.deleteAuthorty(id).subscribe(r => {
+          this.toastService.creatNewMessage(r.message);
+          if (r.code == "0") {
+            this.renderer2.setStyle($event.target.parentNode, "display", "none");
+          }
+        });
       }
     })
+  }
+  deletePage($event, id, index) {
+    $event.stopPropagation();
+    this.dialogService.openConfirm({
+      message: `确定删除该页面吗？删除后不可恢复`,
+      title: "警告",
+      cancelButton: "取消",
+      acceptButton: "确定"
+    }).afterClosed().subscribe((accept: boolean) => {
+      if (accept) {
+        this.settingMenuService.deletePage(id).subscribe(r => {
+          this.toastService.creatNewMessage(r.message);
+          if (r.code == "0") {
+            if (index == 0) {
+              this.renderer2.setStyle($event.target.parentNode.parentNode.parentNode, "display", "none");
+            } else {
+              this.renderer2.setStyle($event.target.parentNode.parentNode, "display", "none");
+            }
+          }
+        })
+      }
+    })
+  }
+
+
+  /**
+   * 删除警告
+   */
+  deleteAlert(type: string): boolean {
+    let bool: boolean;
+    this.dialogService.openConfirm({
+      message: `确定删除改${type}吗？删除后不可恢复`,
+      title: "警告",
+      cancelButton: "取消",
+      acceptButton: "确定"
+    }).afterClosed().subscribe((accept: boolean) => {
+      bool = accept;
+    })
+    return bool;
   }
 
   /**
