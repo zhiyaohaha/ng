@@ -5,7 +5,7 @@ import { BaseService } from './../base.service';
 @Injectable()
 export class SettingMenuService {
 
-    constructor(private baseService: BaseService, private fnUtil: FnUtil, ) { }
+    constructor(private baseService: BaseService, private fnUtil: FnUtil) { }
 
     /**
      * 获取菜单列表

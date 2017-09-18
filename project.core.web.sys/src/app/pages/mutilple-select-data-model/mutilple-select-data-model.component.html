@@ -1,0 +1,34 @@
+<md-sidenav-container class="example-container" [@fadeInUpState]="'active'">
+    <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+        <div class="row">
+            <div class="col-lg-4" style="border-right:1px solid red;">
+                <free-select [(ngModel)]="selectedOption" (onChange)="onChange($event)" [options]="options" pholder="选择数据源"></free-select>
+                <!-- <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree> -->
+                <!-- <ul>
+                    <li *ngFor="let item of collections">{{item.text}}
+                        <ng-container *ngIf="item.childrens.length > 0">
+                            <ul>
+                                <li *ngFor="let item of collection" ></li>
+                            </ul>
+                        </ng-container>
+                    </li>
+                </ul> -->
+                <ng-container style="margin-left:-30px;" *ngIf="tree">
+                    <ul-tree [tree]="tree"></ul-tree>
+                </ng-container>
+            </div>
+            <div class="col-lg-8">
+                <div [dragula]='"bag-one"' style="width:100px;height:100px;background:red;"></div>
+            </div>
+        </div>
+    </md-sidenav>
+    <div class="row"></div>
+    <div class="main-container clearfix">
+        <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+        <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
+    </div>
+
+    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="true" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+
+
+</md-sidenav-container>

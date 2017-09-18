@@ -18,7 +18,7 @@ import { ConvertUtil } from '../../common/convert-util';
 export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentInit {
 
     @Input() filters: any;//搜索UIDOM
-    @Input() condition: any[];//搜索关键字KV
+    @Input() condition: any[];//搜索条件KV
     @Output() onSearch: EventEmitter<any> = new EventEmitter();
     StartTime: Date;
     EndTime: Date;
@@ -36,18 +36,18 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
      */
     searchParam($event) {
         let name = $event.target.name;
-        this.condition.filter(i => {
+        this.condition = this.condition.map(i => {
             if (i.key == name) {
                 i.value = $event.target.value;
             }
+            return i;
         });
     }
 
     //搜索
     searchParams() {
         this.condition.filter(i => {
-            if (i.key == "createdDate") {
-                //i.value = this.StartTime + this.EndTime;
+            if (i.key == "createdDate" && this.StartTime && this.EndTime) {
                 i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
             }
         });

@@ -85,6 +85,9 @@ export class ConvertUtil {
      * @param obj 排序传入的对象
      */
     public firstLetterSort(obj: any): string {
+        if (typeof obj === "string") {
+            return obj;
+        }
         let params = [];
         for (var key in obj) {
             params.push(key)

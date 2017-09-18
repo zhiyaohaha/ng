@@ -7,7 +7,7 @@
             <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" [disabled]="item.ui.isDisabled">
             </md-input-container>
-            <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
+            <div *ngSwitchCase="'HtmlDomDisplayType.DateRange'">
                 <md-input-container>
                     <input mdInput [mdDatepicker]="picker" placeholder="起始时间" [(ngModel)]="StartTime">
                     <button mdSuffix [mdDatepickerToggle]="picker"></button>
@@ -29,7 +29,6 @@
             </div> -->
         </div>
     </li>
-    <li>{{condition}}</li>
     <li>
         <button fButton color="deepblue" (click)="searchParams()">搜索</button>
     </li>
