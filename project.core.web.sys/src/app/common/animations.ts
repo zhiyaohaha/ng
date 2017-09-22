@@ -17,7 +17,7 @@ export const fadeIn = trigger('fadeInState', [
   state('in', style({ opacity: 1 })),
   transition('void => *', [
     style({ opacity: 0 }),
-    animate('.5s cubic-bezier(.35,0,.25,1)')
+    animate('1s cubic-bezier(.35,0,.25,1)')
   ])
 ])
 

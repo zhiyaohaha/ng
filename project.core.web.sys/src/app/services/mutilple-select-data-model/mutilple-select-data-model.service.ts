@@ -28,4 +28,11 @@ export class MutilpleSelectDataModelService {
     return this.baseService.get("/api/Template/GetFieldsByCollection", param);
   }
 
+  /**
+   * 保存添加
+   */
+  saveNew(param){
+    return this.baseService.get(this.fnUtil.searchAPI("TemplateMgr.SelectMgr.Add"),param);
+  }
+
 }

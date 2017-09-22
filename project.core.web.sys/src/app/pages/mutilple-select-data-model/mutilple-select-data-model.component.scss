@@ -3,11 +3,31 @@
         height: 100%;
     }
     .example-sidenav {
-        width: 60%;
+        width: 700px;
+        md-form-field{
+            width: 100%;
+        }
+        .form-group{
+            margin-bottom: 0;
+        }
+        .chip{
+            display: inline-block;
+            background-color: #eee;
+            border: 1px solid #ccd0d7;
+            border-radius: 3px;
+            padding: 0px 8px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            text-align: center;
+            cursor: pointer;
+        }
     }
     .main-container {
         .add-button {
             margin-top: 30px;
         }
+    }
+    md-select .mat-select-trigger{
+        font-size: 16px;
     }
 }

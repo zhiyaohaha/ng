@@ -11,6 +11,12 @@
     <h3>No results to display.</h3>
 </div>
 
-<td-paging-bar #pagingBar [pageSizes]="pageSizes" [total]="totals" (change)="page($event)" [pageLinkCount]="pageLinkCount">
-    <span td-paging-bar-label hide-xs>每页条数:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals" (change)="page($event)" [pageLinkCount]="pageLinkCount">
+    <span hide-xs>每页条数:</span>
+    <md-select [style.width.px]="50" [(ngModel)]="pageSize">
+        <md-option *ngFor="let size of pageSizes" [value]="size">
+        {{size}}
+        </md-option>
+    </md-select>
+    <span hide-xs></span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
 </td-paging-bar>

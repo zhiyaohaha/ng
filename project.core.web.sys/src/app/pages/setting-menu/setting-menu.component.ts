@@ -1,3 +1,4 @@
+import { fadeIn } from './../../common/animations';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TdDialogService } from '@covalent/core';
@@ -10,7 +11,8 @@ import { FnUtil } from './../../common/fn-util';
 @Component({
   selector: 'app-setting-menu',
   templateUrl: './setting-menu.component.html',
-  styleUrls: ['./setting-menu.component.scss']
+  styleUrls: ['./setting-menu.component.scss'],
+  animations: [fadeIn]
 })
 export class SettingMenuComponent implements OnInit {
 

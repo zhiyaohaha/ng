@@ -10,8 +10,7 @@ import { FnUtil } from './../../common/fn-util';
 @Component({
   selector: 'app-sharepage',
   templateUrl: './sharepage.component.html',
-  styleUrls: ['./sharepage.component.scss'],
-  animations: [fadeIn]
+  styleUrls: ['./sharepage.component.scss']
 })
 export class SharepageComponent implements OnInit {
 

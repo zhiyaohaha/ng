@@ -1,4 +1,4 @@
-<md-sidenav-container [@fadeInState]="'active'">
+<md-sidenav-container>
 
     <div class="main-container clearfix">
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
@@ -29,15 +29,15 @@
                             <div *ngSwitchCase="'daterange'">
                                 <md-input-container>
                                     <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                    <md-datepicker #picker></md-datepicker>
                                 </md-input-container>
-                                <md-datepicker #picker></md-datepicker>
                                 &nbsp;&nbsp;--&nbsp;&nbsp;
                                 <md-input-container>
                                     <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                                    <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                                    <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                                    <md-datepicker #picker2></md-datepicker>
                                 </md-input-container>
-                                <md-datepicker #picker2></md-datepicker>
                             </div>
                             <div *ngSwitchCase="'tags'">
                                 <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>

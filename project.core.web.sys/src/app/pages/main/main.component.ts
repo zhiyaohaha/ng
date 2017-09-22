@@ -20,9 +20,7 @@ import { environment } from "environments/environment";
   providers: [LoginOutService]
 })
 export class MainComponent implements OnInit {
-
-  // @HostBinding("@fadeInUpState") fadeInUpState;
-  // @HostBinding('style.display') display = 'block';
+  
   imgSrc: any[];
 
   constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, public snack: MdSnackBar, private toastService: ToastService) { }

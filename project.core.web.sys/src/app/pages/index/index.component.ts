@@ -40,6 +40,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     private myService: CommunicationService
   ) {
     this.resize();
+    this.selectTheme("dark");
   }
 
   ngOnInit() {

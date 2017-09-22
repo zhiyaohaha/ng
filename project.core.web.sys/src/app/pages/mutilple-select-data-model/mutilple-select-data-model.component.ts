@@ -1,28 +1,34 @@
+import { fadeIn } from './../../common/animations';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, NgModule, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TdDataTableSortingOrder, ITdDataTableColumn } from '@covalent/core';
-import { fadeInUp } from './../../common/animations';
 import { globalVar } from './../../common/global.config';
 import { FnUtil } from './../../common/fn-util';
 import { MutilpleSelectDataModelService } from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
-import { DragulaService } from 'ng2-dragula';
 
 @Component({
   selector: 'app-mutilple-select-data-model',
   templateUrl: './mutilple-select-data-model.component.html',
   styleUrls: ['./mutilple-select-data-model.component.scss'],
   providers: [MutilpleSelectDataModelService],
-  animations: [fadeInUp]
+  animations: [fadeIn]
 })
 export class MutilpleSelectDataModelComponent implements OnInit {
 
 
+  collection;
+  type;
   authorities;//权限管理
   authorityKey;//权限关键字
 
-  options: any[] = [{ text: "123", value: "123" }];//表单下拉框选项
+  options;//表单下拉框选项
+  platformsOptions;//下拉框平台
+  fieldFilterTypesOptions;//下拉框筛选类型
+
   selectedOption;//表单下拉框选中项
+
+  chips=[];//标签
 
   /**
    * 表格title
@@ -61,6 +67,36 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.getDataSource();
   }
 
+  drag($event){
+    $event.dataTransfer.setData("Text", $event.target.innerHTML);
+  }
+  dropenter($event){
+    $event.target.value = '';
+  }
+  drop($event){
+    console.log("drop:",$event);
+    // $event.preventDefault();
+    // var data = $event.dataTransfer.getData("Text");
+    // $event.target.value = data;
+  }
+  allowDrop($event){
+    $event.preventDefault();
+  }
+  forbidDrop($event){
+    return false;
+  }
+
+  addNewForm($event){
+    $event.tags = this.chips;
+    console.log($event);
+    //this.selectModelService.saveNew($event);
+  }
+
+  forbidInput($event){
+    $event.target.blur();
+    return false;
+  }
+
   /**
    * 表格列表
    * @param param 搜索条件
@@ -86,6 +122,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.selectModelService.getDataSource().subscribe(r => {
       if (r.code == "0") {
         this.options = r.data.collections;
+        this.platformsOptions = r.data.platforms;
+        this.fieldFilterTypesOptions = r.data.fieldFilterTypes;
+        console.log(this.options)
       }
     })
   }
@@ -98,6 +137,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.selectModelService.getDetailData({ data: selected }).subscribe(r => {
       if (r.code == "0") {
         this.tree = r.data as treeModel[];
+        console.log(this.tree)
       }
     });
   }
@@ -109,7 +149,34 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.getDetailData($event.value);
   }
 
+  /**
+   * 右侧平台下拉框
+   */
+  //options = [];
+  onFlatformChange($event){
+    console.log("右侧：",$event);
+  }
 
+  /**
+   * 添加标签
+   */
+  addTags($event){
+    this.chips.push({value:$event.dataTransfer.getData("Text")});
+  }
+
+  /**
+   * 删除标签
+   */
+  delChip(i){
+    this.chips.splice(i,1);
+  }
+
+  /**
+   * 新增
+   */
+  newAdd($event){
+
+  }
 
   /**
    * 点击行
@@ -143,47 +210,8 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
 }
 
-
-@Component({
-  selector: "ul-tree",
-  template: `
-    <ul>
-      <li *ngFor="let item of tree" [dragula]='"bag-one"'>
-          {{item.text}}
-          <ng-container *ngIf="item.childrens">
-              <ul-tree [tree]="item.childrens"></ul-tree>
-          </ng-container>
-      </li>
-    </ul>
-  `,
-  styles: [
-    `
-    ul{
-      margin-left:30px;
-    }
-    li::before{
-      content: '';
-      display: block;
-      position: relative;
-      left: -10px;
-      width: 1px;
-      height: 100%;
-      background: red;
-    }
-    `
-  ]
-})
-export class UlTreeComponent {
-  @Input() tree: treeModel[];
-  constructor(private dragulaService: DragulaService) {
-    // dragulaService.setOptions('bag-one', {
-    //   copy: true
-    // });
-  }
-}
-
 export class treeModel {
-  text: string;
-  value: string;
-  childrens: treeModel[];
+  depth: number;
+  description: string;
+  name: string;
 }

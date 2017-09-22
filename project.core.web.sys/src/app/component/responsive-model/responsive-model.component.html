@@ -29,13 +29,17 @@
                 <ng-container *ngSwitchCase="'HtmlDomDisplayType.Datereange'">
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                        <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                        <md-datepicker #picker></md-datepicker>
                     </md-input-container>
                     <md-datepicker #picker></md-datepicker>
                     &nbsp;&nbsp;--&nbsp;&nbsp;
                     <md-input-container>
                         <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                        <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
+                        <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                        <md-datepicker #picke2></md-datepicker>
                     </md-input-container>
                     <md-datepicker #picker2></md-datepicker>
                 </ng-container>

@@ -1,4 +1,4 @@
-<md-sidenav-container>
+<md-sidenav-container [@fadeInState]="'active'">
     <md-sidenav #sidenav align="end" (close)="onSidenavClose()" (open)="onSidenavOpen()">
         <md-tab-group>
             <md-tab [label]="label">

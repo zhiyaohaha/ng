@@ -1,4 +1,4 @@
-<md-sidenav-container class="example-container" [@fadeInUpState]="'active'">
+<md-sidenav-container class="example-container" [@fadeInState]="'active'">
     <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
         <div class="row">
             <div class="col-lg-4 sidenav-left" *ngIf="!isNew">
@@ -14,13 +14,13 @@
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                                             <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-input-container>
+                                        </md-form-field>
                                         <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                        <!-- <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                                        <!-- <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                                             <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
-                                        </md-input-container> -->
+                                        </md-form-field> -->
                                         <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
                                             <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
@@ -30,16 +30,20 @@
                                             </md-option>
                                         </md-select>
                                         <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                            </md-input-container>
+                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                                <md-datepicker #picker></md-datepicker>
+                                            </md-form-field>
                                             <md-datepicker #picker></md-datepicker>
                                             &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker2"></button>
-                                            </md-input-container>
+                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
+                                                <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                                                <md-datepicker #picker2></md-datepicker>
+                                            </md-form-field>
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
                                         <md-list-item *ngSwitchCase="'HtmlDomDisplayType.Tags'">
@@ -68,12 +72,12 @@
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                                             <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-input-container>
-                                        <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                        </md-form-field>
+                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                                             <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
-                                        </md-input-container>
+                                        </md-form-field>
                                         <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                                             <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
@@ -83,16 +87,16 @@
                                             </md-option>
                                         </md-select>
                                         <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
                                                 <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                            </md-input-container>
+                                            </md-form-field>
                                             <md-datepicker #picker></md-datepicker>
                                             &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
                                                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
-                                            </md-input-container>
+                                            </md-form-field>
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
                                         <ng-container *ngSwitchCase="'HtmlDomDisplayType.Tags'">
@@ -117,9 +121,9 @@
                             <md-list>
                                 <md-list-item *ngFor="let item of modalDOMS">
                                     <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                        <md-form-field *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                                             <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-input-container>
+                                        </md-form-field>
                                         <div *ngSwitchCase="'HtmlDomDisplayType.textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                                             <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
                                         </div>
@@ -129,16 +133,16 @@
                                             </md-option>
                                         </md-select>
                                         <div *ngSwitchCase="'daterange'">
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
                                                 <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                            </md-input-container>
+                                            </md-form-field>
                                             <md-datepicker #picker></md-datepicker>
                                             &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-input-container>
+                                            <md-form-field>
                                                 <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
                                                 <button mdSuffix [mdDatepickerToggle]="picker2"></button>
-                                            </md-input-container>
+                                            </md-form-field>
                                             <md-datepicker #picker2></md-datepicker>
                                         </div>
                                         <md-list-item *ngSwitchCase="'tags'">

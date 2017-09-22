@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>汉力贷款超市系统后台</title>
+    <title>汉力金服后台管理系统</title>
     <base href="/">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="./assets/fonts/style.css">
     <link rel="stylesheet" href="./assets/freeng.css">
+    <link rel="stylesheet" href="./assets/css/dragula.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
@@ -34,8 +35,7 @@
                 event.returnValue = false;
             }
 
-            if ((event.keyCode == 8) || //屏蔽退格删除键   
-                (event.keyCode == 116) || //屏蔽   F5   刷新键   
+            if ((event.keyCode == 116) || //屏蔽   F5   刷新键   
                 (event.ctrlKey && event.keyCode == 82)) { //Ctrl   +   R   
                 event.keyCode = 0;
                 event.returnValue = false;

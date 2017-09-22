@@ -12,7 +12,7 @@ import { AccordionModule } from './../../component/accordion/accordion.component
 import { ShareModule } from './../../common/share';
 
 import { FileUploadModule } from 'ng2-file-upload';
-import { MdProgressBarModule, MdButtonModule, MdSnackBarModule } from '@angular/material';
+import { MdProgressBarModule, MdButtonModule, MdSnackBarModule,MdInputModule } from '@angular/material';
 import { strLength } from '../../common/pipe/strLength';
 
 @NgModule({
@@ -29,6 +29,7 @@ import { strLength } from '../../common/pipe/strLength';
     MdProgressBarModule,
     MdButtonModule,
     MdSnackBarModule,
+    MdInputModule,
     ToastModule
   ],
   exports: [],

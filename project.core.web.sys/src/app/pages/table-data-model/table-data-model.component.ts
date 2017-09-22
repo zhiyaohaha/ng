@@ -12,4 +12,6 @@ export class TableDataModelComponent implements OnInit {
   ngOnInit() {
   }
 
+  page(){}
+
 }

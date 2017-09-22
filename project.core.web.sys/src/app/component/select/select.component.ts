@@ -83,6 +83,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   }
 
   set options(value: any) {
+    if(!value) return;
     value.map(r => {
       r.label = r.text;
     })

@@ -1,9 +1,9 @@
+import { fadeIn } from './../../common/animations';
 import { FnUtil } from './../../common/fn-util';
 import { ToastService } from './../../component/toast/toast.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DataSource } from '@angular/cdk';
 import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent, ITdDataTableColumn } from '@covalent/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,6 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 
 import { TreeModel, Ng2TreeSettings } from '../../../../node_modules/ng2-tree';
-import { fadeInUp } from '../../common/animations';
 import { globalVar, customized } from '../../common/global.config';
 import { TableSearch } from '../../common/search/table.search';
 
@@ -34,8 +33,8 @@ import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData'
   selector: 'app-main-parameter-manage',
   templateUrl: './main-parameter-manage.component.html',
   styleUrls: ['./main-parameter-manage.component.scss'],
-  providers: [TdDataTableService, TableSearch, ParamsManageService],
-  animations: [fadeInUp]
+  animations: [fadeIn],
+  providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
 export class MainParameterManageComponent implements OnInit {
 

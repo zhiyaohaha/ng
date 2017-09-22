@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '~@angular/material/theming';
-@import '~@covalent/core/theming/all-theme';
+@import '~@covalent/core/theming/_all-theme';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 .main-loading {
     background: #000;
@@ -104,7 +104,7 @@ li {
 }
 
 
-/**清缓存**/
+/**清浮动**/
 
 .clearfix {
     *zoom: 1;
@@ -151,4 +151,13 @@ li {
     height: 1px;
     background-color: #eee;
     margin-top: 12px;
+}
+
+// material下拉框
+md-select.mat-select {
+    width: 80%;
+}
+.mat-select-panel{
+    max-height: 500px !important;
+
 }
