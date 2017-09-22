@@ -132,9 +132,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   /**
    * 根据下拉框值获取数据
    */
-  getDetailData(selected) {
+  getCollections(selected) {
     console.log(selected)
-    this.selectModelService.getDetailData({ data: selected }).subscribe(r => {
+    this.selectModelService.getCollections({ data: selected }).subscribe(r => {
       if (r.code == "0") {
         this.tree = r.data as treeModel[];
         console.log(this.tree)
@@ -146,7 +146,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    * 表单左侧下拉框
    */
   onChange($event) {
-    this.getDetailData($event.value);
+    this.getCollections($event.value);
   }
 
   /**
@@ -179,10 +179,13 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   }
 
   /**
-   * 点击行
+   * 点击行 查详细
    */
   rowClickEvent($event) {
-
+    console.log($event);
+    this.selectModelService.getDetailData({id: $event.row.id}).subscribe(r=>{
+      console.log(r);
+    });
   }
 
   /**

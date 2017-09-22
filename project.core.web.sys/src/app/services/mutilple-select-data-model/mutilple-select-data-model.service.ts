@@ -24,15 +24,29 @@ export class MutilpleSelectDataModelService {
   /**
    * 根据下拉框的选择值获取数据
    */
-  getDetailData(param) {
+  getCollections(param) {
     return this.baseService.get("/api/Template/GetFieldsByCollection", param);
+  }
+
+  /**
+   * 获取详情
+   */
+  getDetailData(param){
+    return this.baseService.get(this.fnUtil.searchAPI("TemplateMgr.SelectMgr.Detail"),param);
+  }
+
+  /**
+   * 保存修改
+   */
+  update(param){
+    return this.baseService.post(this.fnUtil.searchAPI("TemplateMgr.SelectMgr.Update"),param);
   }
 
   /**
    * 保存添加
    */
   saveNew(param){
-    return this.baseService.get(this.fnUtil.searchAPI("TemplateMgr.SelectMgr.Add"),param);
+    return this.baseService.post(this.fnUtil.searchAPI("TemplateMgr.SelectMgr.Add"),param);
   }
 
 }
