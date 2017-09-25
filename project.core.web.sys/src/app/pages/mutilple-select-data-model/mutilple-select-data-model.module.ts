@@ -1,5 +1,5 @@
 import { CovalentChipsModule } from '@covalent/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchFormModule } from './../../component/search-form/searchform.component';
 import { MdSidenavModule, MdInputModule, MdButtonModule, MdFormFieldModule, MdListModule, MdCheckboxModule, MdSelectModule } from '@angular/material';
 import { NgModule } from '@angular/core';
@@ -18,11 +18,12 @@ import { TimiChipModule } from './../../component/timi-chip/chip.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MutilpleSelectDataModelRoutingModule,
-    MdSidenavModule,MdInputModule,MdButtonModule,MdFormFieldModule,MdListModule,MdCheckboxModule,MdSelectModule,
+    MdSidenavModule, MdInputModule, MdButtonModule, MdFormFieldModule, MdListModule, MdCheckboxModule, MdSelectModule,
     SearchFormModule,
-    TableModule, ButtonModule, SelectModule,CovalentChipsModule,
-    TreeModule,ChipModule,TimiChipModule
+    TableModule, ButtonModule, SelectModule, CovalentChipsModule,
+    TreeModule, ChipModule, TimiChipModule
   ],
   declarations: [MutilpleSelectDataModelComponent]
 })

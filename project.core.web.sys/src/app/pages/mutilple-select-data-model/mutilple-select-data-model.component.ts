@@ -6,6 +6,7 @@ import { TdDataTableSortingOrder, ITdDataTableColumn } from '@covalent/core';
 import { globalVar } from './../../common/global.config';
 import { FnUtil } from './../../common/fn-util';
 import { MutilpleSelectDataModelService } from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-mutilple-select-data-model',
@@ -16,11 +17,31 @@ import { MutilpleSelectDataModelService } from './../../services/mutilple-select
 })
 export class MutilpleSelectDataModelComponent implements OnInit {
 
-  rrrr = ["1123","12312s"];
+  rrrr = ["1123", "12312s"];
   tags;
-  chipsChange($event){
+  chipsChange($event) {
     console.log($event);
     this.tags = $event;
+  }
+
+  //添加表单
+  formModel: FormGroup = this.fb.group({
+    name: [""],
+    title: [""],
+    platform: [""],
+    bindTextField: [""],
+    bindValueField: [""],
+    filter: this.fb.array([
+      new FormControl(),
+      new FormControl()
+    ]),
+    description: [""],
+    childrens: [""],
+    depth: [""],
+    tags: [""]
+  });
+  submitMethod($event) {
+    console.log($event);
   }
 
 
@@ -35,7 +56,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   selectedOption;//表单下拉框选中项
 
-  chips=[];//标签
+  chips = [];//标签
 
   amendDta;//需要修改的原始数据
 
@@ -66,7 +87,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     filters: null
   };
 
-  constructor(private selectModelService: MutilpleSelectDataModelService, private fnUtil: FnUtil, private routerInfo: ActivatedRoute) {
+  constructor(private selectModelService: MutilpleSelectDataModelService, private fnUtil: FnUtil, private routerInfo: ActivatedRoute, private fb: FormBuilder) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
   }
@@ -76,32 +97,32 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.getDataSource();
   }
 
-  drag($event){
+  drag($event) {
     console.log($event);
     $event.dataTransfer.setData("Text", $event.target.innerHTML);
   }
-  dropenter($event){
+  dropenter($event) {
     $event.target.value = '';
   }
-  drop($event){
-    console.log("drop:",$event);
+  drop($event) {
+    console.log("drop:", $event);
     // $event.preventDefault();
     // var data = $event.dataTransfer.getData("Text");
     // $event.target.value = data;
   }
-  allowDrop($event){
+  allowDrop($event) {
     $event.preventDefault();
   }
-  forbidDrop($event){
+  forbidDrop($event) {
     return false;
   }
 
-  addNewForm($event){
+  addNewForm($event) {
     console.log($event);
     //this.selectModelService.saveNew($event);
   }
 
-  forbidInput($event){
+  forbidInput($event) {
     $event.target.blur();
     return false;
   }
@@ -162,28 +183,28 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    * 右侧平台下拉框
    */
   //options = [];
-  onFlatformChange($event){
-    console.log("右侧：",$event);
+  onFlatformChange($event) {
+    console.log("右侧：", $event);
   }
 
   /**
    * 添加标签
    */
-  addTags($event){
-    this.chips.push({value:$event.dataTransfer.getData("Text")});
+  addTags($event) {
+    this.chips.push({ value: $event.dataTransfer.getData("Text") });
   }
 
   /**
    * 删除标签
    */
-  delChip(i){
-    this.chips.splice(i,1);
+  delChip(i) {
+    this.chips.splice(i, 1);
   }
 
   /**
    * 新增
    */
-  newAdd($event){
+  newAdd($event) {
 
   }
 
@@ -191,11 +212,11 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    * 点击行 查详细
    */
   rowClickEvent($event) {
-    this.selectModelService.getDetailData({id: $event.row.id}).subscribe(r=>{
-      if(r.code == "0"){
+    this.selectModelService.getDetailData({ id: $event.row.id }).subscribe(r => {
+      if (r.code == "0") {
         this.amendDta = r.data;
         this.collection = r.data.collection;
-        let data = {value:r.data.collection};
+        let data = { value: r.data.collection };
         this.onChange(data);
       };
     });
