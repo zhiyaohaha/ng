@@ -3,9 +3,14 @@
         height: 100%;
     }
     .example-sidenav {
-        width: 700px;
+        width: 70%;
         md-form-field{
             width: 100%;
+        }
+        @for $i from 0 to 3{
+            .depth-#{$i}{
+                margin-left: 20px*$i;
+            }
         }
         .form-group{
             margin-bottom: 0;

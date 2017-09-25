@@ -16,6 +16,13 @@ import { MutilpleSelectDataModelService } from './../../services/mutilple-select
 })
 export class MutilpleSelectDataModelComponent implements OnInit {
 
+  rrrr = ["1123","12312s"];
+  tags;
+  chipsChange($event){
+    console.log($event);
+    this.tags = $event;
+  }
+
 
   collection;
   type;
@@ -29,6 +36,8 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   selectedOption;//表单下拉框选中项
 
   chips=[];//标签
+
+  amendDta;//需要修改的原始数据
 
   /**
    * 表格title
@@ -68,6 +77,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   }
 
   drag($event){
+    console.log($event);
     $event.dataTransfer.setData("Text", $event.target.innerHTML);
   }
   dropenter($event){
@@ -87,7 +97,6 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   }
 
   addNewForm($event){
-    $event.tags = this.chips;
     console.log($event);
     //this.selectModelService.saveNew($event);
   }
@@ -182,9 +191,13 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    * 点击行 查详细
    */
   rowClickEvent($event) {
-    console.log($event);
     this.selectModelService.getDetailData({id: $event.row.id}).subscribe(r=>{
-      console.log(r);
+      if(r.code == "0"){
+        this.amendDta = r.data;
+        this.collection = r.data.collection;
+        let data = {value:r.data.collection};
+        this.onChange(data);
+      };
     });
   }
 

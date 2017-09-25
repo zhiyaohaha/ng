@@ -17,6 +17,7 @@ const childRoutes: Routes = [
   { path: 'mutilple-select-data-model', loadChildren: '../mutilple-select-data-model/mutilple-select-data-model.module#MutilpleSelectDataModelModule' },
   { path: 'form-data-model', loadChildren: '../form-data-model/form-data-model.module#FormDataModelModule' },
   { path: 'sharepage', loadChildren: '../sharepage/sharepage.module#SharepageModule' },
+  { path: 'professionManage', loadChildren: '../sharepage/sharepage.module#SharepageModule'},
   { path: '', redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: '**', redirectTo: '/error' }
 ];
