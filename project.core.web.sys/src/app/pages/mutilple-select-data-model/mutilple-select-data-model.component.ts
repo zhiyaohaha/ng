@@ -1,3 +1,4 @@
+import { PageList } from './../../models/PageList';
 import { fadeIn } from './../../common/animations';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, NgModule, Input } from '@angular/core';
@@ -6,7 +7,7 @@ import { TdDataTableSortingOrder, ITdDataTableColumn } from '@covalent/core';
 import { globalVar } from './../../common/global.config';
 import { FnUtil } from './../../common/fn-util';
 import { MutilpleSelectDataModelService } from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-mutilple-select-data-model',
@@ -17,31 +18,46 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 })
 export class MutilpleSelectDataModelComponent implements OnInit {
 
-  rrrr = ["1123", "12312s"];
+  rrrr = [];
   tags;
   chipsChange($event) {
-    console.log($event);
     this.tags = $event;
   }
 
   //添加表单
   formModel: FormGroup = this.fb.group({
-    name: [""],
-    title: [""],
-    platform: [""],
-    bindTextField: [""],
-    bindValueField: [""],
+    collection: ["",Validators.required,Validators.required],
+    name: ["",Validators.required],
+    title: ["",Validators.required],
+    platform: ["",Validators.required],
+    bindTextField: ["",Validators.required],
+    bindValueField: ["",Validators.required],
     filter: this.fb.array([
-      new FormControl(),
-      new FormControl()
+      this.fb.group({
+        type: ["",Validators.required],
+        fields: ["",Validators.required],
+        value: ["",Validators.required]
+      })
     ]),
-    description: [""],
-    childrens: [""],
+    description: ["",Validators.required],
+    childrens: ["",Validators.required],
     depth: [""],
     tags: [""]
   });
+  addFilter(){
+    let filter = this.formModel.get("filter") as FormArray;
+    filter.push(this.fb.group({
+      type: [""],
+      fields: [""],
+      value: [""]
+    }))
+  }
   submitMethod($event) {
-    console.log($event);
+    console.log("添加：",$event);
+    $event.collection = this.collection;
+    // this.selectModelService.saveNew($event).subscribe(r=>{
+    //   console.log(r);
+    // });
   }
 
 
@@ -99,16 +115,16 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   drag($event) {
     console.log($event);
-    $event.dataTransfer.setData("Text", $event.target.innerHTML);
+    $event.dataTransfer.setData("data", $event.target.innerHTML);
   }
   dropenter($event) {
     $event.target.value = '';
   }
   drop($event) {
     console.log("drop:", $event);
-    // $event.preventDefault();
-    // var data = $event.dataTransfer.getData("Text");
-    // $event.target.value = data;
+    $event.preventDefault();
+    var data = $event.dataTransfer.getData("data");
+    $event.target.value = data;
   }
   allowDrop($event) {
     $event.preventDefault();
@@ -154,7 +170,6 @@ export class MutilpleSelectDataModelComponent implements OnInit {
         this.options = r.data.collections;
         this.platformsOptions = r.data.platforms;
         this.fieldFilterTypesOptions = r.data.fieldFilterTypes;
-        console.log(this.options)
       }
     })
   }
@@ -167,7 +182,6 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.selectModelService.getCollections({ data: selected }).subscribe(r => {
       if (r.code == "0") {
         this.tree = r.data as treeModel[];
-        console.log(this.tree)
       }
     });
   }
@@ -191,7 +205,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    * 添加标签
    */
   addTags($event) {
-    this.chips.push({ value: $event.dataTransfer.getData("Text") });
+    this.chips.push($event.dataTransfer.getData("data"));
   }
 
   /**
@@ -218,7 +232,30 @@ export class MutilpleSelectDataModelComponent implements OnInit {
         this.collection = r.data.collection;
         let data = { value: r.data.collection };
         this.onChange(data);
+
+        var filter = new FormArray([]);
+        if(r.data.filter && r.data.filter.length > 0) for(let i = 0; i < r.data.filter.length; i++){
+          filter.push(this.fb.group({
+            type: [r.data.filter[i].type],
+            fields: [r.data.filter[i].fields],
+            value: [r.data.filter[i].value]
+          }))
+        }
+        this.formModel = this.fb.group({
+          collection: [r.data.filter.collection],
+          name: [r.data.name],
+          title: [r.data.title],
+          platform: [r.data.platform],
+          bindTextField: [r.data.bindTextField],
+          bindValueField: [r.data.bindValueField],
+          filter: filter,
+          description: [r.data.description],
+          childrens: [r.data.childrens],
+          depth: [r.data.depth],
+          tags: [""]
+        })
       };
+      console.log(this.formModel.get("filter"))
     });
   }
 
@@ -227,6 +264,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    */
   page($event) {
     console.log($event);
+    this.listparam.index = $event.page - 1;
+    this.listparam.size = $event.pageSize;
+    this.getTableList(this.listparam);
   }
 
   /**

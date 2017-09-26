@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { ToastModule } from './../../component/toast/toast.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -12,13 +13,14 @@ import { AccordionModule } from './../../component/accordion/accordion.component
 import { ShareModule } from './../../common/share';
 
 import { FileUploadModule } from 'ng2-file-upload';
-import { MdProgressBarModule, MdButtonModule, MdSnackBarModule,MdInputModule } from '@angular/material';
+import { MdProgressBarModule, MdButtonModule, MdSnackBarModule, MdInputModule, MdSelectModule } from '@angular/material';
 import { strLength } from '../../common/pipe/strLength';
 
 @NgModule({
   imports: [
     MainRoutingModule,
     CommonModule,
+    FormsModule,
     RouterModule,
     ShareModule,
     AccordionModule,
@@ -30,6 +32,7 @@ import { strLength } from '../../common/pipe/strLength';
     MdButtonModule,
     MdSnackBarModule,
     MdInputModule,
+    MdSelectModule,
     ToastModule
   ],
   exports: [],

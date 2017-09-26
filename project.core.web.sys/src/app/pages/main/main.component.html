@@ -62,6 +62,14 @@
             </ul>
         </div>
 
+        <br>
+        <br>
+        <md-select placeholder="Favorite food" floatPlaceholder="never">
+            <md-option *ngFor="let food of foods" [value]="food.value">
+                {{ food.viewValue }}
+            </md-option>
+        </md-select>
+
         <!-- <div>
             <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
         </div> -->

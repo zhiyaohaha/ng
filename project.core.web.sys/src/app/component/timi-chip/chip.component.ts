@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
   NgModule, Component, OnInit, AfterViewInit, OnDestroy,
-  Input, ViewChild, ElementRef, Renderer2, EventEmitter, Output
+  Input, ViewChild, ElementRef, Renderer2, EventEmitter, Output, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'timi-chip-group',
@@ -16,7 +17,7 @@ import {
   styleUrls: ['./chip.component.scss']
 })
 
-export class TimiChipGroupComponent implements OnInit {
+export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set chips(value: any) {
@@ -87,6 +88,14 @@ export class TimiChipGroupComponent implements OnInit {
   delChip(index){
     this.value.splice(index, 1);
   }
+
+  writeValue(value: any) {
+    if(value!=undefined){
+    }
+  }
+  registerOnChange(fn) {
+  }
+  registerOnTouched() {}
 }
 
 @Component({

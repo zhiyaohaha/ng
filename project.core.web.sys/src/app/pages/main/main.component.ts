@@ -20,6 +20,13 @@ import { environment } from "environments/environment";
   providers: [LoginOutService]
 })
 export class MainComponent implements OnInit {
+
+  foods = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+  selected = 'pizza-1';
   
   imgSrc: any[];
 
