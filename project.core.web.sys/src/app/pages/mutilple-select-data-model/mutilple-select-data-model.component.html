@@ -9,7 +9,7 @@
             </md-select>
             <ng-container style="margin-left:-30px;" *ngIf="tree">
                 <div class="wrap iscroll" style="height:100%;overflow:auto;">
-                    <div *ngFor='let item of tree' draggable="true" on-dragstart="drag($event)" class="depth-{{item.depth}}" title={{item.name}}>{{item.description}}{{' { '+item.name+' } '}}</div>
+                    <div *ngFor='let item of tree' draggable="true" (dragstart)="drag($event)" class="depth-{{item.depth}}" title={{item.name}}>{{item.description}}{{' { '+item.name+' } '}}</div>
                 </div>
             </ng-container>
         </div>
@@ -20,12 +20,12 @@
                 </div>
                 <div class="form-group">
                     <md-form-field>
-                        <input mdInput ngModel name="name" placeholder="模版名称" on-drop="forbidDrop($event)">
+                        <input mdInput ngModel name="name" placeholder="模版名称" (drop)="forbidDrop($event)">
                     </md-form-field>
                 </div>
                 <div class="form-group">
                     <md-form-field>
-                        <input mdInput ngModel name="title" placeholder="标题" on-drop="forbidDrop($event)">
+                        <input mdInput ngModel name="title" placeholder="标题" (drop)="forbidDrop($event)">
                     </md-form-field>
                 </div>
                 <div class="form-group">
@@ -37,17 +37,17 @@
                 </div>
                 <div class="form-group">
                     <md-form-field>
-                        <input mdInput ngModel placeholder="绑定文本" (focus)="forbidInput($event)" name="bindTextField" on-drop="drop($event)" on-dragenter="dropenter($event)">
+                        <input mdInput ngModel placeholder="绑定文本" (focus)="forbidInput($event)" name="bindTextField" (drop)="drop($event)" (dragenter)="dropenter($event)">
                     </md-form-field>
                 </div>
                 <div class="form-group">
                     <md-form-field>
-                        <input mdInput ngModel placeholder="绑定值" name="bindValueField" (focus)="forbidInput($event)" on-drop="drop($event)" on-dragenter="dropenter($event)">
+                        <input mdInput ngModel placeholder="绑定值" name="bindValueField" (focus)="forbidInput($event)" (drop)="drop($event)" (dragenter)="dropenter($event)">
                     </md-form-field>
                 </div>
                 <div ngModelGroup="filter">
                     <fieldset disabled="disabled" style="padding-top:30px;">
-                        <div class="form-group">                            
+                        <div class="form-group">
                             <md-select placeholder="筛选类型" ngModel name="type">
                                 <md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">
                                     {{item.text}}
@@ -56,16 +56,16 @@
                         </div>
                         <div class="form-group">
                             <md-form-field>
-                                <input mdInput ngModel placeholder="绑定字段" name="fields" on-drop="drop($event)" on-dragenter="dropenter($event)">
+                                <input mdInput ngModel placeholder="绑定字段" name="fields" (drop)="drop($event)" (dragenter)="dropenter($event)">
                             </md-form-field>
                         </div>
                         <div class="form-group">
                             <span class="chip" *ngFor="let item of chips;let i = index;" (click)="delChip(i)" title="点击删除">{{item.value}}</span>
-                            <div on-drop="addTags($event)" on-dragover="allowDrop($event)">绑定字段</div>
+                            <div (drop)="addTags($event)" on-dragover="allowDrop($event)">绑定字段</div>
                         </div>
                         <div class="form-group">
                             <md-form-field>
-                                <input mdInput ngModel placeholder="值" name="value" on-drop="drop($event)" on-dragenter="dropenter($event)">
+                                <input mdInput ngModel placeholder="值" name="value" (drop)="drop($event)" (dragenter)="dropenter($event)">
                             </md-form-field>
                         </div>
                     </fieldset>
@@ -76,14 +76,14 @@
                     </md-form-field>
                 </div>
                 <div class="form-group">
-                    <textarea ngModel placeholder="描述" name="description" on-drop="forbidDrop($event)"></textarea>
+                    <textarea ngModel placeholder="描述" name="description" (drop)="forbidDrop($event)"></textarea>
                 </div>
                 <div class="form-group">
                     <md-checkbox ngModel name="childrens">是否有子集</md-checkbox>
                 </div>
                 <div class="form-group">
                     <md-form-field>
-                        <input type="number" mdInput ngModel placeholder="深度" name="depth" min="0" on-drop="forbidDrop($event)">
+                        <input type="number" mdInput ngModel placeholder="深度" name="depth" min="0" (drop)="forbidDrop($event)">
                     </md-form-field>
                 </div>
                 <div class="form-group">
@@ -96,14 +96,16 @@
             </form> -->
             <form [formGroup]="formModel" (ngSubmit)="submitMethod(formModel.value)" onkeydown="if(event.keyCode==13)return false;">
                 <div class="form-group">
-                    <md-form-field>
-                        <input mdInput formControlName="name" placeholder="模版名称" on-drop="forbidDrop($event)">
-                    </md-form-field>
+                    <!--<md-form-field>
+                        <input mdInput formControlName="name" placeholder="模版名称" (drop)="forbidDrop($event)">
+                    </md-form-field>-->
+                  <timi-input formControlName="name" labelName="模板名称" require="true"></timi-input>
                 </div>
                 <div class="form-group">
-                    <md-form-field>
-                        <input mdInput formControlName="title" placeholder="标题" on-drop="forbidDrop($event)">
-                    </md-form-field>
+                    <!--<md-form-field>-->
+                        <!--<input mdInput formControlName="title" placeholder="标题" (drop)="forbidDrop($event)">-->
+                    <!--</md-form-field>-->
+                  <timi-input formControlName="title" labelName="标题" require="true"></timi-input>
                 </div>
                 <div class="form-group">
                     <md-select placeholder="平台" formControlName="platform">
@@ -113,51 +115,54 @@
                     </md-select>
                 </div>
                 <div class="form-group">
-                    <md-form-field>
-                        <input mdInput formControlName="bindTextField" placeholder="绑定文本" (focus)="forbidInput($event)" on-dragover="allowDrop($event)" on-drop="drop($event)" on-dragenter="dropenter($event)">
-                    </md-form-field>
+                    <!--<md-form-field>-->
+                        <!--<input mdInput formControlName="bindTextField" placeholder="绑定文本" (focus)="forbidInput($event)" (dragover)="allowDrop($event)" (drop)="drop($event)" (dragenter)="dropenter($event)">-->
+                    <!--</md-form-field>-->
+                  <timi-input formControlName="bindTextField" labelName="绑定文本" require="true"></timi-input>
                 </div>
                 <div class="form-group">
-                    <md-form-field>
-                        <input mdInput formControlName="bindValueField" placeholder="绑定值" (focus)="forbidInput($event)" on-dragover="allowDrop($event)" on-drop="drop($event)" on-dragenter="dropenter($event)">
-                    </md-form-field>
+                    <!--<md-form-field>-->
+                        <!--<input mdInput formControlName="bindValueField" placeholder="绑定值" (focus)="forbidInput($event)" (dragover)="allowDrop($event)" (drop)="drop($event)" (dragenter)="dropenter($event)">-->
+                    <!--</md-form-field>-->
+                  <timi-input formControlName="bindValueField" labelName="绑定值" require="true"></timi-input>
                 </div>
-                <div formArrayName="filter">
-                    <ng-container *ngFor="let f of formModel.get('filter').controls;let index = index;">
-                        <div [formGroupName]="index" class="filterField">
+                <div formArrayName="filter" class="filterField">
+                    <ng-container *ngFor="let f of formModelFilter;index as index">
+                        <div [formGroupName]="index">
                             <div class="form-group">
-                                <md-select placeholder="筛选类型" formControlName="type">
+                                <md-select placeholder="筛选类型" formControlName="type" [(ngModel)]="f.value.type">
                                     <md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">
                                         {{item.text}}
                                     </md-option>
                                 </md-select>
                             </div>
                             <div class="form-group">
-                                <timi-drag-chip formControlName="fields"></timi-drag-chip>
+                                <timi-drag-chip formControlName="fields" chips="{{f.value.fields}}"></timi-drag-chip>
                             </div>
                             <div class="form-group">
                                 <md-form-field>
-                                    <input mdInput placeholder="绑定值" formControlName="value" on-drop="drop($event)" on-dragenter="dropenter($event)">
+                                    <input mdInput placeholder="绑定值" formControlName="value" value="{{f.value.value}}" (drop)="drop($event)" (dragenter)="dropenter($event)">
                                 </md-form-field>
+                              <!--<timi-input formControlName="value" labelName="绑定值" require="true"></timi-input>-->
                             </div>
                         </div>
                     </ng-container>
                     <button md-raised-button (click)="addFilter()">添加筛选</button>
                 </div>
                 <div class="form-group">
-                    <textarea placeholder="描述" formControlName="description" on-drop="forbidDrop($event)"></textarea>
+                    <textarea placeholder="描述" formControlName="description" (drop)="forbidDrop($event)"></textarea>
                 </div>
                 <div class="form-group">
                     <md-checkbox formControlName="childrens">是否有子集</md-checkbox>
                 </div>
                 <div class="form-group">
-                    <md-form-field>
-                        <input type="number" mdInput placeholder="深度" formControlName="depth" min="0" on-drop="forbidDrop($event)">
-                    </md-form-field>
+                    <!--<md-form-field>-->
+                        <!--<input type="number" mdInput placeholder="深度" formControlName="depth" min="0" (drop)="forbidDrop($event)">-->
+                    <!--</md-form-field>-->
+                  <timi-input formControlName="depth" labelName="深度" require="true"></timi-input>
                 </div>
                 <div class="form-group">
-                    <timi-chip-group [chips]="rrrr" placeholder="回车添加标签" (chipsChange)="chipsChange($event)"></timi-chip-group>
-                    <input type="hidden" [(ngModel)]="tags" formControlName="tags">
+                    <timi-chip-group formControlName="tags" placeholder="回车添加标签" (chipsChange)="chipsChange($event)"></timi-chip-group>
                 </div>
                 <div class="form-group">
                     <button md-raised-button>确定</button>

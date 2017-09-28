@@ -14,6 +14,7 @@ import { TreeModule } from './../../component/tree/tree.component';
 import { ChipModule } from './../../component/chip/chip.component';
 import { TimiChipModule } from './../../component/timi-chip/chip.component';
 import { TimiDragChipModule } from './../../component/timi-drag-chip/chip.component';
+import {TimiInputModule} from "../../component/timi-input/timi-input.component";
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { TimiDragChipModule } from './../../component/timi-drag-chip/chip.compon
     MdSidenavModule, MdInputModule, MdButtonModule, MdFormFieldModule, MdListModule, MdCheckboxModule, MdSelectModule,
     SearchFormModule,
     TableModule, ButtonModule, SelectModule, CovalentChipsModule,
-    TreeModule, ChipModule, TimiChipModule,TimiDragChipModule
+    TreeModule, ChipModule, TimiChipModule, TimiDragChipModule, TimiInputModule
   ],
   declarations: [MutilpleSelectDataModelComponent]
 })

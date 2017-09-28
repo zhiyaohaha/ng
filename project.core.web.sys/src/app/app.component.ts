@@ -25,10 +25,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
       data => console.log(data),
       err => console.log(err),
-      () => console.log("ws结束！")
+      () => console.log('ws结束！')
     )
     setInterval(() => {
-      //this.wsService.sendMesssage("asdfasdfdf21314564");
+      // this.wsService.sendMesssage("asdfasdfdf21314564");
     }, 2000)
   }
 

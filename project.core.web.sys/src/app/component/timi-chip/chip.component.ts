@@ -5,6 +5,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => TimiChipGroupComponent),
+  multi: true
+}
+
 @Component({
   selector: 'timi-chip-group',
   template: `
@@ -14,13 +20,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
              (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)">
     </div>
   `,
-  styleUrls: ['./chip.component.scss']
+  styleUrls: ['./chip.component.scss'],
+  providers: [TIMI_CHIP_GROUP_VALUE_ACCESSOR]
 })
 
 export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set chips(value: any) {
+    console.log(value)
     this.value = [];
     for (const v of value) {
       const isExited = this.value.find((elem, index, array) => {
@@ -30,6 +38,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
         this.value.push(v);
       }
     }
+    this._propagateChange(this.chips)
   }
 
   get chips(): any {
@@ -42,7 +51,10 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   focus: boolean;
   groups: TimiChipComponent[] = [];
   value: any[] = [];
-  constructor() { }
+
+  private _propagateChange = (_: any) => {
+  };
+  constructor() {}
 
   ngOnInit() {
     this.setChipClass();
@@ -66,7 +78,8 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
     if (index !== -1) {
       this.groups.splice(index, 1);
       this.value.splice(index, 1);
-      this.chipsChange.emit(this.value);
+      this.chipsChange.emit(this.chips);
+      this._propagateChange(this.chips);
     }
   }
 
@@ -83,17 +96,20 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
       event.target.value = '';
     }
     this.chipsChange.emit(this.chips);
+    this._propagateChange(this.chips);
   }
 
-  delChip(index){
+  delChip(index) {
     this.value.splice(index, 1);
   }
 
   writeValue(value: any) {
-    if(value!=undefined){
+    if (value) {
+      this.chips = value;
     }
   }
   registerOnChange(fn) {
+    this._propagateChange = fn;
   }
   registerOnTouched() {}
 }
@@ -138,7 +154,7 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.group) {
       this.value = '';
-      //this.group.removeGroup(this);
+      // this.group.removeGroup(this);
     }
   }
 
