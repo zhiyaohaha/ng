@@ -141,7 +141,7 @@ export class MainParameterManageComponent implements OnInit {
 
   /**
    * 翻页
-   * @param pagingEvent 
+   * @param pagingEvent
    */
   page(pagingEvent: IPageChangeEvent): void {
     this.pageOptions.fromRow = pagingEvent.fromRow;
@@ -202,7 +202,7 @@ export class MainParameterManageComponent implements OnInit {
 
   /**
    * 所选择的tree节点
-   * @param  
+   * @param
    */
   treeSelected($event): void {
     this.selectNode = $event.node.node;
@@ -317,7 +317,7 @@ export class MainParameterManageComponent implements OnInit {
 
   /**
    * 选择表格的行
-   * @param  
+   * @param
    */
   rowSelectEvent($event) {
     console.log("选择表格的行", $event);
@@ -325,7 +325,7 @@ export class MainParameterManageComponent implements OnInit {
 
   /**
    * 点击表格的行
-   * @param  
+   * @param
    */
   rowClickEvent($event) {
     this.clickNode = $event.row.id;

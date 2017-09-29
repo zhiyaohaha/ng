@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HtmlDomTemplate } from './../../models/HtmlDomTemplate';
 import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
@@ -19,17 +19,17 @@ export class SharepageComponent implements OnInit {
   authorities: string[];
   authorityKey: string;//权限关键字
 
-  constructor(private sharepageService: SharepageService, private fnUtil: FnUtil,private routerInfo: Router) {
+  constructor(private sharepageService: SharepageService, private fnUtil: FnUtil,private routerInfo: ActivatedRoute) {
     this.authorities = this.fnUtil.getFunctions();
-    //this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
   }
 
   ngOnInit() {
     this.getParamsList(this.listparam);
     //this.loadModal();
-    this.routerInfo.events.subscribe(r=>{
-      console.log("路由订阅：",r)
-    })
+    // this.routerInfo.events.subscribe(r=>{
+    //   console.log("路由订阅：",r)
+    // })
   }
 
   /**

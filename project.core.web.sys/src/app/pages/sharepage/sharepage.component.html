@@ -4,7 +4,7 @@
         <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
     </div>
 
-    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf('SystemSetting.OperationLogRecord.Update')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf(authorityKey+'.Update') || authorities.indexOf(authorityKey+'.Detail')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
     <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
         <div class="row">
