@@ -13,9 +13,9 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   template: `
     <div class="timi-chip">
       <ul>
-        <li *ngFor="let chip of value;let i = index;" (click)="delChip(i)">{{chip}}</li>
+        <li *ngFor="let chip of chips;let i = index;" (click)="delChip(i)">{{chip}}</li>
       </ul>
-      <div (drop)="onDrop($event)" (dragover)="allowDrop($event)">拖拽添加标签</div>
+      <div (drop)="onDrop($event)" (dragover)="allowDrop($event)">拖拽添加</div>
     </div>
   `,
   styleUrls: ['./chip.component.scss'],
@@ -27,9 +27,6 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
   @Input()
   set chips(value: any) {
     this.value = [];
-    if (typeof value === "string") {
-      value = value.split(',');
-    }
     for (const v of value) {
       const isExited = this.value.find((elem, index, array) => {
         return elem === v;
@@ -67,9 +64,9 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
   onDrop($event) {
     const data = $event.dataTransfer.getData('data');
     if (data) {
-      this.chips.push(data);
+      this.value.push(data);
       this.chipsChange.emit(this.chips);
-      this._propagateChange(this.value);
+      this._propagateChange(this.chips);
     }
   }
 

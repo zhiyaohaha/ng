@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {CommonModule} from "@angular/common";
 import {
   NgModule,
   Component,
@@ -8,10 +8,10 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ViewChild, forwardRef
-} from '@angular/core';
-import {DomRenderer} from '../../common/dom';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+  ViewChild, forwardRef, AfterViewInit
+} from "@angular/core";
+import {DomRenderer} from "../../common/dom";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -20,7 +20,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
 }
 
 @Component({
-  selector: 'timi-input',
+  selector: "timi-input",
   template: `<label #label>{{labelName}}：</label>
   <div #wrap class="timi-input-wrap">
     <input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}"
@@ -30,10 +30,10 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
     <span class="timi-span-line"></span>
     <span class="timi-input-error">{{errorTips}}</span>
   </div>`,
-  styleUrls: ['./timi-input.component.scss'],
+  styleUrls: ["./timi-input.component.scss"],
   providers: [DomRenderer, TIMI_INPUT_VALUE_ACCESSOR]
 })
-export class TimiInputComponent implements ControlValueAccessor, OnInit {
+export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, OnInit {
 
   @Input()
   get value() {
@@ -46,7 +46,7 @@ export class TimiInputComponent implements ControlValueAccessor, OnInit {
   }
 
   _value: string;
-  @Input() type: string = 'text';
+  @Input() type: string = "text";
   @Input() labelWidth: string;
   @Input() labelName: string;
   @Input() name: string;
@@ -59,13 +59,13 @@ export class TimiInputComponent implements ControlValueAccessor, OnInit {
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('wrap')
+  @ViewChild("wrap")
   wrapRef: ElementRef;
 
-  @ViewChild('label')
+  @ViewChild("label")
   labelRef: ElementRef;
 
-  @ViewChild('input')
+  @ViewChild("input")
   inputRef: ElementRef;
 
   private valueChange = (_: any) => {
@@ -78,8 +78,8 @@ export class TimiInputComponent implements ControlValueAccessor, OnInit {
   }
 
   ngAfterViewInit() {
-    this.renderer.setStyle(this.labelRef.nativeElement, 'width', this.labelWidth);
-    this.renderer.setStyle(this.inputRef.nativeElement, 'width', this.inputWidth);
+    this.renderer.setStyle(this.labelRef.nativeElement, "width", this.labelWidth);
+    this.renderer.setStyle(this.inputRef.nativeElement, "width", this.inputWidth);
   }
 
   /**
@@ -90,38 +90,38 @@ export class TimiInputComponent implements ControlValueAccessor, OnInit {
     $event.isChange = this.isChange($event);
     let regexp: any;
     switch (this.pattern) {
-      case 'tel':
+      case "tel":
         regexp = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
         break;
-      case 'email':
+      case "email":
         regexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         break;
-      case 'card':
+      case "card":
         regexp = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
         break;
-      case 'chinese':
+      case "chinese":
         // gexp = /[\u4e00-\u9fa5]/gm;
         break;
-      case 'money':
+      case "money":
         regexp = /^(([1-9]\d{0,9})|0)(\.\d{1,4})?$/;
         break;
-      case 'number':
+      case "number":
         regexp = /^\d+$/;
         break;
-      case 'rate':
+      case "rate":
         regexp = /^(([1-9]\d{0,2})|0)(\.\d{1,4})?$/;
         break;
-      case 'password':
+      case "password":
         regexp = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
         break;
       default:
-        regexp = new RegExp(this.pattern, 'i');
+        regexp = new RegExp(this.pattern, "i");
     }
     if (!$event.target.value || regexp.test($event.target.value)) {
-      this.renderer.removeClass(this.wrapRef.nativeElement, 'error');
+      this.renderer.removeClass(this.wrapRef.nativeElement, "error");
       this.blur.emit($event);
     } else {
-      this.renderer.addClass(this.wrapRef.nativeElement, 'error');
+      this.renderer.addClass(this.wrapRef.nativeElement, "error");
     }
   }
 
@@ -131,7 +131,7 @@ export class TimiInputComponent implements ControlValueAccessor, OnInit {
   }
 
   drop($event) {
-    const data = $event.dataTransfer.getData('data');
+    const data = $event.dataTransfer.getData("data");
     if (data) {
       this.value = data;
     }

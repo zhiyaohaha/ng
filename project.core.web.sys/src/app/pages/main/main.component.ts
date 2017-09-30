@@ -1,32 +1,32 @@
-import { ToastService } from './../../component/toast/toast.service';
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { ToastService } from "./../../component/toast/toast.service";
+import { Component, OnInit, HostBinding } from "@angular/core";
 import { MdSnackBar } from "@angular/material";
-import { fadeIn } from './../../common/animations';
-import { LoginOutService } from '../../services/loginOut-service/loginOut.service';
+import { fadeIn } from "./../../common/animations";
+import { LoginOutService } from "../../services/loginOut-service/loginOut.service";
 
-import { FileUploader } from 'ng2-file-upload';
-import { ConvertUtil } from '../../common/convert-util';
-import { BaseService } from '../../services/base.service';
-import { WebSocketService } from '../../services/share/web-socket.service';
-import { HttpSign } from '../../models/HttpSign';
-import { globalUrl } from '../../common/global.config';
+import { FileUploader } from "ng2-file-upload";
+import { ConvertUtil } from "../../common/convert-util";
+import { BaseService } from "../../services/base.service";
+import { WebSocketService } from "../../services/share/web-socket.service";
+import { HttpSign } from "../../models/HttpSign";
+import { globalUrl } from "../../common/global.config";
 import { environment } from "environments/environment";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  selector: "app-root",
+  templateUrl: "./main.component.html",
+  styleUrls: ["./main.component.scss"],
   animations: [fadeIn],
   providers: [LoginOutService]
 })
 export class MainComponent implements OnInit {
 
   foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+    {value: "steak-0", viewValue: "Steak"},
+    {value: "pizza-1", viewValue: "Pizza"},
+    {value: "tacos-2", viewValue: "Tacos"}
   ];
-  selected = 'pizza-1';
+  selected = "pizza-1";
   
   imgSrc: any[];
 
@@ -39,9 +39,9 @@ export class MainComponent implements OnInit {
       () => console.log("ws结束！")
     )
 
-    let data = '{"account":"administrator","password":"1"}';
+    let data = "{'account':'administrator','password':'1'}";
     setTimeout(() => {
-      this.wsService.loginSocket(this.wsService, data);
+      //this.wsService.loginSocket(this.wsService, data);
     }, 1000)
   }
 

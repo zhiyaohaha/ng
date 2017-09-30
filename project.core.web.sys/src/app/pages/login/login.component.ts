@@ -1,17 +1,17 @@
-import { URLSearchParams, Response, RequestOptions } from '@angular/http';
-import { Router } from '@angular/router';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import 'rxjs/Rx';
+import { URLSearchParams, Response, RequestOptions } from "@angular/http";
+import { Router } from "@angular/router";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import "rxjs/Rx";
 
-import { LoginService } from '../../services/login-service/login.service';
-import { userNameValidator } from '../../validators/validator';
-import { CommunicationService } from './../../services/share/communication.service';
+import { LoginService } from "../../services/login-service/login.service";
+import { userNameValidator } from "../../validators/validator";
+import { CommunicationService } from "./../../services/share/communication.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   msgErrors: string;
   errors: boolean;
   logining: boolean;
+  private pageApi = {};
 
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private myService: CommunicationService) { }
 
@@ -40,9 +41,8 @@ export class LoginComponent implements OnInit {
       this.logining = true;
       let loginInfo = { "account": account, "password": password };
       this.loginService.login(loginInfo).subscribe(res => {
-        console.log(res);
-        if (res.code == "0") {
-          this.router.navigateByUrl('/main');
+        if (res.code === "0") {
+          this.router.navigateByUrl("/main");
           if (res.data && res.data.menus) {
             localStorage.setItem("menus", JSON.stringify(res.data.menus));
             localStorage.setItem("avatar", res.data.avatar);
@@ -59,9 +59,8 @@ export class LoginComponent implements OnInit {
 
 
   /**
-   * 菜单写入到localstorage
+   * 提取页面API写入到localstorage
    */
-  private pageApi = {};
   private writeMenus(menus) {
     menus.forEach(element => {
       this.pageApi[element.code] = { a: element.functions, u: element._functions };

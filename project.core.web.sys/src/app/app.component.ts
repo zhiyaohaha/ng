@@ -1,20 +1,20 @@
-import { globalUrl } from './common/global.config';
-import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
-import { App } from './pages/app';
-import { WebSocketService } from './services/share/web-socket.service';
+import { globalUrl } from "./common/global.config";
+import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from "@angular/core";
+import { App } from "./pages/app";
+import { WebSocketService } from "./services/share/web-socket.service";
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('modalPortal', { read: ViewContainerRef }) _modalPortal;
-  @ViewChild('overlayPortal', { read: ViewContainerRef }) _overlayPortal;
-  @ViewChild('loadingPortal', { read: ViewContainerRef }) _loadingPortal;
-  @ViewChild('toastPortal', { read: ViewContainerRef }) _toastPortal;
+  @ViewChild("modalPortal", { read: ViewContainerRef }) _modalPortal;
+  @ViewChild("overlayPortal", { read: ViewContainerRef }) _overlayPortal;
+  @ViewChild("loadingPortal", { read: ViewContainerRef }) _loadingPortal;
+  @ViewChild("toastPortal", { read: ViewContainerRef }) _toastPortal;
   viewContainerRef: ViewContainerRef;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private app: App, private wsService: WebSocketService) {
@@ -22,11 +22,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
-      data => console.log(data),
-      err => console.log(err),
-      () => console.log('ws结束！')
-    )
+    // this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
+    //   data => console.log(data),
+    //   err => console.log(err),
+    //   () => console.log("ws结束！")
+    // )
     setInterval(() => {
       // this.wsService.sendMesssage("asdfasdfdf21314564");
     }, 2000)

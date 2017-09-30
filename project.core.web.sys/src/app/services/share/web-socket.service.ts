@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { CommonModule } from '@angular/common';
-import { HttpSign } from '../../models/HttpSign';
-import { ConvertUtil } from '../../common/convert-util';
-import { globalUrl } from '../../common/global.config';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { CommonModule } from "@angular/common";
+import { HttpSign } from "../../models/HttpSign";
+import { ConvertUtil } from "../../common/convert-util";
+import { globalUrl } from "../../common/global.config";
 
 @Injectable()
 export class WebSocketService {

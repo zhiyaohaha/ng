@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 import {
   NgModule, Component, OnInit, AfterViewInit, OnDestroy,
   Input, ViewChild, ElementRef, Renderer2, EventEmitter, Output, forwardRef
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+} from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -12,15 +12,15 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
 }
 
 @Component({
-  selector: 'timi-chip-group',
+  selector: "timi-chip-group",
   template: `
     <div class="timi-chip-group" [ngClass]="chipClass">
       <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
       <input spellcheck="false" type="text" *ngIf="placeholder" [placeholder]="placeholder"
-             (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)">
+             (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)" (drop)="drop($event)">
     </div>
   `,
-  styleUrls: ['./chip.component.scss'],
+  styleUrls: ["./chip.component.scss"],
   providers: [TIMI_CHIP_GROUP_VALUE_ACCESSOR]
 })
 
@@ -28,7 +28,6 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set chips(value: any) {
-    console.log(value)
     this.value = [];
     for (const v of value) {
       const isExited = this.value.find((elem, index, array) => {
@@ -62,8 +61,8 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   setChipClass() {
     this.chipClass = {
-      'timi-chip-input': this.placeholder,
-      'timi-chip-focus': this.focus
+      "timi-chip-input": this.placeholder,
+      "timi-chip-focus": this.focus
     };
   }
 
@@ -93,10 +92,21 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
     if (value) {
       this.chips.push(value);
       this.chips = this.chips.slice();
-      event.target.value = '';
+      event.target.value = "";
     }
     this.chipsChange.emit(this.chips);
     this._propagateChange(this.chips);
+  }
+
+  allowDrop($event) {
+    $event.preventDefault();
+  }
+
+  drop($event) {
+    const data = $event.dataTransfer.getData("data");
+    this.chips.push(data);
+    this.chips = this.chips.slice();
+    this.chipsChange.emit(this.chips);
   }
 
   delChip(index) {
@@ -115,9 +125,9 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 }
 
 @Component({
-  selector: 'timi-chip',
+  selector: "timi-chip",
   template: `
-    <div class="timi-chip" tabindex="0" #container>{{value}}</div>
+    <div #container class="timi-chip" tabindex="0">{{value}}</div>
   `
 })
 export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -125,7 +135,7 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
   protected group: TimiChipGroupComponent;
   @Input() value: any;
   @Input() delete: boolean;
-  @ViewChild('container') container: ElementRef;
+  @ViewChild("container") container: ElementRef;
   constructor(private renderer2: Renderer2,
     group: TimiChipGroupComponent) {
     this.group = group;
@@ -139,9 +149,9 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.delete) {
-      this.renderer2.addClass(this.container.nativeElement, 'timi-chip-delete');
+      this.renderer2.addClass(this.container.nativeElement, "timi-chip-delete");
     } else {
-      this.renderer2.removeClass(this.container.nativeElement, 'timi-chip-delete');
+      this.renderer2.removeClass(this.container.nativeElement, "timi-chip-delete");
     }
   }
 
@@ -153,7 +163,7 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.group) {
-      this.value = '';
+      this.value = "";
       // this.group.removeGroup(this);
     }
   }

@@ -1,0 +1,13 @@
+:host /deep/ {
+  .example-container {
+    height: 100%;
+  }
+  .example-sidenav {
+    width: 70%;
+  }
+  .main-container {
+    .add-button {
+      margin-top: 30px;
+    }
+  }
+}

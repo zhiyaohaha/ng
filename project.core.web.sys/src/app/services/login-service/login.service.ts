@@ -1,13 +1,11 @@
-import { Http } from '@angular/http';
-import { Injectable } from '@angular/core';
-import { BaseService } from './../base.service';
-import { Router } from '@angular/router';
-
+import { Injectable } from "@angular/core";
+import { BaseService } from "./../base.service";
 
 @Injectable()
 export class LoginService {
 
-  data: any;
+  data;
+
 
   constructor(private service: BaseService) {
 

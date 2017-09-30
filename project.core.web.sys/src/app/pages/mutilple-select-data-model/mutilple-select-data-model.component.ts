@@ -1,13 +1,13 @@
-import { PageList } from './../../models/PageList';
-import { fadeIn } from './../../common/animations';
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, NgModule, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TdDataTableSortingOrder, ITdDataTableColumn } from '@covalent/core';
-import { globalVar } from './../../common/global.config';
-import { FnUtil } from './../../common/fn-util';
-import { MutilpleSelectDataModelService } from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
+import {PageList} from './../../models/PageList';
+import {fadeIn} from './../../common/animations';
+import {CommonModule} from '@angular/common';
+import {Component, OnInit, NgModule, Input, Output} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {TdDataTableSortingOrder, ITdDataTableColumn} from '@covalent/core';
+import {globalVar} from './../../common/global.config';
+import {FnUtil} from './../../common/fn-util';
+import {MutilpleSelectDataModelService} from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
+import {FormGroup, FormControl, FormArray, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-mutilple-select-data-model',
@@ -17,6 +17,22 @@ import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@ang
   animations: [fadeIn]
 })
 export class MutilpleSelectDataModelComponent implements OnInit {
+
+  // 更新和添加
+  addNew: boolean = true;
+  updateOld: boolean = false;
+
+  // 修改表单变量
+  editName;
+  editTitle;
+  editPlatform;
+  editBindTextField;
+  editBindValueField;
+  editFilter = [];
+  editDescription;
+  editChildrens;
+  editDepth;
+  editTags;
 
   // 添加表单
   formModel: FormGroup = this.fb.group({
@@ -39,9 +55,6 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     tags: ['']
   });
 
-  formModelFilter = [];
-
-  rrrr = [];
   tags;
 
 
@@ -54,13 +67,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   platformsOptions; // 下拉框平台
   fieldFilterTypesOptions; // 下拉框筛选类型
 
-  selectedOption; // 表单下拉框选中项
-
-  chips = []; // 标签
-
   amendDta; // 需要修改的原始数据
 
-    /**
+  /**
    * 表格title
    */
   columns: ITdDataTableColumn[];
@@ -93,27 +102,42 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
 
   addFilter() {
-    const filter = this.formModel.get('filter') as FormArray;
-    filter.push(this.fb.group({
-      type: [''],
-      fields: [''],
-      value: ['']
-    }))
+    if (this.addNew) {
+      const filter = this.formModel.get('filter') as FormArray;
+      filter.push(this.fb.group({
+        type: [''],
+        fields: [''],
+        value: ['']
+      }))
+    }
+    if (this.updateOld) {
+      this.editFilter.push({
+        type: '',
+        fields: [],
+        value: ''
+      })
+    }
     return false;
   }
+
   submitMethod($event) {
     $event.collection = this.collection;
     console.log('添加：', $event);
-    // this.selectModelService.saveNew($event).subscribe(r=>{
-    //   console.log(r);
-    // });
+    this.selectModelService.saveNew($event).subscribe(r=>{
+      console.log(r);
+    });
+  }
+  saveUpdate($event) {
+    $event.collection = this.collection;
+    $event.filter = this.editFilter;
+    console.log('修改：', $event);
+    console.log('filter:', this.editFilter);
   }
 
 
-  constructor(
-    private selectModelService: MutilpleSelectDataModelService,
-    private fnUtil: FnUtil, private routerInfo: ActivatedRoute,
-    private fb: FormBuilder) {
+  constructor(private selectModelService: MutilpleSelectDataModelService,
+              private fnUtil: FnUtil, private routerInfo: ActivatedRoute,
+              private fb: FormBuilder) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams['pageCode'];
   }
@@ -127,26 +151,26 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     console.log($event);
     $event.dataTransfer.setData('data', $event.target.innerHTML);
   }
+
   dropenter($event) {
     $event.target.value = '';
   }
+
   drop($event) {
     console.log('drop:', $event);
     $event.preventDefault();
     const data = $event.dataTransfer.getData('data');
     $event.target.value = data;
   }
+
   allowDrop($event) {
     $event.preventDefault();
   }
+
   forbidDrop($event) {
     return false;
   }
 
-  addNewForm($event) {
-    console.log($event);
-    // this.selectModelService.saveNew($event);
-  }
 
   forbidInput($event) {
     $event.target.blur();
@@ -161,7 +185,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.selectModelService.getTableList(param).subscribe(r => {
       if (r.code === '0') {
         r.data.data.filters.forEach(i => {
-          this.filters.push({ 'key': i.name, 'value': i.value || '' });
+          this.filters.push({'key': i.name, 'value': i.value || ''});
         })
         this.columns = r.data.data.fields;
         this.filteredData = r.data.data.bindData;
@@ -189,7 +213,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    */
   getCollections(selected) {
     console.log(selected)
-    this.selectModelService.getCollections({ data: selected }).subscribe(r => {
+    this.selectModelService.getCollections({data: selected}).subscribe(r => {
       if (r.code === '0') {
         this.tree = r.data as TreeModel[];
       }
@@ -203,70 +227,52 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     this.getCollections($event.value);
   }
 
-  /**
-   * 右侧平台下拉框
-   */
-  // options = [];
-  onFlatformChange($event) {
-    console.log('右侧：', $event);
-  }
-
-  /**
-   * 添加标签
-   */
-  addTags($event) {
-    this.chips.push($event.dataTransfer.getData('data'));
-  }
-
-  /**
-   * 删除标签
-   */
-  delChip(i) {
-    this.chips.splice(i, 1);
-  }
 
   /**
    * 新增
    */
   newAdd($event) {
-
+    this.addNew = true;
+    this.updateOld = false;
   }
 
   /**
    * 点击行 查详细
    */
   rowClickEvent($event) {
-    this.selectModelService.getDetailData({ id: $event.row.id }).subscribe(r => {
+    this.addNew = false;
+    this.updateOld = true;
+    this.editFilter = [];
+    this.selectModelService.getDetailData({id: $event.row.id}).subscribe(r => {
       if (r.code === '0') {
         this.amendDta = r.data;
         this.collection = r.data.collection;
-        const data = { value: r.data.collection };
+        const data = {value: r.data.collection};
         this.onChange(data);
 
         if (r.data.filter && r.data.filter.length > 0) {
           for (let i = 0; i < r.data.filter.length; i++) {
-            this.formModelFilter.push(this.fb.group({
+            this.editFilter.push({
               type: r.data.filter[i].type,
-              fields: [r.data.filter[i].fields],
+              fields: r.data.filter[i].fields,
               value: r.data.filter[i].value
-            }))
+            })
           }
         }
-        this.formModel.reset({
-          collection: r.data.collection,
-          name: r.data.name,
-          title: r.data.title,
-          platform: r.data.platform,
-          bindTextField: r.data.bindTextField,
-          bindValueField: r.data.bindValueField,
-          description: r.data.description,
-          childrens: r.data.childrens,
-          depth: r.data.depth,
-          tags: []
-        })
-      };
+        this.editName = r.data.name;
+        this.editTitle = r.data.title;
+        this.editPlatform = r.data.platform;
+        this.editBindTextField = r.data.bindTextField;
+        this.editBindValueField = r.data.bindValueField;
+        this.editDescription = r.data.description;
+        this.editChildrens = r.data.childrens;
+        this.editDepth = r.data.depth;
+        this.editTags = r.data.tags;
+      }
+      ;
     });
   }
+
 
   /**
    * 翻页
@@ -288,12 +294,12 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   /**
    * 打开sidenav和关闭
    */
-  sidenavOpen() { }
-  closeEnd() {
-    this.formModelFilter = [];
+  sidenavOpen() {
   }
 
+  closeEnd() {
 
+  }
 
 
 }
@@ -302,4 +308,50 @@ export class TreeModel {
   depth: number;
   description: string;
   name: string;
+}
+
+
+@Component({
+  selector: 'filter-group',
+  template: `
+    <ng-container *ngFor="let f of filter">
+      <div class="form-group position-group">
+        <md-select placeholder="筛选类型" [(ngModel)]="f.type" name="type">
+          <md-option *ngFor="let item of selectOptions" [value]="item.value">
+            {{item.text}}
+          </md-option>
+        </md-select>
+      </div>
+      <div class="form-group position-group">
+        <timi-drag-chip name="fields" [(ngModel)]="f.fields"></timi-drag-chip>
+      </div>
+      <div class="form-group">
+        <timi-input name="value" labelName="绑定值" [(ngModel)]="f.value"></timi-input>
+      </div>
+    </ng-container>
+    <button class="position-group" md-raised-button (click)="addFilter()">添加筛选</button>
+    `,
+  styles: []
+})
+export class FilterGroupComponent implements OnInit {
+  @Input() filter: FilterModel[];
+  @Input() selectOptions;
+  @Output() data: FilterModel[];
+  constructor(private fb: FormBuilder) {}
+  ngOnInit() {}
+
+  addFilter() {
+    this.filter.push({
+      type: '',
+      fields: [],
+      value: ''
+    })
+    return false;
+  }
+}
+
+export class FilterModel {
+  type: string;
+  fields: string[];
+  value: string;
 }
