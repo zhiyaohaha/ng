@@ -1,8 +1,7 @@
-import {Http} from "@angular/http";
-import {Injectable} from "@angular/core";
-import {BaseService} from "./../base.service";
-import {Router} from "@angular/router";
-import {UserService} from "../user/user.service";
+import { Http } from "@angular/http";
+import { Injectable } from "@angular/core";
+import { BaseService } from "./../base.service";
+import { Router } from "@angular/router";
 
 
 @Injectable()
@@ -10,7 +9,7 @@ export class LoginOutService {
 
   data: any;
 
-  constructor(private service: BaseService, private router: Router, private userService: UserService) {
+  constructor(private service: BaseService, private router: Router) {
 
   }
 
@@ -18,7 +17,6 @@ export class LoginOutService {
     let _self = this.router;
     this.service.post("/api/auth/loginout").subscribe(res => {
       if (res.code === 0) {
-        this.userService.isLogin = false;
         _self.navigateByUrl("/login");
       } else {
         console.log(res);

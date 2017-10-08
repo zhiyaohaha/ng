@@ -27,7 +27,8 @@
         </div>
     </app-root>
     <script language="Javascript">
-        document.onkeydown = function() {
+        document.onkeydown = function(event) {
+            let event = window.event || event;
             if ((window.event.altKey) &&
                 ((window.event.keyCode == 37) || //屏蔽   Alt+   方向键   ←   
                     (window.event.keyCode == 39))) //屏蔽   Alt+   方向键   →   
