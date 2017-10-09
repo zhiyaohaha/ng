@@ -5,7 +5,7 @@ import { TableDataModelComponent } from "./table-data-model.component";
 import { TableDataModelRoutingModule } from "./table-data-model-routing.module";
 import { TableModule } from "./../../component/table/table.component";
 import { ButtonModule } from "./../../component/button/button.directive";
-import {MdButtonModule, MdSelectModule, MdSidenavModule} from "@angular/material";
+import {MdButtonModule, MdCheckboxModule, MdInputModule, MdSelectModule, MdSidenavModule} from "@angular/material";
 import {SearchFormModule} from "../../component/search-form/searchform.component";
 import {TimiInputModule} from "../../component/timi-input/timi-input.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -17,7 +17,7 @@ import {TimiDragChipModule} from "../../component/timi-drag-chip/chip.component"
     CommonModule, FormsModule, ReactiveFormsModule,
     TableDataModelRoutingModule,
     TableModule, ButtonModule,
-    MdSidenavModule, MdSelectModule, MdButtonModule,
+    MdSidenavModule, MdSelectModule, MdButtonModule, MdCheckboxModule, MdInputModule,
     SearchFormModule,
     TimiInputModule, TimiChipModule, TimiDragChipModule
   ],

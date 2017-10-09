@@ -1,18 +1,16 @@
-import {PageList} from './../../models/PageList';
-import {fadeIn} from './../../common/animations';
-import {CommonModule} from '@angular/common';
-import {Component, OnInit, NgModule, Input, Output} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {TdDataTableSortingOrder, ITdDataTableColumn} from '@covalent/core';
-import {globalVar} from './../../common/global.config';
-import {FnUtil} from './../../common/fn-util';
-import {MutilpleSelectDataModelService} from './../../services/mutilple-select-data-model/mutilple-select-data-model.service';
-import {FormGroup, FormControl, FormArray, FormBuilder, Validators} from '@angular/forms';
+import {fadeIn} from "./../../common/animations";
+import {Component, OnInit, Input, Output} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {TdDataTableSortingOrder, ITdDataTableColumn} from "@covalent/core";
+import {globalVar} from "./../../common/global.config";
+import {FnUtil} from "./../../common/fn-util";
+import {MutilpleSelectDataModelService} from "./../../services/mutilple-select-data-model/mutilple-select-data-model.service";
+import {FormGroup, FormControl, FormArray, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-mutilple-select-data-model',
-  templateUrl: './mutilple-select-data-model.component.html',
-  styleUrls: ['./mutilple-select-data-model.component.scss'],
+  selector: "app-mutilple-select-data-model",
+  templateUrl: "./mutilple-select-data-model.component.html",
+  styleUrls: ["./mutilple-select-data-model.component.scss"],
   providers: [MutilpleSelectDataModelService],
   animations: [fadeIn]
 })
@@ -36,23 +34,23 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   // 添加表单
   formModel: FormGroup = this.fb.group({
-    collection: ['', Validators.required],
-    name: ['', Validators.required],
-    title: ['', Validators.required],
-    platform: ['', Validators.required],
-    bindTextField: ['', Validators.required],
-    bindValueField: ['', Validators.required],
+    collection: ["", Validators.required],
+    name: ["", Validators.required],
+    title: ["", Validators.required],
+    platform: ["", Validators.required],
+    bindTextField: ["", Validators.required],
+    bindValueField: ["", Validators.required],
     filter: this.fb.array([
       this.fb.group({
-        type: [''],
-        fields: [''],
-        value: ['']
+        type: [""],
+        fields: [""],
+        value: [""]
       })
     ]),
-    description: ['', Validators.required],
+    description: ["", Validators.required],
     childrens: [false, Validators.required],
-    depth: [''],
-    tags: ['']
+    depth: [""],
+    tags: [""]
   });
 
   tags;
@@ -130,8 +128,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   saveUpdate($event) {
     $event.collection = this.collection;
     $event.filter = this.editFilter;
-    console.log('修改：', $event);
-    console.log('filter:', this.editFilter);
+    console.log("修改：", $event);
+    console.log("filter:", this.editFilter);
+    this.selectModelService.update($event);
   }
 
 
@@ -139,7 +138,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
               private fnUtil: FnUtil, private routerInfo: ActivatedRoute,
               private fb: FormBuilder) {
     this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.routerInfo.snapshot.queryParams['pageCode'];
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
   }
 
   ngOnInit() {
@@ -149,17 +148,17 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   drag($event) {
     console.log($event);
-    $event.dataTransfer.setData('data', $event.target.innerHTML);
+    $event.dataTransfer.setData("data", $event.target.innerHTML);
   }
 
   dropenter($event) {
-    $event.target.value = '';
+    $event.target.value = "";
   }
 
   drop($event) {
-    console.log('drop:', $event);
+    console.log("drop:", $event);
     $event.preventDefault();
-    const data = $event.dataTransfer.getData('data');
+    const data = $event.dataTransfer.getData("data");
     $event.target.value = data;
   }
 
@@ -312,7 +311,7 @@ export class TreeModel {
 
 
 @Component({
-  selector: 'filter-group',
+  selector: "filter-group",
   template: `
     <ng-container *ngFor="let f of filter">
       <div class="form-group position-group">
@@ -342,9 +341,9 @@ export class FilterGroupComponent implements OnInit {
 
   addFilter() {
     this.filter.push({
-      type: '',
+      type: "",
       fields: [],
-      value: ''
+      value: ""
     })
     return false;
   }

@@ -16,12 +16,12 @@ export class LoginOutService {
   public loginOut() {
     let _self = this.router;
     this.service.post("/api/auth/loginout").subscribe(res => {
-      if (res.code === 0) {
+      if (res.code === "0") {
         _self.navigateByUrl("/login");
       } else {
         console.log(res);
       }
-    })
+    });
   }
 
 }

@@ -5,7 +5,7 @@ import {ITdDataTableColumn} from "@covalent/core";
 import {FnUtil} from "../../common/fn-util";
 import {ActivatedRoute} from "@angular/router";
 import {fadeIn} from "../../common/animations";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: "app-table-data-model",
@@ -19,6 +19,18 @@ export class TableDataModelComponent implements OnInit {
   // 更新和添加
   addNew: boolean = true;
   updateOld: boolean = false;
+
+  // 修改表单变量
+  editName;
+  editTitle;
+  editPlatform;
+  editBindTextField;
+  editBindValueField;
+  editFilter = [];
+  editDescription;
+  editChildrens;
+  editDepth;
+  editTags;
 
   /**
    * 查询参数
@@ -48,22 +60,38 @@ export class TableDataModelComponent implements OnInit {
 
   // 添加表单
   formModel: FormGroup = this.fb.group({
-    collection: ["", Validators.required],
-    name: ["", Validators.required],
-    title: ["", Validators.required],
-    platform: ["", Validators.required],
-    bindTextField: ["", Validators.required],
-    bindValueField: ["", Validators.required],
+    collection: [""],
+    name: [""],
+    title: [""],
+    platform: [""],
+    description: [""],
+    fields: this.fb.array([
+      this.fb.group({
+        name: [""],
+        label: [""],
+        hidden: [""],
+        nested: [""]
+      })
+    ]),
     filter: this.fb.array([
       this.fb.group({
-        type: [""],
         fields: [""],
+        ui: this.fb.group({
+          label: [""],
+          placeholder: [""],
+          displayType: [""],
+          hidden: [""]
+        }),
+        type: [""],
         value: [""]
       })
     ]),
-    description: ["", Validators.required],
-    childrens: [false, Validators.required],
-    depth: [""],
+    sorts: this.fb.array([
+      this.fb.group({
+        field: [""],
+        desc: [""]
+      })
+    ]),
     tags: [""]
   });
 
@@ -76,7 +104,7 @@ export class TableDataModelComponent implements OnInit {
   }
   ngOnInit() {
     this.getTableList(this.listparam);
-    // this.getDataSource();
+    this.getDataSource();
   }
   getTableList(param) {
     this.tableModelService.getTableList(param).subscribe(r => {
@@ -118,6 +146,40 @@ export class TableDataModelComponent implements OnInit {
   }
 
   /**
+   * 添加字段
+   */
+  addField() {
+    if (this.addNew) {
+      const fields = this.formModel.get("fields") as FormArray;
+      fields.push(this.fb.group({
+        name: [""],
+        label: [""],
+        hidden: [""],
+        nested: [""]
+      }));
+    }
+    if (this.updateOld) {
+      this.editFilter.push(this.fb.group({
+        name: [""],
+        label: [""],
+        hidden: [""],
+        nested: [""]
+      }));
+    }
+    return false;
+  }
+
+  /**
+   * 添加筛选
+   */
+  addFilter() {}
+
+  /**
+   * 添加排序
+   */
+  addSort() {}
+
+  /**
    * 搜索
    * @param $event
    */
@@ -126,13 +188,19 @@ export class TableDataModelComponent implements OnInit {
   /**
    * 添加
    */
-  newAdd() {}
+  newAdd() {
+    this.addNew = true;
+    this.updateOld = false;
+  }
 
   /**
    * 点击行
    * @param $event
    */
-  rowClickEvent($event) {}
+  rowClickEvent($event) {
+    this.addNew = false;
+    this.updateOld = true;
+  }
 
   /**
    * 下拉框值的改变
@@ -146,7 +214,9 @@ export class TableDataModelComponent implements OnInit {
    * 拖动字段
    * @param $event
    */
-  drag($event) {}
+  drag($event) {
+    $event.dataTransfer.setData("data", $event.target.innerHTML);
+  }
 
   /**
    * 翻页
@@ -162,12 +232,12 @@ export class TableDataModelComponent implements OnInit {
       console.log(r);
     });
   }
-  // saveUpdate($event) {
-  //   $event.collection = this.collection;
-  //   $event.filter = this.editFilter;
-  //   console.log("修改：", $event);
-  //   console.log("filter:", this.editFilter);
-  // }
+  saveUpdate($event) {
+    $event.collection = this.collection;
+    $event.filter = this.editFilter;
+    console.log("修改：", $event);
+    console.log("filter:", this.editFilter);
+  }
 
 }
 
