@@ -6,7 +6,8 @@
     </button>
   </div>
   <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
-             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')" [pageLinkCount]="pageLinkCount"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')"
+             [pageLinkCount]="pageLinkCount"
              (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
   <md-sidenav #sidenav class="example-sidenav container-fluid" align="end">
     <div style="float: left;width: 40%;height: 100%;">
@@ -24,7 +25,81 @@
       </ng-container>
     </div>
     <div class="iscroll" style="float:left;width:60%;height:100%;overflow-y:auto;">
+      <form *ngIf="addNew" [formGroup]="formModel" (ngSubmit)="submitMethod(formModel.value)"
+            onkeydown="if(event.keyCode==13)return false;">
+        <div class="form-group">
+          <timi-input formControlName="name" labelName="模板名称" require="true"></timi-input>
+        </div>
+        <div class="form-group">
+          <timi-input formControlName="title" labelName="标题" require="true"></timi-input>
+        </div>
+        <div class="form-group position-group">
+          <md-select placeholder="平台" formControlName="platform">
+            <md-option *ngFor="let item of platformsOptions" [value]="item.value">
+              {{ item.text }}
+            </md-option>
+          </md-select>
+        </div>
+        <div class="form-group position-group">
+          <timi-chip-group formControlName="tags" placeholder="回车添加标签"
+                           (chipsChange)="chipsChange($event)"></timi-chip-group>
+        </div>
+        <div class="form-group position-group">
+          <textarea></textarea>
+        </div>
+        <div class="form-group position-group">
+          字段
 
+        </div>
+        <div class="form-group position-group">
+          筛选
+          <!--<ng-container *ngFor="let f of formModel.get('filter').controls;index as index">-->
+            <!--<div [formGroupName]="index">-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-select placeholder="筛选类型" formControlName="type">-->
+                  <!--<md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">-->
+                    <!--{{item.text}}-->
+                  <!--</md-option>-->
+                <!--</md-select>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-select placeholder="展示类型">-->
+                  <!--<md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">-->
+                    <!--{{item.text}}-->
+                  <!--</md-option>-->
+                <!--</md-select>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<timi-drag-chip formControlName="fields"></timi-drag-chip>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-form-field>-->
+                  <!--<input mdInput placeholder="字段" formControlName="value">-->
+                <!--</md-form-field>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-form-field>-->
+                  <!--<input mdInput placeholder="标题">-->
+                <!--</md-form-field>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-form-field>-->
+                  <!--<input mdInput placeholder="值">-->
+                <!--</md-form-field>-->
+              <!--</div>-->
+              <!--<div class="form-group position-group">-->
+                <!--<md-form-field>-->
+                  <!--<input mdInput placeholder="占位符">-->
+                <!--</md-form-field>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</ng-container>-->
+          <button class="position-group" md-raised-button (click)="addFilter()">添加筛选</button>
+        </div>
+        <div class="form-group position-group">
+          排序
+        </div>
+      </form>
     </div>
   </md-sidenav>
 </md-sidenav-container>

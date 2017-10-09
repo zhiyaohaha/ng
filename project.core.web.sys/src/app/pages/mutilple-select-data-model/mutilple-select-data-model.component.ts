@@ -122,7 +122,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   submitMethod($event) {
     $event.collection = this.collection;
-    console.log('添加：', $event);
+    console.log("添加：", $event);
     this.selectModelService.saveNew($event).subscribe(r=>{
       console.log(r);
     });
@@ -200,12 +200,12 @@ export class MutilpleSelectDataModelComponent implements OnInit {
    */
   getDataSource() {
     this.selectModelService.getDataSource().subscribe(r => {
-      if (r.code === '0') {
+      if (r.code === "0") {
         this.options = r.data.collections;
         this.platformsOptions = r.data.platforms;
         this.fieldFilterTypesOptions = r.data.fieldFilterTypes;
       }
-    })
+    });
   }
 
   /**
@@ -214,7 +214,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   getCollections(selected) {
     console.log(selected)
     this.selectModelService.getCollections({data: selected}).subscribe(r => {
-      if (r.code === '0') {
+      if (r.code === "0") {
         this.tree = r.data as TreeModel[];
       }
     });
