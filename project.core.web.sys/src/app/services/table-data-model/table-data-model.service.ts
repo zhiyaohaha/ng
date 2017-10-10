@@ -28,6 +28,13 @@ export class TableDataModelService {
     return this.baseService.get("/api/Template/GetFieldsByCollection", param);
   }
 
+  /**
+   * 获取详细数据
+   */
+  getDetailData(param) {
+    return this.baseService.get(this.fnUtil.searchAPI("TemplateMgr.TableMgr.Detail"), param);
+  }
+
 
   /**
    * 保存添加

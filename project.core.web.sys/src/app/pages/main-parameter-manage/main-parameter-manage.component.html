@@ -1,5 +1,5 @@
 <md-sidenav-container class="example-container" [@fadeInState]="'active'">
-    <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
         <div class="row">
             <div class="col-lg-4 sidenav-left" *ngIf="!isNew">
                 <div class="sidenav-container">

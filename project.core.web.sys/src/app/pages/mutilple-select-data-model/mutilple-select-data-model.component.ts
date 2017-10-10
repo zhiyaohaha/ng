@@ -130,7 +130,9 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     $event.filter = this.editFilter;
     console.log("修改：", $event);
     console.log("filter:", this.editFilter);
-    this.selectModelService.update($event);
+    this.selectModelService.update($event).subscribe(r => {
+      console.log(r)
+    });
   }
 
 

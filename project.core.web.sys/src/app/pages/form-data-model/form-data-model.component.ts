@@ -71,7 +71,7 @@ export class FormDataModelComponent implements OnInit {
 
   getTableList(param) {
     this.formDataService.getTableList(param).subscribe(r => {
-      console.log(r)
+      console.log(r);
     });
   }
 

@@ -1,5 +1,5 @@
 <md-sidenav-container class="example-container" [@fadeInState]="'active'">
-  <md-sidenav #sidenav class="example-sidenav container-fluid" align="end" (open)="sidenavOpen()"
+  <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open)="sidenavOpen()"
               (close)="closeEnd()" style="overflow:hidden;">
     <div class="" style="float:left;width:40%;height:100%;">
       <md-select placeholder="选择数据源" [(ngModel)]="collection" (change)="onChange($event)">

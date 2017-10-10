@@ -3,7 +3,6 @@ import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewCont
 import { App } from "./pages/app";
 import { WebSocketService } from "./services/share/web-socket.service";
 
-
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -17,7 +16,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild("toastPortal", { read: ViewContainerRef }) _toastPortal;
   viewContainerRef: ViewContainerRef;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private app: App, private wsService: WebSocketService) {
+  // router跳转动画所需参数
+  routerState: boolean = true;
+  routerStateCode: string = "active";
+
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
+              private app: App,
+              private wsService: WebSocketService) {
     this.app.intance = this;
   }
 
@@ -29,9 +34,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     // )
     setInterval(() => {
       // this.wsService.sendMesssage("asdfasdfdf21314564");
-    }, 2000)
-  }
+    }, 2000);
 
+  }
 
   ngAfterViewInit() {
 

@@ -1,6 +1,6 @@
-import {CommonModule} from '@angular/common';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Component, EventEmitter, forwardRef, Input, NgModule, OnInit, Output} from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, EventEmitter, forwardRef, Input, NgModule, OnInit, Output} from "@angular/core";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -9,7 +9,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'timi-drag-chip',
+  selector: "timi-drag-chip",
   template: `
     <div class="timi-chip">
       <ul>
@@ -18,7 +18,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
       <div (drop)="onDrop($event)" (dragover)="allowDrop($event)">拖拽添加</div>
     </div>
   `,
-  styleUrls: ['./chip.component.scss'],
+  styleUrls: ["./chip.component.scss"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 
@@ -27,12 +27,16 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
   @Input()
   set chips(value: any) {
     this.value = [];
-    for (const v of value) {
-      const isExited = this.value.find((elem, index, array) => {
-        return elem === v;
-      });
-      if (!isExited) {
-        this.value.push(v);
+    if (typeof value === "string") {
+      this.value.push(value);
+    } else {
+      for (const v of value) {
+        const isExited = this.value.find((elem, index, array) => {
+          return elem === v;
+        });
+        if (!isExited) {
+          this.value.push(v);
+        }
       }
     }
     this._propagateChange(this.value);
@@ -41,6 +45,8 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
   get chips(): any {
     return this.value;
   }
+
+  @Input() length: number;
 
   @Output() chipsChange: EventEmitter<any> = new EventEmitter();
 
@@ -62,8 +68,11 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
   }
 
   onDrop($event) {
-    const data = $event.dataTransfer.getData('data');
+    const data = $event.dataTransfer.getData("data");
     if (data) {
+      if (this.length && this.value.length >= this.length) {
+        this.value.shift();
+      }
       this.value.push(data);
       this.chipsChange.emit(this.chips);
       this._propagateChange(this.chips);
