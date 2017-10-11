@@ -281,11 +281,13 @@ export class MainParameterManageComponent implements OnInit {
     data.depth = this.selectNode.JSONdata.depth + 1;
     this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
-      if (res.code == "0") {
-        this.openAlert("添加成功");
+      if (res.code === "0") {
+        //this.openAlert("添加成功");
+        this.toastService.creatNewMessage("添加成功");
         this.getDetailParams();
       } else {
-        this.openAlert("添加失败");
+        //this.openAlert("添加失败");
+        this.toastService.creatNewMessage("添加失败");
       }
     });
   }
@@ -308,9 +310,11 @@ export class MainParameterManageComponent implements OnInit {
     this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code == "0") {
-        this.openAlert("添加成功");
+        //this.openAlert("添加成功");
+        this.toastService.creatNewMessage("添加成功");
       } else {
-        this.openAlert("添加失败");
+        //this.openAlert("添加失败");
+        this.toastService.creatNewMessage("添加失败");
       }
     });
   }
