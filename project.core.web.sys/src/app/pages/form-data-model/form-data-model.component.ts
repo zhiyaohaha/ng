@@ -71,8 +71,42 @@ export class FormDataModelComponent implements OnInit {
 
   getTableList(param) {
     this.formDataService.getTableList(param).subscribe(r => {
-      console.log(r);
+      if (r.code === "0") {
+        this.filteredData = r.data.bindData;
+      }
     });
   }
+
+  /**
+   * 搜索
+   */
+  onSearch($event) {
+
+  }
+
+  /**
+   * 添加
+   */
+  newAdd() {}
+
+  /**
+   * 翻页
+   */
+  page(pages) {}
+
+  /**
+   * 点击行
+   */
+  rowClickEvent() {}
+
+  /**
+   * 选择数据源
+   */
+  onChange() {}
+
+  /**
+   * drag
+   */
+  drag($event) {}
 
 }

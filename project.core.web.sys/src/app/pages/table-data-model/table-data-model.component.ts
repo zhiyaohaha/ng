@@ -127,7 +127,7 @@ export class TableDataModelComponent implements OnInit {
       if (r.code === "0") {
         this.options = r.data.collections;
         this.platformsOptions = r.data.platforms;
-        this.fieldFilterTypesOptions = r.data.fieldFilterTypes;
+        this.fieldFilterTypesOptions = r.data.filterTypes;
       }
     });
   }
@@ -267,6 +267,7 @@ export class TableDataModelComponent implements OnInit {
    * @param $event
    */
   drag($event) {
+    console.log($event)
     $event.dataTransfer.setData("data", $event.target.innerHTML);
   }
 
@@ -289,6 +290,9 @@ export class TableDataModelComponent implements OnInit {
 
   submitMethod($event) {
     $event.collection = this.collection;
+    $event.fields.map(item => {
+      item.name = item.name[0];
+    })
     console.log("添加：", $event);
     this.tableModelService.saveNew($event).subscribe(r => {
       console.log(r);
