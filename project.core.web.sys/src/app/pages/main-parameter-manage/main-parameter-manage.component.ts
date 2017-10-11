@@ -1,45 +1,36 @@
-import { fadeIn } from './../../common/animations';
-import { FnUtil } from './../../common/fn-util';
-import { ToastService } from './../../component/toast/toast.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableRowClickEvent, ITdDataTableColumn } from '@covalent/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
+import { fadeIn } from "./../../common/animations";
+import { FnUtil } from "./../../common/fn-util";
+import { ToastService } from "./../../component/toast/toast.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
 
-import { TreeModel, Ng2TreeSettings } from '../../../../node_modules/ng2-tree';
-import { globalVar, customized } from '../../common/global.config';
-import { TableSearch } from '../../common/search/table.search';
+import "rxjs/add/operator/startWith";
+import "rxjs/add/observable/merge";
+import "rxjs/add/operator/map";
 
-import { ParamsManageService } from './../../services/paramsManage-service/paramsManage.service';
-import { JsonResult } from '../../services/models/jsonResult';
-import { HtmlFieldTemplate } from '../../models/HtmlFieldTemplate';
-import { HtmlFilterDomTemplate } from '../../models/HtmlFilterDomTemplate';
-import { PageList } from '../../models/PageList';
-import { HtmlTableTemplate } from '../../models/HtmlTableTemplate';
-import { HttpCallback } from './../../models/HttpCallback';
-import { ConvertUtil } from '../../common/convert-util';
-import { SysParam } from '../../models/SysParam';
-import { BaseService } from '../../services/base.service';
-import { HtmlDomTemplate } from '../../models/HtmlDomTemplate';
-import { HtmlFormBindTemplateData } from '../../models/HtmlFormBindTemplateData';
+import { TreeModel } from "../../../../node_modules/ng2-tree";
+import { globalVar } from "../../common/global.config";
+import { TableSearch } from "../../common/search/table.search";
+
+import { ParamsManageService } from "./../../services/paramsManage-service/paramsManage.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { BaseService } from "../../services/base.service";
+import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
 
 
 @Component({
-  selector: 'app-main-parameter-manage',
-  templateUrl: './main-parameter-manage.component.html',
-  styleUrls: ['./main-parameter-manage.component.scss'],
+  selector: "app-main-parameter-manage",
+  templateUrl: "./main-parameter-manage.component.html",
+  styleUrls: ["./main-parameter-manage.component.scss"],
   animations: [fadeIn],
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
 export class MainParameterManageComponent implements OnInit {
 
-  authorities: string[];//权限数组
-  authorityKey: string;//权限KEY
+  authorities: string[]; //权限数组
+  authorityKey: string; //权限KEY
 
   /**
    * 右侧编辑的具体内容
@@ -54,14 +45,6 @@ export class MainParameterManageComponent implements OnInit {
    */
   isNew: boolean;
 
-  /**
-   * 下拉框值
-   */
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' }
-  ];
 
   /**
    * 表格title
@@ -73,18 +56,18 @@ export class MainParameterManageComponent implements OnInit {
    */
   basicData;
 
-  searchFilters;//页面显示的搜索条件
+  searchFilters; //页面显示的搜索条件
 
-  fromRow: number = 1;//当前页第一行的总行数
-  currentPage: number = 0;//当前页码
-  pageSizes = globalVar.pageSizes;//可选的每页条数
+  fromRow: number = 1; //当前页第一行的总行数
+  currentPage: number = 0; //当前页码
+  pageSizes = globalVar.pageSizes; //可选的每页条数
   pageSize: number = globalVar.pageSize; //每页显示条数
-  pageLinkCount = globalVar.pageLinkCount;//显示多少页码
-  searchTerm: string = "";//搜索关键字
+  pageLinkCount = globalVar.pageLinkCount; //显示多少页码
+  searchTerm: string = ""; //搜索关键字
   sortBy: string = "";
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  filteredTotal = 0;//总共条数
-  filteredData;//过滤后的数据
+  filteredTotal = 0; //总共条数
+  filteredData; //过滤后的数据
 
   /**
    * 获取列表数据
@@ -218,7 +201,7 @@ export class MainParameterManageComponent implements OnInit {
     console.log("treelabe:", this.treeNode.label);
   }
   addChild(e) {
-    console.log(e)
+    console.log(e);
   }
 
   chipsChange($event) {
@@ -247,10 +230,11 @@ export class MainParameterManageComponent implements OnInit {
     this._paramsManageService.saveParams(this.modalData).subscribe(res => {
       if (res.code == "0") {
         this.openAlert(res.message);
+        this.toastService.creatNewMessage(res.message);
         //this.getDetailParams();
         this.getParamsList(this.listparam);
       } else {
-        this.toastService.creatNewMessage("出错了")
+        this.toastService.creatNewMessage("出错了");
       }
 
     });
@@ -389,7 +373,7 @@ export class MainParameterManageComponent implements OnInit {
   newModalData;
   loadModal() {
     this._paramsManageService.editParamsModal().subscribe(r => {
-      if (r.code == "0") {
+      if (r.code === "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
         this.newModalData = r.data.bindDataJson;
@@ -406,7 +390,7 @@ export class MainParameterManageComponent implements OnInit {
       message: msg,
       disableClose: false,
       viewContainerRef: this._viewContainerRef,
-      closeButton: '确定'
+      closeButton: "确定"
     });
   }
 

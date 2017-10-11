@@ -6,14 +6,15 @@ import {
   TableDataModelComponent
 } from "./table-data-model.component";
 import { TableDataModelRoutingModule } from "./table-data-model-routing.module";
-import { TableModule } from "./../../component/table/table.component";
-import { ButtonModule } from "./../../component/button/button.directive";
+import { TableModule } from "../../component/table/table.component";
+import {ButtonModule} from "../../component/button/button.directive";
 import {MdButtonModule, MdCheckboxModule, MdInputModule, MdSelectModule, MdSidenavModule} from "@angular/material";
 import {SearchFormModule} from "../../component/search-form/searchform.component";
 import {TimiInputModule} from "../../component/timi-input/timi-input.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TimiChipModule} from "../../component/timi-chip/chip.component";
 import {TimiDragChipModule} from "../../component/timi-drag-chip/chip.component";
+import {TableUiModule} from "./table-data-ui-model.component";
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import {TimiDragChipModule} from "../../component/timi-drag-chip/chip.component"
     TableModule, ButtonModule,
     MdSidenavModule, MdSelectModule, MdButtonModule, MdCheckboxModule, MdInputModule,
     SearchFormModule,
-    TimiInputModule, TimiChipModule, TimiDragChipModule
+    TimiInputModule, TimiChipModule, TimiDragChipModule, TableUiModule
   ],
   declarations: [TableDataModelComponent, FieldsGroupComponent, FiltersGroupComponent, SortsGroupComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

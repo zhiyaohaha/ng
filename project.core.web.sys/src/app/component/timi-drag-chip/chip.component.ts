@@ -53,9 +53,7 @@ export class TimiDragChipComponent implements ControlValueAccessor, OnInit {
 
   value: any[] = [];
   private _value: any;
-  private _propagateChange = (_: any) => {
-  };
-
+  private _propagateChange = (_: any) => { };
 
   constructor() {
   }

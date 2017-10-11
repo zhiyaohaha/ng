@@ -1,11 +1,11 @@
-import {Component, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from "@angular/core";
 import {TableDataModelService} from "../../services/table-data-model/table-data-model.service";
 import {globalVar} from "../../common/global.config";
-import {ITdDataTableColumn} from "@covalent/core";
+import {IPageChangeEvent, ITdDataTableColumn} from "@covalent/core";
 import {FnUtil} from "../../common/fn-util";
 import {ActivatedRoute} from "@angular/router";
 import {fadeIn} from "../../common/animations";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
   selector: "app-table-data-model",
@@ -47,6 +47,7 @@ export class TableDataModelComponent implements OnInit {
     index: this.currentPage,
     size: this.pageSize
   };
+  clickAuthority: boolean; // 是否可以点击
   authorities; // 权限管理
   authorityKey; // 权限关键字
 
@@ -74,12 +75,7 @@ export class TableDataModelComponent implements OnInit {
     filters: this.fb.array([
       this.fb.group({
         fields: [""],
-        ui: this.fb.group({
-          label: [""],
-          placeholder: [""],
-          displayType: [""],
-          hidden: [""]
-        }),
+        ui: [""],
         type: [""],
         value: [""]
       })
@@ -103,6 +99,11 @@ export class TableDataModelComponent implements OnInit {
   ngOnInit() {
     this.getTableList(this.listparam);
     this.getDataSource();
+    if (this.authorities.indexOf(this.authorityKey + ".Detail") > -1 || this.authorities.indexOf(this.authorityKey + ".Update") > -1) {
+      this.clickAuthority = true;
+    } else {
+      this.clickAuthority = false;
+    }
   }
   getTableList(param) {
     this.tableModelService.getTableList(param).subscribe(r => {
@@ -272,7 +273,17 @@ export class TableDataModelComponent implements OnInit {
   /**
    * 翻页
    */
-  page() {}
+  page(pagingEvent: IPageChangeEvent): void {
+    // this.pageOptions.fromRow = pagingEvent.fromRow;
+    // this.pageOptions.currentPage = pagingEvent.page;
+    // this.pageOptions.pageSize = pagingEvent.pageSize;
+    this.listparam = {
+      size: pagingEvent.pageSize,
+      index: pagingEvent.page - 1,
+      filters: null
+    }
+    this.getTableList(this.listparam);
+  }
 
   chipsChange($event) {}
 
@@ -288,6 +299,9 @@ export class TableDataModelComponent implements OnInit {
     $event.filter = this.editFilters;
     console.log("修改：", $event);
     console.log("filter:", this.editFilters);
+    this.tableModelService.saveUpdate($event).subscribe(r => {
+      console.log(r);
+    });
   }
 
   forbidDrop($event) {
@@ -302,27 +316,6 @@ export class TreeModel {
   name: string;
 }
 
-/**
- * 新增功能的筛选中的UI组件
- */
-@Component({
-  selector: "ui-group",
-  template: `
-    <div class="form-group">
-      <timi-input labelName="字段"></timi-input>
-    </div>
-    <div class="form-group">
-      <timi-input labelName="标题"></timi-input>
-    </div>
-    <div class="form-group">
-      <timi-input labelName="值"></timi-input>
-    </div>
-    <div class="form-group">
-      <timi-input labelName="占位符"></timi-input>
-    </div>
-  `,
-  styles: []
-})
 
 /**
  * 修改功能的字段组件

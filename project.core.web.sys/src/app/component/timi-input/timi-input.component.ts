@@ -68,8 +68,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @ViewChild("input")
   inputRef: ElementRef;
 
-  private valueChange = (_: any) => {
-  };
+  private valueChange = (_: any) => { };
 
   constructor(private renderer: Renderer2) {
   }

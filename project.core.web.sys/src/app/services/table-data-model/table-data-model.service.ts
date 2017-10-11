@@ -43,4 +43,11 @@ export class TableDataModelService {
     return this.baseService.post(this.fnUtil.searchAPI("TemplateMgr.TableMgr.Add"), param);
   }
 
+  /**
+   * 修改数据
+   */
+  saveUpdate(param) {
+    return this.baseService.post(this.fnUtil.searchAPI("TemplateMgr.TableMgr.Update"), param);
+  }
+
 }

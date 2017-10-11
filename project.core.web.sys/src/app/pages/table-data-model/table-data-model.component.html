@@ -1,14 +1,4 @@
 <md-sidenav-container class="example-container" [@fadeInState]="'active'">
-  <div class="main-container clearfix">
-    <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-    <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button"
-            (click)="newAdd();sidenav.open()">添加
-    </button>
-  </div>
-  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
-             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')"
-             [pageLinkCount]="pageLinkCount"
-             (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
   <md-sidenav #sidenav class="example-sidenav container-fluid" position="end">
     <div style="float: left;width: 40%;height: 100%;">
       <md-select placeholder="选择数据源" [(ngModel)]="collection" (change)="onChange($event)">
@@ -78,24 +68,26 @@
               <div class="form-group">
                 <timi-drag-chip formControlName="fields"></timi-drag-chip>
               </div>
-              <div formGroupName="ui">
-                <div class="form-group">
-                  <timi-input labelName="标题" formControlName="label"></timi-input>
-                </div>
-                <div class="form-group">
-                  <timi-input labelName="占位符" formControlName="placeholder"></timi-input>
-                </div>
-                <div class="form-group position-group">
-                  <md-select placeholder="展示类型" formControlName="displayType">
-                    <md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">
-                      {{item.text}}
-                    </md-option>
-                  </md-select>
-                </div>
-                <div class="form-group position-group">
-                  <md-checkbox color="primary" formControlName="hidden">隐藏</md-checkbox>
-                </div>
-              </div>
+              <!--<div formGroupName="ui">-->
+                <!--<ui-group formControlName="ui"></ui-group>-->
+              <table-ui formControlName="ui"></table-ui>
+                <!--<div class="form-group">-->
+                  <!--<timi-input labelName="标题" formControlName="label"></timi-input>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                  <!--<timi-input labelName="占位符" formControlName="placeholder"></timi-input>-->
+                <!--</div>-->
+                <!--<div class="form-group position-group">-->
+                  <!--<md-select placeholder="展示类型" formControlName="displayType">-->
+                    <!--<md-option *ngFor="let item of fieldFilterTypesOptions" [value]="item.value">-->
+                      <!--{{item.text}}-->
+                    <!--</md-option>-->
+                  <!--</md-select>-->
+                <!--</div>-->
+                <!--<div class="form-group position-group">-->
+                  <!--<md-checkbox color="primary" formControlName="hidden">隐藏</md-checkbox>-->
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </ng-container>
           <button class="position-group" md-raised-button (click)="addFilter()">添加筛选</button>
@@ -150,7 +142,19 @@
           排序
           <sort-group [sorts]="editSorts"></sort-group>
         </div>
+        <div class="form-group">
+          <button md-raised-button>确定</button>
+        </div>
       </form>
     </div>
   </md-sidenav>
+  <div class="main-container clearfix">
+    <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button"
+            (click)="newAdd();sidenav.open()">添加
+    </button>
+  </div>
+  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
+             [clickAuthority]="clickAuthority" (change)="page($event)"
+             (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 </md-sidenav-container>
