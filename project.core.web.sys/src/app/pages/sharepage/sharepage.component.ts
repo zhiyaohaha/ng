@@ -26,7 +26,7 @@ export class SharepageComponent implements OnInit {
 
   ngOnInit() {
     this.getParamsList(this.listparam);
-    //this.loadModal();
+    this.loadModal();
     // this.routerInfo.events.subscribe(r=>{
     //   console.log("路由订阅：",r)
     // })

@@ -1,37 +1,41 @@
-<div class="container-fluid" [@fadeInUpState]="'active'">
-    <div class="row">
-        <div class="col-lg-3 api-list">
+<div class="container-fluid" [@fadeInUpState]="'active'" style="height: 100%;overflow: hidden;">
+    <div class="row" style="height: 100%;overflow: hidden;">
+        <div class="col-lg-3 api-list" style="height:100%;overflow: auto;">
             <ul>
-                <li *ngFor="let item of result,let i = index"><a href="javascript:;" (click)="goTo(i)">{{i+1}}.{{item.summary.title}}</a></li>
+                <li *ngFor="let item of result;index as i;">
+                  <h2>{{item.name}}</h2>
+                  <ol>
+                    <li *ngFor="let sub of item.includes;index as index;">
+                      <a href="javascript:;" (click)="goTo(i, index)">{{index+1}}.{{sub.description}}</a>
+                    </li>
+                  </ol>
+                </li>
             </ul>
         </div>
-        <div class="col-lg-9" *ngIf="list">
-            <ul>
-                <li class="api-wrap">
+        <div class="col-lg-9" *ngIf="list" style="height: 100%;overflow: auto;">
+          <md-button-toggle (change)="changeToggle()">{{display}}</md-button-toggle>
+          <ul>
+              <li class="api-wrap">
                     <dl>
-                        <dt>接口名字:<span>{{list.summary.title}}</span></dt>
-                        <dt>参数列表</dt>
+                        <dt>接口名称：<span>{{list.description}}</span></dt>
+                      <dt>接口地址：<span>{{list.url}}</span></dt>
+                      <dt>输入参数：</dt>
+                      <dd>
+                        <ng-container *ngIf="list._params.length > 0">
+                          [
+                            <params-list *ngFor="let param of list._params" [params]="param" [comments]="show"></params-list>
+                          ]
+                        </ng-container>
+                        <ng-container *ngIf="list._params.length === 0">空</ng-container>
+                      </dd>
+                      <dt>返回的参数</dt>
                         <dd>
-                            <ul>
-                                <li *ngFor="let param of list.summary.paramsList">
-                                    <label>{{param.type}}</label><span>: {{param.value}}</span>
-                                </li>
-                            </ul>
+                          <params-list [params]="list.returns" [comments]="show"></params-list>
                         </dd>
-                        <dt>入参</dt>
-                        <dd>
-                            <ul>
-                                <li *ngFor="let param of list.paramsList">
-                                    <label>{{param.name}}</label><span>: {{param.description}}</span>
-                                </li>
-                            </ul>
-                        </dd>
-                        <dt>返回的参数</dt>
-                        <dd><pre>{{list.returnContent}}</pre></dd>
                         <dt>备注</dt>
-                        <dd>{{list.remark}}</dd>
+                        <dd><pre style="margin-left: -20px;font-family: 'Microsoft YaHei';">{{list.remarks}}</pre></dd>
                         <dt>例如：</dt>
-                        <dd><pre>{{list.example}}</pre></dd>
+                        <dd><pre style="white-space: normal;font-family: 'Microsoft YaHei';">{{list.example}}</pre></dd>
                     </dl>
                 </li>
             </ul>

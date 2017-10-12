@@ -4,7 +4,10 @@
     <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
   </div>
 
-  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf(authorityKey+'.Update') || authorities.indexOf(authorityKey+'.Detail')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Update') || authorities.indexOf(authorityKey+'.Detail')"
+             [pageLinkCount]="pageLinkCount" (change)="page($event)"
+             (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
@@ -13,15 +16,20 @@
           <ng-container *ngFor="let item of modalDOMS">
             <ng-container class="form-group" [ngSwitch]="item.ui.displayType" *ngIf="selectRow">
               <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
+                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
+                       [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
               </md-input-container>
               <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
+                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
+                       [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
               </md-input-container>
               <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false"></textarea>
+                <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
+                          [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled"
+                          spellcheck="false"></textarea>
               </div>
-              <md-select *ngSwitchCase="'select'" placeholder="{{item.ui.placeholder}}" name="selector" [(ngModel)]="selectedValue">
+              <md-select *ngSwitchCase="'select'" placeholder="{{item.ui.placeholder}}" name="selector"
+                         [(ngModel)]="selectedValue">
                 <md-option *ngFor="let timi of item.bindData" [value]="timi.value">
                   {{ timi.text }}
                 </md-option>
@@ -40,7 +48,8 @@
                 </md-input-container>
               </div>
               <div *ngSwitchCase="'tags'">
-                <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
+                <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"
+                                 (chipsChange)="chipsChange($event)"></free-chip-group>
                 <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
               </div>
             </ng-container>

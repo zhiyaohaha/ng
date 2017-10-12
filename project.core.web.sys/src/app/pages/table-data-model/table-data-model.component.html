@@ -97,7 +97,7 @@
           <ng-container *ngFor="let f of formModel.get('sorts').controls; index as index;">
             <div [formGroupName]="index">
               <div class="form-group">
-                <timi-drag-chip formControlName="field"></timi-drag-chip>
+                <timi-drag-chip formControlName="field" [length]="1"></timi-drag-chip>
               </div>
               <div class="form-group">
                 <md-checkbox color="primary" formControlName="desc">倒序</md-checkbox>

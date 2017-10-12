@@ -1,14 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { ApidocRoutingModule } from './apidoc-routing.module';
-import { ApidocComponent } from './apidoc.component';
+import { ApidocRoutingModule } from "./apidoc-routing.module";
+import {ApidocComponent, ParamsListComponent} from "./apidoc.component";
+import {MdButtonToggleModule} from "@angular/material";
 
 @NgModule({
   imports: [
     CommonModule,
-    ApidocRoutingModule
+    ApidocRoutingModule,
+    MdButtonToggleModule
   ],
-  declarations: [ApidocComponent]
+  declarations: [ApidocComponent, ParamsListComponent]
 })
 export class ApidocModule { }

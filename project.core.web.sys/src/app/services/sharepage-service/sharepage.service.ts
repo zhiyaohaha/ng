@@ -19,14 +19,14 @@ export class SharepageService {
      * 获取修改参数模版
      */
     public editParamsModal() {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate", "type"));
+        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate"));
     }
 
     /**
      * 获取修改参数模版的详细数据
      */
     public getEditParams(param) {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".View"), param);
+        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate"), param);
     }
 
 }

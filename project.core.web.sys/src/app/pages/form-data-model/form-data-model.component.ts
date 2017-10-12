@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {ITdDataTableColumn} from "@covalent/core";
+import {IPageChangeEvent, ITdDataTableColumn} from "@covalent/core";
 import {fadeIn} from "../../common/animations";
 import {globalVar} from "../../common/global.config";
 import {FormBuilder} from "@angular/forms";
@@ -62,7 +62,7 @@ export class FormDataModelComponent implements OnInit {
               private routerInfo: ActivatedRoute,
               private formDataService: FormDataModelService) {
     this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.routerInfo.snapshot.params["pageCode"];
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
   }
 
   ngOnInit() {
@@ -72,7 +72,10 @@ export class FormDataModelComponent implements OnInit {
   getTableList(param) {
     this.formDataService.getTableList(param).subscribe(r => {
       if (r.code === "0") {
-        this.filteredData = r.data.bindData;
+        this.columns = r.data.data.fields;
+        this.filteredData = r.data.data.bindData;
+        this.filteredTotal = r.data.total;
+        this.searchFilters = r.data.data.filters;
       }
     });
   }
@@ -92,17 +95,17 @@ export class FormDataModelComponent implements OnInit {
   /**
    * 翻页
    */
-  page(pages) {}
+  page(pagingEvent: IPageChangeEvent) {}
 
   /**
    * 点击行
    */
-  rowClickEvent() {}
+  rowClickEvent($event) {}
 
   /**
    * 选择数据源
    */
-  onChange() {}
+  onChange($event) {}
 
   /**
    * drag

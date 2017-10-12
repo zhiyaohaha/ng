@@ -68,8 +68,8 @@ export class TableDataModelComponent implements OnInit {
       this.fb.group({
         name: [""],
         label: [""],
-        hidden: [""],
-        nested: [""]
+        hidden: [false],
+        nested: [false]
       })
     ]),
     filters: this.fb.array([
@@ -83,7 +83,7 @@ export class TableDataModelComponent implements OnInit {
     sorts: this.fb.array([
       this.fb.group({
         field: [""],
-        desc: [""]
+        desc: [false]
       })
     ]),
     tags: [""]
@@ -152,16 +152,16 @@ export class TableDataModelComponent implements OnInit {
       fields.push(this.fb.group({
         name: [""],
         label: [""],
-        hidden: [""],
-        nested: [""]
+        hidden: [false],
+        nested: [false]
       }));
     }
     if (this.updateOld) {
       this.editFields.push(this.fb.group({
         name: [""],
         label: [""],
-        hidden: [""],
-        nested: [""]
+        hidden: [false],
+        nested: [false]
       }));
     }
     return false;
@@ -179,7 +179,7 @@ export class TableDataModelComponent implements OnInit {
           label: [""],
           placeholder: [""],
           displayType: [""],
-          hidden: [""]
+          hidden: [false]
         }),
         type: [""],
         value: [""]
@@ -209,13 +209,13 @@ export class TableDataModelComponent implements OnInit {
       const fields = this.formModel.get("sorts") as FormArray;
       fields.push(this.fb.group({
         field: [""],
-        desc: [""]
+        desc: [false]
       }));
     }
     if (this.updateOld) {
       this.editSorts.push(this.fb.group({
         field: [""],
-        desc: [""]
+        desc: [false]
       }));
     }
     return false;
@@ -291,7 +291,10 @@ export class TableDataModelComponent implements OnInit {
   submitMethod($event) {
     $event.collection = this.collection;
     $event.fields.map(item => {
-      item.name = item.name[0];
+      item.name = item.name[0] || "";
+    })
+    $event.sorts.map(item => {
+      item.field = item.field[0] || "";
     })
     console.log("添加：", $event);
     this.tableModelService.saveNew($event).subscribe(r => {
@@ -301,8 +304,13 @@ export class TableDataModelComponent implements OnInit {
   saveUpdate($event) {
     $event.collection = this.collection;
     $event.filter = this.editFilters;
+    $event.fields.map(item => {
+      item.name = item.name[0] || "";
+    })
+    $event.sorts.map(item => {
+      item.field = item.field[0] || "";
+    })
     console.log("修改：", $event);
-    console.log("filter:", this.editFilters);
     this.tableModelService.saveUpdate($event).subscribe(r => {
       console.log(r);
     });
@@ -416,7 +424,7 @@ export class FiltersGroupComponent implements OnInit {
         label: "",
         placeholder: "",
         displayType: "",
-        hidden: ""
+        hidden: false
       },
       type: "",
       value: ""
@@ -476,7 +484,7 @@ export class UiModel {
   label: string; // 标题
   placeholder: string; // 占位符
   displayType: string; // 展示类型
-  hidden: string; // 隐藏
+  hidden: boolean; // 隐藏
 }
 
 export class SortsModel {
