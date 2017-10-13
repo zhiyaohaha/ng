@@ -58,10 +58,10 @@ export class ApidocComponent implements OnInit {
       <ng-container>
         <div *ngIf="paramType.indexOf(param.type) > -1">
           <span [ngClass]="{'must-param':!param.optional}">"{{param.name}}"</span>:
-          <ng-container *ngIf="param._default === ''">""</ng-container>
-          <ng-container *ngIf="param._default === null">null</ng-container>
-          <ng-container *ngIf="param._default === 0">0</ng-container>
-          <ng-container *ngIf="param._default">{{param._default}}</ng-container>,
+          <ng-container *ngIf="param._default === ''">"",</ng-container>
+          <ng-container *ngIf="param._default === null">null,</ng-container>
+          <ng-container *ngIf="param._default === 0">0,</ng-container>
+          <ng-container *ngIf="param._default">{{param._default}},</ng-container>
           <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
         </div>
         <div *ngIf="param.type === 'object' || param.type === 'KV'">
@@ -72,7 +72,7 @@ export class ApidocComponent implements OnInit {
             {{ "}," }}
           </ng-container>          
           <ng-container *ngIf="param._default === null && param.includes.length === 0">
-            null <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
+            null, <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
           </ng-container>
         </div>
         <div *ngIf="param.type.indexOf('[]') > -1">
@@ -92,7 +92,7 @@ export class ApidocComponent implements OnInit {
             ],  
           </ng-container>
           <ng-container *ngIf="param._default === null && param.includes.length === 0">
-            null <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
+            null, <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
           </ng-container>
         </div>
       </ng-container>
