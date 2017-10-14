@@ -13,4 +13,12 @@
         display: inline-block;
         margin-left: 60px;
     }
+    .list-wrap li {
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .list-wrap, .content-wrap {
+      overflow: auto;
+      height: 100%;
+    }
 }

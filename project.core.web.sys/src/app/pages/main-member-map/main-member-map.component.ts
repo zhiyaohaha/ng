@@ -10,15 +10,26 @@ import { FnUtil } from "./../../common/fn-util";
 export class MainMemberMapComponent implements OnInit {
 
   datas;
+  data;
+  list: string[] = [];
 
   constructor(private baseService: BaseService, private fnUtil: FnUtil) { }
 
   ngOnInit() {
     this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MemberMindMapping.View")).subscribe(r => {
+      const _self = this;
       if (r.code === "0") {
         this.datas = r.data;
+        r.data.forEach(function(el){
+          _self.list.push(el.description);
+        });
       }
     });
+  }
+
+  category(index) {
+    this.data = this.datas[index];
+    console.log(this.data);
   }
 
 }

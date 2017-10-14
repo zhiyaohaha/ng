@@ -52,7 +52,7 @@ import { NgModule, Component, Input } from "@angular/core";
             <timi-json *ngFor="let item of param.includes" [params]="item" [comments]="comments"></timi-json>
             {{ "}," }}
           </ng-container>
-          <ng-container *ngIf="param._default === null || param.includes?.length === 0">
+          <ng-container *ngIf="param._default === null && param.includes?.length === 0">
             null, <span class="desc" *ngIf="comments">//{{param.description}}&nbsp;&nbsp;&nbsp;类型:{{param.type}}</span>
           </ng-container>
         </div>
