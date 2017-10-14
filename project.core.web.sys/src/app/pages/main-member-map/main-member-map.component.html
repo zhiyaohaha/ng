@@ -1,15 +1,19 @@
-<ul>
-    <li class="wrap-li" *ngFor="let item of datas">
-        {{item.description}}
-        <div class="wrap-div">
-            <ul>
-                <li [ngClass]="{'wrap-li' : field.target}" *ngFor="let field of item.fields">
-                    {{field.description}}<span class="pull-right">{{field._type == 'string' ? '(string)' : ''}}</span>
-                    <ng-container *ngIf="field.target">
-                        <app-main-member-map-list [data]="field.target"></app-main-member-map-list>
-                    </ng-container>
-                </li>
-            </ul>
-        </div>
-    </li>
-</ul>
+<!--<ul>-->
+    <!--<li class="wrap-li" *ngFor="let item of datas">-->
+        <!--{{item.description}}-->
+        <!--<div class="wrap-div">-->
+            <!--<ul>-->
+                <!--<li [ngClass]="{'wrap-li' : field.target}" *ngFor="let field of item.fields">-->
+                    <!--{{field.description}}<span class="pull-right">{{field._type == 'string' ? '(string)' : ''}}</span>-->
+                    <!--<ng-container *ngIf="field.target">-->
+                        <!--<app-main-member-map-list [data]="field.target"></app-main-member-map-list>-->
+                    <!--</ng-container>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</li>-->
+<!--</ul>-->
+
+
+<timi-json *ngFor="let param of datas;" [params]="param" [comments]="true"></timi-json>
+

@@ -123,7 +123,7 @@ export class SharepageComponent implements OnInit {
   newModalData;
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
-      if (r.code == "0") {
+      if (r.code === "0") {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
         this.newModalData = r.data;

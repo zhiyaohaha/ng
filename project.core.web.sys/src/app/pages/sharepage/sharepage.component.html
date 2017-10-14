@@ -15,20 +15,20 @@
         <form #sysEdit="ngForm">
           <ng-container *ngFor="let item of modalDOMS">
             <ng-container class="form-group" [ngSwitch]="item.ui.displayType" *ngIf="selectRow">
-              <md-input-container *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+              <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
                        [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
               </md-input-container>
-              <md-input-container *ngSwitchCase="'hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+              <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
                        [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
               </md-input-container>
-              <div *ngSwitchCase="'textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+              <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
                 <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
                           [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled"
                           spellcheck="false"></textarea>
               </div>
-              <md-select *ngSwitchCase="'select'" placeholder="{{item.ui.placeholder}}" name="selector"
+              <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{item.ui.placeholder}}" name="selector"
                          [(ngModel)]="selectedValue">
                 <md-option *ngFor="let timi of item.bindData" [value]="timi.value">
                   {{ timi.text }}
@@ -47,7 +47,7 @@
                   <md-datepicker #picker2></md-datepicker>
                 </md-input-container>
               </div>
-              <div *ngSwitchCase="'tags'">
+              <div *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                 <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"
                                  (chipsChange)="chipsChange($event)"></free-chip-group>
                 <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">

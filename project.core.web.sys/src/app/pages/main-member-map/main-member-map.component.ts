@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BaseService } from './../../services/base.service';
-import { FnUtil } from './../../common/fn-util';
+import { Component, OnInit, Input } from "@angular/core";
+import { BaseService } from "./../../services/base.service";
+import { FnUtil } from "./../../common/fn-util";
 
 @Component({
-  selector: 'app-main-member-map',
-  templateUrl: './main-member-map.component.html',
-  styleUrls: ['./main-member-map.component.scss']
+  selector: "app-main-member-map",
+  templateUrl: "./main-member-map.component.html",
+  styleUrls: ["./main-member-map.component.scss"]
 })
 export class MainMemberMapComponent implements OnInit {
 
@@ -15,17 +15,17 @@ export class MainMemberMapComponent implements OnInit {
 
   ngOnInit() {
     this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MemberMindMapping.View")).subscribe(r => {
-      if (r.code == "0") {
+      if (r.code === "0") {
         this.datas = r.data;
       }
-    })
+    });
   }
 
 }
 
 
 @Component({
-  selector: 'app-main-member-map-list',
+  selector: "app-main-member-map-list",
   template: `
       <ul>
       <li class="wrap-li">

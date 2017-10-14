@@ -11,6 +11,11 @@
     .field-group {
       background-color: #eee;
     }
+    @for $i from 0 to 4 {
+      .depth-#{$i}{
+        margin-left: 20px*$i;
+      }
+    }
   }
   .main-container {
     .add-button {

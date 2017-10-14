@@ -50,7 +50,9 @@ export class ApidocComponent implements OnInit {
 
 }
 
-
+/**
+ * JSON结构展示
+ */
 @Component({
   selector: "params-list",
   template: `

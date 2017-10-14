@@ -286,7 +286,13 @@ export class TableDataModelComponent implements OnInit {
     this.getTableList(this.listparam);
   }
 
-  chipsChange($event) {}
+  /**
+   * 拖放过后设置标题
+   * @param $event
+   */
+  chipsChange($event) {
+
+  }
 
   submitMethod($event) {
     $event.collection = this.collection;
