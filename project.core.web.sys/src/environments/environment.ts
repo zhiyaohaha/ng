@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiURL: "http://api2.cpf360.com"
+  apiURL: "http://192.168.3.15:8001"
 };
