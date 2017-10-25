@@ -29,9 +29,14 @@
                         <ng-container *ngIf="list._params.length === 0">空</ng-container>
                       </dd>
                       <dt>返回的参数</dt>
+                        <dd>{{ "{" }}</dd>
+                        <dd>code:"0", <span class="desc" *ngIf="show">//回调码&nbsp;&nbsp;&nbsp;类型:string</span></dd>
                         <dd>
                           <params-list [params]="list.returns" [comments]="show"></params-list>
                         </dd>
+                        <dd>message:null, <span class="desc" *ngIf="show">//回调消息&nbsp;&nbsp;&nbsp;类型:string</span></dd>
+                        <dd>success:true <span class="desc" *ngIf="show">//是否成功&nbsp;&nbsp;&nbsp;类型:boolean</span></dd>
+                        <dd>{{ "}" }}</dd>
                         <dt>备注</dt>
                         <dd><pre style="margin-left: -20px;font-family: 'Microsoft YaHei';">{{list.remarks}}</pre></dd>
                         <dt>例如：</dt>

@@ -14,6 +14,7 @@ const childRoutes: Routes = [
   {path: "areaManage", loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"},
   {path: "memberMap", loadChildren: "../main-member-map/main-member-map.module#MainMemberMapModule"},
   {path: "setting-menu", loadChildren: "../setting-menu/setting-menu.module#SettingMenuModule"},
+  {path: "Log", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "operator-history", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "table-data-model", loadChildren: "../table-data-model/table-data-model.module#TableDataModelModule"},
   {
@@ -36,6 +37,17 @@ const childRoutes: Routes = [
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
   },
   {path: "OrgStructure.FinanceMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "SiteMgr.BannerMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "SiteMgr.NewsMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "SiteMgr.SEOMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "LoanMgr.OrderMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "LoanMgr.ProductMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "ObjectStore.IOMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "OAMgr.TaskMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "OAMgr.Approval", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "ProjectMgr.DebugMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "ProjectMgr.VersionMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "ProjectMgr.DBMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "", redirectTo: "/main/dashboard", pathMatch: "full"},
   {path: "**", redirectTo: "/error"}
 ];

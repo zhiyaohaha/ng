@@ -226,9 +226,9 @@ export class MainParameterManageComponent implements OnInit {
     this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
     this.modalData.bindId = this.selectNode.JSONdata.id;
     this.modalData.doms = "";
-    console.log("保存修改：", this.modalData)
-    this._paramsManageService.saveParams(this.modalData).subscribe(res => {
-      if (res.code == "0") {
+    console.log("保存修改：", this.modalData.bindDataJson);
+    this._paramsManageService.saveParams(this.modalData.bindDataJson).subscribe(res => {
+      if (res.code === "0") {
         this.openAlert(res.message);
         this.toastService.creatNewMessage(res.message);
         //this.getDetailParams();
