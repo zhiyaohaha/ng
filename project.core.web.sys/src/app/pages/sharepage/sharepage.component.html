@@ -2,6 +2,7 @@
 
   <div class="main-container clearfix">
     <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
   </div>
 
   <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
@@ -16,11 +17,11 @@
           <ng-container *ngFor="let item of modalDOMS">
             <ng-container class="form-group" [ngSwitch]="item.ui.displayType" *ngIf="selectRow">
               <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
+                <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
                        [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
               </md-input-container>
               <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
+                <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"
                        [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
               </md-input-container>
               <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
@@ -29,7 +30,7 @@
                           spellcheck="false"></textarea>
               </div>
               <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{item.ui.placeholder}}" name="selector"
-                         [(ngModel)]="selectedValue">
+                         [(ngModel)]="selectRow[item.name]">
                 <md-option *ngFor="let timi of item.bindData" [value]="timi.value">
                   {{ timi.text }}
                 </md-option>

@@ -12,13 +12,14 @@ import { SearchFormModule } from './../../component/search-form/searchform.compo
 import { CommonShareModule } from './../../common/share.module';
 
 import { SharepageRoutingModule } from './sharepage-routing.module';
+import {ButtonModule} from "../../component/button/button.directive";
 
 @NgModule({
   imports: [
     CommonModule,
     SharepageRoutingModule, FormsModule, CommonShareModule,
     MdSidenavModule, MdInputModule, MdSelectModule, MdDatepickerModule, ChipModule,
-    SearchFormModule, TableModule, TimiInputModule
+    SearchFormModule, TableModule, TimiInputModule, ButtonModule
   ],
   declarations: [SharepageComponent],
   providers: [SharepageService, ParamsManageService]

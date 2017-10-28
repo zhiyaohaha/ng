@@ -22,6 +22,7 @@ import {WebSocketService} from "./services/share/web-socket.service";
 import {CommunicationService} from "./services/share/communication.service";
 import {FnUtil} from "./common/fn-util";
 import {FilterValuePipe} from "./common/pipe/filterValue.pipe";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import {FilterValuePipe} from "./common/pipe/filterValue.pipe";
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule, HttpModule, FormsModule, ReactiveFormsModule,
+    BrowserAnimationsModule, HttpClientModule, HttpModule, FormsModule, ReactiveFormsModule,
     MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
     CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule,
     AppRoutingModule,

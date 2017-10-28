@@ -1,15 +1,14 @@
-import { Observable } from 'rxjs/Rx';
-import { CommonModule } from '@angular/common';
-import { ConvertUtil } from './../common/convert-util';
-import { JsonResult } from './models/jsonResult';
-import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs, RequestOptions, Headers, URLSearchParams } from '@angular/http';
-import { environment } from './../../environments/environment';
+import { Observable } from "rxjs/Rx";
+import { CommonModule } from "@angular/common";
+import { ConvertUtil } from "./../common/convert-util";
+import { Injectable } from "@angular/core";
+import { Http, RequestOptionsArgs, RequestOptions, Headers, URLSearchParams } from "@angular/http";
+import { environment } from "./../../environments/environment";
 
-import 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import { Router } from '@angular/router';
-import { globalUrl } from '../common/global.config';
+import "rxjs/Rx";
+import "rxjs/add/operator/map";
+import { Router } from "@angular/router";
+import { globalUrl } from "../common/global.config";
 
 @Injectable()
 export class BaseService {
@@ -32,7 +31,7 @@ export class BaseService {
     } else {
       str = _params;
     }
-    str = str.replace(/\+/g, '%2B');
+    str = str.replace(/\+/g, "%2B");
     let sign = this.util.toMd5(str + timestamp + this.private_key);
     //let sign = this.util.toMd5(str.replace(/\+/g, " ") + timestamp + this.private_key);
     let params = new URLSearchParams();

@@ -1,8 +1,11 @@
 :host /deep/ {
-    md-sidenav-container {
-        height: 100%;
-    }
-    md-sidenav {
-        width: unset;
-    }
+  md-sidenav-container {
+    height: 100%;
+  }
+  md-sidenav {
+    width: unset;
+  }
+  .add-button {
+    margin-top: 30px;
+  }
 }

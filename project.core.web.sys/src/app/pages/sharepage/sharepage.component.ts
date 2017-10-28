@@ -22,6 +22,7 @@ export class SharepageComponent implements OnInit {
   constructor(private sharepageService: SharepageService, private fnUtil: FnUtil, private routerInfo: ActivatedRoute) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+    console.log("authorities", this.authorities);
   }
 
   ngOnInit() {
@@ -101,16 +102,23 @@ export class SharepageComponent implements OnInit {
    */
   tags;
   chips;
+
+  /**
+   * 添加
+   */
+  newAdd() {
+    this.selectRow = "";
+  }
   /**
    * 点击行
    */
   selectRow;
   rowClickEvent($event) {
     console.log("rowClick", $event);
-    this.sharepageService.getEditParams({ name: customized.SysOperationLogConfig, id: $event.row.id })
+    this.sharepageService.getEditParams({ id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
-        this.selectedValue = r.data.platform;
+        //this.selectedValue = r.data.platform;
         if (r.data.tags) this.setChips(r.data.tags);
       });
   }

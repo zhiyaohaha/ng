@@ -26,7 +26,7 @@ export class SharepageService {
      * 获取修改参数模版的详细数据
      */
     public getEditParams(param) {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate"), param);
+        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".Detail"), param);
     }
 
 }

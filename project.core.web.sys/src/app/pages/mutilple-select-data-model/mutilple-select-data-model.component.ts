@@ -49,7 +49,7 @@ export class MutilpleSelectDataModelComponent implements OnInit {
     ]),
     description: ["", Validators.required],
     childrens: [false, Validators.required],
-    depth: [""],
+    depth: [1],
     tags: [""]
   });
 
@@ -101,19 +101,19 @@ export class MutilpleSelectDataModelComponent implements OnInit {
 
   addFilter() {
     if (this.addNew) {
-      const filter = this.formModel.get('filter') as FormArray;
+      const filter = this.formModel.get("filter") as FormArray;
       filter.push(this.fb.group({
-        type: [''],
-        fields: [''],
-        value: ['']
-      }))
+        type: [""],
+        fields: [""],
+        value: [""]
+      }));
     }
     if (this.updateOld) {
       this.editFilter.push({
-        type: '',
+        type: "",
         fields: [],
-        value: ''
-      })
+        value: ""
+      });
     }
     return false;
   }
@@ -121,7 +121,8 @@ export class MutilpleSelectDataModelComponent implements OnInit {
   submitMethod($event) {
     $event.collection = this.collection;
     console.log("添加：", $event);
-    this.selectModelService.saveNew($event).subscribe(r=>{
+    $event.depth ? $event.depth = parseInt($event.depth, 10) : $event.depth = 0;
+    this.selectModelService.saveNew($event).subscribe(r => {
       console.log(r);
     });
   }

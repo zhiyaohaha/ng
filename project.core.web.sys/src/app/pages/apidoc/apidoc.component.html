@@ -18,7 +18,8 @@
               <li class="api-wrap">
                     <dl>
                         <dt>接口名称：<span>{{list.description}}</span></dt>
-                      <dt>接口地址：<span>{{list.url}}</span></dt>
+                      <dt>接口地址：<span>[{{list.method}}] {{list.url}}</span></dt>
+                      <dt>权限要求：<span>{{list.needLogin ? "需要登陆" : ""}} {{list.needSign ? "需要鉴权" : ""}}</span></dt>
                       <dt>输入参数：</dt>
                       <dd>
                         <ng-container *ngIf="list._params.length > 0">
