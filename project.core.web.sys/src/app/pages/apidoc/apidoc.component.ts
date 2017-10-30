@@ -126,7 +126,7 @@ export class ParamsListComponent {
     this.param = value;
   }
 
-  paramType: string[] = ["string", "int", "bool", "decimal", "long", "Date"];
+  paramType: string[] = ["string", "int", "bool", "decimal", "long", "Date", "double"];
 
   returns;
   param;
