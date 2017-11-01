@@ -1,29 +1,26 @@
-/**
- * Created by tg on 17-4-3.
- */
-import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from "@angular/common";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import {
   NgModule, Component, ViewContainerRef, EmbeddedViewRef, Input, OnInit, Directive,
   ComponentFactoryResolver
-} from '@angular/core';
+} from "@angular/core";
 
 @Component({
-  selector: 'f-header',
-  template: '<ng-content></ng-content>'
+  selector: "f-header",
+  template: "<ng-content></ng-content>"
 })
 
 export class HeaderComponent {}
 
 @Component({
-  selector: 'f-footer',
-  template: '<ng-content></ng-content>'
+  selector: "f-footer",
+  template: "<ng-content></ng-content>"
 })
 
 export class FooterComponent {}
 
 @Component({
-  selector: 'free-template',
+  selector: "free-template",
   template: ``
 })
 
@@ -40,7 +37,7 @@ export class TemplateComponent implements OnInit {
 }
 
 @Directive({
-  selector: '[fHost]'
+  selector: "[fHost]"
 })
 
 export class FHostDirective implements OnInit {

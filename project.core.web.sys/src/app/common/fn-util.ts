@@ -58,5 +58,21 @@ export class FnUtil {
     }
   }
 
+  /**
+   * 获取URL里面对应的查询参数
+   */
+  public queryUrlParam(url: string) {
+    if (!url) {
+      return false;
+    }
+    let urlArry = url.split("?")[1].split("&");
+    let urlObj: object;
+    urlArry.forEach((value, index, arr) => {
+      let temp = value.split("=");
+      urlObj[temp[0]] = temp[1];
+    });
+    return urlObj;
+  }
+
 
 }

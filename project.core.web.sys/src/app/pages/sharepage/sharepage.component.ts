@@ -1,5 +1,5 @@
-import {ActivatedRoute} from "@angular/router";
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
 import { HtmlDomTemplate } from "./../../models/HtmlDomTemplate";
 import { SharepageService } from "./../../services/sharepage-service/sharepage.service";
 import { TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
@@ -15,7 +15,7 @@ import {ConvertUtil} from "../../common/convert-util";
   styleUrls: ["./sharepage.component.scss"],
   animations: [fadeIn]
 })
-export class SharepageComponent implements OnInit {
+export class SharepageComponent implements OnInit, OnDestroy {
 
   //权限
   authorities: string[];
@@ -59,10 +59,18 @@ export class SharepageComponent implements OnInit {
               private fnUtil: FnUtil,
               private converUtil: ConvertUtil,
               private routerInfo: ActivatedRoute,
+              private router: Router,
               private toastService: ToastService
   ) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+    router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(event => {
+        if (this.router.url.indexOf("sharepage") > -1) {
+          this.getParamsList(this.listparam);
+        }
+      });
   }
 
   ngOnInit() {
@@ -201,6 +209,9 @@ export class SharepageComponent implements OnInit {
       });
     }
 
+  }
+
+  ngOnDestroy(): void {
   }
 
 }
