@@ -4,7 +4,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {LocationStrategy, HashLocationStrategy} from "@angular/common";
+import {LocationStrategy, HashLocationStrategy, PathLocationStrategy} from "@angular/common";
 import {HttpModule} from "@angular/http";
 import {
   MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
@@ -38,7 +38,7 @@ import {HttpClientModule} from "@angular/common/http";
     ToastModule
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
     App,
     BaseService,
     ConvertUtil,

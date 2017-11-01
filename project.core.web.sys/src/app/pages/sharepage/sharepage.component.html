@@ -1,4 +1,4 @@
-<md-sidenav-container>
+<md-sidenav-container [@fadeInState]="'active'">
 
   <div class="main-container clearfix">
     <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
@@ -15,62 +15,63 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-        <form #sysEdit="ngForm">
-          <ng-container *ngFor="let item of modalDOMS">
-            <ng-container class="form-group" [ngSwitch]="item.ui.displayType" *ngIf="selectRow">
-              <ng-container *ngSwitchCase="'HtmlDomDisplayType.Panel'">
-                <ng-container *ngFor="let child of item.childrens">
-                  <ng-container [ngSwitch]="child.ui.displayType">
-                    <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                      <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"
-                             [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">
-                    </md-input-container>
-                    <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
-                                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                      <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
-                             [(ngModel)]="selectRow[child.name]" disabled="{{child.ui.isDisabled}}" spellcheck="false">
-                    </md-input-container>
-                    <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                         [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                    <textarea ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
-                              [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled"
-                              spellcheck="false"></textarea>
-                    </div>
-                    <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{child.ui.placeholder}}"
-                               name="selector"
-                               [(ngModel)]="selectRow[child.name]">
-                      <md-option *ngFor="let timi of child.bindData" [value]="timi.value">
-                        {{ timi.text }}
-                      </md-option>
-                    </md-select>
-                    <div *ngSwitchCase="'daterange'">
-                      <md-input-container>
-                        <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                        <md-datepicker #picker></md-datepicker>
-                      </md-input-container>
-                      &nbsp;&nbsp;--&nbsp;&nbsp;
-                      <md-input-container>
-                        <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                        <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                        <md-datepicker #picker2></md-datepicker>
-                      </md-input-container>
-                    </div>
-                    <div *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                      <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"
-                                       (chipsChange)="chipsChange($event)"></free-chip-group>
-                      <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                    </div>
-                  </ng-container>
+        <!--<form #sysEdit="ngForm">-->
+          <!--<ng-container *ngFor="let item of modalDOMS">-->
+            <!--<ng-container class="form-group" [ngSwitch]="item.ui.displayType" *ngIf="selectRow">-->
+              <!--<ng-container *ngSwitchCase="'HtmlDomDisplayType.Panel'">-->
+                <!--<ng-container *ngFor="let child of item.childrens">-->
+                  <!--<ng-container [ngSwitch]="child.ui.displayType">-->
+                    <!--<md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
+                                        <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
+                      <!--<input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"-->
+                             <!--[(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">-->
+                    <!--</md-input-container>-->
+                    <!--<md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'"-->
+                                        <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
+                      <!--<input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"-->
+                             <!--[(ngModel)]="selectRow[child.name]" disabled="{{child.ui.isDisabled}}" spellcheck="false">-->
+                    <!--</md-input-container>-->
+                    <!--<div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"-->
+                         <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
+                    <!--<textarea ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"-->
+                              <!--[(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled"-->
+                              <!--spellcheck="false"></textarea>-->
+                    <!--</div>-->
+                    <!--<md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{child.ui.placeholder}}"-->
+                               <!--name="selector"-->
+                               <!--[(ngModel)]="selectRow[child.name]">-->
+                      <!--<md-option *ngFor="let timi of child.bindData" [value]="timi.value">-->
+                        <!--{{ timi.text }}-->
+                      <!--</md-option>-->
+                    <!--</md-select>-->
+                    <!--<div *ngSwitchCase="'daterange'">-->
+                      <!--<md-input-container>-->
+                        <!--<input mdInput [mdDatepicker]="picker" placeholder="起始时间">-->
+                        <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
+                        <!--<md-datepicker #picker></md-datepicker>-->
+                      <!--</md-input-container>-->
+                      <!--&nbsp;&nbsp;&#45;&#45;&nbsp;&nbsp;-->
+                      <!--<md-input-container>-->
+                        <!--<input mdInput [mdDatepicker]="picker2" placeholder="截至时间">-->
+                        <!--<md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>-->
+                        <!--<md-datepicker #picker2></md-datepicker>-->
+                      <!--</md-input-container>-->
+                    <!--</div>-->
+                    <!--<div *ngSwitchCase="'HtmlDomDisplayType.Tags'">-->
+                      <!--<free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"-->
+                                       <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
+                      <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
+                    <!--</div>-->
+                  <!--</ng-container>-->
 
-                </ng-container>
-              </ng-container>
+                <!--</ng-container>-->
+              <!--</ng-container>-->
 
-            </ng-container>
-          </ng-container>
-          <button md-raised-button (click)="subEdit(sysEdit.value)">确定</button>
-        </form>
+            <!--</ng-container>-->
+          <!--</ng-container>-->
+          <form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>
+          <!--<button md-raised-button (click)="subEdit(sysEdit.value)">确定</button>-->
+        <!--</form>-->
       </div>
     </div>
   </md-sidenav>

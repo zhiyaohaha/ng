@@ -1,32 +1,47 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BaseService } from './../base.service';
-import { FnUtil } from './../../common/fn-util';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {BaseService} from './../base.service';
+import {FnUtil} from './../../common/fn-util';
 
 @Injectable()
 export class SharepageService {
 
-    constructor(private service: BaseService, private fnUtil: FnUtil, private routerInfo: ActivatedRoute) { }
+  constructor(private service: BaseService, private fnUtil: FnUtil, private routerInfo: ActivatedRoute) {
+  }
 
-    /**
-     * 获取参数管理的列表
-     */
-    public getParams(param) {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".View"), param);
-    }
+  /**
+   * 获取参数管理的列表
+   */
+  public getParams(param) {
+    return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".View"), param);
+  }
 
-    /**
-     * 获取修改参数模版
-     */
-    public editParamsModal() {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate"));
-    }
+  /**
+   * 获取修改参数模版
+   */
+  public editParamsModal() {
+    return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".FormTemplate"));
+  }
 
-    /**
-     * 获取修改参数模版的详细数据
-     */
-    public getEditParams(param) {
-        return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".Detail"), param);
-    }
+  /**
+   * 获取修改参数模版的详细数据
+   */
+  public getEditParams(param) {
+    return this.service.get(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".Detail"), param);
+  }
+
+  /**
+   * 保存修改的数据
+   */
+  public saveEditParams(param) {
+    return this.service.post(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".Update"), param);
+  }
+
+  /**
+   * 保存新添加的数据
+   */
+  public saveNewParams(param) {
+    return this.service.post(this.fnUtil.searchAPI(this.routerInfo.snapshot.queryParams["pageCode"] + ".Add"), param);
+  }
 
 }
