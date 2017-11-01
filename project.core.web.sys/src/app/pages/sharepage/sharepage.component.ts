@@ -55,6 +55,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
     name: customized.SysOperationLogConfig
   };
 
+  routerSubscribe;
+
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
               private converUtil: ConvertUtil,
@@ -64,12 +66,10 @@ export class SharepageComponent implements OnInit, OnDestroy {
   ) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
-    router.events
+    this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-        if (this.router.url.indexOf("sharepage") > -1) {
-          this.getParamsList(this.listparam);
-        }
+        this.getParamsList(this.listparam);
       });
   }
 
@@ -212,6 +212,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.routerSubscribe.unsubscribe();
   }
 
 }
