@@ -24,7 +24,8 @@ const childRoutes: Routes = [
     loadChildren: "../mutilple-select-data-model/mutilple-select-data-model.module#MutilpleSelectDataModelModule"
   },
   {path: "form-data-model", loadChildren: "../form-data-model/form-data-model.module#FormDataModelModule"},
-  {path: "sharepage", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "dp", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "cdp", loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"},
   {path: "SystemSetting.OperationLogConfig", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "OrgStructure.OrgMgr", redirectTo: "sharepage", pathMatch: "full"},
   {
@@ -51,6 +52,7 @@ const childRoutes: Routes = [
   {path: "ProjectMgr.DebugMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "ProjectMgr.VersionMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "ProjectMgr.DBMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  //{path: "dp", redirectTo: "sharepage", pathMatch: "full"},
   {path: "", redirectTo: "/main/dashboard", pathMatch: "full"},
   {path: "**", redirectTo: "/error"}
 ];

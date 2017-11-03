@@ -1,5 +1,8 @@
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
+import {
+  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output,
+  ViewChild
+} from "@angular/core";
 import { HtmlDomTemplate } from "./../../models/HtmlDomTemplate";
 import { SharepageService } from "./../../services/sharepage-service/sharepage.service";
 import { TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
@@ -55,7 +58,10 @@ export class SharepageComponent implements OnInit, OnDestroy {
     name: customized.SysOperationLogConfig
   };
 
-  routerSubscribe;
+  routerSubscribe; //路由订阅事件
+
+  @ViewChild("table")
+  private table: ElementRef;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
@@ -69,7 +75,12 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-        this.getParamsList(this.listparam);
+        this.getParamsList({
+          size: this.pageSize,
+          index: 0,
+          filters: null,
+          name: customized.SysOperationLogConfig
+        });
       });
   }
 
@@ -80,7 +91,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
     //   console.log("路由订阅：",r)
     // })
   }
-
 
   /**
  * 获取列表数据

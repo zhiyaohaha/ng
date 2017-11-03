@@ -11,11 +11,26 @@
             </ul>
             <free-accordion *ngIf="!item.hidden && item.childrens.length > 0" class="let-menu-item" header="{{item.name}}" iconName="{{item.icon}}">
                 <ul>
-                    <li fRipple *ngFor="let m of item.childrens">
-                        <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                    <li fRipple *ngFor="let m of item.childrens" [ngSwitch]="m.type">
+                        <ng-container *ngSwitchCase="'MenuType.DataPage'">
+                          <a [routerLink]="'dp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
                             <cite>{{m.name}}</cite>
                             <em></em>
-                        </a>
+                          </a>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'MenuType.CascadeDataPage'">
+                          <a [routerLink]="'cdp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                            <cite>{{m.name}}</cite>
+                            <em></em>
+                          </a>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                            <cite>{{m.name}}</cite>
+                            <em></em>
+                          </a>
+                        </ng-container>
+
                     </li>
                 </ul>
             </free-accordion>

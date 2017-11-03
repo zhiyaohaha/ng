@@ -1,8 +1,8 @@
 import { fadeIn } from "./../../common/animations";
 import { FnUtil } from "./../../common/fn-util";
 import { ToastService } from "./../../component/toast/toast.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding } from "@angular/core";
+import {Router, ActivatedRoute, NavigationEnd} from "@angular/router";
+import {Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding, OnDestroy} from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
 
@@ -27,7 +27,7 @@ import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
   animations: [fadeIn],
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
-export class MainParameterManageComponent implements OnInit {
+export class MainParameterManageComponent implements OnInit, OnDestroy {
 
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
@@ -158,6 +158,9 @@ export class MainParameterManageComponent implements OnInit {
    */
   selectNode;
 
+  routerSubscribe; //路由订阅事件
+
+
   constructor(
     private fb: FormBuilder,
     private _dialogService: TdDialogService,
@@ -174,6 +177,17 @@ export class MainParameterManageComponent implements OnInit {
   ) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+
+    this.routerSubscribe = this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(event => {
+        this.getParamsList({
+          size: this.pageSize,
+          index: 0,
+          filters: null
+        });
+      });
+
   }
   ngOnInit() {
 
@@ -392,6 +406,10 @@ export class MainParameterManageComponent implements OnInit {
       viewContainerRef: this._viewContainerRef,
       closeButton: "确定"
     });
+  }
+
+  ngOnDestroy () {
+    this.routerSubscribe.unsubscribe();
   }
 
 }
