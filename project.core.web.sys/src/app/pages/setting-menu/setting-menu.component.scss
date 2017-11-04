@@ -1,87 +1,89 @@
 :host /deep/ {
-    $btn1bgc: #c2181f;
-    $btn1fc: #fff;
-    $btn2bgc: #e6e6e6;
-    $btn2fc: #000;
-    $btn3bgc: #f6f6f6;
-    $btn3border: 1px solid #e6e6e6;
-    md-sidenav-container {
-        user-select: none;
-        background-color: transparent;
-        height: 100%;
-        md-sidenav {
-            width: 50%;
-            padding: 20px;
-        }
+  $btn1bgc: #c2181f;
+  $btn1fc: #fff;
+  $btn2bgc: #e6e6e6;
+  $btn2fc: #000;
+  $btn3bgc: #f6f6f6;
+  $btn3border: 1px solid #e6e6e6;
+  md-sidenav-container {
+    user-select: none;
+    background-color: transparent;
+    height: 100%;
+    md-sidenav {
+      width: 50%;
+      padding: 20px;
     }
-    .menu-row {
-        list-style: none;
-        overflow: hidden;
-        margin: 10px 0;
+  }
+  .menu-row {
+    list-style: none;
+    overflow: hidden;
+    margin: 10px 0;
+    display: flex;
+  }
+  .menu-card {
+    float: left;
+    margin-left: 10px;
+    width: 110px;
+    text-align: center;
+    box-sizing: content-box;
+    .pages-item {
+      width: 100%;
+      background-color: #cf000d;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        .close {
+          display: block;
+        }
+      }
+      .close {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        display: none;
+      }
     }
-    .menu-card {
-        float: left;
-        margin-left: 10px;
-        width: 110px;
-        text-align: center;
-        box-sizing: content-box;
-        .pages-item {
-            width: 100%;
-            background-color: #cf000d;
-            color: #fff;
-            font-size: 13px;
-            cursor: pointer;
-            position: relative;
-            &:hover {
-                .close {
-                    display: block;
-                }
-            }
-            .close {
-                position: absolute;
-                top: 7px;
-                right: 7px;
-                display: none;
-            }
+    .authority-first {
+      width: 100%;
+      line-height: 26px;
+      background-color: $btn2bgc;
+      .authority-btn {
+        width: 100%;
+        line-height: inherit;
+        background-color: $btn2bgc;
+        font-size: 12px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s;
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+          z-index: 1;
+          filter: brightness(1.1);
+          .close {
+            display: block;
+          }
         }
-        .authority-first {
-            width: 100%;
-            line-height: 26px;
-            background-color: $btn2bgc;
-            .authority-btn {
-                width: 100%;
-                line-height: inherit;
-                background-color: $btn2bgc;
-                font-size: 12px;
-                cursor: pointer;
-                position: relative;
-                transition: all 0.2s;
-                &:hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
-                    z-index: 1;
-                    filter: brightness(1.1);
-                    .close {
-                        display: block;
-                    }
-                }
-                .close {
-                    position: absolute;
-                    top: 7px;
-                    right: 7px;
-                    display: none;
-                }
-            }
+        .close {
+          position: absolute;
+          top: 7px;
+          right: 7px;
+          display: none;
         }
-        .add-authority {
-            width: 100%;
-            line-height: 26px;
-            background-color: $btn3bgc;
-            border-bottom: $btn3border;
-            cursor: pointer;
-        }
-        .add-page {
-            background-color: $btn2bgc;
-        }
+      }
     }
+    .add-authority {
+      width: 100%;
+      line-height: 26px;
+      background-color: $btn3bgc;
+      border-bottom: $btn3border;
+      cursor: pointer;
+    }
+    .add-page {
+      background-color: $btn2bgc;
+      cursor: pointer;
+    }
+  }
 }
