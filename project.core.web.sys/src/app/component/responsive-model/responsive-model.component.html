@@ -43,6 +43,11 @@
                     </md-input-container>
                     <md-datepicker #picker2></md-datepicker>
                 </ng-container>
+                <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                  <timi-file-uploader [url]="'http://192.168.3.15:8001/api/file/upload'" [btnName]="item.ui.label"
+                                      (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
+                  <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="fileId">
+                </div>
                 <ng-container *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                     <free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
                     <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">

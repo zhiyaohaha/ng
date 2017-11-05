@@ -23,11 +23,13 @@ import {CommunicationService} from "./services/share/communication.service";
 import {FnUtil} from "./common/fn-util";
 import {FilterValuePipe} from "./common/pipe/filterValue.pipe";
 import {HttpClientModule} from "@angular/common/http";
+import {SetAuthorityComponent} from "./component/set-authority/set-authority.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    FilterValuePipe
+    FilterValuePipe,
+    SetAuthorityComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,7 @@ import {HttpClientModule} from "@angular/common/http";
     CommunicationService
   ],
   bootstrap: [AppComponent],
+  entryComponents: [SetAuthorityComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {

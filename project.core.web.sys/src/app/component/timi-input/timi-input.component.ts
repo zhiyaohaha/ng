@@ -21,15 +21,31 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: "timi-input",
-  template: `<label #label>{{labelName}}：</label>
-  <div #wrap class="timi-input-wrap">
-    <input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}"
-           name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
-           required="{{require}}"
-           (dragover)="allowDrop($event)" (drop)="drop($event)">
-    <span class="timi-span-line"></span>
-    <span class="timi-input-error">{{errorTips}}</span>
-  </div>`,
+  template: `
+    <div class="row form-item">
+      <div class="col-lg-2 col-xs-12 item-label"><label>{{labelName}}:</label></div>
+      <div class="col-lg-10 col-xs-12 item-control-wrapper">
+        <div #wrap class="item-control">
+          <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" disabled="{{disabled}}"
+                 name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
+                 required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)">
+          <span class="item-error-tip">{{errorTips}}</span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    <!--<label #label>{{labelName}}：</label>-->
+  <!--<div #wrap class="timi-input-wrap">-->
+    <!--<input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}"-->
+           <!--name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"-->
+           <!--required="{{require}}"-->
+           <!--(dragover)="allowDrop($event)" (drop)="drop($event)">-->
+    <!--<span class="timi-span-line"></span>-->
+    <!--<span class="timi-input-error">{{errorTips}}</span>-->
+  <!--</div>-->`,
   styleUrls: ["./timi-input.component.scss"],
   providers: [DomRenderer, TIMI_INPUT_VALUE_ACCESSOR]
 })
@@ -62,9 +78,6 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @ViewChild("wrap")
   wrapRef: ElementRef;
 
-  @ViewChild("label")
-  labelRef: ElementRef;
-
   @ViewChild("input")
   inputRef: ElementRef;
 
@@ -77,8 +90,6 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   }
 
   ngAfterViewInit() {
-    this.renderer.setStyle(this.labelRef.nativeElement, "width", this.labelWidth);
-    this.renderer.setStyle(this.inputRef.nativeElement, "width", this.inputWidth);
   }
 
   /**

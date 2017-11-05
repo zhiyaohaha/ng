@@ -1,0 +1,13 @@
+<div id="wrap">
+
+  <ul>
+    <li class="menu-row" *ngFor="let menu of menus">
+      <div class="menu-card" *ngFor="let page of menu;let i = index;">
+        <div class="pages-item">{{page.name}}<i class="timi-del close"></i></div>
+        <div class="authority-first" *ngFor="let item of page._functions">
+          <div class="authority-btn" (click)="toggle()">{{item.name}}<i class="timi-del close"></i></div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

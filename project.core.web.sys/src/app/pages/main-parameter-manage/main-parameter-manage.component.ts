@@ -28,6 +28,7 @@ import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
 export class MainParameterManageComponent implements OnInit, OnDestroy {
+  fileId;
 
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
@@ -406,6 +407,18 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
       viewContainerRef: this._viewContainerRef,
       closeButton: "确定"
     });
+  }
+
+  /**
+   * 上传文件
+   */
+  selected($event) {}
+
+  /**
+   * 上传成功
+   */
+  uploaded($event) {
+    console.log($event);
   }
 
   ngOnDestroy () {

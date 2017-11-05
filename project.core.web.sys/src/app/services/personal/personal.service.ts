@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from './../base.service';
-import { FnUtil } from './../../common/fn-util';
+import { Injectable } from "@angular/core";
+import { BaseService } from "./../base.service";
+import { FnUtil } from "./../../common/fn-util";
 
 @Injectable()
 export class PersonalService {

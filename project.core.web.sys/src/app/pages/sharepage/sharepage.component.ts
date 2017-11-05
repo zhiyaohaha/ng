@@ -1,7 +1,8 @@
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {
-  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output,
-  ViewChild
+  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnDestroy,
+  OnInit, Output,
+  ViewChild, ViewContainerRef
 } from "@angular/core";
 import { HtmlDomTemplate } from "./../../models/HtmlDomTemplate";
 import { SharepageService } from "./../../services/sharepage-service/sharepage.service";
@@ -11,6 +12,8 @@ import { fadeIn } from "./../../common/animations";
 import { FnUtil } from "./../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
 import {ConvertUtil} from "../../common/convert-util";
+import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-sharepage",
@@ -19,6 +22,8 @@ import {ConvertUtil} from "../../common/convert-util";
   animations: [fadeIn]
 })
 export class SharepageComponent implements OnInit, OnDestroy {
+  setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
+  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
 
   //权限
   authorities: string[];
@@ -68,7 +73,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
               private converUtil: ConvertUtil,
               private routerInfo: ActivatedRoute,
               private router: Router,
-              private toastService: ToastService
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver
   ) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
@@ -85,7 +91,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getParamsList(this.listparam);
+    //this.getParamsList(this.listparam);
     this.loadModal();
     // this.routerInfo.events.subscribe(r=>{
     //   console.log("路由订阅：",r)
@@ -221,6 +227,12 @@ export class SharepageComponent implements OnInit, OnDestroy {
 
   }
 
+  createComponent(menus) {
+    this.container.clear();
+    const factory: ComponentFactory<SetAuthorityComponent> = this.resolver.resolveComponentFactory(SetAuthorityComponent);
+    this.setAuthorityComponent = this.container.createComponent(factory);
+  }
+
   ngOnDestroy(): void {
     this.routerSubscribe.unsubscribe();
   }
@@ -242,14 +254,35 @@ export class FormUnitComponent {
 
   @Output() changes: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  fileId;
+
+  constructor(private toastService: ToastService) {}
 
   submitMethod($event) {
+    console.log($event);
     for (let key in $event) {
-      if (this.selectRow[key]) {
-        this.selectRow[key] = $event[key];
-      }
+      this.selectRow[key] = $event[key];
     }
+    console.log(this.selectRow);
     this.changes.emit(this.selectRow);
   }
+
+  /**
+   * 选择文件
+   */
+  selected($event) {
+    console.log($event.queue[0]);
+  }
+
+  /**
+   * 上传完成
+   */
+  uploaded($event) {
+    if ($event.isUploaded) {
+      this.toastService.creatNewMessage("上传成功");
+      this.fileId = $event.id;
+    }
+  }
+
+
 }

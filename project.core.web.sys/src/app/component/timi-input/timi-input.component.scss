@@ -1,53 +1,102 @@
 :host /deep/ {
-    label {
-        display: inline-block;
-        width: 100px;
-        text-align: end;
+
+  .form-item {
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 12px;
+    height: auto;
+    zoom: 1;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    vertical-align: top;
+    .item-label {
+      text-align: right;
     }
-    .timi-input-wrap {
-        display: inline-block;
-        position: relative;
-        width: 300px;
+    .item-input {
+      position: relative;
+      padding: 4px 7px;
+      width: 100%;
+      height: 28px;
+      line-height: 1.5;
+      background-color: #fff;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      transition: all .3s;
+      &:focus {
+        border-color: #49a9ee;
+        box-shadow: 0 0 2px 2px rgba(73, 169, 238, 0.5);
+      }
     }
-    .timi-input {
-        height: 35px;
-        line-height: 35px;
-        border-width: 0 0 1px;
-        background-color: transparent;
-        border-color: #fff;
-        color: #999;
-        width: 100%;
-        outline: none;
-        text-decoration: none;
-        &:focus+.timi-span-line {
-            width: 100%;
-            left: 0;
-        }
-    }
-    .timi-input-error {
-        color: #cf000d;
-        font-size: 12px;
-        position: absolute;
-        top: 36px;
-        display: none;
-    }
-    .timi-span-line {
-        display: block;
-        width: 0;
-        height: 2px;
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        background-color: #115d8e;
-        transition: all 0.2s linear;
+    .item-error-tip {
+      color: #cf000d;
+      font-size: 12px;
+      position: absolute;
+      top: 22px;
+      display: none;
     }
     .error {
         .timi-input {
-            border-bottom-width: 2px;
             border-color: #cf000d;
         }
-        .timi-input-error {
+        .item-error-tip {
             display: block;
         }
     }
+
+  }
+
+
+
+    //label {
+    //    display: inline-block;
+    //    width: 100px;
+    //    text-align: end;
+    //}
+    //.timi-input-wrap {
+    //    display: inline-block;
+    //    position: relative;
+    //    width: 300px;
+    //}
+    //.timi-input {
+    //    height: 35px;
+    //    line-height: 35px;
+    //    border-width: 0 0 1px;
+    //    background-color: transparent;
+    //    border-color: #fff;
+    //    color: #999;
+    //    width: 100%;
+    //    outline: none;
+    //    text-decoration: none;
+    //    &:focus+.timi-span-line {
+    //        width: 100%;
+    //        left: 0;
+    //    }
+    //}
+    //.timi-input-error {
+    //    color: #cf000d;
+    //    font-size: 12px;
+    //    position: absolute;
+    //    top: 36px;
+    //    display: none;
+    //}
+    //.timi-span-line {
+    //    display: block;
+    //    width: 0;
+    //    height: 2px;
+    //    position: absolute;
+    //    bottom: 0;
+    //    left: 50%;
+    //    background-color: #115d8e;
+    //    transition: all 0.2s linear;
+    //}
+    //.error {
+    //    .timi-input {
+    //        border-bottom-width: 2px;
+    //        border-color: #cf000d;
+    //    }
+    //    .timi-input-error {
+    //        display: block;
+    //    }
+    //}
 }

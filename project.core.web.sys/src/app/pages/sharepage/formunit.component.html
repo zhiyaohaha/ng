@@ -1,27 +1,28 @@
 <form #sysEdit="ngForm">
 
   <ng-container *ngFor="let item of DOMS">
-    <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel';else elseBlock">
+    <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
+         *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel';else elseBlock">
       <h4>{{item.ui.label}}</h4>
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
-          <md-input-container class="form-group columns{{child.ui.column}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+          <md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
                               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"
                    [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">
           </md-input-container>
-          <md-input-container class="form-group columns{{child.ui.column}}" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
+          <md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
                               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
                    [(ngModel)]="selectRow[child.name]" disabled="{{child.ui.isDisabled}}" spellcheck="false">
           </md-input-container>
-          <div class="form-group columns{{child.ui.column}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                     <textarea ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
                               [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled"
                               spellcheck="false"></textarea>
           </div>
-          <md-select class="form-group columns{{child.ui.column}}" *ngSwitchCase="'HtmlDomDisplayType.Select'"
+          <md-select class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'"
                      placeholder="{{child.ui.placeholder}}"
                      name="selector"
                      [(ngModel)]="selectRow[child.name]">
@@ -29,7 +30,7 @@
               {{ timi.text }}
             </md-option>
           </md-select>
-          <div class="form-group columns{{child.ui.column}}" *ngSwitchCase="'daterange'">
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
             <md-input-container>
               <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
               <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
@@ -42,60 +43,65 @@
               <md-datepicker #picker2></md-datepicker>
             </md-input-container>
           </div>
-          <div class="form-group columns{{child.ui.column}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+            <timi-file-uploader [url]="'http://192.168.3.15:8001/api/file/upload'" [btnName]="child.ui.label"
+                                (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
+            <input ngModel type="hidden" name="{{child.name}}" [(ngModel)]="fileId">
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+            <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="child.ui.placeholder"
+                             (chipsChange)="chipsChange($event)"></free-chip-group>
+            <input ngModel type="hidden" name="{{child.name}}" [(ngModel)]="tags">
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <ng-template #elseBlock>
+      <ng-container [ngSwitch]="item.ui.displayType">
+        <ng-container [ngSwitch]="item.ui.displayType">
+          <md-input-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+                              [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+            <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
+                   [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
+          </md-input-container>
+          <md-input-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
+                              [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+            <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
+                   [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
+          </md-input-container>
+          <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+               [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+    <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
+              [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled"
+              spellcheck="false"></textarea>
+          </div>
+          <md-select class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{item.ui.label}}"
+                     name="{{item.name}}"
+                     [(ngModel)]="selectRow[item.name]">
+            <md-option *ngFor="let timi of item.bindData" [value]="timi.value">
+              {{ timi.text }}
+            </md-option>
+          </md-select>
+          <div class="form-group" *ngSwitchCase="'daterange'">
+            <md-input-container>
+              <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+              <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+              <md-datepicker #picker></md-datepicker>
+            </md-input-container>
+            &nbsp;&nbsp;--&nbsp;&nbsp;
+            <md-input-container>
+              <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+              <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+              <md-datepicker #picker2></md-datepicker>
+            </md-input-container>
+          </div>
+          <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
             <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"
                              (chipsChange)="chipsChange($event)"></free-chip-group>
             <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
           </div>
         </ng-container>
       </ng-container>
-    </div>
-    <ng-template #elseBlock>
-      <ng-container class="form-group" [ngSwitch]="item.ui.displayType">
-            <ng-container [ngSwitch]="item.ui.displayType">
-              <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                                  [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
-                       [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">
-              </md-input-container>
-              <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
-                                  [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
-                       [(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">
-              </md-input-container>
-              <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                   [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-    <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"
-              [(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled"
-              spellcheck="false"></textarea>
-              </div>
-              <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{item.ui.label}}"
-                         name="{{item.name}}"
-                         [(ngModel)]="selectRow[item.name]">
-                <md-option *ngFor="let timi of item.bindData" [value]="timi.value">
-                  {{ timi.text }}
-                </md-option>
-              </md-select>
-              <div *ngSwitchCase="'daterange'">
-                <md-input-container>
-                  <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                  <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                  <md-datepicker #picker></md-datepicker>
-                </md-input-container>
-                &nbsp;&nbsp;--&nbsp;&nbsp;
-                <md-input-container>
-                  <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                  <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                  <md-datepicker #picker2></md-datepicker>
-                </md-input-container>
-              </div>
-              <div *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="item.ui.placeholder"
-                                 (chipsChange)="chipsChange($event)"></free-chip-group>
-                <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-              </div>
-            </ng-container>
-        </ng-container>
     </ng-template>
   </ng-container>
   <button md-raised-button (click)="submitMethod(sysEdit.value)">确定</button>
