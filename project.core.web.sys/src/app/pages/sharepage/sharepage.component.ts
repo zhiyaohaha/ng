@@ -215,7 +215,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
    */
   submitMethod($event) {
     if (this.new) {
-      console.log($event);
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
           this.toastService.creatNewMessage(res.message);

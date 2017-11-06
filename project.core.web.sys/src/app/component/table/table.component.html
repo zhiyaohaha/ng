@@ -15,6 +15,9 @@
                 <button fButton color="deepblue" class="add-button">{{btn}}</button>
             </td>
         </ng-template>
+        <ng-template tdDataTableTemplate="createdDate" let-value="value">
+          <td>{{value | date:"yyyy/MM/dd HH:ss"}}</td>
+        </ng-template>
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">

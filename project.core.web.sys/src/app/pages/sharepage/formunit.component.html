@@ -7,13 +7,15 @@
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
           <!--<md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
-                              <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
-            <!--<input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"-->
-                   <!--[(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">-->
+          <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
+          <!--<input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"-->
+          <!--[(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">-->
           <!--</md-input-container>-->
-          <timi-input class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                      [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}" [labelName]="child.ui.label"
-                      [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <timi-input ngModel [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="selectRow[child.name]"
+                        [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
+          </div>
           <md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
                               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
