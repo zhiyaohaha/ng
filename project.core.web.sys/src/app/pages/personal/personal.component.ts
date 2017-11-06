@@ -1,9 +1,12 @@
 import { ConvertUtil } from "./../../common/convert-util";
 import { PersonalService } from "./../../services/personal/personal.service";
 import { Component, OnInit } from "@angular/core";
-import { fadeInUp, fadeIn } from "../../common/animations";
-import { FileUploader } from "ng2-file-upload";
+import { fadeIn } from "../../common/animations";
+import { FileUploader, FileSelectDirective } from "ng2-file-upload";
 import { CommunicationService } from "./../../services/share/communication.service";
+import {globalUrl} from "../../common/global.config";
+import {FnUtil} from "../../common/fn-util";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-personal",
@@ -16,7 +19,15 @@ export class PersonalComponent implements OnInit {
   personImg: string = "";
   personInfo;
 
-  constructor(private _personalService: PersonalService, private util: ConvertUtil, private myService: CommunicationService) { }
+  uploader: FileUploader = new FileUploader({
+    url: environment.apiURL + this.fnUtil.searchAPI("PersonalCenter.BasicInfo.UpdateAvatar"),
+    method: "POST"
+  })
+
+  constructor(private _personalService: PersonalService,
+              private util: ConvertUtil,
+              private myService: CommunicationService,
+              private fnUtil: FnUtil) { }
 
   ngOnInit() {
     this._personalService.getPersonalInfo().subscribe(r => {
@@ -32,6 +43,17 @@ export class PersonalComponent implements OnInit {
    */
   onFilesChanges($event) {
     console.log($event);
+  }
+  selectedFileOnChanged($event) {
+    let _self = this;
+    let timestamp = this.util.timestamp();
+    let sign = this.util.toMd5(timestamp + globalUrl.private_key);
+    this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {name: "type", value: "WithPath"}];
+    this.uploader.uploadAll();
+
+    this.uploader.onSuccessItem = function (e) {
+      _self.personImg = e.base;
+    };
   }
 
   /**

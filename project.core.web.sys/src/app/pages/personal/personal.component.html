@@ -1,86 +1,96 @@
 <md-sidenav-container [@fadeInState]="'active'">
-    <div class="container-fluid">
-        <div class="timi-title">
-            基础资料
-        </div>
-        <div class="line"></div>
-        <div class="row basic-container">
-            <div class="col-lg-4">
-                <md-card>
-                    <div class="person-head">
-                        <img src="{{personImg}}" alt="头像" class="person-img">
-                        <div>
-                            <!-- <button md-raised-button>点击更换<input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;"></button><br> -->
-                            <timi-file-uploader url="http://api.cpf360.com/api/file/upload" btnName="点击更换" (files)="onFilesChanges($event)" (success)="onSuccessItem($event)" allowFiles="image"></timi-file-uploader><br>
-                            <span class="tipi-text">推荐尺寸：100*100</span>
-                        </div>
-                    </div>
-                    <ul class="list-unstyled login-info">
-                        <li>
-                            <p>本次登录</p>
-                            <span>{{personInfo?.currentLoginDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                            <p>{{personInfo?.currentLoginClientAgent.address}}</p>
-                            <span>{{personInfo?.currentLoginClientAgent.os +' '+ personInfo?.currentLoginClientAgent.agent}}</span>
-                        </li>
-                        <li>
-                            <p>上次登录</p>
-                            <span>{{personInfo?.preLoginDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
-                            <p>{{personInfo?.preLoginClientAgent.address}}</p>
-                            <span>{{personInfo?.preLoginClientAgent.os +' '+ personInfo?.preLoginClientAgent.agent}}</span>
-                        </li>
-                    </ul>
-                </md-card>
-            </div>
-            <div class="col-lg-8">
-                <md-card class="container-right">
-                    <div>
-                        <timi-input labelName="账号" disabled="true" placeholder="未设置" value="{{personInfo?.username}}"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="姓名" disabled="true" placeholder="未设置" value="{{personInfo?.name}}"></timi-input>
-                    </div>
-                    <div>
-                        <ng-container *ngFor="let item of personInfo?._groups">
-                            <timi-input labelName="所在组" disabled="true" placeholder="未设置" value="{{item.fullname}}"></timi-input>
-                        </ng-container>
-                    </div>
-                    <div>
-                        <timi-input labelName="职位" disabled="true" placeholder="未设置" value="{{personInfo?._job.name}}"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="角色" disabled="true" placeholder="未设置" value="{{personInfo?._role.name}}"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="身份证" placeholder="未设置" pattern="card" name="idCard" value="{{personInfo?.idCard}}" (blur)="onBlur($event)" errorTips="请正确输入身份证号码"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="手机" placeholder="未设置" pattern="tel" name="mobilePhone" value="{{personInfo?.mobilePhone}}" (blur)="onBlur($event)" errorTips="请输入正确的手机号码"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="邮箱" placeholder="未设置" name="email" pattern="email" value="{{personInfo?.email}}" (blur)="onBlur($event)" errorTips="请输入正确的邮箱"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="QQ" placeholder="未设置" name="qq" value="{{personInfo?.qq}}" (blur)="onBlur($event)"></timi-input>
-                    </div>
-                    <div>
-                        <timi-input labelName="微信" placeholder="未设置" name="wechat" value="{{personInfo?.wechat}}" (blur)="onBlur($event)"></timi-input>
-                    </div>
-                </md-card>
-            </div>
-        </div>
+  <div class="container-fluid">
+    <div class="timi-title">
+      基础资料
     </div>
-    <md-list style="display:none;">
-        <md-list-item>
-            <div>
-                <i></i>
-                <span>修改头像</span>
-                <button md-raised-button>点击修改</button>
+    <div class="line"></div>
+    <div class="row basic-container">
+      <div class="col-lg-4">
+        <md-card>
+          <div class="person-head">
+            <div class="img-wrap">
+              <input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
+              <img src="{{personImg}}" alt="头像" class="person-img">
+              <span class="profile-avatar-uploader">上传头像</span>
             </div>
-        </md-list-item>
-        <md-list-item>
-            <i></i>
-            <span>修改密码</span>
-            <button md-raised-button>点击修改</button>
-        </md-list-item>
-    </md-list>
+            <div>
+              <!-- <button md-raised-button>点击更换<input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;"></button><br> -->
+              <!--<timi-file-uploader url="http://api.cpf360.com/api/file/upload" btnName="点击更换" (files)="onFilesChanges($event)" (success)="onSuccessItem($event)" allowFiles="image"></timi-file-uploader><br>-->
+              <span class="tipi-text">推荐尺寸：100*100</span>
+            </div>
+          </div>
+          <ul class="list-unstyled login-info">
+            <li>
+              <p>本次登录</p>
+              <span>{{personInfo?.currentLoginDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+              <p>{{personInfo?.currentLoginClientAgent.address}}</p>
+              <span>{{personInfo?.currentLoginClientAgent.os +' '+ personInfo?.currentLoginClientAgent.agent}}</span>
+            </li>
+            <li>
+              <p>上次登录</p>
+              <span>{{personInfo?.preLoginDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+              <p>{{personInfo?.preLoginClientAgent.address}}</p>
+              <span>{{personInfo?.preLoginClientAgent.os +' '+ personInfo?.preLoginClientAgent.agent}}</span>
+            </li>
+          </ul>
+        </md-card>
+      </div>
+      <div class="col-lg-8">
+        <md-card class="container-right">
+          <div>
+            <timi-input labelName="账号" disabled="true" placeholder="未设置" value="{{personInfo?.username}}"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="姓名" disabled="true" placeholder="未设置" value="{{personInfo?.name}}"></timi-input>
+          </div>
+          <div>
+            <ng-container *ngFor="let item of personInfo?._groups">
+              <timi-input labelName="所在组" disabled="true" placeholder="未设置" value="{{item.fullname}}"></timi-input>
+            </ng-container>
+          </div>
+          <div>
+            <timi-input labelName="职位" disabled="true" placeholder="未设置" value="{{personInfo?._job.name}}"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="角色" disabled="true" placeholder="未设置"
+                        value="{{personInfo?._role.name}}"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="身份证" placeholder="未设置" pattern="card" name="idCard" value="{{personInfo?.idCard}}"
+                        (blur)="onBlur($event)" errorTips="请正确输入身份证号码"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="手机" placeholder="未设置" pattern="tel" name="mobilePhone"
+                        value="{{personInfo?.mobilePhone}}" (blur)="onBlur($event)" errorTips="请输入正确的手机号码"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="邮箱" placeholder="未设置" name="email" pattern="email" value="{{personInfo?.email}}"
+                        (blur)="onBlur($event)" errorTips="请输入正确的邮箱"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="QQ" placeholder="未设置" name="qq" value="{{personInfo?.qq}}"
+                        (blur)="onBlur($event)"></timi-input>
+          </div>
+          <div>
+            <timi-input labelName="微信" placeholder="未设置" name="wechat" value="{{personInfo?.wechat}}"
+                        (blur)="onBlur($event)"></timi-input>
+          </div>
+        </md-card>
+      </div>
+    </div>
+  </div>
+  <md-list style="display:none;">
+    <md-list-item>
+      <div>
+        <i></i>
+        <span>修改头像</span>
+        <button md-raised-button>点击修改</button>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <i></i>
+      <span>修改密码</span>
+      <button md-raised-button>点击修改</button>
+    </md-list-item>
+  </md-list>
 </md-sidenav-container>
