@@ -12,9 +12,9 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
-}
+} 
 
-.free-select .free-select-input label {
+ .free-select .free-select-input label {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -130,3 +130,37 @@
     text-align: center;
     transform: translate(0, -50%);
 }
+/* 修改样式 */
+.free-select-name{
+    display:inline-block;
+    width:29%;
+    text-align:right
+}
+.free-select-name:after {
+    content: ":";
+    position: relative;
+    margin: 0 8px 0 2px;
+  }
+.free-select {
+    border-radius:4px;
+    width:70%;
+    height: 1.5rem;
+}
+.free-select:hover{
+    border-color: #49a9ee;
+}
+.free-select-click-active{
+    border-color: #49a9ee;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(16, 142, 233, 0.2);
+}
+.free-select .free-select-input:before {
+    content: "\f107";
+    color:#BDBDBD;
+    transition: transform 0.3s ease;
+}
+.free-select-click-active  .free-select-input:before {
+    transition: transform 0.5s ease;
+    transform: rotate(180deg);
+}
+

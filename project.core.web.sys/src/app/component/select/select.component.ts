@@ -17,8 +17,9 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 @Component({
   selector: 'free-select',
   template: `
-    <div class="free-select">
-      <div class="free-select-input" (click)="onClick()">
+    <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
+    <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
+      <div class="free-select-input" >
         <label *ngIf="value">{{value}}</label>
         <label *ngIf="!value">{{pholder}}</label>
       </div>
@@ -74,6 +75,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   @Input() filter: boolean;
   @Input() selected: any;
   @Input() multiple: boolean;
+  @Input() freeSelectName:string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @ViewChild('input') input: ElementRef;
 
@@ -97,6 +99,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   itemClick: boolean;
   items: SelectItemComponent[] = [];
   selfClick: boolean;
+  freeClickActive:boolean;
   bindDocumentClickListener: Function;
   onModelChange: Function = () => {
   };
@@ -115,11 +118,17 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
 
   ngAfterViewInit() {
     console.log("当前的选中项：", this.selected);
+    
     if (this.selected) {
-      let selected = this.options.filter(r => r.value == this.selected)[0]
-      this.value = selected.label;
+      setTimeout(()=>{
+        let selected = this.options.filter(r => r.value == this.selected)[0]
+        this.value = selected.label;
+      },0)
+
     } else if (this.pholder) {
-      this.value = this.pholder;
+      setTimeout(()=>{
+        this.value = this.pholder;
+      },0)
     }
   }
 
@@ -178,10 +187,15 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
           isEqual = this.objUtil.equals(value, o['value']);
           break;
         }
-      } else {
-        isEqual = this.objUtil.equals(value, this.selected.value);
+      } else {   //改变手动选中的item背景色
+        if(!this.selected.value){
+          isEqual = this.objUtil.equals(value, this.selected);
+        }else{  //改变默认选中的item背景色
+          isEqual = this.objUtil.equals(value, this.selected.value);
+        }
       }
     }
+ 
     return isEqual;
   }
 
@@ -190,7 +204,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     this.selected = $event;
     this.value = $event.label;
     this.getSelectedValue();
-    this.close();
+    // this.close();
   }
 
   getValue() {
@@ -265,11 +279,13 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   }
 
   open() {
+    this.freeClickActive = true;
     this.selfClick = true;
     this.opened = true;
   }
 
   close() {
+    this.freeClickActive = false;
     this.opened = false;
     this.selfClick = false;
   }
@@ -294,16 +310,17 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     .free-select-item {
       list-style: none;
       cursor: pointer;
-      &.free-select-active {
-          background: #eee;
-          font-weight: bold;
-      }
+  }
+  .free-select-active {
+    background: #eee;
+    font-weight: bold;
   }
   .free-select-item-content {
       @include flexbox;
       white-space: nowrap;
       justify-content: space-between;
       align-items: center;
+      padding-left:0.5rem;
   }
   `]
 })
