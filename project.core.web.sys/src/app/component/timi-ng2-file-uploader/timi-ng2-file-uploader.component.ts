@@ -32,8 +32,7 @@ import {ToastService} from "../toast/toast.service";
 })
 export class TimiFileUploaderComponent implements OnInit {
 
-  src = "";
-
+  @Input() src: string;
   @Input() url: string;
   @Input() multiple: boolean;
   @Input() btnName: string;

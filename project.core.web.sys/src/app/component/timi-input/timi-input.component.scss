@@ -1,16 +1,30 @@
 :host /deep/ {
 
   .form-item {
-    position: relative;
-    margin-left: 0;
-    margin-right: 0;
-    height: auto;
-    zoom: 1;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
-    vertical-align: top;
+    overflow: hidden;
+    .box-item {
+      float: left;
+      box-sizing: border-box;
+    }
     .item-label {
       text-align: right;
+      width: 30%;
+      &::after {
+        content: ":";
+        position: relative;
+        margin: 0 8px 0 2px;
+      }
+    }
+    .label2 {
+      width: 15%;
+    }
+    .item-control-wrapper {
+      width: 70%;
+    }
+    .wrapper2 {
+      width: 85%;
     }
     .item-input {
       position: relative;

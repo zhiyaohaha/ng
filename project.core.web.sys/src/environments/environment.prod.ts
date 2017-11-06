@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: "http://api.cpf360.com"
+  apiURL: "http://api2.cpf360.com"
 };

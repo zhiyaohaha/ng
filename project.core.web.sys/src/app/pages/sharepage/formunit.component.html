@@ -1,4 +1,4 @@
-<form #sysEdit="ngForm">
+<form #sysEdit="ngForm" onkeydown="if(event.keyCode==13){return false;}">
 
   <ng-container *ngFor="let item of DOMS">
     <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
@@ -6,11 +6,14 @@
       <h4>{{item.ui.label}}</h4>
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
-          <md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-            <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"
-                   [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">
-          </md-input-container>
+          <!--<md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
+                              <!--[ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">-->
+            <!--<input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.label}}"-->
+                   <!--[(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled" spellcheck="false">-->
+          <!--</md-input-container>-->
+          <timi-input class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+                      [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}" [labelName]="child.ui.label"
+                      [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
           <md-input-container class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"
                               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <input mdInput ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
@@ -24,7 +27,7 @@
           </div>
           <md-select class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'"
                      placeholder="{{child.ui.placeholder}}"
-                     name="selector"
+                     name="{{child.name}}"
                      [(ngModel)]="selectRow[child.name]">
             <md-option *ngFor="let timi of child.bindData" [value]="timi.value">
               {{ timi.text }}
@@ -45,12 +48,13 @@
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
             <timi-file-uploader [url]="'http://192.168.3.15:8001/api/file/upload'" [btnName]="child.ui.label"
+                                [src]="selectRow['_'+child.name]"
                                 (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
             <input ngModel type="hidden" name="{{child.name}}" [(ngModel)]="fileId">
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-            <free-chip-group *ngIf="chips" [chips]="chips" [placeholder]="child.ui.placeholder"
-                             (chipsChange)="chipsChange($event)"></free-chip-group>
+            <timi-chip-group [chips]="selectRow[child.name] || []" [placeholder]="child.ui.placeholder"
+                             (chipsChange)="chipsChange($event)"></timi-chip-group>
             <input ngModel type="hidden" name="{{child.name}}" [(ngModel)]="tags">
           </div>
         </ng-container>

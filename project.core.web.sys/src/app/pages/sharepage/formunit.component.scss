@@ -1,11 +1,14 @@
 :host /deep/{
+  .panel {
+    overflow: hidden;
+  }
   .columns1 {
-    width: 46%;
+    width: 50%;
   }
   .columns2 {
     width: 100%;
   }
   .form-group {
-    display: inline-block;
+    float: left;
   }
 }
