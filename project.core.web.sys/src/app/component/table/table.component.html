@@ -5,6 +5,16 @@
                 <md-icon>star</md-icon>
             </div>
         </ng-template>-->
+        <!-- 图片 -->
+        <ng-template tdDataTableTemplate="img" let-value="value">
+            <img [src]="value"/>
+        </ng-template>
+        <!-- 操作按钮 -->
+        <ng-template tdDataTableTemplate="btns" let-value="value">
+            <td *ngFor="let btn of value;let i = index">
+                <button fButton color="deepblue" class="add-button">{{btn}}</button>
+            </td>
+        </ng-template>
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
