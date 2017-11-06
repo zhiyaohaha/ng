@@ -127,7 +127,11 @@ export class SharepageComponent implements OnInit, OnDestroy {
   /**
    * 翻页
    */
-  page($event) { }
+  page($event) {
+    console.log($event);
+    this.listparam.index = $event.page - 1;
+    this.getParamsList(this.listparam);
+  }
 
   /**
    * 选择项
@@ -210,7 +214,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 提交表单
    */
   submitMethod($event) {
-    if (this.newAdd) {
+    if (this.new) {
       console.log($event);
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
@@ -248,18 +252,28 @@ export class SharepageComponent implements OnInit, OnDestroy {
 export class FormUnitComponent {
 
   @Input() DOMS;
-  @Input() selectRow;
+  @Input()
+  set selectRow(value) {
+    this._selectRow = value;
+    if (value && value.logo) {
+      this.fileId = value.logo;
+    }
+  }
+  get selectRow() {
+    return this._selectRow;
+  }
 
   @Input() bindDataJson;
 
   @Output() changes: EventEmitter<any> = new EventEmitter();
 
   fileId;
+  tags = [];
+  _selectRow; //修改数据内容
 
   constructor(private toastService: ToastService) {}
 
   submitMethod($event) {
-    console.log($event);
     for (let key in $event) {
       this.selectRow[key] = $event[key];
     }
@@ -282,6 +296,13 @@ export class FormUnitComponent {
       this.toastService.creatNewMessage("上传成功");
       this.fileId = $event.id;
     }
+  }
+
+  /**
+   * 添加标签
+   */
+  chipsChange($event) {
+    this.tags = $event;
   }
 
 

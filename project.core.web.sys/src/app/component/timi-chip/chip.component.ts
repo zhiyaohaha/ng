@@ -37,7 +37,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
         this.value.push(v);
       }
     }
-    this._propagateChange(this.chips)
+    this._propagateChange(this.chips);
   }
 
   get chips(): any {
@@ -96,6 +96,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
     }
     this.chipsChange.emit(this.chips);
     this._propagateChange(this.chips);
+    return false;
   }
 
   allowDrop($event) {

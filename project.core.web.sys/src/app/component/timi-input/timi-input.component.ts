@@ -22,9 +22,9 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-input",
   template: `
-    <div class="row form-item">
-      <div class="col-lg-2 col-xs-12 item-label"><label>{{labelName}}:</label></div>
-      <div class="col-lg-10 col-xs-12 item-control-wrapper">
+    <div class="box form-item">
+      <div class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
+      <div class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
           <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" disabled="{{disabled}}"
                  name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
@@ -68,6 +68,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @Input() name: string;
   @Input() inputWidth: string;
   @Input() placeholder: string;
+  @Input() columns: number;
   @Input() disabled: boolean;
   @Input() require: boolean;
   @Input() pattern: string;

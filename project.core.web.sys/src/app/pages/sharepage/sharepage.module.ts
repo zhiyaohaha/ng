@@ -14,13 +14,14 @@ import { CommonShareModule } from "./../../common/share.module";
 import { SharepageRoutingModule } from "./sharepage-routing.module";
 import {ButtonModule} from "../../component/button/button.directive";
 import {TimiFileUploaderModule} from "../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import {TimiChipModule} from "../../component/timi-chip/chip.component";
 
 @NgModule({
   imports: [
     CommonModule,
     SharepageRoutingModule, FormsModule, CommonShareModule,
     MdSidenavModule, MdInputModule, MdSelectModule, MdDatepickerModule, ChipModule,
-    SearchFormModule, TableModule, TimiInputModule, ButtonModule, TimiFileUploaderModule
+    SearchFormModule, TableModule, TimiInputModule, ButtonModule, TimiFileUploaderModule, TimiChipModule
   ],
   declarations: [SharepageComponent, FormUnitComponent],
   providers: [SharepageService, ParamsManageService]
