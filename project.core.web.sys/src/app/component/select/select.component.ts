@@ -12,7 +12,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SelectComponent),
   multi: true
-};
+}; 
 
 @Component({
   selector: 'free-select',
