@@ -12,13 +12,14 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SelectComponent),
   multi: true
-}; 
+};
 
 @Component({
   selector: 'free-select',
   template: `
-    <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
-    <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
+    <div class="select-wrap">
+      <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
+      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
       <div class="free-select-input" >
         <label *ngIf="value">{{value}}</label>
         <label *ngIf="!value">{{pholder}}</label>
@@ -46,6 +47,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
           </ul>
         </div>
       </div>
+    </div>
     </div>
   `,
   animations: [
@@ -117,8 +119,6 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   }
 
   ngAfterViewInit() {
-    console.log("当前的选中项：", this.selected);
-    
     if (this.selected) {
       setTimeout(()=>{
         let selected = this.options.filter(r => r.value == this.selected)[0]
@@ -195,7 +195,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
         }
       }
     }
- 
+
     return isEqual;
   }
 

@@ -1,9 +1,9 @@
-import { CommonModule } from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {
   NgModule, Component, OnInit, AfterViewInit, OnDestroy,
   Input, ViewChild, ElementRef, Renderer2, EventEmitter, Output, forwardRef
 } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,10 +14,16 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-chip-group",
   template: `
-    <div class="timi-chip-group" [ngClass]="chipClass">
-      <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
-      <input spellcheck="false" type="text" *ngIf="placeholder" [placeholder]="placeholder"
-             (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)" (drop)="drop($event)">
+    <div class="label-wrap label{{columns}}">
+      <label>{{labeName}}</label>
+    </div>
+    <div class="chip-wrap wrap{{columns}}">
+      <div class="timi-chip-group" [ngClass]="chipClass">
+        <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
+        <input spellcheck="false" type="text" *ngIf="placeholder" [placeholder]="placeholder"
+               (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
+               (drop)="drop($event)">
+      </div>
     </div>
   `,
   styleUrls: ["./chip.component.scss"],
@@ -45,7 +51,9 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   @Output() chipsChange: EventEmitter<any> = new EventEmitter();
+  @Input() labeName: string;
   @Input() placeholder: string;
+  @Input() columns: number;
   chipClass = {};
   focus: boolean;
   groups: TimiChipComponent[] = [];
@@ -53,7 +61,9 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   private _propagateChange = (_: any) => {
   };
-  constructor() {}
+
+  constructor() {
+  }
 
   ngOnInit() {
     this.setChipClass();
@@ -119,10 +129,13 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
       this.chips = value;
     }
   }
+
   registerOnChange(fn) {
     this._propagateChange = fn;
   }
-  registerOnTouched() {}
+
+  registerOnTouched() {
+  }
 }
 
 @Component({
@@ -137,8 +150,9 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() value: any;
   @Input() delete: boolean;
   @ViewChild("container") container: ElementRef;
+
   constructor(private renderer2: Renderer2,
-    group: TimiChipGroupComponent) {
+              group: TimiChipGroupComponent) {
     this.group = group;
   }
 
@@ -177,5 +191,6 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
   exports: [TimiChipComponent, TimiChipGroupComponent]
 })
 
-export class TimiChipModule { }
+export class TimiChipModule {
+}
 

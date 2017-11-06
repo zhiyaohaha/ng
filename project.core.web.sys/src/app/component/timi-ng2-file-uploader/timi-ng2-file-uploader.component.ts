@@ -16,11 +16,12 @@ import {ConvertUtil} from "../../common/convert-util";
 import {FileUploader, FileUploadModule} from "ng2-file-upload";
 import {globalUrl} from "../../common/global.config";
 import {ToastService} from "../toast/toast.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "timi-file-uploader",
   template: `
-    <label>{{btnName}}:</label>
+    <label>{{btnName}}</label>
     <div class="preview">
       <img [src]="src">
       <input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)" [uploader]="uploader">
@@ -32,8 +33,14 @@ import {ToastService} from "../toast/toast.service";
 })
 export class TimiFileUploaderComponent implements OnInit {
 
-  @Input() src: string;
-  @Input() url: string;
+  @Input()
+  set src(value) {
+    this._src = value ? value : "http://data.cpf360.com/default/default.jpg";
+  }
+  get src() {
+    return this._src;
+  }
+  @Input() url = environment.apiURL + "/api/file/upload";
   @Input() multiple: boolean;
   @Input() btnName: string;
   @Input() allowFiles = "image";
@@ -42,6 +49,7 @@ export class TimiFileUploaderComponent implements OnInit {
   @Output() success: EventEmitter<any> = new EventEmitter();
 
   uploader: FileUploader;
+  _src = "http://data.cpf360.com/default/default.jpg";
 
   constructor(private util: ConvertUtil, private toastService: ToastService) {
   }

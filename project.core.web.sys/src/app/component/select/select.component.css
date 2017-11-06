@@ -1,166 +1,182 @@
 .free-select {
-    position: relative;
-    display: inline-block;
-    width: 7.5rem;
-    height: 1.75rem;
-    padding-left: .5rem;
-    border: 1px solid #d9d9d9;
+  position: relative;
+  display: inline-block;
+  width: 7.5rem;
+  height: 1.75rem;
+  padding-left: .5rem;
+  border: 1px solid #d9d9d9;
 }
 
 .free-select .free-select-input {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-} 
- 
- .free-select .free-select-input label {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    position: relative;
-    width: calc(100% - 25px);
-    height: 100%;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: transparent;
-    align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.free-select .free-select-input label {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  width: calc(100% - 25px);
+  height: 100%;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  align-items: center;
 }
 
 .free-select .free-select-input:before {
-    font-family: FontAwesome;
-    content: "\f0dd";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    display: inline-block;
-    padding: 0 .5rem;
-    line-height: 0;
-    transform: translate(0, -50%);
+  font-family: FontAwesome;
+  content: "\f0dd";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  display: inline-block;
+  padding: 0 .5rem;
+  line-height: 0;
+  transform: translate(0, -50%);
 }
 
 .free-select .free-select-menu {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 0;
-    min-width: 100%;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
-    background: #fff;
-    z-index: 999;
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 100%;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  background: #fff;
+  z-index: 999;
 }
 
 .free-select .free-select-menu .free-select-wrapper {
-    min-width: 100%;
-    max-height: 10rem;
-    overflow: hidden;
-    overflow-y: auto;
+  min-width: 100%;
+  max-height: 10rem;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .free-select .free-select-menu .free-select-wrapper li {
-    display: block;
-    padding: 5px 10px;
+  display: block;
+  padding: 5px 10px;
 }
 
 .free-select .free-select-menu .free-select-wrapper li free-checkbox {
-    display: block;
+  display: block;
 }
 
 .free-select .free-select-menu .free-select-wrapper li:hover {
-    background: #eee;
+  background: #eee;
 }
 
 .free-select .free-select-menu .free-select-wrapper li.free-select-active {
-    background: #eee;
-    font-weight: bold;
+  background: #eee;
+  font-weight: bold;
 }
 
 .free-select .free-select-item {
-    list-style: none;
-    cursor: pointer;
+  list-style: none;
+  cursor: pointer;
 }
 
 .free-select .free-select-item.free-select-active {
-    background: #eee;
-    font-weight: bold;
+  background: #eee;
+  font-weight: bold;
 }
 
 .free-select .free-select-item-content {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    white-space: nowrap;
-    justify-content: space-between;
-    align-items: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  white-space: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .free-select .free-select-filter {
-    position: relative;
-    padding: .5rem;
-    display: flex;
-    align-items: center;
+  position: relative;
+  padding: .5rem;
+  display: flex;
+  align-items: center;
 }
 
 .free-select .free-select-inner {
-    position: relative;
+  position: relative;
 }
 
 .free-select .free-select-inner input {
-    width: 100%;
-    height: 1.5rem;
-    border: 1px solid #d9d9d9;
-    font-size: .65rem;
-    padding: 0 .5rem 0 1.5rem;
-    border-radius: 3px;
-    color: #666;
+  width: 100%;
+  height: 1.5rem;
+  border: 1px solid #d9d9d9;
+  font-size: .65rem;
+  padding: 0 .5rem 0 1.5rem;
+  border-radius: 3px;
+  color: #666;
 }
 
 .free-select .free-select-inner i.fa {
-    position: absolute;
-    top: 50%;
-    left: .5rem;
-    color: #999;
-    text-align: center;
-    transform: translate(0, -50%);
+  position: absolute;
+  top: 50%;
+  left: .5rem;
+  color: #999;
+  text-align: center;
+  transform: translate(0, -50%);
 }
+
 /* 修改样式 */
-.free-select-name{
-    display:inline-block;
-    width:29%;
-    text-align:right
+.select-wrap::after {
+  content: "";
+  display: block;
+  clear: both;
 }
+.free-select-name {
+  display: block;
+  float: left;
+  width: 30%;
+  text-align: right;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .free-select-name:after {
-    content: ":";
-    position: relative;
-    margin: 0 8px 0 2px;
-  }
+  content: ":";
+  position: relative;
+  margin: 0 8px 0 2px;
+}
+
 .free-select {
-    border-radius:4px;
-    width:70%;
-    height: 1.5rem;
+  float: left;
+  border-radius: 4px;
+  width: 70%;
+  height: 28px;
+  color: rgba(0, 0, 0, 0.5);
 }
-.free-select:hover{
-    border-color: #49a9ee;
+
+.free-select:hover {
+  border-color: #49a9ee;
 }
-.free-select-click-active{
-    border-color: #49a9ee;
-    outline: 0;
-    box-shadow: 0 0 0 2px rgba(16, 142, 233, 0.2);
+
+.free-select-click-active {
+  border-color: #49a9ee;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(16, 142, 233, 0.2);
 }
+
 .free-select .free-select-input:before {
-    content: "\f107";
-    color:#BDBDBD;
-    transition: transform 0.3s ease;
+  content: "\f107";
+  color: #BDBDBD;
+  transition: transform 0.3s ease;
 }
-.free-select-click-active  .free-select-input:before {
-    transition: transform 0.5s ease;
-    transform: rotate(180deg);
+
+.free-select-click-active .free-select-input:before {
+  transition: transform 0.5s ease;
+  transform: rotate(180deg);
 }
 

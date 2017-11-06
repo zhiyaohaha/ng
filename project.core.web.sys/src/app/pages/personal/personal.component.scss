@@ -4,6 +4,9 @@
   }
   .container-right {
     padding: 20px;
+    & > div {
+      padding-bottom: 14px;
+    }
   }
   .person-head {
     text-align: center;

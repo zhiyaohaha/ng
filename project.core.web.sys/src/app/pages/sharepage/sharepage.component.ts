@@ -253,6 +253,7 @@ export class FormUnitComponent {
   @Input() DOMS;
   @Input()
   set selectRow(value) {
+    console.log(value);
     this._selectRow = value;
     if (value && value.logo) {
       this.fileId = value.logo;
