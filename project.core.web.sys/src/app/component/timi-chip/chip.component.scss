@@ -6,9 +6,8 @@
     float: left;
     width: 30%;
     text-align: right;
-    &::after {
+    label::after {
       content: ":";
-      position: relative;
       margin: 0 8px 0 2px;
     }
   }

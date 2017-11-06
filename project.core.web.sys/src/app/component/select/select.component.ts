@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CommonModule } from "@angular/common";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 import {
   NgModule, Component, OnInit, Input, EventEmitter,
   Output, AfterViewInit, ViewChild, ElementRef, Renderer2, forwardRef, OnDestroy,
-} from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { CheckboxModule } from '../checkbox/checkbox.component';
-import { ObjectUtils } from '../../common/util';
+} from "@angular/core";
+import { trigger, state, style, animate, transition } from "@angular/animations";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { ObjectUtils } from "../../common/util";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -15,14 +15,14 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'free-select',
+  selector: "free-select",
   template: `
     <div class="select-wrap">
       <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
       <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
       <div class="free-select-input" >
         <label *ngIf="value">{{value}}</label>
-        <label *ngIf="!value">{{pholder}}</label>
+        <label *ngIf="!value" class="pholder">{{pholder}}</label>
       </div>
       <div class="free-select-menu" *ngIf="opened" [@selectState]="'in'" (click)="onMenuClick()">
         <div class="free-select-filter" *ngIf="filter">
@@ -51,23 +51,23 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     </div>
   `,
   animations: [
-    trigger('selectState', [
-      state('in', style({
+    trigger("selectState", [
+      state("in", style({
         opacity: 1,
-        transform: 'translate3d(0, 0, 0)'
+        transform: "translate3d(0, 0, 0)"
       })),
-      transition(':enter', [
+      transition(":enter", [
         style({
           opacity: 0,
-          transform: 'translate3d(0, 80px, 0)'
-        }), animate('.4s cubic-bezier(.25,.8,.25,1)')
+          transform: "translate3d(0, 80px, 0)"
+        }), animate(".4s cubic-bezier(.25,.8,.25,1)")
       ]),
-      transition(':leave', animate('.1s', style({
+      transition(":leave", animate(".1s", style({
         opacity: 0
       })))
     ])
   ],
-  styleUrls: ['select.component.css'],
+  styleUrls: ["select.component.css"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR, ObjectUtils]
 })
 export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
@@ -79,7 +79,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   @Input() multiple: boolean;
   @Input() freeSelectName:string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
-  @ViewChild('input') input: ElementRef;
+  @ViewChild("input") input: ElementRef;
 
   @Input()
   get options(): any {
@@ -101,7 +101,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   itemClick: boolean;
   items: SelectItemComponent[] = [];
   selfClick: boolean;
-  freeClickActive:boolean;
+  freeClickActive: boolean;
   bindDocumentClickListener: Function;
   onModelChange: Function = () => {
   };
@@ -120,15 +120,10 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
 
   ngAfterViewInit() {
     if (this.selected) {
-      setTimeout(()=>{
-        let selected = this.options.filter(r => r.value == this.selected)[0]
+      setTimeout(() => {
+        let selected = this.options.filter(r => r.value === this.selected)[0]
         this.value = selected.label;
-      },0)
-
-    } else if (this.pholder) {
-      setTimeout(()=>{
-        this.value = this.pholder;
-      },0)
+      }, 0);
     }
   }
 
@@ -155,7 +150,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
       this.selected = [];
     }
     for (const option of this.options) {
-      option['checked'] = event.checked;
+      option["checked"] = event.checked;
     }
     this.getSelectedValue();
   }
@@ -214,7 +209,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
       for (const s of this.selected) {
         selectedValue.push(s.label);
       }
-      this.value = selectedValue.join(',');
+      this.value = selectedValue.join(",");
     } else if (this.selected) {
       this.value = this.selected.label;
     }

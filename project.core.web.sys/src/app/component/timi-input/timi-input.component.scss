@@ -1,5 +1,4 @@
 :host /deep/ {
-
   .form-item {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
@@ -13,7 +12,6 @@
       width: 30%;
       &::after {
         content: ":";
-        position: relative;
         margin: 0 8px 0 2px;
       }
     }

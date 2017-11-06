@@ -24,9 +24,10 @@
           </md-input-container>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                    <textarea ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}"
-                              [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled"
-                              spellcheck="false"></textarea>
+            <label style="width: 15%;color:rgba(0,0,0,0.5);float:left;text-align: right;">{{child.ui.label}}:&nbsp;&nbsp;</label>
+              <textarea ngModel name="{{child.name}}" placeholder="{{child.ui.placeholder}}" style="float: left;width:85%;color:rgba(0,0,0,0.5)"
+                        [(ngModel)]="selectRow[child.name]" [disabled]="child.ui.isDisabled"
+                        spellcheck="false"></textarea>
           </div>
           <!--<md-select class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'"-->
           <!--placeholder="{{child.ui.placeholder}}"-->
@@ -37,7 +38,7 @@
           <!--</md-option>-->
           <!--</md-select>-->
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-            <free-select ngModel name="{{child.name}}" [(ngModel)]="selectRow[child.name]"
+            <free-select ngModel name="{{child.name}}" [(ngModel)]="selectRow[child.name]" [selected]="selectRow[child.name]"
                          pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" required
                          [freeSelectName]="child.ui.label"></free-select>
           </div>
@@ -117,7 +118,8 @@
       </ng-container>
     </ng-template>
   </ng-container>
-  <button md-raised-button (click)="submitMethod(sysEdit.value)">确定</button>
-
+  <div style="text-align: center;">
+    <button md-raised-button (click)="submitMethod(sysEdit.value)">确定</button>
+  </div>
 </form>
 

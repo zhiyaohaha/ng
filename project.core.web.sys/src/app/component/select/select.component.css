@@ -180,3 +180,7 @@
   transform: rotate(180deg);
 }
 
+.free-select-input .pholder {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}

@@ -110,6 +110,9 @@ textarea:focus {
     border-color: #3b99fc;
     box-shadow: 0 0 3px 0px #3b99fc;
 }
+::-webkit-input-placeholder{
+  color: rgba(0, 0, 0, 0.3) !important;
+}
 
 ul,
 li {
