@@ -72,7 +72,7 @@
 
             <!--</ng-container>-->
           <!--</ng-container>-->
-          <form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>
+          <form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" [DOMSData]="modalData" (changes)="submitMethod($event)"></form-unit>
           <!--<button md-raised-button (click)="subEdit(sysEdit.value)">确定</button>-->
         <!--</form>-->
       </div>

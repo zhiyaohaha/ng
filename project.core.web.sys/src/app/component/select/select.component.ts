@@ -1,12 +1,12 @@
-import { CommonModule } from "@angular/common";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {
   NgModule, Component, OnInit, Input, EventEmitter,
   Output, AfterViewInit, ViewChild, ElementRef, Renderer2, forwardRef, OnDestroy,
 } from "@angular/core";
-import { trigger, state, style, animate, transition } from "@angular/animations";
-import { CheckboxModule } from "../checkbox/checkbox.component";
-import { ObjectUtils } from "../../common/util";
+import {trigger, state, style, animate, transition} from "@angular/animations";
+import {CheckboxModule} from "../checkbox/checkbox.component";
+import {ObjectUtils} from "../../common/util";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -15,39 +15,39 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: "free-select", 
+  selector: "free-select",
   template: `
     <div class="select-wrap">
       <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
       <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
-      <div class="free-select-input" >
-        <label *ngIf="value">{{value}}</label>
-        <label *ngIf="!value" class="pholder">{{pholder}}</label>
-      </div>
-      <div class="free-select-menu" *ngIf="opened" [@selectState]="'in'" (click)="onMenuClick()">
-        <div class="free-select-filter" *ngIf="filter">
-          <free-checkbox *ngIf="multiple" [checked]="multipleTotal" (onChange)="onMultipleTotal($event)">
-          </free-checkbox>
-          <div class="free-select-inner">
-            <i class="fa fa-search"></i>
-            <input type="text" [(ngModel)]="_filterValue" (input)="onFilterChange($event)">
+        <div class="free-select-input">
+          <label *ngIf="value">{{value}}</label>
+          <label *ngIf="!value" class="pholder">{{pholder}}</label>
+        </div>
+        <div class="free-select-menu" *ngIf="opened" [@selectState]="'in'" (click)="onMenuClick()">
+          <div class="free-select-filter" *ngIf="filter">
+            <free-checkbox *ngIf="multiple" [checked]="multipleTotal" (onChange)="onMultipleTotal($event)">
+            </free-checkbox>
+            <div class="free-select-inner">
+              <i class="fa fa-search"></i>
+              <input type="text" [(ngModel)]="_filterValue" (input)="onFilterChange($event)">
+            </div>
+          </div>
+          <div class="free-select-wrapper free-iscroll">
+            <ul *ngIf="!multiple">
+              <free-select-item
+                *ngFor="let option of filterValue(options, 'label'); index as i"
+                (onClick)="onItemClick($event)" [option]="option"></free-select-item>
+            </ul>
+            <ul *ngIf="multiple">
+              <li *ngFor="let option of filterValue(options, 'label')">
+                <free-checkbox (onChange)="onCheckboxSelect($event, option)" [checked]="option.checked"
+                               [label]="option.label" [value]="option.value"></free-checkbox>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="free-select-wrapper free-iscroll">
-          <ul *ngIf="!multiple">
-            <free-select-item
-              *ngFor="let option of filterValue(options, 'label'); index as i"
-              (onClick)="onItemClick($event)" [option]="option"></free-select-item>
-          </ul>
-          <ul *ngIf="multiple">
-            <li *ngFor="let option of filterValue(options, 'label')">
-              <free-checkbox (onChange)="onCheckboxSelect($event, option)" [checked]="option.checked"
-                             [label]="option.label" [value]="option.value"></free-checkbox>
-            </li>
-          </ul>
-        </div>
       </div>
-    </div>
     </div>
   `,
   animations: [
@@ -77,17 +77,19 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   @Input() filter: boolean;
   @Input() selected: any;
   @Input() multiple: boolean;
-  @Input() freeSelectName:string;
+  @Input() freeSelectName: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @ViewChild("input") input: ElementRef;
-  
+
   @Input()
   get options(): any {
     return this._options;
   }
 
   set options(value: any) {
-    if(!value) return;
+    if (!value) {
+      return;
+    }
     value.map(r => {
       r.label = r.text;
     })
@@ -104,9 +106,9 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   freeClickActive: boolean;
   bindDocumentClickListener: Function;
   onModelChange: Function = () => {
-  };
+  }
   onTouchedChange: Function = () => {
-  };
+  }
 
   constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
     this.onDocumentClickListener();
@@ -131,6 +133,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     if (value) {
       this.selected = value;
       this.getValue();
+    } else {
+      this.value = "";
     }
   }
 
@@ -179,13 +183,13 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     if (value && this.selected) {
       if (Array.isArray(this.selected)) {
         for (const o of this.selected) {
-          isEqual = this.objUtil.equals(value, o['value']);
+          isEqual = this.objUtil.equals(value, o["value"]);
           break;
         }
       } else {   //改变手动选中的item背景色
-        if(!this.selected.value){
+        if (!this.selected.value) {
           isEqual = this.objUtil.equals(value, this.selected);
-        }else{  //改变默认选中的item背景色
+        } else {  //改变默认选中的item背景色
           isEqual = this.objUtil.equals(value, this.selected.value);
         }
       }
@@ -203,7 +207,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   }
 
   getValue() {
-    this.value = '';
+    this.value = "";
     const selectedValue = [];
     if (Array.isArray(this.selected)) {
       for (const s of this.selected) {
@@ -212,9 +216,9 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
       this.value = selectedValue.join(",");
     } else if (this.selected) {
       let selected = this.options.filter(r => r.value === this.selected)[0]
-      if(selected){
+      if (selected) {
         this.value = selected.label
-      }else{
+      } else {
         this.value = this.selected.label
       }
     }
@@ -269,11 +273,11 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   filterValue(options: any[], value: string) {
     if (this.filter && options && Array.isArray(options)) {
       return options.filter((v, k, arr) => {
-        const regexp = new RegExp(this._filterValue, 'ig');
+        const regexp = new RegExp(this._filterValue, "ig");
         if (regexp.test(v[value])) {
           return true;
         }
-      })
+      });
     }
     return options;
   }
@@ -297,7 +301,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
 }
 
 @Component({
-  selector: 'free-select-item',
+  selector: "free-select-item",
   template: `
     <li class="free-select-item" [class.free-select-active]="selector.compareWith(option.value)"
         (click)="itemClick()">
@@ -310,18 +314,24 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
     .free-select-item {
       list-style: none;
       cursor: pointer;
-  }
-  .free-select-active {
-    background: #eee;
-    font-weight: bold;
-  }
-  .free-select-item-content {
-      @include flexbox;
+    }
+
+    .free-select-item:hover {
+      background-color: #eee;
+    }
+
+    .free-select-active {
+      background: #eee;
+      font-weight: bold;
+    }
+
+    .free-select-item-content {
+    @include flexbox;
       white-space: nowrap;
       justify-content: space-between;
       align-items: center;
-      padding-left:0.5rem;
-  }
+      padding-left: 0.5rem;
+    }
   `]
 })
 

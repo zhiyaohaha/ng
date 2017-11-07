@@ -227,6 +227,9 @@ export class SharepageComponent implements OnInit, OnDestroy {
     } else {
       this.sharepageService.saveEditParams($event).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
+        if (res.code === "0") {
+          this.getParamsList(this.listparam);
+        }
       });
     }
 
@@ -253,13 +256,10 @@ export class SharepageComponent implements OnInit, OnDestroy {
 export class FormUnitComponent {
 
   @Input() DOMS;
+  @Input() DOMSData;
   @Input()
   set selectRow(value) {
-    console.log(value);
     this._selectRow = value;
-    if (value && value.logo) {
-      this.fileId = value.logo;
-    }
   }
   get selectRow() {
     return this._selectRow;
@@ -269,7 +269,6 @@ export class FormUnitComponent {
 
   @Output() changes: EventEmitter<any> = new EventEmitter();
 
-  fileId;
   tags = [];
   _selectRow; //修改数据内容
 
@@ -277,9 +276,13 @@ export class FormUnitComponent {
 
   submitMethod($event) {
     for (let key in $event) {
-      this.selectRow[key] = $event[key];
+      if ($event[key]) {
+        this.selectRow[key] = $event[key];
+        if (this.selectRow["_" + key] && key !== "logo") {
+          this.selectRow["_" + key] = null;
+        }
+      }
     }
-    console.log(this.selectRow);
     this.changes.emit(this.selectRow);
   }
 
@@ -296,7 +299,6 @@ export class FormUnitComponent {
   uploaded($event) {
     if ($event.isUploaded) {
       this.toastService.creatNewMessage("上传成功");
-      this.fileId = $event.id;
     }
   }
 
