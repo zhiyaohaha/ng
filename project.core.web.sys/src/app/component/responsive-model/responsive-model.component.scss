@@ -5,4 +5,12 @@
   .form-group {
     margin-bottom: 10px;
   }
+  .radio-label, .checkbox-label {
+    display: inline-block;
+    width: 30%;
+  }
+  free-checkbox, free-radio {
+    display: inline-block;
+    width: 69%;
+  }
 }

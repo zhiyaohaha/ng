@@ -12,6 +12,9 @@
     md-sidenav {
       width: 50%;
       padding: 20px;
+      .mat-tab-body-wrapper {
+        padding: 10px 40px 0 0;
+      }
     }
   }
   .menu-row {

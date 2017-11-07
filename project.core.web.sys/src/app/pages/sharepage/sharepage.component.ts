@@ -122,7 +122,9 @@ export class SharepageComponent implements OnInit, OnDestroy {
   /**
    * 搜索
    */
-  onSearch($event) { }
+  onSearch($event) {
+    console.log($event);
+  }
 
   /**
    * 翻页

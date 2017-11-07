@@ -28,10 +28,12 @@ export const TIMI_UPLOAD_FILE_INPUT_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-file-uploader",
   template: `
-    <label>{{btnName}}</label>
-    <div class="preview">
-      <img [src]="src">
-      <input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)" [uploader]="uploader">
+    <div class="clearfix">
+      <label>{{btnName}}</label>
+      <div class="preview">
+        <img [src]="src">
+        <input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)" [uploader]="uploader">
+      </div>
     </div>
     <!--<button md-raised-button>{{btnName}}<input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)"-->
                                                <!--[uploader]="uploader"></button>-->`,

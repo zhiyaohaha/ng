@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import {
     NgModule, Component, OnInit, Input, EventEmitter,
-    Output, AfterViewInit, AfterContentInit, ViewChild, ElementRef, Renderer2,
-} from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { MdInputModule, MdDatepickerModule } from '@angular/material';
-import { ButtonModule } from '../button/button.directive';
-import { ConvertUtil } from '../../common/convert-util';
+    Output, AfterViewInit, AfterContentInit
+} from "@angular/core";
+import { MdInputModule, MdDatepickerModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ConvertUtil } from "../../common/convert-util";
 
 @Component({
     selector: "search-form",
@@ -17,8 +16,8 @@ import { ConvertUtil } from '../../common/convert-util';
 
 export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentInit {
 
-    @Input() filters: any;//搜索UIDOM
-    @Input() condition: any[];//搜索条件KV
+    @Input() filters: any; //搜索UIDOM
+    @Input() condition: any[]; //搜索条件KV
     @Output() onSearch: EventEmitter<any> = new EventEmitter();
     StartTime: Date;
     EndTime: Date;
@@ -37,7 +36,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
     searchParam($event) {
         let name = $event.target.name;
         this.condition = this.condition.map(i => {
-            if (i.key == name) {
+            if (i.key === name) {
                 i.value = $event.target.value;
             }
             return i;
@@ -47,7 +46,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit, AfterContentI
     //搜索
     searchParams() {
         this.condition.filter(i => {
-            if (i.key == "createdDate" && this.StartTime && this.EndTime) {
+            if (i.key === "createdDate" && this.StartTime && this.EndTime) {
                 i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
             }
         });

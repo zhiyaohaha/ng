@@ -25,8 +25,6 @@ import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
 
 export class ResponsiveModelComponent implements OnInit {
 
-  fileId;
-
   @Input() modalDOMS; //模版
   @Input() btnValue; //确定按钮显示的文字
   @Input() tags; //标签
@@ -75,7 +73,6 @@ export class ResponsiveModelComponent implements OnInit {
    * 上传成功
    */
   uploaded($event) {
-    this.fileId = $event.id;
   }
 
 }
