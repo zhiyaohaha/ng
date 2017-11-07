@@ -6,4 +6,7 @@
 2017年8月16日 10:39:49 添加 插件 ng2-file-upload file-uploader.class.js onreadystatechange _getType _setBase事件
 2017年8月16日 13:54:21 添加 插件 ng2-file-upload file-item.class.d.js 添加type属性
 
+2017年11月7日 16:59:39 添加 插件 ng2-file-upload file-item.class.d.ts 添加base属性
+2017年11月7日 17:00:08 添加 插件 ng2-file-upload file-item.class.d.ts 添加id属性
+
 2017年9月5日 15:36:24 修改 组件 paging-bar.component.js end center 改为 start center
