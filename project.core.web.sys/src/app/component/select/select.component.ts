@@ -15,7 +15,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: "free-select",
+  selector: "free-select", 
   template: `
     <div class="select-wrap">
       <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
