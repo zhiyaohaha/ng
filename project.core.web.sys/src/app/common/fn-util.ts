@@ -1,6 +1,6 @@
-import {ActivatedRoute} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {ConvertUtil} from './convert-util';
+import {ActivatedRoute} from "@angular/router";
+import {Injectable} from "@angular/core";
+import {ConvertUtil} from "./convert-util";
 
 @Injectable()
 export class FnUtil {
@@ -74,5 +74,20 @@ export class FnUtil {
     return urlObj;
   }
 
+  /**
+   * 根据pipe格式化表格数据
+   */
+  public formatTableCell (data: any[]): any[] {
+    data.map( item => {
+      switch (item.pipe) {
+        case "HtmlPipe.Date": item.format = v => this.convertUtil.getFullDateTime(v);
+          break;
+      }
+    })
+    return data;
+  }
+
 
 }
+
+
