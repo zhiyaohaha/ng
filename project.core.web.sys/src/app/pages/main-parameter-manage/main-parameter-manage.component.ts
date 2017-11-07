@@ -28,8 +28,6 @@ import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
 export class MainParameterManageComponent implements OnInit, OnDestroy {
-  fileId;
-
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
 
@@ -87,7 +85,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
           this.columns = r.data.data.fields;
           this.filteredData = this.basicData = r.data.data.bindData;
           r.data.data.filters.forEach(i => {
-            this.filters.push({ "key": i.name, "value": i.value || '' });
+            this.filters.push({ "key": i.name, "value": i.value || "" });
           })
           this.searchFilters = r.data.data.filters;
           this.filteredTotal = r.data.total;
@@ -204,16 +202,15 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    */
   treeSelected($event): void {
     this.selectNode = $event.node.node;
-    console.log("treeSelected:", this.selectNode);
     let _tags = [];
+    this.tags = [];
     if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
-      this.tags = this.selectNode.JSONdata.tags;
-      for (var i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
+      for (let i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
         _tags.push({ "value": this.selectNode.JSONdata.tags[i], "delete": true });
+        this.tags.push(this.selectNode.JSONdata.tags[i]);
       }
     }
     this.treeNode.label = _tags;
-    console.log("treelabe:", this.treeNode.label);
   }
   addChild(e) {
     console.log(e);
@@ -223,9 +220,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.treeNode.label = $event;
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
-    this.tags = arr;
-    console.log(this.selectNode);
-    console.log("chipschange:", this.tags);
+    this.tags = $event;
   }
 
 
@@ -237,19 +232,20 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
+    let data = this._util.toJSON(this.modalData.bindDataJson);
+    for (let key in $event) {
+      data[key] = $event[key];
+    }
     this.selectNode.JSONdata.tags = this.tags;
-    this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
-    this.modalData.bindId = this.selectNode.JSONdata.id;
-    this.modalData.doms = "";
-    console.log("保存修改：", this.modalData.bindDataJson);
-    this._paramsManageService.saveParams(this.modalData.bindDataJson).subscribe(res => {
+    // this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
+    // this.modalData.bindId = this.selectNode.JSONdata.id;
+    // this.modalData.doms = "";
+    this._paramsManageService.saveParams(data).subscribe(res => {
       if (res.code === "0") {
-        this.openAlert(res.message);
         this.toastService.creatNewMessage(res.message);
-        //this.getDetailParams();
         this.getParamsList(this.listparam);
       } else {
-        this.toastService.creatNewMessage("出错了");
+        this.toastService.creatNewMessage(res.message);
       }
 
     });
@@ -281,11 +277,9 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code === "0") {
-        //this.openAlert("添加成功");
         this.toastService.creatNewMessage("添加成功");
         this.getDetailParams();
       } else {
-        //this.openAlert("添加失败");
         this.toastService.creatNewMessage("添加失败");
       }
     });
@@ -303,16 +297,16 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
     })
-    data.id = "";
-    data.description = $event.description;
-    data.parentId = "";
     this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
-      if (res.code == "0") {
-        //this.openAlert("添加成功");
+      if (res.code === "0") {
         this.toastService.creatNewMessage("添加成功");
+        this.getParamsList({
+          size: this.pageSize,
+          index: 0,
+          filters: null
+        });
       } else {
-        //this.openAlert("添加失败");
         this.toastService.creatNewMessage("添加失败");
       }
     });
@@ -348,7 +342,9 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    */
   getDetailParams() {
     this._paramsManageService.getEditParams({ id: this.clickNode }).subscribe(r => {
-      if (r.code == "0" && r.data) this.tree = this.toTreeModel(r.data) as TreeModel;
+      if (r.code === "0" && r.data) {
+        this.tree = this.toTreeModel(r.data) as TreeModel;
+      }
     });
   }
 
@@ -418,7 +414,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * 上传成功
    */
   uploaded($event) {
-    console.log($event);
   }
 
   ngOnDestroy () {

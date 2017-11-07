@@ -1,177 +1,166 @@
 <md-sidenav-container class="example-container" [@fadeInState]="'active'">
-    <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
-        <div class="row">
-            <div class="col-lg-4 sidenav-left" *ngIf="!isNew">
-                <div class="sidenav-container">
-                    <ng-container *ngIf="!tree">loading</ng-container>
-                    <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree>
-                </div>
-            </div>
-            <div class="col-lg-8" *ngIf="selectNode">
-                <md-tab-group>
-                    <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
-                        <form #sysParams="ngForm">
-                            <md-list>
-                                <md-list-item *ngFor="let item of modalDOMS">
-                                    <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                            <input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-form-field>
-                                        <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                        <!-- <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
-                                        </md-form-field> -->
-                                        <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
-                                        </div>
-                                        <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food" (change)="changed($event)">
-                                            <md-option *ngFor="let food of foods" [value]="food.value">
-                                                {{ food.viewValue }}
-                                            </md-option>
-                                        </md-select>
-                                        <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                                                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                                                <md-datepicker #picker></md-datepicker>
-                                            </md-form-field>
-                                            <md-datepicker #picker></md-datepicker>
-                                            &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                                                <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
-                                                <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                                                <md-datepicker #picker2></md-datepicker>
-                                            </md-form-field>
-                                            <md-datepicker #picker2></md-datepicker>
-                                        </div>
-                                        <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-                                          <timi-file-uploader [url]="'http://192.168.3.15:8001/api/file/upload'" [btnName]="item.ui.label"
-                                                              (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
-                                          <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="fileId">
-                                        </div>
-                                        <md-list-item *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                                            <free-chip-group [chips]="treeNode.label" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
-                                            <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                                        </md-list-item>
-                                    </div>
-                                </md-list-item>
-                            </md-list>
-                            <div class="form-group" style="display:none;">
-                                <md-select placeholder="Favorite food">
-                                    <md-option *ngFor="let food of foods" [value]="food.value">
-                                        {{ food.viewValue }}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                            <div class="form-group">
-                                <!-- <button fButton color="blue" (click)="onSubmitParams($event)" [disabled]="!selectNode">确定</button> -->
-                                <button fButton color="blue" (click)="onSubmitParams(sysParams.value)" type="button">保存修改</button>
-                            </div>
-                        </form>
-                    </md-tab>
-                    <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
-                        <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
-                        <!-- <form #addSysParams="ngForm">
-                            <md-list>
-                                <md-list-item *ngFor="let item of modalDOMS">
-                                    <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-form-field>
-                                        <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
-                                        </md-form-field>
-                                        <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
-                                        </div>
-                                        <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food" (change)="changed($event)">
-                                            <md-option *ngFor="let food of foods" [value]="food.value">
-                                                {{ food.viewValue }}
-                                            </md-option>
-                                        </md-select>
-                                        <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                            </md-form-field>
-                                            <md-datepicker #picker></md-datepicker>
-                                            &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker2"></button>
-                                            </md-form-field>
-                                            <md-datepicker #picker2></md-datepicker>
-                                        </div>
-                                        <ng-container *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                                            <free-chip-group [chips]="" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
-                                            <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                                        </ng-container>
-                                    </div>
-                                </md-list-item>
-                            </md-list>
-                            <div class="form-group">
-                                <button fButton color="blue" (click)="onSubmitAddParams(addSysParams.value)" type="button">确定增加</button>
-                            </div>
-                        </form> -->
-                    </md-tab>
-                </md-tab-group>
-            </div>
-            <div class="col-lg-8" *ngIf="isNew">
-                <md-tab-group>
-                    <md-tab label="添加">
-                        <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增" (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
-                        <!-- <form #newAdd="ngForm">
-                            <md-list>
-                                <md-list-item *ngFor="let item of modalDOMS">
-                                    <div class="form-group" [ngSwitch]="item.ui.displayType">
-                                        <md-form-field *ngSwitchCase="'text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
-                                        </md-form-field>
-                                        <div *ngSwitchCase="'HtmlDomDisplayType.textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                                            <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
-                                        </div>
-                                        <md-select *ngSwitchCase="'select'" placeholder="Favorite food" (change)="changed($event)">
-                                            <md-option *ngFor="let food of foods" [value]="food.value">
-                                                {{ food.viewValue }}
-                                            </md-option>
-                                        </md-select>
-                                        <div *ngSwitchCase="'daterange'">
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                                            </md-form-field>
-                                            <md-datepicker #picker></md-datepicker>
-                                            &nbsp;&nbsp;--&nbsp;&nbsp;
-                                            <md-form-field>
-                                                <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                                                <button mdSuffix [mdDatepickerToggle]="picker2"></button>
-                                            </md-form-field>
-                                            <md-datepicker #picker2></md-datepicker>
-                                        </div>
-                                        <md-list-item *ngSwitchCase="'tags'">
-                                            <free-chip-group [chips]="" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
-                                            <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                                        </md-list-item>
-                                    </div>
-                                </md-list-item>
-                            </md-list>
-                            <div class="form-group">
-                                <button fButton color="blue" (click)="onSubmitNewAdd(newAdd.value)" type="button">确定增加</button>
-                            </div>
-                        </form> -->
-                    </md-tab>
-                </md-tab-group>
-            </div>
+  <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open-start)="sidenavOpen()"
+              (close)="closeEnd()">
+    <div class="row" style="overflow: hidden;height: 100%;">
+      <div class="sidenav-left" *ngIf="!isNew">
+        <div class="sidenav-container">
+          <ng-container *ngIf="!tree">loading</ng-container>
+          <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree>
         </div>
-    </md-sidenav>
-
-    <div class="main-container clearfix">
-        <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-        <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">添加</button>
+      </div>
+      <div class="sidenav-right" *ngIf="selectNode">
+        <md-tab-group>
+          <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
+            <form #sysParams="ngForm">
+              <ng-container *ngFor="let item of modalDOMS">
+                <div class="panel" [ngSwitch]="item.ui.displayType">
+                  <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+                       [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                    <timi-input ngModel [labelName]="item.ui.label" name="{{item.name}}"
+                                [(ngModel)]="selectNode.JSONdata[item.name]"
+                                [value]="selectNode.JSONdata[item.name]"
+                                [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>
+                  </div>
+                  <!--<md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
+                  <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+                  <!--<input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"-->
+                  <!--[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"-->
+                  <!--spellcheck="false">-->
+                  <!--</md-form-field>-->
+                  <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}"
+                         placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]"
+                         disabled="{{item.ui.disabled}}" spellcheck="false"
+                         [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                  <!-- <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                      <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
+                  </md-form-field> -->
+                  <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+                       [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
+                    <timi-textarea ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]"
+                                   [labelName]="item.ui.label"
+                                   [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>
+                    <!--<textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"-->
+                    <!--[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"-->
+                    <!--spellcheck="false"></textarea>-->
+                  </div>
+                  <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food"
+                             (change)="changed($event)">
+                    <md-option *ngFor="let food of foods" [value]="food.value">
+                      {{ food.viewValue }}
+                    </md-option>
+                  </md-select>
+                  <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
+                    <md-form-field>
+                      <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                      <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                      <md-datepicker #picker></md-datepicker>
+                    </md-form-field>
+                    <md-datepicker #picker></md-datepicker>
+                    &nbsp;&nbsp;--&nbsp;&nbsp;
+                    <md-form-field>
+                      <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                      <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
+                      <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                      <md-datepicker #picker2></md-datepicker>
+                    </md-form-field>
+                    <md-datepicker #picker2></md-datepicker>
+                  </div>
+                  <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                    <timi-file-uploader ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]" [btnName]="item.ui.label" (success)="uploaded($event)"
+                                        (files)="selected($event)"
+                                        [src]="selectNode.JSONdata['_'+item.name]"></timi-file-uploader>
+                  </div>
+                  <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                    <!--<free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder"-->
+                    <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
+                    <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
+                    <timi-chip-group [chips]="tags || []" [placeholder]="item.ui.placeholder" [labeName]="item.ui.label"
+                                     (chipsChange)="chipsChange($event)" [columns]="item.ui.columns"
+                                     onkeydown="if(event.keyCode==13){return false;}"></timi-chip-group>
+                    <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
+                  </ng-container>
+                  <!--<md-list-item *ngSwitchCase="'HtmlDomDisplayType.Tags'">-->
+                  <!--<free-chip-group [chips]="treeNode.label" [placeholder]="item.ui.placeholder"-->
+                  <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
+                  <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
+                  <!--</md-list-item>-->
+                </div>
+              </ng-container>
+              <div style="text-align: center;padding: 10px;">
+                <button md-raised-button (click)="onSubmitParams(sysParams.value)">保存修改</button>
+              </div>
+            </form>
+          </md-tab>
+          <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
+            <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增"
+                                  (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
+            <!-- <form #addSysParams="ngForm">
+                <md-list>
+                    <md-list-item *ngFor="let item of modalDOMS">
+                        <div class="form-group" [ngSwitch]="item.ui.displayType">
+                            <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false">
+                            </md-form-field>
+                            <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
+                            </md-form-field>
+                            <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+                                <textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" value="" [disabled]="item.ui.disabled" spellcheck="false"></textarea>
+                            </div>
+                            <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food" (change)="changed($event)">
+                                <md-option *ngFor="let food of foods" [value]="food.value">
+                                    {{ food.viewValue }}
+                                </md-option>
+                            </md-select>
+                            <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
+                                <md-form-field>
+                                    <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                                </md-form-field>
+                                <md-datepicker #picker></md-datepicker>
+                                &nbsp;&nbsp;--&nbsp;&nbsp;
+                                <md-form-field>
+                                    <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                                    <button mdSuffix [mdDatepickerToggle]="picker2"></button>
+                                </md-form-field>
+                                <md-datepicker #picker2></md-datepicker>
+                            </div>
+                            <ng-container *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                                <free-chip-group [chips]="" [placeholder]="item.ui.placeholder" (chipsChange)="chipsChange($event)"></free-chip-group>
+                                <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
+                            </ng-container>
+                        </div>
+                    </md-list-item>
+                </md-list>
+                <div class="form-group">
+                    <button fButton color="blue" (click)="onSubmitAddParams(addSysParams.value)" type="button">确定增加</button>
+                </div>
+            </form> -->
+          </md-tab>
+        </md-tab-group>
+      </div>
+      <div class="sidenav-new" *ngIf="isNew">
+        <md-tab-group>
+          <md-tab label="添加">
+            <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增"
+                                  (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
+          </md-tab>
+        </md-tab-group>
+      </div>
     </div>
+  </md-sidenav>
 
-    <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')" [pageLinkCount]="pageLinkCount" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+  <div class="main-container clearfix">
+    <search-form [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button fButton *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button"
+            (click)="newAdd();sidenav.open()">添加
+    </button>
+  </div>
+
+  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')"
+             [pageLinkCount]="pageLinkCount" (change)="page($event)"
+             (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
 </md-sidenav-container>
