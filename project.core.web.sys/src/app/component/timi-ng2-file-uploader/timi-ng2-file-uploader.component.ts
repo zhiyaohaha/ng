@@ -8,7 +8,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ViewChild
+  ViewChild, forwardRef
 } from "@angular/core";
 import {MdButtonModule} from "@angular/material";
 import {DomRenderer} from "../../common/dom";
@@ -17,6 +17,13 @@ import {FileUploader, FileUploadModule} from "ng2-file-upload";
 import {globalUrl} from "../../common/global.config";
 import {ToastService} from "../toast/toast.service";
 import {environment} from "../../../environments/environment";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+
+export const TIMI_UPLOAD_FILE_INPUT_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => TimiFileUploaderComponent),
+  multi: true
+}
 
 @Component({
   selector: "timi-file-uploader",
@@ -29,9 +36,17 @@ import {environment} from "../../../environments/environment";
     <!--<button md-raised-button>{{btnName}}<input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)"-->
                                                <!--[uploader]="uploader"></button>-->`,
   styleUrls: ["./timi-ng2-file-uploader.component.scss"],
-  providers: [DomRenderer]
+  providers: [DomRenderer, TIMI_UPLOAD_FILE_INPUT_VALUE_ACCESSOR]
 })
-export class TimiFileUploaderComponent implements OnInit {
+export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
+
+  @Input()
+  set id(value) {
+    this._id = value;
+  }
+  get id() {
+    return this._id;
+  }
 
   @Input()
   set src(value) {
@@ -51,11 +66,13 @@ export class TimiFileUploaderComponent implements OnInit {
   uploader: FileUploader;
   _src = "http://data.cpf360.com/default/default.jpg";
 
+  private _id: string;
+  private valueChange = (_: any) => { };
+
   constructor(private util: ConvertUtil, private toastService: ToastService) {
   }
 
   ngOnInit() {
-    console.log(this.allowFiles.split(","))
     this.uploader = new FileUploader({
       url: this.url,
       method: "POST",
@@ -95,7 +112,21 @@ export class TimiFileUploaderComponent implements OnInit {
     this.uploader.onSuccessItem = function (e) {
       _self.src = e.base;
       _self.success.emit(e);
+      _self.valueChange(e.id);
     };
+  }
+
+  writeValue(obj: any): void {
+    if (obj) {
+      this.id = obj;
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.valueChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
   }
 }
 

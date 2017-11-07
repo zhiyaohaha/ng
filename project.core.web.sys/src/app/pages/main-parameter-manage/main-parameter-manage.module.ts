@@ -16,6 +16,9 @@ import { SearchFormModule } from "../../component/search-form/searchform.compone
 import { TableModule } from "../../component/table/table.component";
 import { ResponsiveModelModule } from "./../../component/responsive-model/responsive-model.component";
 import {TimiFileUploaderModule} from "../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import {TimiInputModule} from "../../component/timi-input/timi-input.component";
+import {TimiChipModule} from "../../component/timi-chip/chip.component";
+import {TimiTextareaModule} from "../../component/timi-textarea/timi-textarea.component";
 
 @NgModule({
   imports: [
@@ -28,7 +31,7 @@ import {TimiFileUploaderModule} from "../../component/timi-ng2-file-uploader/tim
     ButtonModule,
     ChipModule,
     SearchFormModule,
-    TableModule, ResponsiveModelModule, TimiFileUploaderModule
+    TableModule, ResponsiveModelModule, TimiFileUploaderModule, TimiInputModule, TimiChipModule, TimiTextareaModule
   ],
   declarations: [
     MainParameterManageComponent
