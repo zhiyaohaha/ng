@@ -80,7 +80,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   @Input() freeSelectName:string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @ViewChild("input") input: ElementRef;
-
+  
   @Input()
   get options(): any {
     return this._options;
@@ -197,7 +197,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   onItemClick($event) {
     this.itemClick = $event;
     this.selected = $event;
-    this.value = $event.label;
+    // this.value = $event.label;
     this.getSelectedValue();
     // this.close();
   }
@@ -211,13 +211,18 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
       }
       this.value = selectedValue.join(",");
     } else if (this.selected) {
-      this.value = this.selected.label;
+      let selected = this.options.filter(r => r.value === this.selected)[0]
+      if(selected){
+        this.value = selected.label
+      }else{
+        this.value = this.selected.label
+      }
     }
   }
 
   getSelectedValue() {
     this.getValue();
-    this.onModelChange(this.selected);
+    this.onModelChange(this.selected.value);
     this.onChange.emit(this.selected);
   }
 
