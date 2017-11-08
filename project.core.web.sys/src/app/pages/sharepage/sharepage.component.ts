@@ -76,23 +76,25 @@ export class SharepageComponent implements OnInit, OnDestroy {
               private toastService: ToastService,
               private resolver: ComponentFactoryResolver
   ) {
-    this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
         this.getParamsList({
           size: this.pageSize,
           index: 0,
           filters: null,
           name: customized.SysOperationLogConfig
         });
+        this.loadModal();
       });
   }
 
   ngOnInit() {
     //this.getParamsList(this.listparam);
-    this.loadModal();
+    //this.loadModal();
     // this.routerInfo.events.subscribe(r=>{
     //   console.log("路由订阅：",r)
     // })
@@ -132,6 +134,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   page($event) {
     console.log($event);
     this.listparam.index = $event.page - 1;
+    this.listparam.size = $event.pageSize;
     this.getParamsList(this.listparam);
   }
 
@@ -259,6 +262,7 @@ export class FormUnitComponent {
   @Input() DOMSData;
   @Input()
   set selectRow(value) {
+    console.log(value)
     this._selectRow = value;
   }
   get selectRow() {
@@ -283,7 +287,8 @@ export class FormUnitComponent {
         }
       }
     }
-    this.changes.emit(this.selectRow);
+    $event.id = this.selectRow.id;
+    this.changes.emit($event);
   }
 
   /**
@@ -306,6 +311,7 @@ export class FormUnitComponent {
    * 添加标签
    */
   chipsChange($event) {
+    console.log($event);
     this.tags = $event;
   }
 

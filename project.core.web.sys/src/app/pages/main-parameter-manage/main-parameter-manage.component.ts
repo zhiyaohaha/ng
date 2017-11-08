@@ -185,15 +185,16 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
           index: 0,
           filters: null
         });
+        this.loadModal();
       });
 
   }
   ngOnInit() {
 
     //this.loadData();
-    this.getParamsList(this.listparam);
+    //this.getParamsList(this.listparam);
 
-    this.loadModal();
+    //this.loadModal();
   }
 
   /**
@@ -265,17 +266,19 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     let arr = [];
     let data = this._util.toJSON(this.newModalData);
     for (let key in $event) {
-      arr.push(key);
+      if ($event[key]) {
+        arr.push(key);
+      }
     }
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
     })
     data.id = "";
-    data.description = $event.description;
+    // data.description = $event.description;
     data.parentId = this.selectNode.JSONdata.id;
     data.depth = this.selectNode.JSONdata.depth + 1;
-    this.newModalData = this._util.toJsonStr(data);
-    this._paramsManageService.addParams(this.newModalData).subscribe(res => {
+    data = this._util.toJsonStr(data);
+    this._paramsManageService.addParams(data).subscribe(res => {
       if (res.code === "0") {
         this.toastService.creatNewMessage("添加成功");
         this.getDetailParams();
@@ -388,8 +391,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data;
         this.newModalData = r.data.bindDataJson;
-        console.log("this.modalDOMS", this.modalDOMS);
-        console.log("this.newdata", this.newModalData);
       }
     })
   }

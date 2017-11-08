@@ -1,42 +1,42 @@
-import { fadeIn } from './../../common/animations';
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TdDialogService } from '@covalent/core';
-import { ToastService } from './../../component/toast/toast.service';
+import { fadeIn } from "./../../common/animations";
+import { Component, OnInit, Renderer2 } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { TdDialogService } from "@covalent/core";
+import { ToastService } from "./../../component/toast/toast.service";
 import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
 import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
-import { ConvertUtil } from './../../common/convert-util';
-import { FnUtil } from './../../common/fn-util';
+import { ConvertUtil } from "./../../common/convert-util";
+import { FnUtil } from "./../../common/fn-util";
 
 @Component({
-  selector: 'app-setting-menu',
-  templateUrl: './setting-menu.component.html',
-  styleUrls: ['./setting-menu.component.scss'],
+  selector: "app-setting-menu",
+  templateUrl: "./setting-menu.component.html",
+  styleUrls: ["./setting-menu.component.scss"],
   animations: [fadeIn]
 })
 export class SettingMenuComponent implements OnInit {
 
-  authorities: string[];//权限
+  authorities: string[]; //权限
 
   sidenavActive: boolean;
 
-  menus = [];//菜单列表
+  menus = []; //菜单列表
   modelDOMS: HtmlDomTemplate; //响应式表单的模版
   modelMenu: HtmlDomTemplate; //菜单模板
   modelAuthority: HtmlDomTemplate; //权限模板
 
   label: string; //添加或者修改的tab
 
-  menuBindData;//菜单提交数据模板
-  authorityBindData;//权限提交数据模板
+  menuBindData; //菜单提交数据模板
+  authorityBindData; //权限提交数据模板
 
-  modelBindData;//提交的数据模板
+  modelBindData; //提交的数据模板
 
-  modelDOMSData;//当前修改项的原数据
+  modelDOMSData; //当前修改项的原数据
 
-  addId;//当前激活的添加ID
-  updateId;//当前激活的修改ID
-  targetModel;//当前激活的模板
+  addId; //当前激活的添加ID
+  updateId; //当前激活的修改ID
+  targetModel; //当前激活的模板
   addOrUpdate: boolean; //添加false 修改true
   menuOrAuthority; //菜单或权限
 
@@ -61,20 +61,19 @@ export class SettingMenuComponent implements OnInit {
    * 添加
    */
   add(parentId, target) {
-    this.label = '添加';
+    this.label = "添加";
     this.addOrUpdate = false;
     this.addId = parentId;
     this.getTargetModel(target);
-    this.modelDOMSData = '';
+    this.modelDOMSData = "";
   }
   /**
    * 修改
    */
   update(id, parentId, target) {
-    this.label = '修改';
+    this.label = "修改";
     this.addOrUpdate = true;
     this.updateId = id;
-    console.log(parentId)
     this.addId = parentId;
     this.getTargetModel(target);
     this.modelDOMSData = this.searchItem(id);
@@ -84,10 +83,10 @@ export class SettingMenuComponent implements OnInit {
    */
   getTargetModel(target) {
     this.menuOrAuthority = target;
-    if (target == 'menu') {
+    if (target === "menu") {
       this.modelDOMS = this.modelMenu;
       this.modelBindData = this.menuBindData;
-    } else if (target == 'authority') {
+    } else if (target === "authority") {
       this.modelDOMS = this.modelAuthority;
       this.modelBindData = this.authorityBindData;
     }
@@ -110,11 +109,11 @@ export class SettingMenuComponent implements OnInit {
   getModel() {
     //菜单模板
     this.settingMenuService.getMenuModel().subscribe(r => {
-      if (r.code == "0") { this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson) };
+      if (r.code === "0") { this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson) };
     })
     //权限模板
     this.settingMenuService.getAuthorityModel().subscribe(r => {
-      if (r.code == "0") { this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson) };
+      if (r.code === "0") { this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson) };
     });
   }
 
@@ -133,12 +132,12 @@ export class SettingMenuComponent implements OnInit {
     for (let key in $event) {
       data[key] = $event[key];
     }
-    if (this.menuOrAuthority == 'menu') {
+    if (this.menuOrAuthority === "menu") {
       data.parentId = this.addId;
-      this.settingMenuService.addMenuPage(data).subscribe(r => this.cb(r));//添加页面
-    } else if (this.menuOrAuthority == 'authority') {
+      this.settingMenuService.addMenuPage(data).subscribe(r => this.cb(r)); //添加页面
+    } else if (this.menuOrAuthority === "authority") {
       data.menu = this.addId;
-      this.settingMenuService.addAuthority(data).subscribe(r => this.cb(r));//添加权限
+      this.settingMenuService.addAuthority(data).subscribe(r => this.cb(r)); //添加权限
     }
 
   }
@@ -150,14 +149,17 @@ export class SettingMenuComponent implements OnInit {
   updateOld($event) {
     console.log("xiugai:", $event);
     let data = this.searchItem($event.id);
+    console.log(data);
     for (let key in $event) {
-      data[key] = $event[key];
+      if ($event[key]) {
+        data[key] = $event[key];
+      }
     }
     data.parentId = this.addId;
-    if (this.menuOrAuthority == 'menu') {
-      this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r));//添加页面
-    } else if (this.menuOrAuthority == 'authority') {
-      this.settingMenuService.updateAuthority(data).subscribe(r => this.cb(r));//添加权限
+    if (this.menuOrAuthority === "menu") {
+      this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r)); //添加页面
+    } else if (this.menuOrAuthority === "authority") {
+      this.settingMenuService.updateAuthority(data).subscribe(r => this.cb(r)); //添加权限
     }
   }
 
@@ -212,16 +214,16 @@ export class SettingMenuComponent implements OnInit {
       if (accept) {
         this.settingMenuService.deletePage(id).subscribe(r => {
           this.toastService.creatNewMessage(r.message);
-          if (r.code == "0") {
-            if (index == 0) {
+          if (r.code === "0") {
+            if (index === 0) {
               this.renderer2.setStyle($event.target.parentNode.parentNode.parentNode, "display", "none");
             } else {
               this.renderer2.setStyle($event.target.parentNode.parentNode, "display", "none");
             }
           }
-        })
+        });
       }
-    })
+    });
   }
 
 
@@ -247,14 +249,18 @@ export class SettingMenuComponent implements OnInit {
   searchItem(id) {
     let data;
     this.menus.filter(r => {
-      r.filter(r => {
-        if (r.id == id) data = r;
-        if (r._functions) {
-          return r._functions.filter(r => {
-            if (r.id == id) data = r;
-          })
+      r.filter(item => {
+        if (item.id === id) {
+          data = item;
         }
-      })
+        if (item._functions) {
+          return item._functions.filter(i => {
+            if (i.id === id) {
+              data = i;
+            }
+          });
+        }
+      });
     })
     return data;
   }

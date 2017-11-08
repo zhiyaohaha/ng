@@ -1,11 +1,15 @@
 import {ActivatedRoute} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {ConvertUtil} from "./convert-util";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class FnUtil {
 
-  private menus = this.convertUtil.toJSON(localStorage.getItem("menus"));
+  private menus = this.convertUtil.toJSON(localStorage.getItem("menus")); //用户菜单
+
+  private _subject: Subject<any> = new Subject<any>();
 
   constructor(private convertUtil: ConvertUtil,
               private routerInfo: ActivatedRoute) {
@@ -24,7 +28,7 @@ export class FnUtil {
    * @param key 公共页面的区别key
    * @param param code 默认获取code字段，其他情况有type
    */
-  public searchAPI(key: string, param?: string) {
+  public searchAPI(key: string, param: string = "code") {
     let apis;
     let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
     this.menus.filter(r => {
@@ -35,13 +39,9 @@ export class FnUtil {
       })[0];
     })
     let api = apis._functions.filter(r => {
-      if (param) {
-        return r[param] === key;
-      } else {
-        return r.code === key;
-      }
+      return r[param] === key;
     })[0];
-    return "/api" + api.url;
+    return  api ? "/api" + api.url : "";
   }
 
   /**
@@ -85,6 +85,16 @@ export class FnUtil {
       }
     })
     return data;
+  }
+
+  /**
+   * 订阅空对象
+   */
+  public setSubject(arg: any): void {
+    this._subject.next(arg);
+  }
+  public getSubject(): Observable<any> {
+    return this._subject.asObservable();
   }
 
 

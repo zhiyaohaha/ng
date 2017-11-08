@@ -1,9 +1,14 @@
 :host /deep/ {
   .panel {
-    overflow: hidden;
   }
   .form-group {
     margin-bottom: 10px;
+  }
+  .columns1 {
+    width: 50%;
+  }
+  .columns2 {
+    width: 100%;
   }
   .radio-label, .checkbox-label {
     display: inline-block;

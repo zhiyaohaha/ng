@@ -18,8 +18,8 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   selector: "free-select",
   template: `
     <div class="select-wrap">
-      <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
-      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
+      <span class="free-select-name label{{columns}}" *ngIf="freeSelectName">{{freeSelectName}}</span>
+      <div class="free-select wrap{{columns}}" [ngClass]="{'free-select-click-active':freeClickActive}" (click)="onClick()">
         <div class="free-select-input">
           <label *ngIf="value">{{value}}</label>
           <label *ngIf="!value" class="pholder">{{pholder}}</label>
@@ -78,6 +78,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
   @Input() selected: any;
   @Input() multiple: boolean;
   @Input() freeSelectName: string;
+  @Input() columns: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @ViewChild("input") input: ElementRef;
 

@@ -17,10 +17,10 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
     <div class="label-wrap label{{columns}}">
       <label>{{labeName}}</label>
     </div>
-    <div class="chip-wrap wrap{{columns}}">
+    <div class="chip-wrap wrap{{columns}}" onkeydown="if(event.keyCode==13){return false;}">
       <div class="timi-chip-group" [ngClass]="chipClass">
         <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
-        <input spellcheck="false" type="text" *ngIf="placeholder" [placeholder]="placeholder"
+        <input spellcheck="false" type="text" placeholder="{{placeholder}}"
                (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
                (drop)="drop($event)">
       </div>
@@ -52,15 +52,24 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   @Output() chipsChange: EventEmitter<any> = new EventEmitter();
   @Input() labeName: string;
-  @Input() placeholder: string;
+  @Input()
+  set placeholder(value) {
+    if (value) {
+      this._placeholder = value;
+    }
+  }
+  get placeholder() {
+    return this._placeholder;
+  }
   @Input() columns: number;
   chipClass = {};
   focus: boolean;
   groups: TimiChipComponent[] = [];
   value: any[] = [];
+  _placeholder = "回车添加";
 
   private _propagateChange = (_: any) => {
-  };
+  }
 
   constructor() {
   }
@@ -125,8 +134,11 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
+    console.log(value)
     if (value) {
       this.chips = value;
+    } else {
+      this.chips = [];
     }
   }
 

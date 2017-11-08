@@ -29,7 +29,7 @@ export const TIMI_UPLOAD_FILE_INPUT_VALUE_ACCESSOR: any = {
   selector: "timi-file-uploader",
   template: `
     <div class="clearfix">
-      <label>{{btnName}}</label>
+      <label class="label{{columns}}">{{btnName}}</label>
       <div class="preview">
         <img [src]="src">
         <input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)" [uploader]="uploader">
@@ -60,6 +60,7 @@ export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
   @Input() url = environment.apiURL + "/api/file/upload";
   @Input() multiple: boolean;
   @Input() btnName: string;
+  @Input() columns: string;
   @Input() allowFiles = "image";
 
   @Output() files: EventEmitter<any> = new EventEmitter();

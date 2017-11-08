@@ -13,7 +13,7 @@
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
   <ng-template #authorityModal></ng-template>
-  <button md-raised-button (click)="createComponent(12)">弹框</button>
+  <button md-raised-button (click)="createComponent(12)" style="display: none;">弹框</button>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">

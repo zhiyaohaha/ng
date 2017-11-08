@@ -1,7 +1,7 @@
 <md-sidenav-container class="example-container" [@fadeInState]="'active'">
   <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open-start)="sidenavOpen()"
               (close)="closeEnd()">
-    <div class="row" style="overflow: hidden;height: 100%;">
+    <div class="row">
       <div class="sidenav-left" *ngIf="!isNew">
         <div class="sidenav-container">
           <ng-container *ngIf="!tree">loading</ng-container>
@@ -11,86 +11,88 @@
       <div class="sidenav-right" *ngIf="selectNode">
         <md-tab-group>
           <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
-            <form #sysParams="ngForm">
-              <ng-container *ngFor="let item of modalDOMS">
-                <div class="panel" [ngSwitch]="item.ui.displayType">
-                  <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                       [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                    <timi-input ngModel [labelName]="item.ui.label" name="{{item.name}}"
-                                [(ngModel)]="selectNode.JSONdata[item.name]"
-                                [value]="selectNode.JSONdata[item.name]"
-                                [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>
-                  </div>
-                  <!--<md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
-                  <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
-                  <!--<input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"-->
-                  <!--[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"-->
-                  <!--spellcheck="false">-->
-                  <!--</md-form-field>-->
-                  <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}"
-                         placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]"
-                         disabled="{{item.ui.disabled}}" spellcheck="false"
-                         [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                  <!-- <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                      <input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">
-                  </md-form-field> -->
-                  <div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                       [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-                    <timi-textarea ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]"
-                                   [labelName]="item.ui.label"
-                                   [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>
-                    <!--<textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"-->
-                    <!--[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"-->
-                    <!--spellcheck="false"></textarea>-->
-                  </div>
-                  <md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food"
-                             (change)="changed($event)">
-                    <md-option *ngFor="let food of foods" [value]="food.value">
-                      {{ food.viewValue }}
-                    </md-option>
-                  </md-select>
-                  <div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">
-                    <md-form-field>
-                      <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                      <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                      <md-datepicker #picker></md-datepicker>
-                    </md-form-field>
-                    <md-datepicker #picker></md-datepicker>
-                    &nbsp;&nbsp;--&nbsp;&nbsp;
-                    <md-form-field>
-                      <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                      <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
-                      <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                      <md-datepicker #picker2></md-datepicker>
-                    </md-form-field>
-                    <md-datepicker #picker2></md-datepicker>
-                  </div>
-                  <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-                    <timi-file-uploader ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]" [btnName]="item.ui.label" (success)="uploaded($event)"
-                                        (files)="selected($event)"
-                                        [src]="selectNode.JSONdata['_'+item.name]"></timi-file-uploader>
-                  </div>
-                  <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                    <!--<free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder"-->
-                    <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
+            <timi-responsive-form [modalDOMS]="modalDOMS" [modelDOMSData]="selectNode.JSONdata" btnValue="确定修改"
+                                  (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+            <!--<form #sysParams="ngForm">-->
+              <!--<ng-container *ngFor="let item of modalDOMS">-->
+                <!--<div class="panel" [ngSwitch]="item.ui.displayType">-->
+                  <!--<div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
+                       <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
+                    <!--<timi-input ngModel [labelName]="item.ui.label" name="{{item.name}}"-->
+                                <!--[(ngModel)]="selectNode.JSONdata[item.name]"-->
+                                <!--[value]="selectNode.JSONdata[item.name]"-->
+                                <!--[placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>-->
+                  <!--</div>-->
+                  <!--&lt;!&ndash;<md-form-field *ngSwitchCase="'HtmlDomDisplayType.Text'"&ndash;&gt;-->
+                  <!--&lt;!&ndash;[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"&ndash;&gt;-->
+                  <!--&lt;!&ndash;[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"&ndash;&gt;-->
+                  <!--&lt;!&ndash;spellcheck="false">&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-form-field>&ndash;&gt;-->
+                  <!--<input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}"-->
+                         <!--placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]"-->
+                         <!--disabled="{{item.ui.disabled}}" spellcheck="false"-->
+                         <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+                  <!--&lt;!&ndash; <md-form-field *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+                      <!--<input mdInput id="" ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}" [(ngModel)]="selectNode.JSONdata[item.name]" disabled="{{item.ui.disabled}}" spellcheck="false">-->
+                  <!--</md-form-field> &ndash;&gt;-->
+                  <!--<div *ngSwitchCase="'HtmlDomDisplayType.Textarea'"-->
+                       <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+                    <!--<timi-textarea ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]"-->
+                                   <!--[labelName]="item.ui.label"-->
+                                   <!--[placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>-->
+                    <!--&lt;!&ndash;<textarea ngModel name="{{item.name}}" placeholder="{{item.ui.placeholder}}"&ndash;&gt;-->
+                    <!--&lt;!&ndash;[(ngModel)]="selectNode.JSONdata[item.name]" [disabled]="item.ui.disabled"&ndash;&gt;-->
+                    <!--&lt;!&ndash;spellcheck="false"></textarea>&ndash;&gt;-->
+                  <!--</div>-->
+                  <!--<md-select *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="Favorite food"-->
+                             <!--(change)="changed($event)">-->
+                    <!--<md-option *ngFor="let food of foods" [value]="food.value">-->
+                      <!--{{ food.viewValue }}-->
+                    <!--</md-option>-->
+                  <!--</md-select>-->
+                  <!--<div *ngSwitchCase="'HtmlDomDisplayType.Daterange'">-->
+                    <!--<md-form-field>-->
+                      <!--<input mdInput [mdDatepicker]="picker" placeholder="起始时间">-->
+                      <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker"></button> &ndash;&gt;-->
+                      <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
+                      <!--<md-datepicker #picker></md-datepicker>-->
+                    <!--</md-form-field>-->
+                    <!--<md-datepicker #picker></md-datepicker>-->
+                    <!--&nbsp;&nbsp;&#45;&#45;&nbsp;&nbsp;-->
+                    <!--<md-form-field>-->
+                      <!--<input mdInput [mdDatepicker]="picker2" placeholder="截至时间">-->
+                      <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker2"></button> &ndash;&gt;-->
+                      <!--<md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>-->
+                      <!--<md-datepicker #picker2></md-datepicker>-->
+                    <!--</md-form-field>-->
+                    <!--<md-datepicker #picker2></md-datepicker>-->
+                  <!--</div>-->
+                  <!--<div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">-->
+                    <!--<timi-file-uploader ngModel name="{{item.name}}" [(ngModel)]="selectNode.JSONdata[item.name]" [btnName]="item.ui.label" (success)="uploaded($event)"-->
+                                        <!--(files)="selected($event)"-->
+                                        <!--[src]="selectNode.JSONdata['_'+item.name]"></timi-file-uploader>-->
+                  <!--</div>-->
+                  <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">-->
+                    <!--&lt;!&ndash;<free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder"&ndash;&gt;-->
+                    <!--&lt;!&ndash;(chipsChange)="chipsChange($event)"></free-chip-group>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">&ndash;&gt;-->
+                    <!--<timi-chip-group [chips]="tags || []" [placeholder]="item.ui.placeholder" [labeName]="item.ui.label"-->
+                                     <!--(chipsChange)="chipsChange($event)" [columns]="item.ui.columns"-->
+                                     <!--onkeydown="if(event.keyCode==13){return false;}"></timi-chip-group>-->
                     <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
-                    <timi-chip-group [chips]="tags || []" [placeholder]="item.ui.placeholder" [labeName]="item.ui.label"
-                                     (chipsChange)="chipsChange($event)" [columns]="item.ui.columns"
-                                     onkeydown="if(event.keyCode==13){return false;}"></timi-chip-group>
-                    <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-                  </ng-container>
-                  <!--<md-list-item *ngSwitchCase="'HtmlDomDisplayType.Tags'">-->
-                  <!--<free-chip-group [chips]="treeNode.label" [placeholder]="item.ui.placeholder"-->
-                  <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
-                  <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
-                  <!--</md-list-item>-->
-                </div>
-              </ng-container>
-              <div style="text-align: center;padding: 10px;">
-                <button md-raised-button (click)="onSubmitParams(sysParams.value)">保存修改</button>
-              </div>
-            </form>
+                  <!--</ng-container>-->
+                  <!--&lt;!&ndash;<md-list-item *ngSwitchCase="'HtmlDomDisplayType.Tags'">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<free-chip-group [chips]="treeNode.label" [placeholder]="item.ui.placeholder"&ndash;&gt;-->
+                  <!--&lt;!&ndash;(chipsChange)="chipsChange($event)"></free-chip-group>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-list-item>&ndash;&gt;-->
+                <!--</div>-->
+              <!--</ng-container>-->
+              <!--<div style="text-align: center;padding: 10px;">-->
+                <!--<button md-raised-button (click)="onSubmitParams(sysParams.value)">保存修改</button>-->
+              <!--</div>-->
+            <!--</form>-->
           </md-tab>
           <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
             <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增"

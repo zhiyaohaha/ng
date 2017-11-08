@@ -1,87 +1,129 @@
-<form #form="ngForm" style="overflow: hidden;">
+<form #form="ngForm">
   <ng-container *ngFor="let item of modalDOMS;let i = index;">
-    <ng-container [ngSwitch]="item.ui.displayType">
-      <!--<md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
-      <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
-      <!--<input mdInput ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]"-->
-      <!--placeholder="{{item.ui.placeholder}}" disabled="{{item.ui.disabled}}" spellcheck="false" required>-->
-      <!--</md-input-container>-->
-      <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-           [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-        <timi-input ngModel [(ngModel)]="modelDOMSData[item.name]" [name]="item.name" [labelName]="item.ui.label"
-                    [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>
-      </div>
-      <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}"
-             [(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}"
-             disabled="{{item.ui.disabled}}" spellcheck="false"
-             [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-      <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-           [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
-        <timi-textarea ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" [labelName]="item.ui.label"
-                       [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>
-      </div>
-      <!--<textarea *ngSwitchCase="'HtmlDomDisplayType.Textarea'" ngModel name="{{item.name}}"-->
-      <!--[(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholer}}"-->
-      <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}" required></textarea>-->
-      <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-        <free-select #select (onChange)="onSelectChange($event)" [freeSelectName]="item.ui.label" pholder="{{item.ui.placeholder || '请选择'}}"
-                     [options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>
-        <input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected?.value || modelDOMSData[item.name]">
-      </ng-container>
-      <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
-        <span class="radio-label">{{item.ui.label}}：</span>
-        <free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>
-      </ng-container>
-      <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-        <ng-container *ngIf="item.bindData;else elseBlock">
-          <span class="checkbox-label">{{item.ui.label}}：</span>
-          <free-checkbox *ngFor="let c of item.bindData;" [(ngModel)]="aaaa" value="{{c.value}}" label="{{c.text}}"
-                         name="{{item.name}}"></free-checkbox>
-          <!-- <input type="hidden" name="{{item.name}}" #cc> -->
+    <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
+         *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel'">
+      <h4>{{item.ui.label}}</h4>
+      <ng-container *ngFor="let child of item.childrens">
+        <ng-container [ngSwitch]="child.ui.displayType">
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <timi-input ngModel [labelName]="child.ui.label" name="{{child.name}}"
+                        [(ngModel)]="modelDOMSData[child.name]"
+                        [value]="modelDOMSData[child.name]"
+                        [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
+          </div>
+          <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
+                 [(ngModel)]="modelDOMSData[child.name]" placeholder="{{child.ui.placeholder}}"
+                 disabled="{{child.ui.disabled}}" spellcheck="false"
+                 [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <timi-textarea ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                           [labelName]="child.ui.label"
+                           [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-textarea>
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+            <free-select ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                         [selected]="modelDOMSData[child.name]"
+                         pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns"
+                         [freeSelectName]="child.ui.label"></free-select>
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
+            <md-input-container>
+              <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+              <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+              <md-datepicker #picker></md-datepicker>
+            </md-input-container>
+            &nbsp;&nbsp;--&nbsp;&nbsp;
+            <md-input-container>
+              <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+              <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+              <md-datepicker #picker2></md-datepicker>
+            </md-input-container>
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+            <div>
+              <timi-file-uploader ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                                  [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]" [columns]="child.ui.columns"
+                                  (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
+            </div>
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+            <timi-chip-group ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                             [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
+                             (chipsChange)="chipsChange($event)" [columns]="child.ui.columns"></timi-chip-group>
+          </div>
         </ng-container>
-        <ng-template #elseBlock>
-          <span class="checkbox-label">&nbsp;</span>
-          <free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox
-                         [checked]="modelDOMSData[item.name] || false"></free-checkbox>
-          <input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">
-        </ng-template>
       </ng-container>
-      <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Datereange'">
-        <md-input-container>
-          <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-          <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-          <md-datepicker #picker></md-datepicker>
-        </md-input-container>
-        <md-datepicker #picker></md-datepicker>
-        &nbsp;&nbsp;--&nbsp;&nbsp;
-        <md-input-container>
-          <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-          <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
-          <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-          <md-datepicker #picke2></md-datepicker>
-        </md-input-container>
-        <md-datepicker #picker2></md-datepicker>
-      </ng-container>
-      <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-        <timi-file-uploader ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" [btnName]="item.ui.label"
-                            (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
-        <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="fileId">-->
-      </div>
-      <ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-        <!--<free-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder"-->
-        <!--(chipsChange)="chipsChange($event)"></free-chip-group>-->
-        <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
-        <timi-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder" [labeName]="item.ui.label"
-                         (chipsChange)="chipsChange($event)" [columns]="item.ui.columns"
-                         onkeydown="if(event.keyCode==13){return false;}"></timi-chip-group>
-        <input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">
-      </ng-container>
-    </ng-container>
+    </div>
+
+
+    <!--<ng-container [ngSwitch]="item.ui.displayType">-->
+    <!--<div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
+    <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
+    <!--<timi-input ngModel [(ngModel)]="modelDOMSData[item.name]" [name]="item.name" [labelName]="item.ui.label"-->
+    <!--[placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>-->
+    <!--</div>-->
+    <!--<input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{item.name}}"-->
+    <!--[(ngModel)]="modelDOMSData[item.name]" placeholder="{{item.ui.placeholder}}"-->
+    <!--disabled="{{item.ui.disabled}}" spellcheck="false"-->
+    <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+    <!--<div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"-->
+    <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">-->
+    <!--<timi-textarea ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" [labelName]="item.ui.label"-->
+    <!--[placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>-->
+    <!--</div>-->
+    <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'">-->
+    <!--<free-select #select (onChange)="onSelectChange($event)" [freeSelectName]="item.ui.label" pholder="{{item.ui.placeholder || '请选择'}}"-->
+    <!--[options]="item.bindData" [selected]="modelDOMSData[item.name]" required></free-select>-->
+    <!--<input type="hidden" name="{{item.name}}" [(ngModel)]="select.selected?.value || modelDOMSData[item.name]">-->
+    <!--</ng-container>-->
+    <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Radio'">-->
+    <!--<span class="radio-label">{{item.ui.label}}：</span>-->
+    <!--<free-radio *ngFor="let r of item.bindData" label="{{r.text}}" name="{{item.name}}"></free-radio>-->
+    <!--</ng-container>-->
+    <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">-->
+    <!--<ng-container *ngIf="item.bindData;else elseBlock">-->
+    <!--<span class="checkbox-label">{{item.ui.label}}：</span>-->
+    <!--<free-checkbox *ngFor="let c of item.bindData;" [(ngModel)]="aaaa" value="{{c.value}}" label="{{c.text}}"-->
+    <!--name="{{item.name}}"></free-checkbox>-->
+    <!--</ng-container>-->
+    <!--<ng-template #elseBlock>-->
+    <!--<span class="checkbox-label">&nbsp;</span>-->
+    <!--<free-checkbox label="{{item.ui.label}}" name="{{item.name}}" #checkbox-->
+    <!--[checked]="modelDOMSData[item.name] || false"></free-checkbox>-->
+    <!--<input type="hidden" ngModel name="{{item.name}}" [(ngModel)]="checkbox.checked">-->
+    <!--</ng-template>-->
+    <!--</ng-container>-->
+    <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Datereange'">-->
+    <!--<md-input-container>-->
+    <!--<input mdInput [mdDatepicker]="picker" placeholder="起始时间">-->
+    <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker"></button> &ndash;&gt;-->
+    <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
+    <!--<md-datepicker #picker></md-datepicker>-->
+    <!--</md-input-container>-->
+    <!--<md-datepicker #picker></md-datepicker>-->
+    <!--&nbsp;&nbsp;&#45;&#45;&nbsp;&nbsp;-->
+    <!--<md-input-container>-->
+    <!--<input mdInput [mdDatepicker]="picker2" placeholder="截至时间">-->
+    <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker2"></button> &ndash;&gt;-->
+    <!--<md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>-->
+    <!--<md-datepicker #picke2></md-datepicker>-->
+    <!--</md-input-container>-->
+    <!--<md-datepicker #picker2></md-datepicker>-->
+    <!--</ng-container>-->
+    <!--<div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'" style="padding: 10px 0;">-->
+    <!--<timi-file-uploader ngModel name="{{item.name}}" [(ngModel)]="modelDOMSData[item.name]" [btnName]="item.ui.label"-->
+    <!--(success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>-->
+    <!--</div>-->
+    <!--<ng-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">-->
+    <!--<timi-chip-group [chips]="_tags" [placeholder]="item.ui.placeholder" [labeName]="item.ui.label"-->
+    <!--(chipsChange)="chipsChange($event)" [columns]="item.ui.columns"-->
+    <!--onkeydown="if(event.keyCode==13){return false;}"></timi-chip-group>-->
+    <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
+    <!--</ng-container>-->
+    <!--</ng-container>-->
   </ng-container>
-  <!--<div class="form-group">-->
-  <!--<button fButton color="blue" (click)="onSubmit(form.value)" type="button">{{btnValue}}</button>-->
-  <!--</div>-->
   <div style="text-align: center;padding: 20px;">
     <button md-raised-button (click)="onSubmit(form.value)">{{btnValue}}</button>
   </div>

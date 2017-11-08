@@ -16,13 +16,15 @@ import {ButtonModule} from "../../component/button/button.directive";
 import {TimiFileUploaderModule} from "../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {TimiChipModule} from "../../component/timi-chip/chip.component";
 import {SelectModule} from "app/component/select/select.component";
+import {TimiTextareaModule} from "../../component/timi-textarea/timi-textarea.component";
 
 @NgModule({
   imports: [
     CommonModule,
     SharepageRoutingModule, FormsModule, CommonShareModule,
     MdSidenavModule, MdInputModule, MdSelectModule, MdDatepickerModule, ChipModule,
-    SearchFormModule, TableModule, TimiInputModule, ButtonModule, TimiFileUploaderModule, TimiChipModule, SelectModule
+    SearchFormModule, TableModule, TimiInputModule, ButtonModule, TimiFileUploaderModule, TimiChipModule, SelectModule,
+    TimiTextareaModule
   ],
   declarations: [SharepageComponent, FormUnitComponent],
   providers: [SharepageService, ParamsManageService]
