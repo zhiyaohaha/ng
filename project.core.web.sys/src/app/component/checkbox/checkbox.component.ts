@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from "@angular/common";
 import {
   NgModule, Component, AfterViewInit, Input, Output, Renderer2,
   EventEmitter, ElementRef, ViewChild, forwardRef
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+} from "@angular/core";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -12,18 +12,18 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'free-checkbox',
+  selector: "free-checkbox",
   template: `
     <label class="free-checkbox" #container>
       <div class="free-checkbox-inner">
-        <input type="checkbox" value="{{value}}"  [disabled]="disabled"
-            [checked]="checked" name="{{name}}" (change)="onCheckboxChange($event, label)">
+        <input type="checkbox" value="{{value}}" [disabled]="disabled"
+               [checked]="checked" name="{{name}}" (change)="onCheckboxChange($event, label)">
         <div class="free-checkbox-ins"></div>
       </div>
       <div class="free-checkbox-title">{{label}}</div>
     </label>
-    `,
-  styleUrls: ['./checkbox.component.scss'],
+  `,
+  styleUrls: ["./checkbox.component.scss"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
@@ -35,14 +35,16 @@ export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Input() value: any;
   @Input() theme: string;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
-  @ViewChild('container') container: ElementRef;
+  @ViewChild("container") container: ElementRef;
   checkedValue: any[];
-  onModelChange: Function = () => { };
-  onTouchedChange: Function = () => { };
+  onModelChange: Function = () => {
+  };
+  onTouchedChange: Function = () => {
+  };
 
   constructor(public renderer2: Renderer2) {
     this.checkedValue = [];
-    this.theme = 'default';
+    this.theme = "default";
   }
 
   ngAfterViewInit() {
@@ -85,7 +87,7 @@ export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
       } else {
         this.checkedValue.splice(this.checkedValue.indexOf(this.value), 1);
       }
-      this.onChange.emit(this.checkedValue);
+      this.onChange.emit({value: this.value, checked: this.checked});
       this.onModelChange(this.checkedValue);
     }
   }
@@ -97,4 +99,5 @@ export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
   exports: [CheckboxComponent]
 })
 
-export class CheckboxModule { }
+export class CheckboxModule {
+}
