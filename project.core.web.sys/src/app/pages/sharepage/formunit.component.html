@@ -78,40 +78,20 @@
                         [value]="selectRow[item.name]"
                         [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-input>
           </div>
-          <!--<md-input-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
-                              <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
-            <!--<input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"-->
-                   <!--[(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled" spellcheck="false">-->
-          <!--</md-input-container>-->
           <input type="hidden" *ngSwitchCase="'HtmlDomDisplayType.Hidden'" name="{{item.name}}" value="{{selectRow[item.name]}}">
-          <!--<md-input-container class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Hidden'"-->
-                              <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
-            <!--<input mdInput ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"-->
-                   <!--[(ngModel)]="selectRow[item.name]" disabled="{{item.ui.isDisabled}}" spellcheck="false">-->
-          <!--</md-input-container>-->
           <div class="form-group columns{{item.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                [ngStyle]="{'display': item.ui.hidden ? 'none' : 'block'}">
             <timi-textarea ngModel name="{{item.name}}" [(ngModel)]="selectRow[item.name]" [labelName]="item.ui.label"
                            [placeholder]="item.ui.placeholder" [columns]="item.ui.columns"></timi-textarea>
           </div>
-          <!--<div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"-->
-               <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
-    <!--<textarea ngModel name="{{item.name}}" placeholder="{{item.ui.label}}"-->
-              <!--[(ngModel)]="selectRow[item.name]" [disabled]="item.ui.isDisabled"-->
-              <!--spellcheck="false"></textarea>-->
-          <!--</div>-->
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
             <free-select ngModel name="{{child.name}}" [(ngModel)]="selectRow[child.name]" [selected]="selectRow[child.name]"
                          pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" required
                          [freeSelectName]="child.ui.label"></free-select>
           </div>
-          <!--<md-select class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'" placeholder="{{item.ui.label}}"-->
-                     <!--name="{{item.name}}"-->
-                     <!--[(ngModel)]="selectRow[item.name]">-->
-            <!--<md-option *ngFor="let timi of item.bindData" [value]="timi.value">-->
-              <!--{{ timi.text }}-->
-            <!--</md-option>-->
-          <!--</md-select>-->
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+            <timi-checkbox [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
+          </div>
           <div class="form-group" *ngSwitchCase="'daterange'">
             <md-input-container>
               <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
@@ -128,7 +108,6 @@
           <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
             <free-chip-group ngModel name="{{item.name}}" [(ngModel)]="selectRow[item.name]" *ngIf="chips" [chips]="selectRow[item.name]" [placeholder]="item.ui.placeholder"
                              (chipsChange)="chipsChange($event)"></free-chip-group>
-            <!--<input ngModel type="hidden" name="{{item.name}}" [(ngModel)]="tags">-->
           </div>
         </ng-container>
       </ng-container>
