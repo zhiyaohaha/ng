@@ -1,30 +1,39 @@
 <md-sidenav-container [@fadeInState]="'active'">
-    <md-sidenav #sidenav align="end" (close)="onSidenavClose()" (open)="onSidenavOpen()">
-        <md-tab-group>
-            <md-tab [label]="label">
-                <timi-responsive-form *ngIf="sidenavActive" [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData" btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
-            </md-tab>
-        </md-tab-group>
-    </md-sidenav>
-    <div class="container-fluid">
-        <ul>
-            <li class="menu-row" *ngFor="let menu of menus">
-                <div class="menu-card" *ngFor="let page of menu;let i = index;">
-                    <div class="pages-item" (click)="update(page.id, page.parentId,'menu');sidenav.open();">{{page.name}}<i class="timi-del close" (click)="deletePage($event,page.id,i)"></i></div>
-                    <div class="authority-first" *ngFor="let item of page._functions">
-                        <div class="authority-btn" (click)="update(item.id, item.parentId,'authority');sidenav.open();">{{item.name}}<i class="timi-del close" (click)="deleteAuthority($event,item.id)"></i></div>
-                    </div>
-                    <div class="add-authority" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddFunction') != -1" (click)="add(page.id, 'authority');sidenav.open()">+</div>
-                </div>
-                <div class="menu-card">
-                    <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1" (click)="add(menu[0].id, 'menu');sidenav.open()">+</div>
-                </div>
-            </li>
-            <li class="menu-row">
-                <div class="menu-card">
-                    <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1" (click)="add('', 'menu');sidenav.open()">+</div>
-                </div>
-            </li>
-        </ul>
-    </div>
+  <md-sidenav #sidenav align="end" (close)="onSidenavClose()" (open)="onSidenavOpen()">
+    <md-tab-group>
+      <md-tab [label]="label">
+        <timi-responsive-form *ngIf="sidenavActive" [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData"
+                              btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
+      </md-tab>
+    </md-tab-group>
+  </md-sidenav>
+  <div class="container-fluid">
+    <ul>
+      <li class="menu-row" *ngFor="let menu of menus">
+        <div class="menu-card" *ngFor="let page of menu;let i = index;">
+          <div class="pages-item" (click)="update(page.id, page.parentId,'menu');sidenav.open();">{{page.name}}<i
+            class="timi-del close" (click)="deletePage($event,page.id,i)"></i></div>
+          <div class="authority-first" *ngFor="let item of page._functions">
+            <div class="authority-btn" (click)="update(item.id, item.parentId,'authority');sidenav.open();">
+              {{item.name}}<i class="timi-del close" (click)="deleteAuthority($event,item.id)"></i></div>
+          </div>
+          <div class="add-authority" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddFunction') != -1"
+               (click)="add(page.id, 'authority');sidenav.open()">+
+          </div>
+        </div>
+        <div class="menu-card">
+          <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1"
+               (click)="add(menu[0].id, 'menu');sidenav.open()">+
+          </div>
+        </div>
+      </li>
+      <li class="menu-row">
+        <div class="menu-card">
+          <div class="add-page" *ngIf="authorities.indexOf('SystemSetting.MenuSetting.AddMenu') != -1"
+               (click)="add('', 'menu');sidenav.open()">+
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </md-sidenav-container>
