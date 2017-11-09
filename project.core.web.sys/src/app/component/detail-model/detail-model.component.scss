@@ -1,0 +1,37 @@
+:host /deep/ {
+  .form-group {
+    float: left;
+    .label {
+      float: left;
+      width: 30%;
+      text-align: right;
+      color: rgba(0, 0, 0, 0.5);
+      &::after {
+        content: ':';
+        position: relative;
+        margin: 0 8px 0 2px;
+      }
+    }
+    .span {
+      float: left;
+      width: 70%;
+    }
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+    }
+  }
+  .columns1 {
+    width: 50%;
+  }
+  .columns2 {
+    width: 100%;
+    .label {
+      width: 15%;
+    }
+    .span {
+      width: 85%;
+    }
+  }
+}
