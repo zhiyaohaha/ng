@@ -67,7 +67,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
       })))
     ])
   ],
-  styleUrls: ["select.component.css"],
+  styleUrls: ["select.component.scss"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR, ObjectUtils]
 })
 export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
