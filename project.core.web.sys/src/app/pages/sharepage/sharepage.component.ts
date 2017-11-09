@@ -115,7 +115,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           r.data.data.filters.forEach(i => {
             this.filters.push({ "key": i.name, "value": i.value || "" });
           })
-          this.searchFilters = r.data.data.filters;
+          this.searchFilters = r.data.data.filters.length > 0 ? r.data.data.filters : false;
           this.filteredTotal = r.data.total;
         }
       });

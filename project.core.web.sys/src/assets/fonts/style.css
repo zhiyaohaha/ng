@@ -22,76 +22,112 @@
 }
 
 @font-face {
-    font-family: 'timi-font';
-    src: url('./timi-font.eot?63az2b');
-    src: url('./timi-font.eot?63az2b#iefix') format('embedded-opentype'), url('./timi-font.ttf?63az2b') format('truetype'), url('./timi-font.woff?63az2b') format('woff'), url('./timi-font.svg?63az2b#timi-font') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "timi-font";
+  src:  url("timi-font.eot?xefuxd");
+  src:  url("timi-font.eot?xefuxd#iefix") format("embedded-opentype"),
+    url("timi-font.ttf?xefuxd") format("truetype"),
+    url("timi-font.woff?xefuxd") format("woff"),
+    url("timi-font.svg?xefuxd#timi-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
+
+/*i {*/
+  /*!* use !important to prevent issues with browser extensions that change fonts *!*/
+  /*font-family: "timi-font" !important;*/
+  /*speak: none;*/
+  /*font-style: normal;*/
+  /*font-weight: normal;*/
+  /*font-variant: normal;*/
+  /*text-transform: none;*/
+  /*line-height: 1;*/
+
+  /*!* Better Font Rendering =========== *!*/
+  /*-webkit-font-smoothing: antialiased;*/
+  /*-moz-osx-font-smoothing: grayscale;*/
+/*}*/
 
 [class^="timi-"],
 [class*=" timi-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'timi-font' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'timi-font' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.timi-person-center:before {
-    content: "\e90a";
+.timi-download:before {
+  content: "\e917";
 }
-
-.timi-module:before {
-    content: "\e90b";
+.timi-rmb:before {
+  content: "\e913";
 }
-
-.timi-organize:before {
-    content: "\e90c";
+.timi-play:before {
+  content: "\e915";
 }
-
-.timi-address-book:before {
-    content: "\e900";
+.timi-pause:before {
+  content: "\e916";
 }
-
-.timi-close:before {
-    content: "\e901";
-}
-
-.timi-del:before {
-    content: "\e902";
-}
-
-.timi-delete:before {
-    content: "\e903";
-}
-
-.timi-email:before {
-    content: "\e904";
-}
-
 .timi-home:before {
-    content: "\e905";
+  content: "\e900";
 }
-
-.timi-lock:before {
-    content: "\e906";
-}
-
-.timi-phone:before {
-    content: "\e907";
-}
-
-.timi-quit:before {
-    content: "\e908";
-}
-
 .timi-gear:before {
-    content: "\e909";
+  content: "\e901";
+}
+.timi-share:before {
+  content: "\e902";
+}
+.timi-person-center:before {
+  content: "\e903";
+}
+.timi-info-circle:before {
+  content: "\e904";
+}
+.timi-database:before {
+  content: "\e905";
+}
+.timi-module:before {
+  content: "\e906";
+}
+.timi-stack:before {
+  content: "\e907";
+}
+.timi-address-book:before {
+  content: "\e908";
+}
+.timi-loop:before {
+  content: "\e909";
+}
+.timi-people:before {
+  content: "\e90b";
+}
+.timi-del:before {
+  content: "\e90c";
+}
+.timi-delete:before {
+  content: "\e90d";
+}
+.timi-power-off:before {
+  content: "\e90e";
+}
+.timi-close:before {
+  content: "\e90f";
+}
+.timi-house:before {
+  content: "\e910";
+}
+.timi-ogibe:before {
+  content: "\e911";
+}
+.timi-lock:before {
+  content: "\e912";
+}
+.timi-email:before {
+  content: "\e914";
 }

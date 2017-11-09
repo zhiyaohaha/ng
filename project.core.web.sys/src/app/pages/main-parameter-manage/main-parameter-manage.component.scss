@@ -1,6 +1,9 @@
 :host /deep/ {
   md-sidenav {
     width: unset;
+    .row {
+      height: 100%;
+    }
   }
   .example-container {
     height: 100%;

@@ -16,13 +16,14 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
+          <free-checkbox [label]="'全选'" [checked]="outPutArr.length === checkboxs.length" (onChange)="checkedAll($event)"></free-checkbox>
           <ng-container *ngFor="let item of checkboxs">
             <free-checkbox [value]="item.value" [label]="item.text" (onChange)="onChange($event)"
-                           [checked]="checked && checked.indexOf(item.value) > -1"></free-checkbox>
+                           [checked]="checked.length > 0 && checked.indexOf(item.value) > -1"></free-checkbox>
           </ng-container>          
         </div>
       </div>
-      <div *ngIf="!multiple" class="box-item item-control-wrapper wrapper{{columns}}" style="margin-left: 30%;">
+      <div *ngIf="!multiple" class="box-item item-control-wrapper clearfix wrapper{{columns}}" style="margin-left: 30%;">
         <div #wrap class="item-control">
           <free-checkbox [label]="checkboxs" [checked]="checked" (onChange)="onChange($event)"></free-checkbox>
         </div>
@@ -40,8 +41,8 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   @Input() labelName: string;
   @Input() multiple: boolean;
 
-  checked;
-  outPutArr = [];
+  checked = []; //默认选中的项
+  outPutArr = []; //抛出结果数组
 
   private valueChange = (_: any) => {
   }
@@ -51,6 +52,24 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
 
+  }
+
+  /**
+   * 全选
+   * @param $event
+   */
+  checkedAll($event) {
+    if ($event.checked) {
+      this.outPutArr = [];
+      this.checkboxs.filter( item => {
+        this.outPutArr.push(item.value);
+      });
+      this.checked = this.outPutArr;
+    } else {
+      this.outPutArr = [];
+      this.checked = [];
+    }
+    this.valueChange(this.outPutArr);
   }
 
   onChange($event) {
@@ -67,8 +86,8 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
-    this.checked = value;
-    this.outPutArr = value;
+    this.checked = value || [];
+    this.outPutArr = value || [];
   }
 
   registerOnChange(fn) {
