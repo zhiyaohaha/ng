@@ -15,6 +15,7 @@ import {ConvertUtil} from "../../common/convert-util";
 import {TimiInputModule} from "../timi-input/timi-input.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
 import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
+import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
 
 
 @Component({
@@ -82,10 +83,9 @@ export class ResponsiveModelComponent implements OnInit {
     CommonModule,
     FormsModule,
     ButtonModule,
-    MdDatepickerModule,
     MdInputModule, MdSelectModule, MdDatepickerModule, MdButtonModule,
     ChipModule, SelectModule, CheckboxModule, RadioModule, TimiFileUploaderModule, TimiInputModule, TimiChipModule,
-    TimiTextareaModule
+    TimiTextareaModule, TimiCheckboxModule
   ],
   declarations: [ResponsiveModelComponent],
   exports: [ResponsiveModelComponent]

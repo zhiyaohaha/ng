@@ -12,6 +12,14 @@
                         [value]="modelDOMSData[child.name]"
                         [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
           </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+            <timi-checkbox ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                           [multiple]="child.ui.multiple" [labelName]="child.ui.label"
+                           [checkboxs]="child.bindData || child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
+          </div>
+          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
+            这个功能还没实现 O(∩_∩)O~
+          </div>
           <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
                  [(ngModel)]="modelDOMSData[child.name]" placeholder="{{child.ui.placeholder}}"
                  disabled="{{child.ui.disabled}}" spellcheck="false"
@@ -25,8 +33,9 @@
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
             <free-select ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
                          [selected]="modelDOMSData[child.name]"
-                         pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns"
-                         [freeSelectName]="child.ui.label"></free-select>
+                         pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
+                         [columns]="child.ui.columns"
+                         [freeSelectName]="child.ui.label || '请选择'"></free-select>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
             <md-input-container>
@@ -44,7 +53,8 @@
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
             <div>
               <timi-file-uploader ngModel name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
-                                  [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]" [columns]="child.ui.columns"
+                                  [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
+                                  [columns]="child.ui.columns"
                                   (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
             </div>
           </div>
