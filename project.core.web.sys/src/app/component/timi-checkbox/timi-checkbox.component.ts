@@ -16,14 +16,17 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
-          <free-checkbox [label]="'全选'" [checked]="outPutArr.length === checkboxs.length" (onChange)="checkedAll($event)"></free-checkbox>
+          <free-checkbox [label]="'全选'"
+                         [checked]="actived"
+                         (onChange)="checkedAll($event)"></free-checkbox>
           <ng-container *ngFor="let item of checkboxs">
             <free-checkbox [value]="item.value" [label]="item.text" (onChange)="onChange($event)"
-                           [checked]="checked.length > 0 && checked.indexOf(item.value) > -1"></free-checkbox>
-          </ng-container>          
+                           [checked]="checked && checked.indexOf(item.value) > -1"></free-checkbox>
+          </ng-container>
         </div>
       </div>
-      <div *ngIf="!multiple" class="box-item item-control-wrapper clearfix wrapper{{columns}}" style="margin-left: 30%;">
+      <div *ngIf="!multiple" class="box-item item-control-wrapper clearfix wrapper{{columns}}"
+           style="margin-left: 30%;">
         <div #wrap class="item-control">
           <free-checkbox [label]="checkboxs" [checked]="checked" (onChange)="onChange($event)"></free-checkbox>
         </div>
@@ -41,7 +44,8 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   @Input() labelName: string;
   @Input() multiple: boolean;
 
-  checked = []; //默认选中的项
+  actived = false; //默认是否全选
+  checked: any; //默认选中的项
   outPutArr = []; //抛出结果数组
 
   private valueChange = (_: any) => {
@@ -60,12 +64,14 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
    */
   checkedAll($event) {
     if ($event.checked) {
+      this.actived = true;
       this.outPutArr = [];
-      this.checkboxs.filter( item => {
+      this.checkboxs.filter(item => {
         this.outPutArr.push(item.value);
+        this.checked.push(item.value);
       });
-      this.checked = this.outPutArr;
     } else {
+      this.actived = false;
       this.outPutArr = [];
       this.checked = [];
     }
@@ -79,6 +85,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
       } else {
         this.outPutArr.splice(this.outPutArr.indexOf($event.value), 1);
       }
+      this.actived = this.outPutArr.length === this.checkboxs.length;
       this.valueChange(this.outPutArr);
     } else {
       this.valueChange($event.checked);
@@ -86,8 +93,11 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
-    this.checked = value || [];
-    this.outPutArr = value || [];
+    this.checked = value; //设置默认选中的项
+    if (value) {
+      this.actived = value.length === this.checkboxs.length;
+      this.outPutArr = value;
+    }
   }
 
   registerOnChange(fn) {
