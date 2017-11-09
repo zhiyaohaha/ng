@@ -28,26 +28,14 @@ export class ResponsiveModelComponent implements OnInit {
 
   @Input() modalDOMS; //模版
   @Input() btnValue; //确定按钮显示的文字
-  @Input() tags; //标签
   @Input() modelDOMSData = ""; //需要修改的原数据
 
-  selectedOption; //下拉框选中的值
-
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
-
-  _tags: any = [];
 
   constructor(private convertUtil: ConvertUtil) {
   }
 
   ngOnInit() {
-  }
-
-  /**
-   * 设置tags
-   */
-  chipsChange($event) {
-    this.tags = $event;
   }
 
   /**
@@ -57,12 +45,6 @@ export class ResponsiveModelComponent implements OnInit {
     this.ngSubmit.emit($event);
   }
 
-  /**
-   * 下拉框的change事件
-   */
-  onSelectChange($event) {
-    console.log($event);
-  }
 
   /**
    * 上传文件

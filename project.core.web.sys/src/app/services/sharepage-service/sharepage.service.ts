@@ -19,6 +19,14 @@ export class SharepageService {
   }
 
   /**
+   * 获取查看详情的模板
+   */
+  public getDetailModel() {
+    this.key = this.routerInfo.snapshot.queryParams["pageCode"];
+    return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"));
+  }
+
+  /**
    * 获取修改参数模版
    */
   public editParamsModal() {

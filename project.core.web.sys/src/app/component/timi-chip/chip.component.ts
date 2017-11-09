@@ -134,7 +134,6 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
-    console.log(value)
     if (value) {
       this.chips = value;
     } else {

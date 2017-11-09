@@ -8,7 +8,7 @@
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
-             [clickAuthority]="authorities.indexOf(authorityKey+'.Update') || authorities.indexOf(authorityKey+'.Detail')"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')"
              [pageLinkCount]="pageLinkCount" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
@@ -18,8 +18,9 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
+        <detail-model [modelDOMS]="detailModel" [modelDOMSData]="selectRow"></detail-model>
           <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
-        <timi-responsive-form *ngIf="selectRow" [modalDOMS]="modalDOMS" [modelDOMSData]="selectRow" btnValue="确定修改"
+        <timi-responsive-form *ngIf="edit" [modalDOMS]="modalDOMS" [modelDOMSData]="selectRow" btnValue="确定修改"
                               (ngSubmit)="submitMethod($event)"></timi-responsive-form>
       </div>
     </div>

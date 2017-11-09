@@ -31,6 +31,9 @@ export class SharepageComponent implements OnInit, OnDestroy {
 
   selectRow; //每一行的具体数据
   new: boolean; //是否新添加
+  edit: boolean; //点击编辑过后变成true
+
+  detailModel; //查询详情的模板
 
   /**
    * 表格title
@@ -88,6 +91,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           filters: null,
           name: customized.SysOperationLogConfig
         });
+        this.loadDetailModel();
         this.loadModal();
       });
   }
@@ -139,16 +143,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 选择项
-   */
-  selectedValue: string;
-  /**
-   * 标签
-   */
-  tags;
-  chips;
-
-  /**
    * 添加
    */
   newAdd() {
@@ -163,9 +157,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.sharepageService.getEditParams({ id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
-        if (r.data.tags) {
-          this.setChips(r.data.tags);
-        }
       });
   }
 
@@ -184,26 +175,13 @@ export class SharepageComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  /**
-   * 标签
-   */
-  chipsChange($event) {
-    console.log($event);
-  }
-  /**
-   * 设置标签
-   */
-  setChips($event) {
-    let arr = $event.replace(/\"/g, "");
-    arr.map(r => {
-      this.chips.push({
-        value: r,
-        delete: true
-      });
+  loadDetailModel() {
+    this.sharepageService.getDetailModel().subscribe( res => {
+      if (res.code === "0") {
+        this.detailModel = res.data.doms;
+      }
     });
   }
-
 
   /**
    * 打开
