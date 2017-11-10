@@ -35,8 +35,8 @@
       border-radius: 4px;
       transition: all .3s;
       &:focus {
-        border-color: #49a9ee;
-        box-shadow: 0 0 2px 2px rgba(73, 169, 238, 0.5);
+        border-color: #3b99fc;
+        box-shadow: 0 0 3px 0 #3b99fc;
       }
     }
     .item-error-tip {
