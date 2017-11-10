@@ -1,19 +1,27 @@
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {
-  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnDestroy,
-  OnInit, Output,
-  ViewChild, ViewContainerRef
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef
 } from "@angular/core";
-import { HtmlDomTemplate } from "./../../models/HtmlDomTemplate";
-import { SharepageService } from "./../../services/sharepage-service/sharepage.service";
-import { TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
-import { globalVar, customized } from "./../../common/global.config";
-import { fadeIn } from "./../../common/animations";
-import { FnUtil } from "./../../common/fn-util";
+import {HtmlDomTemplate} from "./../../models/HtmlDomTemplate";
+import {SharepageService} from "./../../services/sharepage-service/sharepage.service";
+import {ITdDataTableColumn, TdDataTableSortingOrder} from "@covalent/core";
+import {customized, globalVar} from "./../../common/global.config";
+import {fadeIn} from "./../../common/animations";
+import {FnUtil} from "./../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
 import {ConvertUtil} from "../../common/convert-util";
 import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
-import {environment} from "../../../environments/environment";
 
 @Component({
   selector: "app-sharepage",
@@ -32,6 +40,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   selectRow; //每一行的具体数据
   new: boolean; //是否新添加
   edit: boolean; //点击编辑过后变成true
+  detail: boolean; //查看详情时变成true
 
   detailModel; //查询详情的模板
 
@@ -118,7 +127,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           this.filteredData = this.basicData = r.data.data.bindData;
           r.data.data.filters.forEach(i => {
             this.filters.push({ "key": i.name, "value": i.value || "" });
-          })
+          });
           this.searchFilters = r.data.data.filters.length > 0 ? r.data.data.filters : false;
           this.filteredTotal = r.data.total;
         }
@@ -154,6 +163,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
    */
   rowClickEvent($event) {
     this.new = false;
+    this.detail = true;
     this.sharepageService.getEditParams({ id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
@@ -181,6 +191,22 @@ export class SharepageComponent implements OnInit, OnDestroy {
         this.detailModel = res.data.doms;
       }
     });
+  }
+
+  /**
+   * 详情组件点击事件
+   */
+  detailClick(value) {
+    this.detail = false;
+    this.edit = true;
+  }
+
+  /**
+   * 返回详情
+   */
+  backClick() {
+    this.detail = true;
+    this.edit = false;
   }
 
   /**
@@ -240,7 +266,7 @@ export class FormUnitComponent {
   @Input() DOMSData;
   @Input()
   set selectRow(value) {
-    console.log(value)
+    console.log(value);
     this._selectRow = value;
   }
   get selectRow() {

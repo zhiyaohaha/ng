@@ -1,5 +1,5 @@
 <form #form="ngForm">
-  <ng-container *ngFor="let item of modalDOMS;let i = index;">
+  <ng-container *ngFor="let item of modalDOMS;">
     <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
          *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel'">
       <h4>{{item.ui.label}}</h4>
@@ -135,6 +135,7 @@
     <!--</ng-container>-->
   </ng-container>
   <div style="text-align: center;padding: 20px;">
+    <button md-raised-button (click)="back()">返回</button>
     <button md-raised-button (click)="onSubmit(form.value)">{{btnValue}}</button>
   </div>
 </form>

@@ -18,10 +18,11 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-        <detail-model *ngIf="selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"></detail-model>
+        <detail-model *ngIf="detail && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
+                      (onClick)="detailClick($event)"></detail-model>
           <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
         <timi-responsive-form *ngIf="edit" [modalDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnValue]="'确定修改'"
-                              (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+                              (backClick)="backClick()" (ngSubmit)="submitMethod($event)"></timi-responsive-form>
       </div>
     </div>
   </md-sidenav>

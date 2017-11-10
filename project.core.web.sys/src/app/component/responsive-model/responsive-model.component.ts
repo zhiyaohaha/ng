@@ -1,17 +1,13 @@
-import {Component, OnInit, NgModule, Input, Output, EventEmitter} from "@angular/core";
+import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {
-  MdListModule, MdSelectModule, MdDatepickerModule, MdRadioModule, MdCheckboxModule, MdInputModule,
-  MdButtonModule
-} from "@angular/material";
+import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
 import {ButtonModule} from "./../button/button.directive";
 import {ChipModule} from "./../chip/chip.component";
 import {RadioModule} from "./../radio/radio.component";
 import {CheckboxModule} from "./../checkbox/checkbox.component";
 import {SelectModule} from "./../select/select.component";
 import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {ConvertUtil} from "../../common/convert-util";
 import {TimiInputModule} from "../timi-input/timi-input.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
 import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
@@ -30,12 +26,20 @@ export class ResponsiveModelComponent implements OnInit {
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = ""; //需要修改的原数据
 
+  @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
-  constructor(private convertUtil: ConvertUtil) {
+  constructor() {
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * 返回按钮
+   */
+  back() {
+    this.backClick.emit();
   }
 
   /**
