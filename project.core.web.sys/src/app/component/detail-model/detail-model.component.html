@@ -12,7 +12,8 @@
 
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-          <div class="label">{{child.ui.label}}</div><div class="span">{{modelDOMSData[child.name]}}</div>
+          <div class="label">{{child.ui.label}}</div>
+          <div class="span">{{child.name | ergodicJson : modelDOMSData}}</div>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">

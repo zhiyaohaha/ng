@@ -1,9 +1,9 @@
-import {Component, OnInit, NgModule, Input, Output, EventEmitter} from "@angular/core";
+import {Component, Input, NgModule, OnInit} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MdButtonModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
-import {ConvertUtil} from "../../common/convert-util";
+import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 
 
 @Component({
@@ -16,7 +16,7 @@ export class DetailModelComponent implements OnInit {
   @Input() modelDOMS; //模版
   @Input() modelDOMSData = ""; //显示的原数据
 
-  constructor(private convertUtil: ConvertUtil) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class DetailModelComponent implements OnInit {
     ButtonModule,
     MdButtonModule
   ],
-  declarations: [DetailModelComponent],
+  declarations: [DetailModelComponent, ErgodicJsonPipe],
   exports: [DetailModelComponent]
 })
 
