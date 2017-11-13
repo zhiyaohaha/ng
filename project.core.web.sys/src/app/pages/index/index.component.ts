@@ -1,15 +1,15 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, HostListener, Renderer2 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { DomRenderer } from './../../common/dom';
-import { Title } from '@angular/platform-browser';
-import { config } from './../../common/config';
-import { CommunicationService } from './../../services/share/communication.service';
+import {AfterViewInit, Component, HostListener, OnDestroy, OnInit, Renderer2, ViewChild} from "@angular/core";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {ActivatedRoute} from "@angular/router";
+import {DomRenderer} from "./../../common/dom";
+import {Title} from "@angular/platform-browser";
+import {config} from "./../../common/config";
+import {CommunicationService} from "./../../services/share/communication.service";
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss'],
+  selector: "app-index",
+  templateUrl: "./index.component.html",
+  styleUrls: ["./index.component.scss"],
   providers: [DomRenderer]
 })
 export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -27,9 +27,12 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
   isOpen: boolean;
   searchState: boolean;
   sidebarActive: boolean;
-  @ViewChild('setting') settingBtn; ElementRef;
-  @ViewChild('main') main;
-  @HostListener('window:resize') onResize() {
+  @ViewChild("setting") settingBtn;
+  ElementRef;
+  @ViewChild("main") main;
+
+  @HostListener("window:resize")
+  onResize() {
     this.resize();
   }
   constructor(private renderer2: Renderer2,
@@ -44,7 +47,6 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.avatar = this.myService.avatar;
     this.avatar = localStorage.getItem("avatar");
     this.leftNav = JSON.parse(localStorage.getItem("menus"));
 
@@ -57,40 +59,40 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.ws.send("1111111111");
     // }, 2000)
 
-    this.title = '首页';
-    this.icon = 'laptop';
-    this.menuItem = [{ 'name': '首页' }, { 'name': '' }];
+    this.title = "首页";
+    this.icon = "laptop";
+    this.menuItem = [{"name": "首页"}, {"name": ""}];
     this.dropdownItem = [{
-      'name': 'TGCode',
-      'icon': 'user'
+      "name": "TGCode",
+      "icon": "user"
     }, {
-      'name': '帮助',
-      'icon': 'question-circle',
-      'routerLink': '/main/getting-started'
+      "name": "帮助",
+      "icon": "question-circle",
+      "routerLink": "/main/getting-started"
     }, {
-      'name': '系统消息',
-      'icon': 'bell-o',
-      'routerLink': '/main/changelog'
+      "name": "系统消息",
+      "icon": "bell-o",
+      "routerLink": "/main/changelog"
     }, {
-      'name': '登出',
-      'icon': 'sign-out',
-      'url': 'http://api2.cpf360.com/api/auth/loginout'
+      "name": "登出",
+      "icon": "sign-out",
+      "url": "http://api2.cpf360.com/api/auth/loginout"
     }];
 
     this.searchForm = this.fb.group({
-      'keyword': ['']
+      "keyword": [""]
     });
 
     this.menus = [
-      { 'icon': 'user' },
-      { 'icon': 'user' },
-      { 'icon': 'user' }
+      {"icon": "user"},
+      {"icon": "user"},
+      {"icon": "user"}
     ];
     this.theme = config.theme;
   }
   ngAfterViewInit() {
     const prefix = this.domRenderer.getWebType();
-    this.renderer2.listen('document', 'fullscreenchange', function () {
+    this.renderer2.listen("document", "fullscreenchange", function () {
       this.isOpen = !this.isOpen;
     });
   }
@@ -106,9 +108,9 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleAside() {
     this.isMini = !this.isMini;
     if (this.isMini) {
-      this.renderer2.addClass(document.body, 'free-mini');
+      this.renderer2.addClass(document.body, "free-mini");
     } else {
-      this.renderer2.removeClass(document.body, 'free-mini');
+      this.renderer2.removeClass(document.body, "free-mini");
     }
   }
 
@@ -119,7 +121,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
   onActivate(component) {
     let title = component.pageTitle;
     if (!title) {
-      title = '汉力贷款超市系统后台';
+      title = "汉力贷款超市系统后台";
     }
     this.pageTitle.setTitle(title);
 
@@ -127,7 +129,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.toggleAside();
     // }
 
-    this.renderer2.setProperty(this.main.nativeElement, 'scrollTop', 0);
+    this.renderer2.setProperty(this.main.nativeElement, "scrollTop", 0);
   }
 
   onDeactivate(component) {
@@ -137,9 +139,9 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sidebarActive = !this.sidebarActive;
 
     if (this.sidebarActive) {
-      this.renderer2.addClass(this.settingBtn.nativeElement, 'open');
+      this.renderer2.addClass(this.settingBtn.nativeElement, "open");
     } else {
-      this.renderer2.removeClass(this.settingBtn.nativeElement, 'open');
+      this.renderer2.removeClass(this.settingBtn.nativeElement, "open");
     }
   }
 
@@ -155,7 +157,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
 
   resize() {
     if (window.innerWidth < 900) {
-      this.renderer2.addClass(document.body, 'free-mini');
+      this.renderer2.addClass(document.body, "free-mini");
       this.isMini = true;
     }
   }
