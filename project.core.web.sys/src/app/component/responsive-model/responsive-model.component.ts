@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
-import {ButtonModule} from "./../button/button.directive";
-import {ChipModule} from "./../chip/chip.component";
-import {RadioModule} from "./../radio/radio.component";
-import {CheckboxModule} from "./../checkbox/checkbox.component";
-import {SelectModule} from "./../select/select.component";
+import {ButtonModule} from "../button/button.directive";
+import {ChipModule} from "../chip/chip.component";
+import {RadioModule} from "../radio/radio.component";
+import {CheckboxModule} from "../checkbox/checkbox.component";
+import {SelectModule} from "../select/select.component";
 import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {TimiInputModule} from "../timi-input/timi-input.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
@@ -23,6 +23,7 @@ import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
 export class ResponsiveModelComponent implements OnInit {
 
   @Input() modalDOMS; //模版
+  @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = ""; //需要修改的原数据
 

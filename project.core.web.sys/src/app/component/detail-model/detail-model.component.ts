@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {MdButtonModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
 import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
+import {defaultValue} from "../../common/global.config";
 
 
 @Component({
@@ -13,6 +14,8 @@ import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 })
 
 export class DetailModelComponent {
+
+  imgSrc = defaultValue.imgSrc; //图片默认地址
   @Input() modelDOMS; //模版
   @Input() modelDOMSData = ""; //显示的原数据
 
@@ -22,12 +25,16 @@ export class DetailModelComponent {
   }
 
   clickEvent(obj) {
-    obj = obj[0];
-    switch (obj.name) {
-      case "HtmlDomCmd.Redirect":
-        this.onClick.emit("Redirect");
-        break;
-    }
+    this.onClick.emit(obj[0]);
+    // obj = obj[0];
+    // switch (obj.name) {
+    //   case "HtmlDomCmd.Redirect":
+    //     this.onClick.emit("Redirect");
+    //     break;
+    //   case "HtmlDomCmd.API":
+    //     this.onClick.emit(obj);
+    //     break;
+    // }
   }
 
 

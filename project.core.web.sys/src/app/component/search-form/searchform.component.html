@@ -2,10 +2,12 @@
     <li *ngFor="let item of filters">
         <div [ngSwitch]="item.ui.displayType">
             <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
+              <input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"
+                     [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
             </md-input-container>
             <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-                <input mdInput placeholder="{{item.ui.placeholder}}" [value]="item.value" [name]="item.name" [disabled]="item.ui.isDisabled">
+              <input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"
+                     [name]="item.name" [disabled]="item.ui.isDisabled">
             </md-input-container>
             <div *ngSwitchCase="'HtmlDomDisplayType.DateRange'">
                 <md-input-container>

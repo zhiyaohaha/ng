@@ -16,10 +16,14 @@
       float: left;
       width: 70%;
     }
-    img {
-      width: 200px;
-      height: 200px;
-      object-fit: contain;
+    .img-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+      }
     }
   }
   .columns1 {

@@ -13,15 +13,16 @@ import {
   ViewChild,
   ViewContainerRef
 } from "@angular/core";
-import {HtmlDomTemplate} from "./../../models/HtmlDomTemplate";
-import {SharepageService} from "./../../services/sharepage-service/sharepage.service";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ITdDataTableColumn, TdDataTableSortingOrder} from "@covalent/core";
-import {customized, globalVar} from "./../../common/global.config";
-import {fadeIn} from "./../../common/animations";
-import {FnUtil} from "./../../common/fn-util";
+import {customized, globalVar} from "../../common/global.config";
+import {fadeIn} from "../../common/animations";
+import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
 import {ConvertUtil} from "../../common/convert-util";
 import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
+import {BaseService} from "../../services/base.service";
 
 @Component({
   selector: "app-sharepage",
@@ -39,6 +40,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
 
   selectRow; //每一行的具体数据
   new: boolean; //是否新添加
+  btnType: string; //表单模板按钮类型
   edit: boolean; //点击编辑过后变成true
   detail: boolean; //查看详情时变成true
 
@@ -77,21 +79,24 @@ export class SharepageComponent implements OnInit, OnDestroy {
 
   routerSubscribe; //路由订阅事件
 
-  @ViewChild("table")
-  private table: ElementRef;
-
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
               private converUtil: ConvertUtil,
               private routerInfo: ActivatedRoute,
               private router: Router,
               private toastService: ToastService,
-              private resolver: ComponentFactoryResolver
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService
   ) {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-
+        this.selectRow = null;
+        this.new = true;
+        this.edit = false;
+        this.btnType = "new";
+        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
         this.getParamsList({
@@ -106,11 +111,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    //this.getParamsList(this.listparam);
-    //this.loadModal();
-    // this.routerInfo.events.subscribe(r=>{
-    //   console.log("路由订阅：",r)
-    // })
   }
 
   /**
@@ -138,14 +138,14 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 搜索
    */
   onSearch($event) {
-    console.log($event);
+    this.listparam.filters = $event;
+    this.getParamsList(this.listparam);
   }
 
   /**
    * 翻页
    */
   page($event) {
-    console.log($event);
     this.listparam.index = $event.page - 1;
     this.listparam.size = $event.pageSize;
     this.getParamsList(this.listparam);
@@ -157,6 +157,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
   newAdd() {
     this.selectRow = this.converUtil.toJSON(this.modalData);
     this.new = true;
+    this.edit = true;
+    this.btnType = "new";
   }
   /**
    * 点击行
@@ -164,6 +166,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   rowClickEvent($event) {
     this.new = false;
     this.detail = true;
+    this.btnType = "edit";
     this.sharepageService.getEditParams({ id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
@@ -197,8 +200,16 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 详情组件点击事件
    */
   detailClick(value) {
-    this.detail = false;
-    this.edit = true;
+    console.log(this.selectRow);
+    if (value.name === "HtmlDomCmd.Redirect") {
+      this.detail = false;
+      this.edit = true;
+    } else if (value.name === "HtmlDomCmd.API") {
+      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
+        this.toastService.creatNewMessage(res.message);
+      });
+    }
+
   }
 
   /**
@@ -217,7 +228,10 @@ export class SharepageComponent implements OnInit, OnDestroy {
   /**
    * 关闭
    */
-  closeEnd() { }
+  closeEnd() {
+    this.detail = false;
+    this.edit = false;
+  }
 
   /**
    * 提交表单

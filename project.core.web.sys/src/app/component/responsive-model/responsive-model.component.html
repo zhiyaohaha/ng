@@ -134,8 +134,13 @@
     <!--</ng-container>-->
     <!--</ng-container>-->
   </ng-container>
-  <div style="text-align: center;padding: 20px;">
-    <button md-raised-button (click)="back()">返回</button>
-    <button md-raised-button (click)="onSubmit(form.value)">{{btnValue}}</button>
+  <div style="text-align: center;padding: 20px;" [ngSwitch]="btnType">
+    <ng-container *ngSwitchCase="'new'">
+      <button md-raised-button (click)="onSubmit(form.value)">确定</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'edit'">
+      <button md-raised-button (click)="back()">返回</button>
+      <button md-raised-button (click)="onSubmit(form.value)">确定修改</button>
+    </ng-container>
   </div>
 </form>
