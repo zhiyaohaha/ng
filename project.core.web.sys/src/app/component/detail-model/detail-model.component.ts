@@ -5,6 +5,7 @@ import {MdButtonModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
 import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 import {defaultValue} from "../../common/global.config";
+import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
 
 
 @Component({
@@ -47,7 +48,7 @@ export class DetailModelComponent {
     ButtonModule,
     MdButtonModule
   ],
-  declarations: [DetailModelComponent, ErgodicJsonPipe],
+  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe],
   exports: [DetailModelComponent]
 })
 

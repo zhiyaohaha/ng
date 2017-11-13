@@ -34,7 +34,9 @@
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
           <div class="label">{{child.ui.label}}</div>
-          <div class="span">{{modelDOMSData[child.name]}}</div>
+          <div class="span">
+            <p *ngFor="let item of modelDOMSData[child.name] | strToArray">{{item}}</p>
+          </div>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
              style="text-align: center;">
