@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {BaseService} from "./../base.service";
-import {FnUtil} from "./../../common/fn-util";
+import {BaseService} from "../base.service";
+import {FnUtil} from "../../common/fn-util";
 
 @Injectable()
 export class SharepageService {
@@ -23,7 +23,11 @@ export class SharepageService {
    */
   public getDetailModel() {
     this.key = this.routerInfo.snapshot.queryParams["pageCode"];
-    return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"));
+    if (this.fnUtil.searchAPI(this.key + ".DetailTemplate")) {
+      return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"));
+    } else {
+      return this.fnUtil.getSubject();
+    }
   }
 
   /**
