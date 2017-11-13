@@ -1,12 +1,10 @@
-import { URLSearchParams, Response, RequestOptions } from "@angular/http";
-import { Router } from "@angular/router";
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import {Router} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import "rxjs/Rx";
 
-import { LoginService } from "../../services/login-service/login.service";
-import { userNameValidator } from "../../validators/validator";
-import { CommunicationService } from "./../../services/share/communication.service";
+import {LoginService} from "../../services/login-service/login.service";
+import {CommunicationService} from "./../../services/share/communication.service";
 
 @Component({
   selector: "app-login",
@@ -21,7 +19,11 @@ export class LoginComponent implements OnInit {
   logining: boolean;
   private pageApi = {};
 
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private myService: CommunicationService) { }
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private loginService: LoginService,
+              private myService: CommunicationService) {
+  }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -39,15 +41,15 @@ export class LoginComponent implements OnInit {
     this.errors = true;
     if (this.loginForm.valid) {
       this.logining = true;
-      let loginInfo = { "account": account, "password": password };
+      let loginInfo = {"account": account, "password": password};
       this.loginService.login(loginInfo).subscribe(res => {
         if (res.code === "0") {
           this.router.navigateByUrl("/main");
           if (res.data && res.data.menus) {
             localStorage.setItem("menus", JSON.stringify(res.data.menus));
-            localStorage.setItem("avatar", res.data.avatar);
+            localStorage.setItem("avatar", res.data._avatar);
             this.writeMenus(res.data.menus);
-          };
+          }
         } else {
           this.logining = false;
           this.msgErrors = res.message;
@@ -57,13 +59,12 @@ export class LoginComponent implements OnInit {
   }
 
 
-
   /**
    * 提取页面API写入到localstorage
    */
   private writeMenus(menus) {
     menus.forEach(element => {
-      this.pageApi[element.code] = { a: element.functions, u: element._functions };
+      this.pageApi[element.code] = {a: element.functions, u: element._functions};
       if (element.childrens) {
         this.writeMenus(element.childrens);
       }

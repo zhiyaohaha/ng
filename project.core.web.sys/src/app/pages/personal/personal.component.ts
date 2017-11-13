@@ -1,9 +1,9 @@
-import { ConvertUtil } from "./../../common/convert-util";
-import { PersonalService } from "./../../services/personal/personal.service";
-import { Component, OnInit } from "@angular/core";
-import { fadeIn } from "../../common/animations";
-import { FileUploader, FileSelectDirective } from "ng2-file-upload";
-import { CommunicationService } from "./../../services/share/communication.service";
+import {ConvertUtil} from "./../../common/convert-util";
+import {PersonalService} from "./../../services/personal/personal.service";
+import {Component, OnInit, Renderer2} from "@angular/core";
+import {fadeIn} from "../../common/animations";
+import {FileUploader} from "ng2-file-upload";
+import {CommunicationService} from "./../../services/share/communication.service";
 import {globalUrl} from "../../common/global.config";
 import {FnUtil} from "../../common/fn-util";
 import {environment} from "../../../environments/environment";
@@ -22,18 +22,20 @@ export class PersonalComponent implements OnInit {
   uploader: FileUploader = new FileUploader({
     url: environment.apiURL + this.fnUtil.searchAPI("PersonalCenter.BasicInfo.UpdateAvatar"),
     method: "POST"
-  })
+  });
 
   constructor(private _personalService: PersonalService,
               private util: ConvertUtil,
               private myService: CommunicationService,
-              private fnUtil: FnUtil) { }
+              private fnUtil: FnUtil,
+              private renderer2: Renderer2) {
+  }
 
   ngOnInit() {
     this._personalService.getPersonalInfo().subscribe(r => {
       if (r.code === "0") {
         this.personInfo = r.data;
-        this.personImg = r.data.avatar;
+        this.personImg = r.data._avatar;
       }
     });
   }
@@ -53,6 +55,8 @@ export class PersonalComponent implements OnInit {
 
     this.uploader.onSuccessItem = function (e) {
       _self.personImg = e.base;
+      _self.renderer2.setAttribute(document.querySelector("#avatar"), "src", _self.util.toJSON(e._xhr.response).data[0].path);
+      localStorage.setItem("avatar", _self.util.toJSON(e._xhr.response).data[0].path);
     };
   }
 
@@ -62,7 +66,7 @@ export class PersonalComponent implements OnInit {
    */
   onSuccessItem($event) {
     let data = this.util.toJSON($event);
-    if (data.code == "0") {
+    if (data.code === "0") {
       let url = data.data[0].path;
       this._personalService.setPersonalHeader(url).subscribe();
       this.personImg = url;
@@ -76,10 +80,12 @@ export class PersonalComponent implements OnInit {
    * @param
    */
   onBlur($event) {
-    if (!$event.isChange) return;
+    if (!$event.isChange) {
+      return;
+    }
     this._personalService.setPersonalInfo({ key: $event.target.name, value: $event.target.value }).subscribe(r => {
       console.log(r);
-    })
+    });
   }
 
 }
