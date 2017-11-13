@@ -36,6 +36,8 @@ export class PersonalComponent implements OnInit {
       if (r.code === "0") {
         this.personInfo = r.data;
         this.personImg = r.data._avatar;
+        this.renderer2.setAttribute(document.querySelector("#avatar"), "src", r.data._avatar);
+        localStorage.setItem("avatar", r.data._avatar);
       }
     });
   }
