@@ -6,7 +6,8 @@
 /out-tsc
 
 # dependencies
-/node_modules
+/node_modules/*
+!node_modules/ng2-file-upload
 
 # IDEs and editors
 /.idea

@@ -37,7 +37,7 @@ export class FnUtil {
           apis = cc;
         }
       })[0];
-    })
+    });
     let api = apis._functions.filter(r => {
       return r[param] === key;
     })[0];
@@ -75,16 +75,16 @@ export class FnUtil {
   }
 
   /**
-   * 根据pipe格式化表格数据
+   * 获取JSON长度
    */
-  public formatTableCell (data: any[]): any[] {
-    data.map( item => {
-      switch (item.pipe) {
-        case "HtmlPipe.Date": item.format = v => this.convertUtil.getFullDateTime(v);
-          break;
+  public getJSONLength(json) {
+    let length = 0;
+    for (let key in json) {
+      if (json[key]) {
+        length++;
       }
-    })
-    return data;
+    }
+    return length;
   }
 
   /**
