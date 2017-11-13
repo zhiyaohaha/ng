@@ -28,6 +28,7 @@
             <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
               date:"yyyy-MM-dd"}}
             </div>
+            <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
             <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
           </ng-container>
         </div>

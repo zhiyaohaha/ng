@@ -6,6 +6,7 @@ import {ButtonModule} from "../button/button.directive";
 import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 import {defaultValue} from "../../common/global.config";
 import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
+import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
 
 
 @Component({
@@ -56,7 +57,7 @@ export class DetailModelComponent {
     ButtonModule,
     MdButtonModule
   ],
-  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe],
+  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe],
   exports: [DetailModelComponent]
 })
 
