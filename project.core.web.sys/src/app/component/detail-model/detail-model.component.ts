@@ -38,6 +38,14 @@ export class DetailModelComponent {
     // }
   }
 
+  /**
+   * 判断是否为数组
+   * @param 判断对象
+   */
+  isArray(params) {
+    return Array.isArray(params);
+  }
+
 
 }
 
