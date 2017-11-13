@@ -3,7 +3,8 @@
         <div [ngSwitch]="item.ui.displayType">
             <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
               <input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"
-                     [name]="item.name" (input)="searchParam($event)" [disabled]="item.ui.isDisabled">
+                     [name]="item.name" (input)="searchParam($event)" (keypress)="keyPress($event)"
+                     [disabled]="item.ui.isDisabled">
             </md-input-container>
             <md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
               <input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"
