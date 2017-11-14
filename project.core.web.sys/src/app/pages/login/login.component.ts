@@ -5,6 +5,7 @@ import "rxjs/Rx";
 
 import {LoginService} from "../../services/login-service/login.service";
 import {CommunicationService} from "./../../services/share/communication.service";
+import {defaultValue} from "../../common/global.config";
 
 @Component({
   selector: "app-login",
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       account: ["administrator", [Validators.required]],
       password: ["1", Validators.required]
-    })
+    });
   }
 
   /**
@@ -47,14 +48,14 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl("/main");
           if (res.data && res.data.menus) {
             localStorage.setItem("menus", JSON.stringify(res.data.menus));
-            localStorage.setItem("avatar", res.data._avatar);
+            localStorage.setItem("avatar", res.data._avatar || defaultValue.defaultAvatar);
             this.writeMenus(res.data.menus);
           }
         } else {
           this.logining = false;
           this.msgErrors = res.message;
         }
-      })
+      });
     }
   }
 

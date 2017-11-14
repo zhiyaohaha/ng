@@ -22,5 +22,6 @@ export const globalUrl = {
 };
 
 export const defaultValue = {
-  imgSrc: "http://data.cpf360.com/default/default.jpg"
+  imgSrc: "http://data.cpf360.com/default/default.jpg",
+  defaultAvatar: "http://data.cpf360.com/default/avatar.jpg"
 };
