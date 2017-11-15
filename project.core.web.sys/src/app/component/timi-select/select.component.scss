@@ -116,6 +116,10 @@
     padding: .5rem;
     display: flex;
     align-items: center;
+    free-checkbox {
+      display: none;
+      width: 26px;
+    }
   }
   .free-select-inner {
     position: relative;

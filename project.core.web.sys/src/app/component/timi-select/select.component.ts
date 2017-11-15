@@ -35,7 +35,7 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
           <label>{{value || pholder}}</label>
         </div>
         <div class="free-select-menu" *ngIf="opened" [@selectState]="'in'" (click)="onMenuClick()">
-          <div class="free-select-filter" *ngIf="filter">
+          <div class="free-select-filter" *ngIf="filter" (click)="clickLi($event)">
             <free-checkbox *ngIf="multiple" [checked]="multipleTotal" (onChange)="onMultipleTotal($event)">
             </free-checkbox>
             <div class="free-select-inner">
@@ -86,6 +86,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   @Input() editable: boolean;
   @Input() filter: boolean;
   @Input() selected: any;
+  _selected: any; //中间变量
   @Input() multiple: boolean;
   @Input() freeSelectName: string;
   @Input() columns: string;
@@ -105,19 +106,33 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     return this._options;
   }
 
+  onModelChange: Function = () => {
+  };
+
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  onTouchedChange: Function = () => {
+  };
+
   set options(value: any) {
     if (!value) {
       return;
     }
+    if (!this.multiple && value.length > 0 && value[0].text !== "请选择") {
+      value.unshift({text: "请选择", value: null, childrens: null});
+    } else if (this.multiple && this._selected) {
+      let arr = [];
+      this.selected = [];
+      value.map(r => {
+        if (this._selected.indexOf(r.value) > -1) {
+          r.checked = true;
+          this.selected.push(r);
+          arr.push(r.text);
+        }
+      });
+      this.value = arr.join(",");
+    }
     this._options = value;
   }
-
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
-
-  onModelChange: Function = () => {
-  };
-  onTouchedChange: Function = () => {
-  };
 
 
   constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
@@ -152,18 +167,18 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
      * 多选情况下设置selected和value
      */
     if (this.multiple) {
-      let _selected = this.selected || [];
+      this._selected = this.selected || [];
       let arr = [];
       this.selected = [];
-      this.options.map(r => {
-        if (_selected.indexOf(r.value) > -1) {
-          r.checked = true;
-          this.selected.push(r);
-          this.selected.filter(i => {
-            arr.push(i.text);
-          });
-        }
-      });
+      if (this.options) {
+        this.options.map(r => {
+          if (this._selected.indexOf(r.value) > -1) {
+            r.checked = true;
+            this.selected.push(r);
+            arr.push(r.text);
+          }
+        });
+      }
       this.value = arr.join(",");
     } else {
       this.onChange.emit(value);
@@ -272,7 +287,13 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       this.selected.filter(r => {
         arr.push(r.value);
       });
-      this.onModelChange(arr);
+      if (arr.length > 0) {
+        this.onModelChange(arr);
+        this.onChange.emit(arr);
+      } else {
+        this.onModelChange(null);
+        this.onChange.emit(null);
+      }
     } else {
       this.onModelChange(this.selected.value);
       this.onChange.emit(this.selected.value);
