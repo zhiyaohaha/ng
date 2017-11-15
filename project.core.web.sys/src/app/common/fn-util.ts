@@ -50,7 +50,7 @@ export class FnUtil {
    * @param str 包含的字符串
    */
   public arrayIsInclude(array: string[], str: string): boolean {
-    let bool = array.map(r => r == str);
+    let bool = array.map(r => r === str);
     if (bool) {
       return true;
     } else {
@@ -80,9 +80,7 @@ export class FnUtil {
   public getJSONLength(json) {
     let length = 0;
     for (let key in json) {
-      if (json[key]) {
-        length++;
-      }
+      length++;
     }
     return length;
   }
