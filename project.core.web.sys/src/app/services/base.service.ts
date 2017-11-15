@@ -29,6 +29,7 @@ export class BaseService {
    */
   public post<T>(url: string, params?: object) {
     let options = new RequestOptions({ "withCredentials": true });
+    console.log(params);
     if (params && this.fnUtil.getJSONLength(params) === 1) {
       return this.http.post(this.urlPrefix + url, this.setAuth2(params), options)
         .map(res => this.extractData(res))
@@ -136,7 +137,7 @@ export class BaseService {
    * 重新登录
    */
   private NeedLogin(r) {
-    if (r.code == "NeedLogin") {
+    if (r.code === "NeedLogin") {
       this.router.navigateByUrl("/login");
       return false;
     } else {
