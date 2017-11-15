@@ -4,14 +4,18 @@ import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {LocationStrategy, HashLocationStrategy, PathLocationStrategy} from "@angular/common";
+import {LocationStrategy, PathLocationStrategy} from "@angular/common";
 import {HttpModule} from "@angular/http";
-import {
-  MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
-} from "@angular/material";
+import {MdButtonModule, MdInputModule, MdListModule, MdNativeDateModule,} from "@angular/material";
 import "hammerjs";
 
-import {CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule} from "@covalent/core";
+import {
+  CovalentDialogsModule,
+  CovalentLayoutModule,
+  CovalentLoadingModule,
+  CovalentPagingModule,
+  CovalentStepsModule
+} from "@covalent/core";
 
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
@@ -35,7 +39,7 @@ import {SetAuthorityComponent} from "./component/set-authority/set-authority.com
     BrowserModule,
     BrowserAnimationsModule, HttpClientModule, HttpModule, FormsModule, ReactiveFormsModule,
     MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
-    CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule,
+    CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule, CovalentLoadingModule,
     AppRoutingModule,
     ToastModule
   ],

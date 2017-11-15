@@ -15,7 +15,7 @@ import {
 } from "@angular/core";
 import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, TdDataTableSortingOrder} from "@covalent/core";
+import {ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
 import {customized, globalVar} from "../../common/global.config";
 import {fadeIn} from "../../common/animations";
 import {FnUtil} from "../../common/fn-util";
@@ -28,7 +28,8 @@ import {BaseService} from "../../services/base.service";
   selector: "app-sharepage",
   templateUrl: "./sharepage.component.html",
   styleUrls: ["./sharepage.component.scss"],
-  animations: [fadeIn]
+  animations: [fadeIn],
+  providers: [TdLoadingService]
 })
 export class SharepageComponent implements OnInit, OnDestroy {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
@@ -87,8 +88,13 @@ export class SharepageComponent implements OnInit, OnDestroy {
               private toastService: ToastService,
               private resolver: ComponentFactoryResolver,
               private el: ElementRef,
-              private baseService: BaseService
+              private baseService: BaseService,
+              private lodaingService: TdLoadingService
   ) {
+    /**
+     * 路由器结束订阅加载不同的页面
+     * @type {Subscription}
+     */
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
@@ -108,6 +114,19 @@ export class SharepageComponent implements OnInit, OnDestroy {
         this.loadDetailModel();
         this.loadModal();
       });
+
+    /**
+     * 加载动画
+     */
+    this.lodaingService.create({
+      // name: "fullScreen",
+      // type: "circular",
+      // mode: "indeterminate"
+      name: "fullScreen",
+      mode: LoadingMode.Indeterminate,
+      type: LoadingType.Circular,
+      color: "warn"
+    });
   }
 
   ngOnInit() {
@@ -237,17 +256,21 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 提交表单
    */
   submitMethod($event) {
+    this.lodaingService.register("fullScreen");
     if (this.new) {
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
+          this.lodaingService.resolve("fullScreen");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
             this.getParamsList(this.listparam);
           }
         });
     } else {
-      this.sharepageService.saveEditParams($event).subscribe(res => {
-        this.toastService.creatNewMessage(res.message);
+      this.sharepageService.saveEditParams($event)
+        .subscribe(res => {
+          this.lodaingService.resolve("fullScreen");
+          this.toastService.creatNewMessage(res.message);
         if (res.code === "0") {
           this.getParamsList(this.listparam);
         }
