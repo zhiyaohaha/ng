@@ -31,11 +31,16 @@
                            [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-textarea>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-            <free-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
-                         [selected]="modelDOMSData[child.name]"
+            <!--<free-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"-->
+            <!--[selected]="modelDOMSData[child.name]"-->
+            <!--pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"-->
+            <!--[columns]="child.ui.columns" [multiple]="child.ui.multiple"-->
+            <!--[freeSelectName]="child.ui.label || '请选择'"></free-select>-->
+
+            <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
                          pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
-                         [columns]="child.ui.columns"
-                         [freeSelectName]="child.ui.label || '请选择'"></free-select>
+                         [columns]="child.ui.columns" [multiple]="child.ui.multiple"
+                         [freeSelectName]="child.ui.label || '请选择'"></timi-select>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
             <md-input-container>
