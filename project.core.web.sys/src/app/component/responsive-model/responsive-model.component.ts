@@ -12,6 +12,7 @@ import {TimiChipModule} from "../timi-chip/chip.component";
 import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
 import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
 import {TimiSelectModule} from "../timi-select/select.component";
+import {BaseService} from "../../services/base.service";
 
 
 @Component({
@@ -30,7 +31,7 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
+  constructor(private baseService: BaseService) {
   }
 
   ngOnInit() {
@@ -61,6 +62,41 @@ export class ResponsiveModelComponent implements OnInit {
    * 上传成功
    */
   uploaded($event) {
+  }
+
+  /**
+   * 下拉框的值改变
+   * @param $event 改变的值
+   * @param option 需要联动的配置
+   */
+  selectChange($event, option) {
+    if (option) {
+      for (let i = option.length - 1; i >= 0; i--) {
+        let config = {};
+        for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
+          config[option[i].bindParamFields[j]] = this.modelDOMSData[option[i].bindParamFields[j]];
+        }
+        this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
+          if (r.code === "0") {
+            this.setSelectOptions(option[i].triggerDom, r.data);
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * 筛选出对应的name 赋值bindData
+   */
+  setSelectOptions(key, data) {
+    let doms = this.modalDOMS;
+    for (let i = doms.length - 1; i >= 0; i--) {
+      for (let j = doms[i].childrens.length - 1; j >= 0; j--) {
+        if (doms[i].childrens[j].name === key) {
+          doms[i].childrens[j].bindData = data;
+        }
+      }
+    }
   }
 
 }

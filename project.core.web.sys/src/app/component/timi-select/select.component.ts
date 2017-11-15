@@ -99,13 +99,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   freeClickActive: boolean;
   bindDocumentClickListener: Function;
 
-  onModelChange: Function = () => {
-  };
-  onTouchedChange: Function = () => {
-  };
-
   _options: any;
-
   @Input()
   get options(): any {
     return this._options;
@@ -117,6 +111,14 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     }
     this._options = value;
   }
+
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+
+  onModelChange: Function = () => {
+  };
+  onTouchedChange: Function = () => {
+  };
+
 
   constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
     this.onDocumentClickListener();
@@ -133,15 +135,22 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   }
 
   writeValue(value: any) {
-    this.options.map(r => {
-      r.checked = false;
-    });
+
+    if (this.options) {
+      this.options.map(r => {
+        r.checked = false;
+      });
+    }
+
     if (value) {
       this.selected = value;
       this.getValue();
     } else {
       this.value = "";
     }
+    /**
+     * 多选情况下设置selected和value
+     */
     if (this.multiple) {
       let _selected = this.selected || [];
       let arr = [];
@@ -156,7 +165,10 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
         }
       });
       this.value = arr.join(",");
+    } else {
+      this.onChange.emit(value);
     }
+
   }
 
   registerOnChange(fn: Function) {
@@ -263,6 +275,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       this.onModelChange(arr);
     } else {
       this.onModelChange(this.selected.value);
+      this.onChange.emit(this.selected.value);
     }
   }
 
