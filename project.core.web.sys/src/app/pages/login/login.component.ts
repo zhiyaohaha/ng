@@ -6,12 +6,13 @@ import "rxjs/Rx";
 import {LoginService} from "../../services/login-service/login.service";
 import {CommunicationService} from "./../../services/share/communication.service";
 import {defaultValue} from "../../common/global.config";
+import {LoginOutService} from "../../services/loginOut-service/loginOut.service";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
-  providers: [LoginService]
+  providers: [LoginService, LoginOutService]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private loginService: LoginService,
+              private loginOutService: LoginOutService,
               private myService: CommunicationService) {
   }
 
@@ -31,6 +33,11 @@ export class LoginComponent implements OnInit {
       account: ["administrator", [Validators.required]],
       password: ["1", Validators.required]
     });
+
+    if (sessionStorage.getItem("load") === "yes") {
+      this.loginOutService.loginOut();
+      sessionStorage.clear();
+    }
   }
 
   /**
@@ -45,12 +52,13 @@ export class LoginComponent implements OnInit {
       let loginInfo = {"account": account, "password": password};
       this.loginService.login(loginInfo).subscribe(res => {
         if (res.code === "0") {
-          this.router.navigateByUrl("/main");
           if (res.data && res.data.menus) {
             localStorage.setItem("menus", JSON.stringify(res.data.menus));
             localStorage.setItem("avatar", res.data._avatar || defaultValue.defaultAvatar);
             this.writeMenus(res.data.menus);
+            sessionStorage.setItem("load", "yes");
           }
+          this.router.navigateByUrl("/main");
         } else {
           this.logining = false;
           this.msgErrors = res.message;

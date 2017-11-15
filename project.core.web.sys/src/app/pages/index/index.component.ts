@@ -76,7 +76,7 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     }, {
       "name": "登出",
       "icon": "sign-out",
-      "url": "http://api2.cpf360.com/api/auth/loginout"
+      "url": "/login"
     }];
 
     this.searchForm = this.fb.group({
