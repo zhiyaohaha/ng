@@ -98,14 +98,11 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   selfClick: boolean;
   freeClickActive: boolean;
   bindDocumentClickListener: Function;
+
   onModelChange: Function = () => {
   };
   onTouchedChange: Function = () => {
   };
-
-  constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
-    this.onDocumentClickListener();
-  }
 
   _options: any;
 
@@ -119,6 +116,10 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       return;
     }
     this._options = value;
+  }
+
+  constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
+    this.onDocumentClickListener();
   }
 
   ngOnInit() {
