@@ -1,14 +1,16 @@
 import {CommonModule} from "@angular/common";
 import {
-  NgModule,
+  AfterViewInit,
   Component,
-  OnInit,
-  Input,
-  Renderer2,
-  Output,
-  EventEmitter,
   ElementRef,
-  ViewChild, forwardRef, AfterViewInit
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgModule,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
 } from "@angular/core";
 import {DomRenderer} from "../../common/dom";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
@@ -17,7 +19,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimiInputComponent),
   multi: true
-}
+};
 
 @Component({
   selector: "timi-input",
@@ -58,7 +60,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   set value(value: string) {
     this._value = value;
-    this.valueChange(this._value);
+    this.valueChange(this._value || null);
   }
 
   _value: string;
