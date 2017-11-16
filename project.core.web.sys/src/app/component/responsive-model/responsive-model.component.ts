@@ -27,10 +27,6 @@ export class ResponsiveModelComponent implements OnInit {
 
   _modelDOMS; //模板
 
-  get modelDOMS() {
-    return this._modelDOMS;
-  }
-
   @Input() //模版
   set modelDOMS(value) {
     this._modelDOMS = value;
@@ -39,8 +35,11 @@ export class ResponsiveModelComponent implements OnInit {
         this._modelDOMSData[i.name] = i.value;
       });
     });
-    console.log(this._modelDOMSData);
   }
+  get modelDOMS() {
+    return this._modelDOMS;
+  }
+
 
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字

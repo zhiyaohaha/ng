@@ -2,7 +2,7 @@ import {CommonModule} from "@angular/common";
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {
   NgModule, Component, OnInit, Input, EventEmitter,
-  Output, AfterViewInit, ViewChild, ElementRef, Renderer2, forwardRef, OnDestroy,
+  Output, AfterViewInit, ViewChild, ElementRef, Renderer2, forwardRef, OnDestroy, AfterContentInit,
 } from "@angular/core";
 import {trigger, state, style, animate, transition} from "@angular/animations";
 import {CheckboxModule} from "../checkbox/checkbox.component";
@@ -40,7 +40,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
                 (onClick)="onItemClick($event)" [option]="option"></free-select-item>
             </ul>
             <ul *ngIf="multiple">
-              <li *ngFor="let option of filterValue(options, 'label')">
+              <li *ngFor="let option of filterValue(options, 'label')" (click)="clickLi($event)">
                 <free-checkbox (onChange)="onCheckboxSelect($event, option)" [checked]="option.checked"
                                [label]="option.label" [value]="option.value"></free-checkbox>
               </li>
@@ -70,7 +70,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ["select.component.scss"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR, ObjectUtils]
 })
-export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
+export class SelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnDestroy {
   @Input() pholder: string;
   @Input() multipleTotal: boolean;
   @Input() editable: boolean;
@@ -117,16 +117,21 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
 
   ngOnInit() {
     if (this.multiple) {
+      let _selected = this.selected;
       this.selected = [];
+      this.options.map( r => {
+        if (_selected.indexOf(r.value) > -1) {
+          r.checked = true;
+          this.selected.push(r);
+        }
+      });
     }
   }
 
-  ngAfterViewInit() {
-    if (this.selected) {
-      setTimeout(() => {
-        let selected = this.options.filter(r => r.value === this.selected)[0]
-        this.value = selected.label;
-      }, 0);
+  ngAfterContentInit() {
+    if (this.selected && !this.multiple) {
+      let selected = this.options.filter(r => r.value === this.selected)[0]
+      this.value = selected.label;
     }
   }
 
@@ -269,6 +274,10 @@ export class SelectComponent implements ControlValueAccessor, OnInit, AfterViewI
         this.close();
       }
     }
+  }
+
+  clickLi($event) {
+    $event.stopPropagation();
   }
 
   filterValue(options: any[], value: string) {
