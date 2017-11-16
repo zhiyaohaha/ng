@@ -105,14 +105,6 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   get options(): any {
     return this._options;
   }
-
-  onModelChange: Function = () => {
-  };
-
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
-  onTouchedChange: Function = () => {
-  };
-
   set options(value: any) {
     if (!value) {
       return;
@@ -134,6 +126,10 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     this._options = value;
   }
 
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  onModelChange: Function = () => { };
+
+  onTouchedChange: Function = () => { };
 
   constructor(public renderer2: Renderer2, public objUtil: ObjectUtils) {
     this.onDocumentClickListener();

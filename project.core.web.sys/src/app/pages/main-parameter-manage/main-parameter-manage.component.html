@@ -11,7 +11,7 @@
       <div class="sidenav-right" *ngIf="selectNode">
         <md-tab-group>
           <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
-            <timi-responsive-form [modalDOMS]="modalDOMS" [modelDOMSData]="selectNode.JSONdata" btnValue="确定修改"
+            <timi-responsive-form [modelDOMS]="modalDOMS" [modelDOMSData]="selectNode.JSONdata" btnValue="确定修改"
                                   (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
             <!--<form #sysParams="ngForm">-->
               <!--<ng-container *ngFor="let item of modalDOMS">-->
@@ -95,7 +95,7 @@
             <!--</form>-->
           </md-tab>
           <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
-            <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增"
+            <timi-responsive-form [modelDOMS]="modalDOMS" btnValue="确定新增"
                                   (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
             <!-- <form #addSysParams="ngForm">
                 <md-list>
@@ -145,7 +145,7 @@
       <div class="sidenav-new" *ngIf="isNew">
         <md-tab-group>
           <md-tab label="添加">
-            <timi-responsive-form [modalDOMS]="modalDOMS" btnValue="确定新增"
+            <timi-responsive-form [modelDOMS]="modalDOMS" btnValue="确定新增"
                                   (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
           </md-tab>
         </md-tab-group>
