@@ -172,15 +172,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.getParamsList(this.listparam);
   }
 
-  /**
-   * 添加
-   */
-  newAdd() {
-    this.selectRow = this.converUtil.toJSON(this.modalData);
-    this.new = true;
-    this.edit = true;
-    this.btnType = "new";
-  }
+  // modalData;
+  newModalData;
   /**
    * 点击行
    */
@@ -198,13 +191,23 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 获取模版
    */
   modalDOMS: HtmlDomTemplate;
-  modalData;
-  newModalData;
+
+  /**
+   * 添加
+   */
+  newAdd() {
+    // this.selectRow = this.converUtil.toJSON(this.modalData);
+    this.selectRow = "";
+    this.new = true;
+    this.edit = true;
+    this.btnType = "new";
+  }
+
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
-        this.modalData = r.data.bindDataJson;
+        // this.modalData = r.data.bindDataJson;
         this.newModalData = r.data;
       }
     });

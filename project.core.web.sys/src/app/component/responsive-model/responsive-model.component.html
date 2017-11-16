@@ -1,6 +1,6 @@
 <form #form="ngForm">
   <ng-container *ngIf="btnType === 'new';else elseblock;">
-    <ng-container *ngFor="let item of modalDOMS;">
+    <ng-container *ngFor="let item of modelDOMS;">
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
          *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel'">
       <h4>{{item.ui.label}}</h4>
@@ -69,7 +69,7 @@
     </ng-container>
   </ng-container>
   <ng-template #elseblock>
-    <ng-container *ngFor="let item of modalDOMS;">
+    <ng-container *ngFor="let item of modelDOMS;">
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel'">
         <h4>{{item.ui.label}}</h4>
@@ -112,7 +112,7 @@
                            pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                            [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                            [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                           (onChange)="selectChange($event, child.cmds)"></timi-select>
+                           (onChange)="0($event, child.cmds)"></timi-select>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
               <md-input-container>

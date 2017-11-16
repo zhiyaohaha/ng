@@ -23,7 +23,28 @@ import {BaseService} from "../../services/base.service";
 
 export class ResponsiveModelComponent implements OnInit {
 
-  @Input() modalDOMS; //模版
+  _modelDOMSData = {}; //添加的数据对象
+
+  _modelDOMS; //模板
+
+  get modelDOMS() {
+    return this._modelDOMS;
+  }
+
+  @Input() //模版
+  set modelDOMS(value) {
+    console.log(value);
+    this._modelDOMS = value;
+    value.forEach(item => {
+      item.childrens.forEach(i => {
+        for ( let key in i) {
+          if (i[key]) {
+            this._modelDOMSData[key] = i[key];
+          }
+        }
+      });
+    });
+  }
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = ""; //需要修改的原数据
@@ -77,11 +98,15 @@ export class ResponsiveModelComponent implements OnInit {
    * @param option 需要联动的配置
    */
   selectChange($event, option) {
+    if (!$event) {
+      return false;
+    }
+    console.log(option);
     if (option) {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-          config[option[i].bindParamFields[j]] = this.modelDOMSData[option[i].bindParamFields[j]];
+          config[option[i].bindParamFields[j]] = this.modelDOMSData[option[i].bindParamFields[j]] || $event;
         }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
@@ -96,7 +121,7 @@ export class ResponsiveModelComponent implements OnInit {
    * 筛选出对应的name 赋值bindData
    */
   setSelectOptions(key, data) {
-    let doms = this.modalDOMS;
+    let doms = this.modelDOMS;
     for (let i = doms.length - 1; i >= 0; i--) {
       for (let j = doms[i].childrens.length - 1; j >= 0; j--) {
         if (doms[i].childrens[j].name === key) {
