@@ -9,11 +9,11 @@
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <timi-input [labelName]="child.ui.label" name="{{child.name}}"
-                        [ngModel]="child.value"
+                        [(ngModel)]="_modelDOMSData[child.name]"
                         [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-            <timi-checkbox name="{{child.name}}" [ngModel]="child.value"
+            <timi-checkbox name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                            [multiple]="child.ui.multiple" [labelName]="child.ui.label"
                            [checkboxs]="child.bindData || child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
           </div>
@@ -21,17 +21,17 @@
             这个功能还没实现 O(∩_∩)O~
           </div>
           <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
-                 [ngModel]="child.value" placeholder="{{child.ui.placeholder}}"
+                 [(ngModel)]="_modelDOMSData[child.name]" placeholder="{{child.ui.placeholder}}"
                  disabled="{{child.ui.disabled}}" spellcheck="false"
                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-            <timi-textarea name="{{child.name}}" [ngModel]="child.value"
+            <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                            [labelName]="child.ui.label"
                            [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-textarea>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-            <timi-select name="{{child.name}}" [ngModel]="child.value"
+            <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                          pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                          [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                          [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
@@ -52,14 +52,14 @@
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
             <div>
-              <timi-file-uploader name="{{child.name}}" [ngModel]="child.value"
+              <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                                   [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
                                   [columns]="child.ui.columns"
                                   (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
             </div>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-            <timi-chip-group name="{{child.name}}" [ngModel]="child.value"
+            <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                              [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
                              (chipsChange)="chipsChange($event)" [columns]="child.ui.columns"></timi-chip-group>
           </div>

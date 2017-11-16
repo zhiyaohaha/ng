@@ -33,18 +33,15 @@ export class ResponsiveModelComponent implements OnInit {
 
   @Input() //模版
   set modelDOMS(value) {
-    console.log(value);
     this._modelDOMS = value;
     value.forEach(item => {
       item.childrens.forEach(i => {
-        for ( let key in i) {
-          if (i[key]) {
-            this._modelDOMSData[key] = i[key];
-          }
-        }
+        this._modelDOMSData[i.name] = i.value;
       });
     });
+    console.log(this._modelDOMSData);
   }
+
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = ""; //需要修改的原数据
@@ -101,12 +98,14 @@ export class ResponsiveModelComponent implements OnInit {
     if (!$event) {
       return false;
     }
-    console.log(option);
     if (option) {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-          config[option[i].bindParamFields[j]] = this.modelDOMSData[option[i].bindParamFields[j]] || $event;
+          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]];
+        }
+        if (!option[i].triggerUrl) {
+          return false;
         }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
