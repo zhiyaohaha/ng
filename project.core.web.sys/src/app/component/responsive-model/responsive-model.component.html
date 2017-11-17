@@ -107,12 +107,11 @@
               <!--pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"-->
               <!--[columns]="child.ui.columns" [multiple]="child.ui.multiple"-->
               <!--[freeSelectName]="child.ui.label || '请选择'"></free-select>-->
-
               <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
                            pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                            [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                            [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                           (onChange)="0($event, child.cmds)"></timi-select>
+                           (onChange)="selectChange($event, child.cmds)"></timi-select>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
               <md-input-container>
