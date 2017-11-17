@@ -1,35 +1,50 @@
-<td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="clickAuthority != -1" (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
-    <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
-            <div layout="row">
-                <span flex>{{value}}</span>
-                <md-icon>star</md-icon>
-            </div>
-        </ng-template>-->
-        <!-- 图片 -->
-        <ng-template tdDataTableTemplate="img" let-value="value">
-            <img [src]="value"/>
-        </ng-template>
-        <!-- 操作按钮 -->
-        <ng-template tdDataTableTemplate="btns" let-value="value">
-            <td *ngFor="let btn of value;let i = index">
-                <button fButton color="deepblue" class="add-button">{{btn}}</button>
-            </td>
-        </ng-template>
-        <ng-template tdDataTableTemplate="createdDate" let-value="value">
-          <td>{{value | date:"yyyy/MM/dd HH:ss"}}</td>
-        </ng-template>
+<td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="clickAuthority != -1"
+               (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
+  <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
+          <div layout="row">
+              <span flex>{{value}}</span>
+              <md-icon>star</md-icon>
+          </div>
+      </ng-template>-->
+  <!-- 图片 -->
+  <ng-template tdDataTableTemplate="img" let-value="value">
+    <img [src]="value"/>
+  </ng-template>
+  <!-- 操作按钮 -->
+  <ng-template tdDataTableTemplate="btns" let-value="value">
+    <td *ngFor="let btn of value;let i = index">
+      <button fButton color="deepblue" class="add-button">{{btn}}</button>
+    </td>
+  </ng-template>
+  <ng-template tdDataTableTemplate="banner" let-value="value" let-column="column">
+    <ng-container [ngSwitch]="columnsPipes[column]">
+      <div *ngSwitchCase="'HtmlPipe.Image'">
+        <img *ngIf="value" [src]="value" class="table-img">
+      </div>
+      <div *ngSwitchDefault>{{value}}</div>
+    </ng-container>
+  </ng-template>
+  <ng-template tdDataTableTemplate="qrcode" let-value="value" let-column="column">
+    <ng-container [ngSwitch]="columnsPipes[column]">
+      <div *ngSwitchCase="'HtmlPipe.Image'">
+        <img *ngIf="value" [src]="value" class="table-img">
+      </div>
+      <div *ngSwitchDefault>{{value}}</div>
+    </ng-container>
+  </ng-template>
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
-    <h3>No results to display.</h3>
+  <h3>No results to display.</h3>
 </div>
 
-<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals" (change)="page($event)" [pageLinkCount]="pageLinkCount">
-    <span hide-xs>每页条数:</span>
-    <md-select [style.width.px]="50" [(ngModel)]="pageSize">
-        <md-option *ngFor="let size of pageSizes" [value]="size">
-        {{size}}
-        </md-option>
-    </md-select>
-    <span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals" (change)="page($event)"
+               [pageLinkCount]="pageLinkCount">
+  <span hide-xs>每页条数:</span>
+  <md-select [style.width.px]="50" [(ngModel)]="pageSize">
+    <md-option *ngFor="let size of pageSizes" [value]="size">
+      {{size}}
+    </md-option>
+  </md-select>
+  <span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>
 </td-paging-bar>
