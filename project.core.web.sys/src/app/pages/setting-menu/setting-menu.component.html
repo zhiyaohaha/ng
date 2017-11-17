@@ -2,7 +2,7 @@
   <md-sidenav #sidenav align="end" (close)="onSidenavClose()" (open)="onSidenavOpen()">
     <md-tab-group>
       <md-tab [label]="label">
-        <timi-responsive-form *ngIf="sidenavActive" [modalDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData"
+        <timi-responsive-form *ngIf="sidenavActive" [modelDOMS]="modelDOMS" [modelDOMSData]="modelDOMSData"
                               btnValue="确定{{label}}" (ngSubmit)="confirm($event)"></timi-responsive-form>
       </md-tab>
     </md-tab-group>
