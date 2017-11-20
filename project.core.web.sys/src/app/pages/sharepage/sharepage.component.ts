@@ -74,7 +74,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: null,
+    filters: "",
     name: customized.SysOperationLogConfig
   };
 
@@ -108,7 +108,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
         this.getParamsList({
           size: this.pageSize,
           index: 0,
-          filters: null,
+          filters: "",
           name: customized.SysOperationLogConfig
         });
         this.loadDetailModel();
@@ -255,6 +255,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   closeEnd() {
     this.detail = false;
     this.edit = false;
+    this.selectRow = null;
   }
 
   /**
