@@ -36,6 +36,7 @@ export class ResponsiveModelComponent implements OnInit {
       });
     });
   }
+
   get modelDOMS() {
     return this._modelDOMS;
   }
@@ -101,7 +102,7 @@ export class ResponsiveModelComponent implements OnInit {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]];
+          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
         }
         if (!option[i].triggerUrl) {
           return false;
