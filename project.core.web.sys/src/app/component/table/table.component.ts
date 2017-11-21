@@ -4,19 +4,23 @@ import {MdSelectModule} from "@angular/material";
 import {CovalentDataTableModule, CovalentPagingModule, IPageChangeEvent} from "@covalent/core";
 import {Component, ElementRef, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {globalVar} from "./../../common/global.config";
+import {globalVar} from "../../common/global.config";
 import {TableColumns} from "../../common/interface/table-columns";
 import {ConvertUtil} from "../../common/convert-util";
 
 const DATE_FORMART: (v: any) => any = v => {
   let date = new Date(v);
 
-  let h = date.getHours();
-  let m = date.getMinutes();
-  let s = date.getSeconds();
-  return number(h) + ":" + number(m) + ":" + number(s);
+  let Y = date.getFullYear();
+  let M = date.getMonth() + 1;
+  let D = date.getDate();
+
+  return Y + "-" + number(M) + "-" + number(D);
 };
 const DATE_TIME_FORMART: (v: any) => any = v => {
+  if (v === "0001-01-01T00:00:00Z") {
+    return "-";
+  }
   let date = new Date(v);
 
   let Y = date.getFullYear();
@@ -49,28 +53,34 @@ export class TableComponent implements OnInit {
   @Input() data; // 表格数据内容
   // @Input() columns: ITdDataTableColumn[]; // 表头
   columnsPipes = {}; //有管道的列
-  @Input()
-  get columns() {
-    return this._columns;
-  }
-  set columns(value) {
-    if (Array.isArray(value)) {
-      value.forEach(item => {
-        switch (item.pipe) {
-          case "HtmlPipe.Date": item.format = DATE_FORMART;
-            break;
-          case "HtmlPipe.DateTime": item.format = DATE_TIME_FORMART;
-            break;
-          default :
-            break;
-        }
-        if (item.pipe) {
-          this.columnsPipes[item.name] = item.pipe;
-        }
-      });
-    }
-    this._columns = value;
-  }
+  @Input() columns: TableColumns[];
+  // get columns() {
+  //   return this._columns;
+  // }
+  //
+  // set columns(value) {
+  //   if (Array.isArray(value)) {
+  //     value.forEach(item => {
+  //       switch (item.pipe) {
+  //         case "HtmlPipe.Date":
+  //           item.format = DATE_FORMART;
+  //           break;
+  //         case "HtmlPipe.DateTime":
+  //           item.format = DATE_TIME_FORMART;
+  //           break;
+  //         case "HtmlPipe.Tag":
+  //           item.format = this.TAG_FORMART;
+  //           break;
+  //         default :
+  //           break;
+  //       }
+  //       if (item.pipe) {
+  //         this.columnsPipes[item.name] = item.pipe;
+  //       }
+  //     });
+  //   }
+  //   this._columns = value;
+  // }
 
   _columns: TableColumns[];
   @Input() totals; // 总条数
@@ -85,9 +95,11 @@ export class TableComponent implements OnInit {
   private pagingBar: ElementRef;
 
   constructor(private router: Router,
-              private convertUtil: ConvertUtil
-  ) { }
-  ngOnInit() { }
+              private convertUtil: ConvertUtil) {
+  }
+
+  ngOnInit() {
+  }
 
   /**
    * 点击行
@@ -121,6 +133,11 @@ export class TableComponent implements OnInit {
     this.pagingBar.nativeElement.navigateToPage(page);
   }
 
+  TAG_FORMART: (v: any) => any = v => {
+    console.log(v);
+    console.log(this.columns);
+  }
+
 }
 
 @NgModule({
@@ -129,4 +146,5 @@ export class TableComponent implements OnInit {
   exports: [TableComponent]
 })
 
-export class TableModule { }
+export class TableModule {
+}
