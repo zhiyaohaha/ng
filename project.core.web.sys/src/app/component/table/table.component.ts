@@ -14,7 +14,7 @@ const DATE_FORMART: (v: any) => any = v => {
   let h = date.getHours();
   let m = date.getMinutes();
   let s = date.getSeconds();
-  return h + ":" + m + ":" + s;
+  return number(h) + ":" + number(m) + ":" + number(s);
 };
 const DATE_TIME_FORMART: (v: any) => any = v => {
   let date = new Date(v);
@@ -26,7 +26,15 @@ const DATE_TIME_FORMART: (v: any) => any = v => {
   let h = date.getHours();
   let m = date.getMinutes();
   let s = date.getSeconds();
-  return Y + "-" + M + "-" + D + " " + h + ":" + m + ":" + s;
+  return Y + "-" + number(M) + "-" + number(D) + " " + number(h) + ":" + number(m) + ":" + number(s);
+};
+
+const number: (num: any) => any = num => {
+  if (num.toString().length === 1) {
+    return "0" + num;
+  } else {
+    return num;
+  }
 };
 
 @Component({
