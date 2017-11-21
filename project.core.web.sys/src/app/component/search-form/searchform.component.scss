@@ -11,6 +11,14 @@
       bottom: -25px;
       width: 200px;
     }
+    .data-range {
+      position: relative;
+      left: 14px;
+      md-input-container {
+        width: 138px;
+        top: -14px;
+      }
+    }
   }
   button {
     top: -3px;

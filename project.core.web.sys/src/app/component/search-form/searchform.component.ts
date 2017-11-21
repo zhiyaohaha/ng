@@ -1,7 +1,7 @@
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
-import {MdButtonModule, MdDatepickerModule, MdSelectModule} from "@angular/material";
+import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
 import {ConvertUtil} from "../../common/convert-util";
 import {TimiInputModule} from "../timi-input/timi-input.component";
@@ -62,7 +62,7 @@ export class SearchFormComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdButtonModule, MdDatepickerModule, MdSelectModule, ButtonModule, TimiInputModule, TimiSelectModule],
+  imports: [CommonModule, FormsModule, MdInputModule, MdButtonModule, MdDatepickerModule, MdSelectModule, ButtonModule, TimiInputModule, TimiSelectModule],
   declarations: [SearchFormComponent],
   exports: [SearchFormComponent]
 })
