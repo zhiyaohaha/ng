@@ -9,7 +9,7 @@
     }
     .item-label {
       text-align: right;
-      width: 30%;
+      width: 120px;
       &::after {
         content: ":";
         margin: 0 8px 0 2px;
@@ -19,7 +19,7 @@
       width: 15%;
     }
     .item-control-wrapper {
-      width: 70%;
+      width: calc( 100% - 120px);
     }
     .wrapper2 {
       width: 85%;

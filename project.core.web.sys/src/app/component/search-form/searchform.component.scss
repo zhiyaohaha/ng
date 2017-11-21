@@ -1,19 +1,19 @@
 .search-ul {
-    padding: 10px;
-    overflow: hidden;
+  float: left;
+  li {
     float: left;
-    li {
-        list-style: none;
-        float: left;
-        margin-left: 10px;
-        md-select {
-            position: relative;
-            bottom: -25px;
-            width: 200px;
-        }
-        button {
-            position: relative;
-            bottom: -10px;
-        }
+    &:not(:last-child) {
+      width: 25%;
+      min-width: 300px;
     }
+    md-select {
+      position: relative;
+      bottom: -25px;
+      width: 200px;
+    }
+  }
+  button {
+    top: -3px;
+    left: 20px;
+  }
 }

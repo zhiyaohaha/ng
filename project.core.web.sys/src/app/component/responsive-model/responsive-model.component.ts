@@ -43,7 +43,7 @@ export class ResponsiveModelComponent implements OnInit {
 
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
-  @Input() modelDOMSData = ""; //需要修改的原数据
+  @Input() modelDOMSData = {}; //需要修改的原数据
 
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();

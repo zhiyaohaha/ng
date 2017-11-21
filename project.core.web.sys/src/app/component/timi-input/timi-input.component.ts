@@ -58,12 +58,12 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
     return this._value;
   }
 
-  set value(value: string) {
+  set value(value) {
     this._value = value;
-    this.valueChange(this._value || null);
+    this.valueChange(this._value);
   }
 
-  _value: string;
+  _value;
   @Input() type: string = "text";
   @Input() labelWidth: string;
   @Input() labelName: string;
@@ -164,9 +164,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   }
 
   writeValue(obj: any): void {
-    if (obj) {
-      this.value = obj;
-    }
+    this.value = obj;
   }
 
   registerOnChange(fn: any): void {

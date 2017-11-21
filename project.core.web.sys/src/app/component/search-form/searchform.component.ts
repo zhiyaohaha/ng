@@ -1,9 +1,11 @@
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
-import {MdDatepickerModule, MdInputModule} from "@angular/material";
+import {MdButtonModule, MdDatepickerModule, MdSelectModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
 import {ConvertUtil} from "../../common/convert-util";
+import {TimiInputModule} from "../timi-input/timi-input.component";
+import {TimiSelectModule} from "../timi-select/select.component";
 
 @Component({
   selector: "search-form",
@@ -39,17 +41,19 @@ export class SearchFormComponent implements OnInit {
     });
   }
 
-  keyPress($event) {
+  keyPress($event, params) {
     if ($event.which === 13) {
-      this.searchParams();
+      this.searchParams(params);
     }
   }
 
   //搜索
-  searchParams() {
+  searchParams($event) {
     this.condition.filter(i => {
       if (i.key === "createdDate" && this.StartTime && this.EndTime) {
         i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
+      } else {
+        i.value = $event[i.key];
       }
     });
     let str = JSON.stringify(this.condition);
@@ -58,7 +62,7 @@ export class SearchFormComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdInputModule, MdDatepickerModule, ButtonModule],
+  imports: [CommonModule, FormsModule, MdButtonModule, MdDatepickerModule, MdSelectModule, ButtonModule, TimiInputModule, TimiSelectModule],
   declarations: [SearchFormComponent],
   exports: [SearchFormComponent]
 })

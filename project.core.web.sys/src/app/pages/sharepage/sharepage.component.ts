@@ -142,14 +142,18 @@ export class SharepageComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res.code === "0") {
           let r = res;
-          this.columns = r.data.data.fields;
-          this.filteredData = this.basicData = r.data.data.bindData;
-          if (r.data.data.filters) {
+          if (r.data.data && r.data.data.fields) {
+            this.columns = r.data.data.fields;
+          }
+          if (r.data.data && r.data.data.bindData) {
+            this.filteredData = this.basicData = r.data.data.bindData;
+          }
+          if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
               this.filters.push({ "key": i.name, "value": i.value || "" });
             });
+            this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
-          this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           this.filteredTotal = r.data.total;
         }
       });
