@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {NgModule, Component, OnInit, Input, EventEmitter, Output, forwardRef} from "@angular/core";
+import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {CheckboxModule} from "../checkbox/checkbox.component";
 
@@ -7,12 +7,12 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimiCheckboxComponent),
   multi: true
-}
+};
 
 @Component({
   selector: "timi-checkbox",
   template: `
-    <div class="box form-item">
+    <div class="box form-item" *ngIf="checkboxs">
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
@@ -48,8 +48,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   checked: any; //默认选中的项
   outPutArr = []; //抛出结果数组
 
-  private valueChange = (_: any) => {
-  }
+  valueChange: Function = () => { };
 
   constructor() {
   }
@@ -63,6 +62,9 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
    * @param $event
    */
   checkedAll($event) {
+    this.actived = false;
+    this.outPutArr = [];
+    this.checked = [];
     if ($event.checked) {
       this.actived = true;
       this.outPutArr = [];
@@ -70,10 +72,6 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
         this.outPutArr.push(item.value);
         this.checked.push(item.value);
       });
-    } else {
-      this.actived = false;
-      this.outPutArr = [];
-      this.checked = [];
     }
     this.valueChange(this.outPutArr);
   }
