@@ -106,6 +106,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     return this._options;
   }
   set options(value: any) {
+    this.value = "";
     if (!value) {
       return;
     }
