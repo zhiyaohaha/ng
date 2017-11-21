@@ -1,23 +1,29 @@
-import { fadeIn } from "./../../common/animations";
-import { FnUtil } from "./../../common/fn-util";
-import { ToastService } from "./../../component/toast/toast.service";
-import {Router, ActivatedRoute, NavigationEnd} from "@angular/router";
-import {Component, OnInit, AfterViewInit, ViewContainerRef, Output, HostBinding, OnDestroy} from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { TdDialogService, IPageChangeEvent, TdDataTableService, TdDataTableSortingOrder, ITdDataTableColumn } from "@covalent/core";
+import {fadeIn} from "./../../common/animations";
+import {FnUtil} from "./../../common/fn-util";
+import {ToastService} from "./../../component/toast/toast.service";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {FormBuilder} from "@angular/forms";
+import {
+  IPageChangeEvent,
+  ITdDataTableColumn,
+  TdDataTableService,
+  TdDataTableSortingOrder,
+  TdDialogService
+} from "@covalent/core";
 
 import "rxjs/add/operator/startWith";
 import "rxjs/add/observable/merge";
 import "rxjs/add/operator/map";
 
-import { TreeModel } from "../../../../node_modules/ng2-tree";
-import { globalVar } from "../../common/global.config";
-import { TableSearch } from "../../common/search/table.search";
+import {TreeModel} from "../../../../node_modules/ng2-tree";
+import {globalVar} from "../../common/global.config";
+import {TableSearch} from "../../common/search/table.search";
 
-import { ParamsManageService } from "./../../services/paramsManage-service/paramsManage.service";
-import { ConvertUtil } from "../../common/convert-util";
-import { BaseService } from "../../services/base.service";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
+import {ParamsManageService} from "./../../services/paramsManage-service/paramsManage.service";
+import {ConvertUtil} from "../../common/convert-util";
+import {BaseService} from "../../services/base.service";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 
 
 @Component({
@@ -36,7 +42,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    */
   treeNode = {
     label: []
-  }
+  };
   tags: string[];
 
   /**
@@ -75,19 +81,25 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: null
+    filters: ""
   };
   getParamsList(params) {
     this._paramsManageService.getParams(params)
       .subscribe(res => {
-        if (res.code == "0") {
-          var r = res;
-          this.columns = r.data.data.fields;
-          this.filteredData = this.basicData = r.data.data.bindData;
-          r.data.data.filters.forEach(i => {
-            this.filters.push({ "key": i.name, "value": i.value || "" });
-          })
-          this.searchFilters = r.data.data.filters;
+        if (res.code === "0") {
+          let r = res;
+          if (r.data.data && r.data.data.fields) {
+            this.columns = r.data.data.fields;
+          }
+          if (r.data.data && r.data.data.bindData) {
+            this.filteredData = this.basicData = r.data.data.bindData;
+          }
+          if (r.data.data && r.data.data.filters.length > 0) {
+            r.data.data.filters.forEach(i => {
+              this.filters.push({ "key": i.name, "value": i.value || "" });
+            });
+            this.searchFilters = r.data.data.filters;
+          }
           this.filteredTotal = r.data.total;
         }
       })
@@ -119,7 +131,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     sortBy: this.sortBy,
     sortOrder: this.sortOrder,
     dataTableService: this._dataTableService
-  }
+  };
 
   /**
    * 翻页
@@ -133,8 +145,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.listparam = {
       size: pagingEvent.pageSize,
       index: pagingEvent.page - 1,
-      filters: null
-    }
+      filters: ""
+    };
     this.getParamsList(this.listparam);
   }
 
@@ -183,7 +195,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
         this.getParamsList({
           size: this.pageSize,
           index: 0,
-          filters: null
+          filters: ""
         });
         this.loadModal();
       });
@@ -272,7 +284,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     }
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
-    })
+    });
     data.id = "";
     // data.description = $event.description;
     data.parentId = this.selectNode.JSONdata.id;
@@ -299,7 +311,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     }
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
-    })
+    });
     this.newModalData = this._util.toJsonStr(data);
     this._paramsManageService.addParams(this.newModalData).subscribe(res => {
       if (res.code === "0") {
@@ -372,7 +384,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     };
     if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
-      for (var i = 0; i < data.childrens.length; i++) {
+      for (let i = 0; i < data.childrens.length; i++) {
         treeData["children"].push(this.toTreeModel(data.childrens[i]));
       }
     }

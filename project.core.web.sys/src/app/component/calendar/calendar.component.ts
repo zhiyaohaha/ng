@@ -1,11 +1,19 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from "@angular/common";
 import {
-  NgModule, Component, OnInit, Input, Output, EventEmitter, OnDestroy, forwardRef
-} from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { DomRenderer } from './../../common/dom';
-
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  Input,
+  NgModule,
+  OnDestroy,
+  OnInit,
+  Output
+} from "@angular/core";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {DomRenderer} from "../../common/dom";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,16 +22,89 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
+  selector: "free-calendar-selector",
+  template: `
+    <div class="free-calendar-selector" (click)="onSelector($event)">
+      <span class="fa fa-angle-up" (click)="count(1)"></span>
+      <span class="free-calendar-selector-wrapper">{{getFormatValue(value)}}</span>
+      <span class="fa fa-angle-down" (click)="count(-1)"></span>
+    </div>
+  `
+})
+
+export class CalendarSelectorComponent {
+  @Input() min: number;
+  @Input() max: number;
+  @Input() type: string;
+  @Input()
+  set value(value: number) {
+    if (typeof value !== "undefined") {
+      this._value = value;
+    } else {
+      this.setCurrentValue();
+    }
+  }
+  get value() {
+    return this._value;
+  }
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  _value: number;
+  constructor(@Inject(forwardRef(() => CalendarComponent)) private calendar: CalendarComponent) {
+    this.setCurrentValue();
+  }
+
+  count(add: number) {
+    this._value += add;
+    if (this._value < this.min) {
+      this._value = this.max;
+    }
+    if (this._value > this.max) {
+      this._value = this.min;
+    }
+    this.onChange.emit({
+      type: this.type,
+      value: this._value
+    });
+  }
+
+  setCurrentValue() {
+    const date = new Date();
+    switch (this.type) {
+      case 'h':
+        this.calendar.currentHour = this.value = date.getHours();
+        break;
+      case 'm':
+        this.calendar.currentMinute = this.value = date.getMinutes();
+        break;
+      case 's':
+        this.calendar.currentSecond = this.value = date.getSeconds();
+    }
+  }
+
+  getFormatValue(value) {
+    if (value < 10) {
+      return '0' + value;
+    }
+    return value;
+  }
+
+  onSelector(event: any) {
+    event.stopPropagation();
+  }
+}
+
+@Component({
   selector: 'free-calendar',
   template: `
     <div class="free-calendar" [class.free-calendar-inline]="inline">
-      <div class="free-select-input" (click)="onClick()" *ngIf="!inline">
+      <div class="free-select-input" [class.free-select-timeonly]="timeOnly"
+           (click)="onClick()" *ngIf="!inline">
         <input type="text" placeholder="{{pholder}}" #target (input)="onInputChange(target.value)"
                value="{{value}}" [readonly]="readonly">
       </div>
       <div class="free-calendar-wrapper" *ngIf="inline || opened"
-           [style.width.px]="width" [@selectState]="'in'">
-        <div class="free-calendar-panel">
+           [@selectState]="'in'" [style.width]="width">
+        <div *ngIf="!timeOnly; else times" class="free-calendar-panel">
           <div class="free-calendar-header">
             <div class="calendar-select">
               <div class="calendar-select-prev" (click)="toPrev($event)">
@@ -53,12 +134,12 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
             <table>
               <thead>
               <tr>
-                <th class="item" [style.width.px]="itemWidth" *ngFor="let w of _week">{{w}}</th>
+                <th class="item" *ngFor="let w of _week">{{w}}</th>
               </tr>
               </thead>
               <tbody class="calendar-body">
                 <tr *ngFor="let week of dates">
-                  <td class="item {{day.type}}" [style.width.px]="itemWidth" title="{{day.value}}"
+                  <td class="item {{day.type}}" title="{{day.value}}"
                       *ngFor="let day of week;index as i"
                       [ngClass]="{selected: day.selected, today: day.today}"
                       (click)="onDateSelect($event, day, i)">
@@ -108,6 +189,16 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
             </table>
           </div>
         </div>
+        <ng-template #times>
+          <div class="free-calendar-time">
+            <free-calendar-selector [min]="0" [max]="24" [type]="'h'" [value]="currentHour"
+                                    (onChange)="onTimeSelectorChange($event)"></free-calendar-selector>
+            <free-calendar-selector [min]="0" [max]="59" [type]="'m'" [value]="currentMinute"
+                                    (onChange)="onTimeSelectorChange($event)"></free-calendar-selector>
+            <free-calendar-selector [min]="0" [max]="59" [type]="'s'" [value]="currentSecond"
+                                    (onChange)="onTimeSelectorChange($event)"></free-calendar-selector>
+          </div>
+        </ng-template>
       </div>
     </div>
   `,
@@ -136,9 +227,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() lang: string;
   @Input() format: string;
   @Input() hourFormat: string;
-  @Input() width: number;
+  @Input() width: any;
   @Input() pholder: string;
   @Input() readonly: boolean;
+  @Input() timeOnly: boolean;
   @Input()
   set minDate(value: string) {
     this._minDate = value;
@@ -207,42 +299,50 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
   onTouchedChange: Function = () => {
   };
 
-  constructor(public domRenderer: DomRenderer) {
+  constructor(public domRenderer: DomRenderer, public er: ElementRef) {
     this.lang = 'en';
     this.rows = 6;
     this.cols = 7;
-    this.width = 250;
     this.firstDayOfWeek = 7;
     this.format = 'yyyy-MM-dd';
     this.years = [];
+    this.width = 250;
+    this.pholder = 'Select Time';
   }
 
   ngOnInit() {
-    if (this.showTime) {
-      this.format = 'yyyy-MM-dd hh:mm:ss';
-    }
-    this._selectLocale = this.lang.toLowerCase() === 'cn' ? this._locale_cn : this._locale;
-    this._week = this._selectLocale.dayNamesShort;
-    if (this.firstDayOfWeek === 1) {
-      this._week.unshift(this._week[this._week.length - 1]);
-      this._week.pop();
-    }
-    this.todayDate = new Date();
-    this.setDate(this.todayDate);
-    if (this.defaultDate) {
-      this.setDate(this.defaultDate);
-      this.value = this.domRenderer.dateFormat(this.currentDate, this.format);
-    }
-    this.dates = [];
-    this.pholder = 'Select Time';
-    if (!this.inline) {
-      this.width = 250;
-    }
-    this.itemWidth = parseFloat(((this.width - 10) / 7).toFixed(3));
-    this.firstYear = this.todayDate.getFullYear();
-    this.createCalendar();
-    this.createMonth();
     this.isSet = true;
+    if (typeof this.width === 'number') {
+      this.width = this.width + 'px';
+    }
+    if (!this.timeOnly) {
+      if (this.showTime) {
+        this.format = 'yyyy-MM-dd hh:mm:ss';
+      }
+      this._selectLocale = this.lang.toLowerCase() === 'cn' ? this._locale_cn : this._locale;
+      this._week = this._selectLocale.dayNamesShort;
+      if (this.firstDayOfWeek === 1) {
+        this._week.unshift(this._week[this._week.length - 1]);
+        this._week.pop();
+      }
+      this.todayDate = new Date();
+      this.setDate(this.todayDate);
+      if (this.defaultDate) {
+        this.setDate(this.defaultDate);
+        this.value = this.domRenderer.dateFormat(this.currentDate, this.format);
+      }
+      this.dates = [];
+      // this.itemWidth = parseFloat(((this.width - 10) / 7).toFixed(3));
+      this.firstYear = this.todayDate.getFullYear();
+      this.createCalendar();
+      this.createMonth();
+    } else {
+      this.width = null;
+      if (this.defaultDate) {
+        this.setDate(this.defaultDate);
+        this.value = this.domRenderer.dateFormat(this.currentDate, 'hh:mm:ss');
+      }
+    }
     this.onDocumentClickListener();
   }
 
@@ -415,21 +515,35 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
   }
 
   setDate(date: any = new Date()) {
-    if (typeof date === 'string') {
-      const tokens: string[] = date.split(/\s+/);
-      if (this.showTime && tokens[1]) {
-        [this.currentHour, this.currentMinute, this.currentSecond] = tokens[1].split(':').map(t => {
+    const curDate = new Date();
+    if (date && typeof date === 'string') {
+      if (!this.timeOnly) {
+        const tokens: string[] = date.trim().split(/\s+/);
+        if (this.showTime && tokens[1]) {
+          [this.currentHour, this.currentMinute, this.currentSecond] = tokens[1].split(':').map(t => {
+            const time = parseInt(t, 10);
+            if (!isNaN(time)) {
+              return time;
+            }
+          });
+        }
+        const dates = tokens[0].split(/[-\/]/gm);
+        const arr = dates.map(d => {
+          return parseInt(d, 10);
+        });
+        date = new Date(arr[0], arr[1] - 1, arr[2], this.currentHour, this.currentMinute, this.currentSecond);
+      } else {
+        [this.currentHour, this.currentMinute, this.currentSecond] = date.split(':').map(t => {
           const time = parseInt(t, 10);
           if (!isNaN(time)) {
             return time;
           }
         });
+        date = curDate;
+        date.setHours(this.currentHour);
+        date.setMinutes(this.currentMinute);
+        date.setSeconds(this.currentSecond);
       }
-      const dates = tokens[0].split(/[-\/]/gm);
-      const arr = dates.map(d => {
-        return parseInt(d, 10);
-      });
-      date = new Date(arr[0], arr[1] - 1, arr[2], this.currentHour, this.currentMinute, this.currentSecond);
     }
     this.currentDate = date;
     this.getDate(date);
@@ -613,6 +727,33 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
     }
   }
 
+  onTimeSelectorChange(event: any) {
+    const type = event.type;
+    switch (type) {
+      case 'h':
+        this.currentHour = event.value;
+        break;
+      case 'm':
+        this.currentMinute = event.value;
+        break;
+      case 's':
+        this.currentSecond = event.value;
+    }
+    const date = new Date();
+    date.setHours(this.currentHour);
+    date.setMinutes(this.currentMinute);
+    date.setSeconds(this.currentSecond);
+    this.value = this.domRenderer.dateFormat(date, 'hh:mm:ss');
+    this.onChange.emit({
+      value: this.value,
+      hour: this.currentHour,
+      minute: this.currentMinute,
+      second: this.currentSecond
+    });
+    console.log(this.value);
+    this.onModelChange(this.value);
+  }
+
   onDocumentClickListener() {
     if (!this.inline) {
       this.bindDocumentClickListener = this.domRenderer.listen('document', 'click', () => {
@@ -638,7 +779,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
 }
 @NgModule({
   imports: [CommonModule, FormsModule],
-  declarations: [CalendarComponent],
+  declarations: [CalendarSelectorComponent, CalendarComponent],
   exports: [CalendarComponent]
 })
 
