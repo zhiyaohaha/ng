@@ -125,6 +125,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       this.value = arr.join(",");
     }
     this._options = value;
+    this.getValue();
   }
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -267,13 +268,28 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       if (selectedValue.length > 0) {
         this.value = selectedValue.join(",");
       }
-    } else if (this.selected) {
-      let selected = this.options.filter(r => r.value === this.selected)[0];
-      if (selected) {
-        this.value = selected.text;
+    } else if (this.selected && this.options) {
+      if (typeof this.selected === "string") {
+        let selected = this.options.filter(r => r.value === this.selected)[0];
+        if (selected) {
+          this.value = selected.text;
+        }
+        // if (selected) {
+        //   this.value = selected.text;
+        // } else {
+        //   this.value = this.selected.text;
+        // }
       } else {
-        this.value = this.selected.text;
+        let selected = this.options.filter(r => r.value === this.selected.value)[0];
+        console.log(selected);
+        if (selected) {
+          this.value = selected.text;
+        } else {
+          this.value = "";
+        }
+
       }
+
     }
   }
 
