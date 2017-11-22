@@ -53,34 +53,34 @@ export class TableComponent implements OnInit {
   @Input() data; // 表格数据内容
   // @Input() columns: ITdDataTableColumn[]; // 表头
   columnsPipes = {}; //有管道的列
-  @Input() columns: TableColumns[];
-  // get columns() {
-  //   return this._columns;
-  // }
-  //
-  // set columns(value) {
-  //   if (Array.isArray(value)) {
-  //     value.forEach(item => {
-  //       switch (item.pipe) {
-  //         case "HtmlPipe.Date":
-  //           item.format = DATE_FORMART;
-  //           break;
-  //         case "HtmlPipe.DateTime":
-  //           item.format = DATE_TIME_FORMART;
-  //           break;
-  //         case "HtmlPipe.Tag":
-  //           item.format = this.TAG_FORMART;
-  //           break;
-  //         default :
-  //           break;
-  //       }
-  //       if (item.pipe) {
-  //         this.columnsPipes[item.name] = item.pipe;
-  //       }
-  //     });
-  //   }
-  //   this._columns = value;
-  // }
+  @Input()
+  get columns() {
+    return this._columns;
+  }
+
+  set columns(value) {
+    if (Array.isArray(value)) {
+      value.forEach(item => {
+        switch (item.pipe) {
+          case "HtmlPipe.Date":
+            item.format = DATE_FORMART;
+            break;
+          case "HtmlPipe.DateTime":
+            item.format = DATE_TIME_FORMART;
+            break;
+          case "HtmlPipe.Tag":
+            item.format = this.TAG_FORMART;
+            break;
+          default :
+            break;
+        }
+        if (item.pipe) {
+          this.columnsPipes[item.name] = item.pipe;
+        }
+      });
+    }
+    this._columns = value;
+  }
 
   _columns: TableColumns[];
   @Input() totals; // 总条数
