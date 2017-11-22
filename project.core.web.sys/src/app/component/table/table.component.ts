@@ -18,9 +18,6 @@ const DATE_FORMART: (v: any) => any = v => {
   return Y + "-" + number(M) + "-" + number(D);
 };
 const DATE_TIME_FORMART: (v: any) => any = v => {
-  if (v === "0001-01-01T00:00:00Z") {
-    return "-";
-  }
   let date = new Date(v);
 
   let Y = date.getFullYear();
@@ -61,19 +58,19 @@ export class TableComponent implements OnInit {
   set columns(value) {
     if (Array.isArray(value)) {
       value.forEach(item => {
-        switch (item.pipe) {
-          case "HtmlPipe.Date":
-            item.format = DATE_FORMART;
-            break;
-          case "HtmlPipe.DateTime":
-            item.format = DATE_TIME_FORMART;
-            break;
-          case "HtmlPipe.Tag":
-            item.format = this.TAG_FORMART;
-            break;
-          default :
-            break;
-        }
+        // switch (item.pipe) {
+        //   case "HtmlPipe.Date":
+        //     item.format = DATE_FORMART;
+        //     break;
+        //   case "HtmlPipe.DateTime":
+        //     item.format = DATE_TIME_FORMART;
+        //     break;
+        //   case "HtmlPipe.Tag":
+        //     item.format = this.TAG_FORMART;
+        //     break;
+        //   default :
+        //     break;
+        // }
         if (item.pipe) {
           this.columnsPipes[item.name] = item.pipe;
         }

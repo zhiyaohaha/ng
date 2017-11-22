@@ -16,7 +16,7 @@ import {
 import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
-import {customized, globalVar} from "../../common/global.config";
+import {globalVar} from "../../common/global.config";
 import {fadeIn} from "../../common/animations";
 import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
@@ -74,8 +74,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   listparam = {
     size: this.pageSize,
     index: this.currentPage,
-    filters: "",
-    name: customized.SysOperationLogConfig
+    filters: ""
   };
 
   routerSubscribe; //路由订阅事件
@@ -108,8 +107,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
         this.getParamsList({
           size: this.pageSize,
           index: 0,
-          filters: "",
-          name: customized.SysOperationLogConfig
+          filters: ""
         });
         this.loadDetailModel();
         this.loadModal();

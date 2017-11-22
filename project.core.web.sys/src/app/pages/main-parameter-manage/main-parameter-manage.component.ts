@@ -2,7 +2,7 @@ import {fadeIn} from "./../../common/animations";
 import {FnUtil} from "./../../common/fn-util";
 import {ToastService} from "./../../component/toast/toast.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {Component, ElementRef, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {
   IPageChangeEvent,
@@ -184,7 +184,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     private router: Router,
     private routerInfo: ActivatedRoute,
     private toastService: ToastService,
-    private fnUtil: FnUtil
+    private fnUtil: FnUtil,
+    private el: ElementRef
   ) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
@@ -192,6 +193,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
         this.getParamsList({
           size: this.pageSize,
           index: 0,
@@ -319,7 +321,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
         this.getParamsList({
           size: this.pageSize,
           index: 0,
-          filters: null
+          filters: ""
         });
       } else {
         this.toastService.creatNewMessage("添加失败");
