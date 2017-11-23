@@ -24,7 +24,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-input",
   template: `
-    <div class="box form-item">
+    <div class="box form-item clearfix">
       <div class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
@@ -34,20 +34,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
           <span class="item-error-tip">{{errorTips}}</span>
         </div>
       </div>
-    </div>
-    
-    
-    
-    
-    <!--<label #label>{{labelName}}：</label>-->
-  <!--<div #wrap class="timi-input-wrap">-->
-    <!--<input #input type="{{type}}" class="timi-input" placeholder="{{placeholder}}" disabled="{{disabled}}"-->
-           <!--name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"-->
-           <!--required="{{require}}"-->
-           <!--(dragover)="allowDrop($event)" (drop)="drop($event)">-->
-    <!--<span class="timi-span-line"></span>-->
-    <!--<span class="timi-input-error">{{errorTips}}</span>-->
-  <!--</div>-->`,
+    </div>`,
   styleUrls: ["./timi-input.component.scss"],
   providers: [DomRenderer, TIMI_INPUT_VALUE_ACCESSOR]
 })

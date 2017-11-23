@@ -2,7 +2,7 @@
   .form-item {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    position: relative;
     .box-item {
       float: left;
       box-sizing: border-box;
@@ -47,7 +47,7 @@
       display: none;
     }
     .error {
-        .timi-input {
+        .item-input {
             border-color: #cf000d;
         }
         .item-error-tip {
