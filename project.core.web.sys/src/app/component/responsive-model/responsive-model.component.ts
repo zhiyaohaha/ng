@@ -63,13 +63,6 @@ export class ResponsiveModelComponent implements OnInit {
   }
 
   /**
-   * 标签改变
-   */
-  chipsChange($event) {
-    console.log($event);
-  }
-
-  /**
    * 提交表单
    */
   onSubmit($event) {
