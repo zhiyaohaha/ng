@@ -1,7 +1,17 @@
 import {CommonModule} from "@angular/common";
 import {
-  NgModule, Component, OnInit, AfterViewInit, OnDestroy,
-  Input, ViewChild, ElementRef, Renderer2, EventEmitter, Output, forwardRef
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgModule,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
@@ -9,7 +19,7 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimiChipGroupComponent),
   multi: true
-}
+};
 
 @Component({
   selector: "timi-chip-group",
@@ -68,8 +78,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   value: any[] = [];
   _placeholder = "回车添加";
 
-  private _propagateChange = (_: any) => {
-  }
+  private _propagateChange = (_: any) => { };
 
   constructor() {
   }
