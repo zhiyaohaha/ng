@@ -247,15 +247,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
-    let data = this._util.toJSON(this.modalData.bindDataJson);
-    for (let key in $event) {
-      data[key] = $event[key];
-    }
-    this.selectNode.JSONdata.tags = this.tags;
-    // this.modalData.bindDataJson = this._util.toJsonStr(this.selectNode.JSONdata);
-    // this.modalData.bindId = this.selectNode.JSONdata.id;
-    // this.modalData.doms = "";
-    this._paramsManageService.saveParams(data).subscribe(res => {
+    this._paramsManageService.saveParams($event).subscribe(res => {
       if (res.code === "0") {
         this.toastService.creatNewMessage(res.message);
         this.getParamsList(this.listparam);
