@@ -1,15 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {
-  NgModule,
-  Component,
-  OnInit,
-  Input,
-  Renderer2,
-  Output,
-  EventEmitter,
-  ElementRef,
-  ViewChild, forwardRef, AfterViewInit
-} from "@angular/core";
+import {AfterViewInit, Component, forwardRef, Input, NgModule, OnInit, Renderer2} from "@angular/core";
 import {DomRenderer} from "../../common/dom";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
@@ -17,7 +7,7 @@ export const TIMI_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimiTextareaComponent),
   multi: true
-}
+};
 
 @Component({
   selector: "timi-textarea",
@@ -71,9 +61,7 @@ export class TimiTextareaComponent implements ControlValueAccessor, AfterViewIni
   }
 
   writeValue(obj: any): void {
-    if (obj) {
-      this.value = obj;
-    }
+    this.value = obj || "";
   }
 
   registerOnChange(fn: any): void {
