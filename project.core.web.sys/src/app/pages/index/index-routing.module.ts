@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {IndexComponent} from "./index.component";
-import {promise} from "selenium-webdriver";
 
 const childRoutes: Routes = [
   {path: "dashboard", loadChildren: "../main/main.module#MainModule"},
@@ -25,7 +24,7 @@ const childRoutes: Routes = [
   {path: "form-data-model", loadChildren: "../form-data-model/form-data-model.module#FormDataModelModule"},
   {path: "dp", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "cdp", loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"},
-  {path: "template", loadChildren: "../template/template.module#TemplateModule"},
+  {path: "tp", loadChildren: "../template/template.module#TemplateModule"},
   {
     path: "OrgStructure.GroupMgr",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
