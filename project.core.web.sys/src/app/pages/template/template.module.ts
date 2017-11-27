@@ -1,12 +1,20 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TemplateComponent} from './template.component';
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {TemplateComponent} from "./template.component";
 import {TemplateRoutingModule} from "./template-routing.module";
+import {FormsModule} from "@angular/forms";
+import {CommonShareModule} from "../../common/share.module";
+import {MdButtonModule} from "@angular/material";
+import {SearchFormModule} from "../../component/search-form/searchform.component";
+import {TableModule} from "../../component/table/table.component";
+import {TimiInputModule} from "../../component/timi-input/timi-input.component";
+import {ButtonModule} from "../../component/button/button.directive";
 
 @NgModule({
   imports: [
     CommonModule,
-    TemplateRoutingModule
+    TemplateRoutingModule, FormsModule, CommonShareModule, MdButtonModule,
+    SearchFormModule, TableModule, TimiInputModule, ButtonModule
   ],
   declarations: [TemplateComponent]
 })
