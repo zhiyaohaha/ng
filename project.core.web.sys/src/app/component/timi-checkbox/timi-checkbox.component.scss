@@ -20,6 +20,8 @@
     }
     .item-control-wrapper {
       width: 70%;
+      max-height: 300px;
+      overflow: auto;
     }
     .wrapper2 {
       width: 85%;
