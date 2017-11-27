@@ -1,8 +1,7 @@
 import {NgModule} from "@angular/core";
-import {Routes, RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
 import {IndexComponent} from "./index.component";
 import {promise} from "selenium-webdriver";
-import fulfilled = promise.fulfilled;
 
 const childRoutes: Routes = [
   {path: "dashboard", loadChildren: "../main/main.module#MainModule"},
@@ -26,16 +25,7 @@ const childRoutes: Routes = [
   {path: "form-data-model", loadChildren: "../form-data-model/form-data-model.module#FormDataModelModule"},
   {path: "dp", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   {path: "cdp", loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"},
-  // {path: "SystemSetting.OperationLogConfig", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
-  // {path: "OrgStructure.OrgMgr", redirectTo: "sharepage", pathMatch: "full"},
-  // {
-  //   path: "OrgStructure.UserMgr",
-  //   redirectTo: "sharepage", pathMatch: "full"
-  //   //loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
-  // },
-  // {path: "OrgStructure.OrgStructure.UserMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
-  // {path: "OrgStructure.JobMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
-  // {path: "OrgStructure.RoleMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
+  {path: "template", loadChildren: "../template/template.module#TemplateModule"},
   {
     path: "OrgStructure.GroupMgr",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"

@@ -18,12 +18,18 @@
                             <em></em>
                           </a>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'MenuType.CascadeDataPage'">
-                          <a [routerLink]="'cdp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                            <cite>{{m.name}}</cite>
-                            <em></em>
-                          </a>
-                        </ng-container>
+                      <ng-container *ngSwitchCase="'MenuType.CascadeDataPage'">
+                        <a [routerLink]="'cdp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                          <cite>{{m.name}}</cite>
+                          <em></em>
+                        </a>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'MenuType.FormFramePage'">
+                        <a [routerLink]="'template'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
+                          <cite>{{m.name}}</cite>
+                          <em></em>
+                        </a>
+                      </ng-container>
                         <ng-container *ngSwitchDefault>
                           <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
                             <cite>{{m.name}}</cite>
