@@ -1,8 +1,6 @@
-import { URLSearchParams, RequestOptionsArgs, RequestOptions } from '@angular/http';
+import {Md5} from '../../../node_modules/ts-md5/dist/md5';
 
-import { Md5 } from '../../../node_modules/ts-md5/dist/md5';
-
-import { KV } from '../models/KV';
+import {KV} from '../models/KV';
 
 export class ConvertUtil {
     /**
@@ -22,7 +20,7 @@ export class ConvertUtil {
 
     /**
      * MD5加密
-     * @param str 
+     * @param str
      */
     public toMd5(str: string): string {
         return Md5.hashStr(str).toString();
@@ -30,7 +28,7 @@ export class ConvertUtil {
 
     /**
      * 字符串转JSON
-     * @param str 
+     * @param str
      */
     public toJSON(str: string) {
         return JSON.parse(str);
@@ -38,7 +36,7 @@ export class ConvertUtil {
 
     /**
      * JSON转字符串
-     * @param t 
+     * @param t
      */
     public toJsonStr<T>(t: T): string {
         return t ? JSON.stringify(t) : "";
@@ -46,35 +44,35 @@ export class ConvertUtil {
 
     /**
      * 对象Key转小写
-     * @param obj 
+     * @param obj
      */
     public objToLowerCase(obj: object): object {
-        for (var key in obj) {
+        for (let key in obj) {
             if (Array.isArray(obj[key]) && obj[key][0] === "object") {
                 this.arrayToLowerCase(obj[key]);
             } else {
                 obj[this.firstLetterToLowerCase(key)] = obj[key];
             }
         }
-        return obj
+        return obj;
     }
 
     /**
      * 数组对象Key转小写
-     * @param array 
+     * @param array
      */
     public arrayToLowerCase(array: object[]): object[] {
-        for (var index = 0; index < array.length; index++) {
-            for (var key in array[index]) {
+        for (let index = 0; index < array.length; index++) {
+            for (let key in array[index]) {
                 array[index][this.firstLetterToLowerCase(key)] = array[index][key];
             }
         }
-        return array
+        return array;
     }
 
     /**
      * 字符串首字母小写
-     * @param str 
+     * @param str
      */
     public firstLetterToLowerCase(str: string): string {
         return str.substr(0, 1).toLowerCase() + str.substr(1);
@@ -89,13 +87,13 @@ export class ConvertUtil {
             return obj;
         }
         let params = [];
-        for (var key in obj) {
-            params.push(key)
+        for (let key in obj) {
+            params.push(key);
         }
         params.sort();
         let _params = "";
-        for (var i = 0; i < params.length; i++) {
-            _params += params[i] + "=" + obj[params[i]] + (i == params.length - 1 ? "" : "&");
+        for (let i = 0; i < params.length; i++) {
+            _params += params[i] + "=" + obj[params[i]] + (i === params.length - 1 ? "" : "&");
         }
         return _params;
     }
