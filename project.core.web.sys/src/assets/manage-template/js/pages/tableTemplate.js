@@ -169,23 +169,23 @@ $(".table-content").on("click", ".addnotes", function(){
         parent.append(`
         <li>
             <div class="row m-b-10">
-                <div class="col-lg-3">
+                <div class="col-sm-3">
                     <label for="">表头字段：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段">
                 </div>
-                <div class="col-lg-3">
+                <div class="col-sm-3">
                     <label for="">表头标题：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题">
                 </div>
-                <div class="col-lg-3">
+                <div class="col-sm-3">
                     <label for="">表格管道：</label>
                     <select class="form-control input-sm fieldPipe" placeholder="请选择一个管道">${fieldPipeOptions}</select>
                 </div>
-                <div class="col-lg-1 checkbox">
+                <div class="col-sm-1 checkbox">
                     <label><input type="checkbox" class="fieldHidden">隐藏</label>
                     <label><input type="checkbox" class="fieldNested" disabled>嵌套</label>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i>
                 </div>
             </div>
@@ -206,45 +206,45 @@ $(".table-content").on("click", ".addnotes", function(){
         parent.append(`
         <li>
             <div class="row">
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="">绑定项名称：</label>
                     <input type="text" class="form-control input-sm bindName" placeholder="请输入绑定项名称">
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="">筛选项标题：</label>
                     <input class="form-control input-sm filterUiLabel" type="text" placeholder="请填写筛选项标题">
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="">筛选项默认值：</label>
                     <input class="form-control input-sm filterValue" type="text" placeholder="请填写筛选项默认值">
                 </div>
-                <div class="col-lg-1 m-b-10 checkbox">
+                <div class="col-sm-1 m-b-10 checkbox">
                     <label><input type="checkbox" class="filterUiHidden">隐藏</label>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="filter" aria-hidden="true"></i>
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="">筛选类型：</label>
                     <select class="form-control input-sm filterType" placeholder="请选择一个筛选类型">${filterTypeOptions}</select>
                 </div>
-                <div class="col-lg-9 m-b-10">
+                <div class="col-sm-9 m-b-10">
                     <label for="displayType">展示类型：</label>
                     <select class="form-control input-sm displayType filterUiDisplayType" placeholder="请选择一个展示类型">${displayTypeOptions}</select>
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="bindMethod">绑定方式：</label>
                     <select class="form-control input-sm bindMethod" placeholder="请选择">${bindMethodOptions}</select>
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="bindTarget">绑定目标：</label>
                     <select class="form-control input-sm bindTarget" placeholder="请选择"></select>
                 </div>
-                <div class="col-lg-3 m-b-10">
+                <div class="col-sm-3 m-b-10">
                     <label for="">占位符：</label>
                     <input class="form-control input-sm filterUiPlaceholder" type="text" placeholder="占位符">
                 </div>
-                <div class="col-lg-9 m-b-10">
+                <div class="col-sm-9 m-b-10">
                     <label for="">筛选项字段：</label>
                     <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 175px) !important;">
                 </div>
@@ -269,15 +269,15 @@ $(".table-content").on("click", ".addnotes", function(){
         parent.append(`
         <li>
             <div class="row m-b-10">
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <label for="">影响规则：</label>
                     <input type="text" class="form-control sortField">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <label for=""></label>
                     <input type="checkbox" class="sortDesc">排序
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
                 </div>
             </div>
@@ -418,25 +418,25 @@ function bindFelds(data){
         if(i === 0){
             html = "";
         }else if (i < data.length - 1){
-            html = `<div class="col-lg-2"><i class="fa fa-minus-circle dellnotes" data-name="header" aria-hidden="true"></i></div>`
+            html = `<div class="col-sm-2"><i class="fa fa-minus-circle dellnotes" data-name="header" aria-hidden="true"></i></div>`
         }else if ( i === data.length -1){
-            html = `<div class="col-lg-2"><i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i></div>`
+            html = `<div class="col-sm-2"><i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i></div>`
         }
         html1 += `<li class="clone">
             <div class="row m-b-10">
-                <div class="col-lg-4">
+                <div class="col-sm-6">
                     <label for="">表头字段：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段" ${disabled} value="${data[i].name}">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-6">
                     <label for="">表头标题：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题" ${disabled} value="${data[i].label}">
                 </div>
-                <div class="col-lg-8">
+                <div class="col-sm-8">
                     <label for="">表格管道：</label>
                     <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道" value="${data[i].pipe}">${fieldPipeOptions}</select>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-sm-2">
                     <input type="checkbox" class="fieldHidden" ${disabled} ${data[i].hidden ? "checked" : ""}>隐藏
                     <input type="checkbox" class="fieldNested" disabled ${data[i].nested ? "checked" : ""}>嵌套
                 </div>
@@ -461,9 +461,9 @@ function bindFilters(data){
             }
         }        
         $clone.find(".bindMethod").val(data[i].bindMethod);
-        setTimeout(() => {
+        // setTimeout(() => {   //iframe 加载的时间比较短
             $clone.find(".bindTarget").val(data[i].bindTarget);
-        }, 1000);
+        // }, 1000);
         $clone.find(".filterField").val(fields.join(","));
         $clone.find(".filterField").data("value", fields.join(","));
         $clone.find(".filterUiLabel").val(data[i].ui.label);
@@ -487,15 +487,15 @@ function bindSorts(data){
         html += `
         <li class="clone">
             <div class="row m-b-10">
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <label for="">影响规则：</label>
                     <input type="text" class="form-control sortField" data-value="${data[i].field}" value="${getcollectionsContent(data[i].field)}">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <label for=""></label>
                     <input type="checkbox" class="sortDesc" ${data[i].desc ? "checked" : ""}>倒序
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
                 </div>
             </div>

@@ -123,23 +123,23 @@ $("#templateFilters").on("click", ".addnotes", function(){
     parent.append(`
         <li>
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-sm-8">
                     <div class="row">
-                        <div class="col-lg-6 m-b-10">
+                        <div class="col-sm-8 m-b-10">
                             <label for="">筛选类型：</label>
                             <select class="form-control input-sm filterType" placeholder="请选择一个筛选类型">${filterTypeOptions}</select>
                         </div>
-                        <div class="col-lg-12 m-b-10">
+                        <div class="col-sm-12 m-b-10">
                             <label for="">筛选项字段：</label>
                             <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 183px) !important;">
                         </div>
-                        <div class="col-lg-6 m-b-10">
+                        <div class="col-sm-8 m-b-10">
                             <label for="">筛选值：</label>
                             <input class="form-control input-sm filterValue" type="text" placeholder="请填写筛选项默认值">
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-sm-4">
                     <i class="fa fa-plus-circle addnotes" data-name="filter" aria-hidden="true"></i>
                 </div>
             </div>
