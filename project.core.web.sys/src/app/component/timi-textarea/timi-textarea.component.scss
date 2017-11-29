@@ -9,20 +9,14 @@
     }
     .item-label {
       text-align: right;
-      width: 30%;
+      width: 120px;
       &::after {
         content: ":";
         margin: 0 8px 0 2px;
       }
     }
-    .label2 {
-      width: 15%;
-    }
     .item-control-wrapper {
-      width: 70%;
-    }
-    .wrapper2 {
-      width: 85%;
+      width: calc(100% - 120px);
     }
     .item-textarea {
       position: relative;

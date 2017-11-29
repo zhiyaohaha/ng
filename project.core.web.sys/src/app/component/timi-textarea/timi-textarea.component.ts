@@ -12,8 +12,8 @@ export const TIMI_TEXTAREA_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-textarea",
   template: `<div class="box form-item">
-    <div class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
-    <div class="box-item item-control-wrapper wrapper{{columns}}">
+    <div class="box-item item-label"><label>{{labelName}}</label></div>
+    <div class="box-item item-control-wrapper">
       <div class="item-control">
         <textarea class="item-textarea" placeholder="{{placeholder}}" disabled="{{disabled}}"
                name="{{name}}" spellcheck="false" autocomplete="off" (blur)="blur($event)"

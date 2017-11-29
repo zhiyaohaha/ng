@@ -28,8 +28,8 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   selector: "timi-select",
   template: `
     <div class="select-wrap">
-      <span class="free-select-name label{{columns}}" *ngIf="freeSelectName">{{freeSelectName}}</span>
-      <div class="free-select wrap{{columns}}" [ngClass]="{'free-select-click-active':freeClickActive}"
+      <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
+      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}"
            (click)="onClick()">
         <div class="free-select-input">
           <label>{{value || pholder}}</label>
