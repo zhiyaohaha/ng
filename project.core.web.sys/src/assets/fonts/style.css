@@ -64,18 +64,6 @@
 .timi-search:before {
   content: "\e914";
 }
-.timi-download:before {
-  content: "\e917";
-}
-.timi-rmb:before {
-  content: "\e913";
-}
-.timi-play:before {
-  content: "\e915";
-}
-.timi-pause:before {
-  content: "\e916";
-}
 .timi-home:before {
   content: "\e900";
 }
@@ -85,7 +73,7 @@
 .timi-share:before {
   content: "\e902";
 }
-.timi-person-center:before {
+.timi-people-center:before {
   content: "\e903";
 }
 .timi-info-circle:before {
@@ -106,30 +94,42 @@
 .timi-loop:before {
   content: "\e909";
 }
-.timi-people:before {
+.timi-download:before {
+  content: "\e90a";
+}
+.timi-rmb:before {
   content: "\e90b";
 }
-.timi-del:before {
+.timi-people:before {
   content: "\e90c";
 }
-.timi-delete:before {
+.timi-del:before {
   content: "\e90d";
 }
-.timi-power-off:before {
+.timi-delete:before {
   content: "\e90e";
 }
-.timi-close:before {
+.timi-power-off:before {
   content: "\e90f";
 }
-.timi-house:before {
+.timi-close:before {
   content: "\e910";
 }
-.timi-ogibe:before {
+.timi-house:before {
   content: "\e911";
 }
-.timi-lock:before {
+.timi-phone:before {
   content: "\e912";
 }
+.timi-lock:before {
+  content: "\e913";
+}
 .timi-email:before {
-  content: "\e914";
+  content: "\e915";
+}
+.timi-play:before {
+  content: "\e916";
+}
+.timi-pause:before {
+  content: "\e917";
 }
