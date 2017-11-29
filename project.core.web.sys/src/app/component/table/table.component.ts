@@ -1,12 +1,10 @@
-import {Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {MdSelectModule} from "@angular/material";
 import {CovalentDataTableModule, CovalentPagingModule, IPageChangeEvent} from "@covalent/core";
-import {Component, ElementRef, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
+import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {globalVar} from "../../common/global.config";
 import {TableColumns} from "../../common/interface/table-columns";
-import {ConvertUtil} from "../../common/convert-util";
 
 const DATE_FORMART: (v: any) => any = v => {
   let date = new Date(v);
@@ -88,12 +86,9 @@ export class TableComponent implements OnInit {
   @Output() rowSelect: EventEmitter<any> = new EventEmitter();
   @Output() change: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild("pagingBar")
-  // private pagingBar: ElementRef;
-  private pagingBar:any;
+  @ViewChild("pagingBar") pagingBar;
 
-  constructor(private router: Router,
-              private convertUtil: ConvertUtil) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -128,7 +123,6 @@ export class TableComponent implements OnInit {
   }
 
   pageTo(page: number) {
-    // this.pagingBar.nativeElement.navigateToPage(page);
     this.pagingBar.navigateToPage(page);
   }
 
