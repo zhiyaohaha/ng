@@ -1,7 +1,8 @@
-import {CommonModule} from "@angular/common";
-import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {CheckboxModule} from "../checkbox/checkbox.component";
+import { CommonModule } from "@angular/common";
+import { Component, forwardRef, Input, NgModule, OnInit } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { FormsModule } from "@angular/forms";
 
 const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -16,10 +17,12 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
+          <input type="text" [(ngModel)]="searchContent">
+          <button (click)="toSearch()">搜索</button>
           <free-checkbox [label]="'全选'"
                          [checked]="actived"
                          (onChange)="checkedAll($event)"></free-checkbox>
-          <ng-container *ngFor="let item of checkboxs">
+          <ng-container *ngFor="let item of checkboxsed">
             <free-checkbox [value]="item.value" [label]="item.text" (onChange)="onChange($event)"
                            [checked]="checked && checked.indexOf(item.value) > -1"></free-checkbox>
           </ng-container>
@@ -48,13 +51,21 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   checked: any; //默认选中的项
   outPutArr = []; //抛出结果数组
 
+  searchContent: any;//输入值
+  checkboxsed: Array<any>;
+
+
+
   valueChange: Function = () => { };
 
   constructor() {
   }
 
   ngOnInit() {
-
+    this.checkboxsed = this.checkboxs;
+   
+    console.log(this.checkboxs);
+    
   }
 
   /**
@@ -91,6 +102,8 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
+
+
     this.checked = value; //设置默认选中的项
     if (value) {
       this.actived = value.length === this.checkboxs.length;
@@ -104,10 +117,37 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
   registerOnTouched() {
   }
+
+  toSearch() {
+    this.checkboxsed = [];
+    let str = this.searchContent;
+    //let reg = eval("/" +str+ "/ig");
+    
+    let reg = new RegExp(str,'ig');
+    //let reg = new RegExp(str, "ig");
+
+    if (!this.searchContent) {
+      this.checkboxsed = this.checkboxs;
+    } else {
+      this.checkboxs.map(item => {
+        if (item.text.indexOf(str) > -1) {
+          console.log(item.text);
+          this.checkboxsed.push(item);
+        }
+      })
+    }
+
+    if (this.checkboxsed.length===0) {
+      this.checkboxsed = this.checkboxs;
+      alert('您搜索的值不存在，请重新输入!');
+    }
+
+  }
+
 }
 
 @NgModule({
-  imports: [CommonModule, CheckboxModule],
+  imports: [CommonModule, CheckboxModule, FormsModule],
   declarations: [TimiCheckboxComponent],
   exports: [TimiCheckboxComponent]
 })
