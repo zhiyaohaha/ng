@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Director | Dashboard</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta name="description" content="Developed By M Abdur Rokib Promy">
+    <meta name="keywords" content="Admin, Bootstrap 3, Template, Theme, Responsive">
+    <!-- bootstrap 3.0.2 -->
+    <!-- <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- font Awesome -->
+    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="../css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Morris chart -->
+    <link href="../css/morris/morris.css" rel="stylesheet" type="text/css" />
+    <!-- jvectormap -->
+    <link href="../css/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <!-- Date Picker -->
+    <link href="../css/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+    <!-- fullCalendar -->
+    <!-- <link href="css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Daterange picker -->
+    <link href="../css/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link href="../css/iCheck/all.css" rel="stylesheet" type="text/css" />
+    <!-- jquery-ui -->
+    <link rel="stylesheet" href="../css/jQueryUI/jquery-ui.theme.min.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <!-- <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Theme style -->
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <style>
+        ul,li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .m-l-1 {
+            margin-left: 20px;
+        }
+        .m-l-2 {
+            margin-left: 40px;
+        }
+        .m-l-3 {
+            margin-left: 60px;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        #formDomTarget {
+            padding-bottom: 100px;
+        }
+        #formDomTargetL, #formDomTargetR {
+            padding-bottom: 30px;
+            background-color: red;
+        }
+        .w100 {
+            width: 80px !important;
+        }
+
+        .dom-panel {
+            width: 100%;
+            border: 1px solid #666;
+            padding: 10px;
+            border-radius: 2px;
+            position: relative;
+        }
+        .dom-panel .del-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0.2;
+            transition: opacity .6s ease;
+        }
+        .dom-panel:hover .del-panel {
+            opacity: 1;
+        }
+        .input-panel-title {
+            width: 200px;
+        }
+        .dom-panel-content {
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            position: relative;
+            min-height: 200px;
+        }
+        .dom-panel-content::after {
+            content: "内容区";
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0;
+            background-color: #f5f5f5;
+        }
+        .new-row {
+            margin-top: 10px;
+            position: relative;
+        }
+        .new-row .rowlr, .new-row .rowl, .new-row .rowr {
+            padding: 30px 30px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            position: relative;
+            min-height: 60px;
+        }
+        .new-row .rowlr::after, .new-row .rowl::after, .new-row .rowr::after {
+            content: "拖入DOM列表内容";
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0;
+            background-color: #f5f5f5;
+        }
+        .new-row .del-panel-row {
+            opacity: 0.2;
+            position: absolute;
+            right: 0;
+            z-index: 1;
+            transition: opacity 0.6s ease;
+        }
+        .new-row:hover .del-panel-row {
+            opacity: 1;
+        }
+        .address-select { }
+        .address-input { }
+    </style>
+</head>
+
+<body class="skin-black">
+    <!-- header logo: style can be found in header.less -->
+    <header class="header">
+        <a href="#" class="logo">Director</a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+            <div class="navbar-right hide">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown messages-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>
+                                <span class="label label-success">4</span>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have 4 messages</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <!-- start message -->
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="img/26115.jpg" class="img-circle" alt="User Image" />
+                                            </div>
+                                            <h4>
+                                                Support Team
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                            <small class="pull-right"><i class="fa fa-clock-o"></i> 5 mins</small>
+                                        </a>
+                                    </li>
+                                    <!-- end message -->
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="img/26115.jpg" class="img-circle" alt="user image" />
+                                            </div>
+                                            <h4>
+                                                Director Design Team
+
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                            <small class="pull-right"><i class="fa fa-clock-o"></i> 2 hours</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="img/avatar.png" class="img-circle" alt="user image" />
+                                            </div>
+                                            <h4>
+                                                Developers
+
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                            <small class="pull-right"><i class="fa fa-clock-o"></i> Today</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="img/26115.jpg" class="img-circle" alt="user image" />
+                                            </div>
+                                            <h4>
+                                                Sales Department
+
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                            <small class="pull-right"><i class="fa fa-clock-o"></i> Yesterday</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="img/avatar.png" class="img-circle" alt="user image" />
+                                            </div>
+                                            <h4>
+                                                Reviewers
+
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                            <small class="pull-right"><i class="fa fa-clock-o"></i> 2 days</small>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#">See All Messages</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown tasks-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-tasks"></i>
+                                <span class="label label-danger">9</span>
+                            </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have 9 tasks</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Design some buttons
+                                                <small class="pull-right">20%</small>
+                                            </h3>
+                                            <div class="progress progress-striped xs">
+                                                <div class="progress-bar progress-bar-success" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    <span class="sr-only">20% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li>
+                                        <!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Create a nice theme
+                                                <small class="pull-right">40%</small>
+                                            </h3>
+                                            <div class="progress progress-striped xs">
+                                                <div class="progress-bar progress-bar-danger" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    <span class="sr-only">40% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li>
+                                        <!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Some task I need to do
+                                                <small class="pull-right">60%</small>
+                                            </h3>
+                                            <div class="progress progress-striped xs">
+                                                <div class="progress-bar progress-bar-info" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="sr-only">60% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                    <li>
+                                        <!-- Task item -->
+                                        <a href="#">
+                                            <h3>
+                                                Make beautiful transitions
+                                                <small class="pull-right">80%</small>
+                                            </h3>
+                                            <div class="progress progress-striped xs">
+                                                <div class="progress-bar progress-bar-warning" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    <span class="sr-only">80% Complete</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <!-- end task item -->
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="#">View all tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i>
+                                <span>Jane Doe <i class="caret"></i></span>
+                            </a>
+                        <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                            <li class="dropdown-header text-center">Account</li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-clock-o fa-fw pull-right"></i>
+                                        <span class="badge badge-success pull-right">10</span> Updates</a>
+                                <a href="#">
+                                    <i class="fa fa-envelope-o fa-fw pull-right"></i>
+                                        <span class="badge badge-danger pull-right">5</span> Messages</a>
+                                <a href="#"><i class="fa fa-magnet fa-fw pull-right"></i>
+                                        <span class="badge badge-info pull-right">3</span> Subscriptions</a>
+                                <a href="#"><i class="fa fa-question fa-fw pull-right"></i> <span class=
+                                        "badge pull-right">11</span> FAQ</a>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="#">
+                                        <i class="fa fa-user fa-fw pull-right"></i>
+                                            Profile
+                                        </a>
+                                <a data-toggle="modal" href="#modal-user-settings">
+                                        <i class="fa fa-cog fa-fw pull-right"></i>
+                                            Settings
+                                        </a>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="#"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="left-side sidebar-offcanvas">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="img/26115.jpg" class="img-circle" alt="User Image" />
+                    </div>
+                    <div class="pull-left info">
+                        <p>Hello, Jane</p>
+
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search..." />
+                        <span class="input-group-btn">
+                            <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="#">
+                            <i class="fa fa-dashboard"></i> <span>表单模版</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <aside class="right-side">
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row form-inline">
+                    <div class="col-lg-12">
+                        <h3>表单编辑器</h3>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="">模板名称：</label>
+                            <input type="text" class="form-control" placeholder="请填写模板名称">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="">模板标题：</label>
+                            <input type="text" class="form-control" placeholder="请填写模板标题">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="platform">平台：</label>
+                            <select class="form-control" id="platform">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="">标签：</label>
+                            <input type="text" class="form-control" placeholder="请填写标签">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="">描述：</label>
+                            <input type="text" class="form-control" placeholder="请填写描述">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div>
+                            <button class="btn btn-default lists" data-name="formDom">DOM列表</button>
+                            <button class="btn btn-default lists" data-name="collections">数据源列表</button>
+                        </div>
+                        <div>
+                            <div id="formDom"></div>
+                            <div id="collections"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="formDomTarget">
+                        <div class="dom-panel">
+                            <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
+                            <input type="text" class="form-control input-panel-title" placeholder="请输入面板标题">
+                            <div class="dom-panel-content"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="pull-right">
+                                        <button class="btn btn-default add-row" data-num="1">增加一行一列</button>
+                                        <button class="btn btn-default add-row" data-num="2">增加一行两列</button>
+                                    </div>
+                                </div>                                
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <input class="form-control input-sm m-b-10" type="text" placeholder="标题">
+                        <select class="form-control input-sm m-b-10" id="displayTypes" disabled>
+                        </select>
+                        <input class="form-control input-sm m-b-10" type="text" placeholder="绑定字段" id="bindField">
+                        <select class="form-control input-sm m-b-10">
+                            <option>绑定方式</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                        <select class="form-control input-sm m-b-10">
+                            <option>绑定目标</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                        <input class="form-control input-sm m-b-10" type="text" placeholder="占位符">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <label for="">属性</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                添加
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <label for="">样式</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                添加
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <label for="">
+                                    <input type="checkbox"/> 禁用
+                                </label>
+                                <label for="">
+                                    <input type="checkbox"/> 隐藏
+                                </label>
+                                <label for="">
+                                    <input type="checkbox"/> 必选
+                                </label>
+                                <label for="">
+                                    <input type="checkbox"/> 多值
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <textarea class="form-control m-b-10" placeholder="描述" style="height: 70px; resize: none;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+            <div class="footer-main" style="display:none;">
+
+            </div>
+        </aside>
+        <!-- /.right-side -->
+
+    </div>
+    <!-- ./wrapper -->
+
+
+    <!-- jQuery 3.2.1 -->
+    <script src="../js/jquery.min.js" type="text/javascript"></script>
+    <script src="../js/plugins/jqueryMd5/jquery.md5.js" type="text/javascript"></script>
+
+    <!-- jQuery UI 1.12.1 -->
+    <script src="../js/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <!-- <script src="../js/bootstrap.min.js" type="text/javascript"></script> -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- daterangepicker -->
+    <script src="../js/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+    <script src="../js/plugins/chart.js" type="text/javascript"></script>
+
+    <!-- datepicker
+        <script src="js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>-->
+    <!-- Bootstrap WYSIHTML5
+        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
+    <!-- iCheck -->
+    <script src="../js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+    <!-- calendar -->
+    <script src="../js/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+
+    <!-- tAjax -->
+    <script src="../js/ajax.js" type="text/javascript"></script>
+
+    <!-- common.js -->
+    <script src="../js/common.js" type="text/javascript"></script>
+
+    <script>
+        $('input[type="checkbox"], input[type="radio"]').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+
+        var DOMvalue; //拖动的DOM元素值
+
+        //登录
+        $.ajax({
+            type: "POST",
+            url: "http://api2.cpf360.com/api/auth/login",
+            data: $.postAuth({ "account": "administrator", "password": "1" }),
+            success: function( res ) {
+                console.log(res);
+            }
+        })
+
+        //获取下拉框选项
+        $.ajax({
+            type: "GET",
+            url: "http://api2.cpf360.com/api/Template/GetTableTemplateFormData",
+            data: $.getAuth(),
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            contentType: "application/json",
+            dataType: "json",
+            success: function( res ) {
+                if(res.code === "0") {
+
+                    // 数据源
+                    var collections = "";
+                    res.data.collections.forEach(function(el){
+                        collections += `<div data-value="${el.value}">${el.text}</div>`;
+                    })
+                    $("#collections").html(collections);
+
+                    //平台
+                    bindSelect(res.data.platforms, "请选择平台", "platform");
+
+                    //展示类型
+                    bindSelect(res.data.displayTypes, "请选择展示类型", "displayTypes");
+                    var html = "";
+                    res.data.displayTypes.forEach(function(el){
+                        html += `<div class="nowrap" data-value="${el.value}">${el.text}</div>`;
+                    })
+                    $("#formDom").html(html).find("div").draggable({
+                        helper: "clone",
+                        revert: "invalid",
+                        zIndex: 100,
+                        start: function() {
+                            DOMvalue = $(this).data("value");
+                        },
+                        drag: function() {},
+                        stop: function() {}
+                    });
+
+                }
+            }
+        })
+
+        //绑定下拉框值
+        function bindSelect(data, defaultText, target){
+            var html = `<option>${defaultText}</option>`;
+            data.forEach(function(el){
+                html += `<option value="${el.value}">${el.text}</option>`;
+            })
+            $("#"+target).html(html);
+        }
+
+        //更具下拉框值获取模板字段
+        $("#collections").on("change",function(el){
+            $.ajax({
+                type: "GET",
+                url: "http://api2.cpf360.com/api/Template/GetFieldsByCollection",
+                data: $.getAuth({data:$(this).find("option:selected").val()}),
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                contentType: "application/json",
+                success: function(res){
+                    var html = "";
+                    res.data.forEach(function(el){
+                        html += `<div class="nowrap" data-value="${el.description}" class="m-l-${el.depth}">${el.description}</div>`;
+                    })
+                    $("#collectionList").html(html);
+
+                    //拖拽
+                    $("#collectionList div").draggable({
+                        helper: "clone",
+                        revert: "invalid",
+                        zIndex: 100
+                    });
+                }
+            })
+
+        })
+
+        //切换数据源和DOM列表
+        $(".lists").on("click",function(){
+            var name = $(this).data("name");
+            $("#"+name).show().siblings().hide();
+        })
+
+        //dom-panel
+        $(document).on("click", ".add-row", function(){
+            var num = $(this).data("num");
+            var content = $(this).parentsUntil(".dom-panel").siblings(".dom-panel-content");
+            var $dom;
+            if ( num === 1 ) {
+                $dom = $(`<div class="row new-row"><button class="btn btn-default btn-xs del-panel-row" title="删除该行"><i class="fa fa-times"></i></button><div class="col-lg-12 rowlr"></div></div>`);
+            }else if (num === 2) {
+                $dom = $(`<div class="row new-row"><button class="btn btn-default btn-xs del-panel-row" title="删除该行"><i class="fa fa-times"></i></button><div class="col-lg-6 rowl"></div><div class="col-lg-6 rowr"></div></div>`);
+            }
+            content.append($dom);
+            $dom.find("div").droppable({
+                greedy: true,
+                drop: function(event, ui){
+                    $("#displayTypes").val(DOMvalue);
+                    $(this).append(displayDOM(DOMvalue));
+                    DOMvalue = "";
+                }
+            });
+            $dom.parent().sortable();
+        })
+
+        //关闭dom-panel
+        $("#formDomTarget").on("click", ".del-panel", function(){
+            $(this).parent().remove();
+        })
+
+        //关闭dom-panel下的行
+        $("#formDomTarget").on("click", ".del-panel-row",function(){
+            $(this).parent().remove();
+        })
+
+        //拖拽赋值
+        $("#bindField").droppable({
+            drop: function( event, ui ) {
+                $( this ).val( "Dropped!" );
+                console.log(event)
+            }
+        });
+        $("#formDomTarget").droppable({
+            drop: function(event, ui) {
+                if(DOMvalue){
+                    $("#displayTypes").val(DOMvalue);
+                    $(this).append(displayDOM(DOMvalue));
+                    if(DOMvalue === "HtmlDomDisplayType.Panel"){
+                        $("dom-panel-content").sortable();
+                    }
+                    DOMvalue = "";
+                }                
+            }
+        });
+        $("#formDomTarget").sortable({
+            placeholder: "ui-state-highlight",
+            revert: true
+        })
+
+        //返回对应拖动的DOM
+        function displayDOM(key) {
+            switch(key) {
+                case "HtmlDomDisplayType.Hidden": 
+                    return $(`<input type='text' class='form-control input-sm m-b-10' placeholder="隐藏域">`);
+                    break;
+                case "HtmlDomDisplayType.Text":
+                    return $("<input type='text' class='form-control input-sm m-b-10' placeholder='输入框'>");
+                    break;
+                case "HtmlDomDisplayType.Textarea":
+                    return $("<textarea class='form-control m-b-10' placeholder='文本框'></textarea>");
+                    break;
+                case "HtmlDomDisplayType.Select":
+                    return $(`<div class="col-lg-6"><select class="form-control m-b-10" placeholder="下拉框"></select></div>`);
+                    break;
+                case "HtmlDomDisplayType.Checkbox":
+                    return $(`<div class="checkbox"><label><input type="checkbox"></label></div>`);
+                    break;
+                case "HtmlDomDisplayType.Radiobox":
+                    return $(`<div class="radio"><label><input type="radio"></label></div>`);
+                    break;
+                case "HtmlDomDisplayType.Upload":
+                    return $("<input type='file' class='form-control m-b-10'>");
+                    break;
+                case "HtmlDomDisplayType.Panel":
+                    return $(`<div class="dom-panel">
+                            <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
+                            <input type="text" class="form-control input-panel-title" placeholder="请输入面板标题">
+                                <div class="dom-panel-content"></div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="pull-right">
+                                            <button class="btn btn-default add-row" data-num="1">增加一行一列</button>
+                                            <button class="btn btn-default add-row" data-num="2">增加一行两列</button>
+                                        </div>
+                                    </div>                                
+                                </div>                            
+                            </div>`);
+                    break;
+                case "HtmlDomDisplayType.Tags":
+                    return $("<input type='text' class='form-control m-b-10' placeholder='标签'>");
+                    break;
+                case "HtmlDomDisplayType.Date":
+                    return $(`<input type="date" class="form-control">`);
+                    break;
+                case "HtmlDomDisplayType.Password":
+                    return $("<input type='password' class='form-control m-b-10' placeholder='密码框'>");
+                    break;
+                case "HtmlDomDisplayType.DateRange":
+                    return $(``);
+                    break;
+                case "HtmlDomDisplayType.Button":
+                    return $("<button class='btn btn-info'>按钮</button>");
+                    break;
+                case "HtmlDomDisplayType.Submit":
+                    return $("<button type='submit' class='btn btn-info'>提交</button>");
+                    break;
+                case "HtmlDomDisplayType.AddressSelect":
+                    return $(`<div class="row"><div class="col-lg-3"><select class="form-control address-select"></select></div>
+                              <div class="col-lg-3"><select class="form-control address-select"></select></div>
+                              <div class="col-lg-6"><input type="text" class="form-control address-input" placeholder="详细地址"></div></div>`);
+                    break;
+                default :
+                    return "这里有毛病";
+                    break;
+            }
+        }
+        
+    </script>
+</body>
+
+</html>

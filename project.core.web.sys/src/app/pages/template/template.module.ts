@@ -4,7 +4,7 @@ import {TemplateComponent} from "./template.component";
 import {TemplateRoutingModule} from "./template-routing.module";
 import {FormsModule} from "@angular/forms";
 import {CommonShareModule} from "../../common/share.module";
-import {MdButtonModule} from "@angular/material";
+import {MdButtonModule,MdSidenavModule} from "@angular/material";
 import {SearchFormModule} from "../../component/search-form/searchform.component";
 import {TableModule} from "../../component/table/table.component";
 import {TimiInputModule} from "../../component/timi-input/timi-input.component";
@@ -13,7 +13,7 @@ import {ButtonModule} from "../../component/button/button.directive";
 @NgModule({
   imports: [
     CommonModule,
-    TemplateRoutingModule, FormsModule, CommonShareModule, MdButtonModule,
+    TemplateRoutingModule, FormsModule, CommonShareModule, MdButtonModule,MdSidenavModule,
     SearchFormModule, TableModule, TimiInputModule, ButtonModule
   ],
   declarations: [TemplateComponent]

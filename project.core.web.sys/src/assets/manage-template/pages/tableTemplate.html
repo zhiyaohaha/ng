@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/jQueryUI/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="../css/pages/formTemplate.css">
+</head>
+
+<body>
+    <div class="top-menu"></div>
+    <aside class="left-menu">
+        <ul>
+            <li>
+                <a href="./formTemplate.html">模板表单编辑器</a>
+            </li>
+            <li>
+                <a href="#">模板表格编辑器</a>
+            </li>
+            <li>
+                <a href="./mutilpleTemplate.html">模板多选编辑器</a>
+            </li>
+            <li>
+                <a href="./detailTemplate.html">模板详细编辑器</a>
+            </li>
+        </ul>
+    </aside>
+    <section class="main-container">
+        <div class="row form-inline table-base-info">
+            <div class="col-lg-12">
+                <h3>表格编辑器</h3>
+            </div>
+            <div class="form-group col-lg-3"></div>
+            <div class="form-group col-lg-3"><label for="templateName">模板名称：</label><input type="text" class="form-control" placeholder="请填写模板名称" id="templateName"></div>
+            <div class="form-group col-lg-3"><label for="templateTitle">模板标题：</label><input type="text" class="form-control" placeholder="请填写模板标题" id="templateTitle"></div>
+            <div class="form-group col-lg-3"><label for="templatePlatform">平台：</label><select class="form-control" placeholder="请选择一个平台" id="templatePlatform"></select></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <select style="margin-top:-34px" id="collections" class="form-control"></select>
+                </div>
+                <div id="collectionsContent"></div>
+            </div>
+            <div class="col-lg-10 form-inline table-content">
+                <div id="templateFields">
+                    <h4>表头</h4>
+                    <ul>
+                        <li>
+                            <div class="row m-b-10">
+                                <div class="col-lg-3">
+                                    <label for="">表头字段：</label>
+                                    <input type="text" class="form-control input-sm m-b-10 fieldName" value="id" disabled>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">表头标题：</label>
+                                    <input type="text" class="form-control input-sm m-b-10 fieldLabel" value="唯一标识" disabled>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">表格管道：</label>
+                                    <select class="form-control input-sm fieldPipe" placeholder="请选择一个管道" disabled></select>
+                                </div>
+                                <div class="col-lg-1 checkbox">
+                                    <label><input type="checkbox" class="fieldHidden" checked>隐藏</label>
+                                    <label><input type="checkbox" class="fieldNested" disabled>嵌套</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="clone">
+                            <div class="row m-b-10">
+                                <div class="col-lg-3">
+                                    <label for="">表头字段：</label>
+                                    <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段">
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">表头标题：</label>
+                                    <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题">
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">表格管道：</label>
+                                    <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道"></select>
+                                </div>
+                                <div class="col-lg-1 checkbox">
+                                    <label><input type="checkbox" class="fieldHidden">隐藏</label>
+                                    <label><input type="checkbox" class="fieldNested" disabled>嵌套</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="templateFilters">
+                    <h4>筛选项</h4>
+                    <ul>
+                        <li class="clone">
+                            <div class="row">
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="">绑定项名称：</label>
+                                    <input type="text" class="form-control input-sm bindName" placeholder="请输入绑定项名称">
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="">筛选项标题：</label>
+                                    <input class="form-control input-sm filterUiLabel" type="text" placeholder="请填写筛选项标题">
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="">筛选项默认值：</label>
+                                    <input class="form-control input-sm filterValue" type="text" placeholder="请填写筛选项默认值">
+                                </div>
+                                <div class="col-lg-1 m-b-10 checkbox">
+                                    <label><input type="checkbox" class="filterUiHidden">隐藏</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class="fa fa-plus-circle addnotes" data-name="filter" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="">筛选类型：</label>
+                                    <select class="form-control input-sm filterType" placeholder="请选择一个筛选类型"></select>
+                                </div>
+                                <div class="col-lg-9 m-b-10">
+                                    <label for="displayType">展示类型：</label>
+                                    <select class="form-control input-sm displayType filterUiDisplayType" placeholder="请选择一个展示类型"></select>
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="bindMethod">绑定方式：</label>
+                                    <select class="form-control input-sm bindMethod" placeholder="请选择"></select>
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="bindTarget">绑定目标：</label>
+                                    <select class="form-control input-sm bindTarget" placeholder="请选择"></select>
+                                </div>
+                                <div class="col-lg-3 m-b-10">
+                                    <label for="">占位符：</label>
+                                    <input class="form-control input-sm filterUiPlaceholder" type="text" placeholder="占位符">
+                                </div>
+                                <div class="col-lg-9 m-b-10">
+                                    <label for="">筛选项字段：</label>
+                                    <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 175px) !important;">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="templateSorts">
+                    <h4>排序</h4>
+                    <ul>
+                        <li class="clone">
+                            <div class="row m-b-10">
+                                <div class="col-lg-9">
+                                    <label for="">影响规则：</label>
+                                    <input type="text" class="form-control sortField full">
+                                </div>
+                                <div class="col-lg-1 checkbox">
+                                    <label for=""></label>
+                                    <input type="checkbox" class="sortDesc">倒序
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 m-b-10">
+                        <label for="templateDescription">描述：</label>
+                        <textarea class="form-control full" placeholder="请填写描述" id="templateDescription"></textarea>
+                    </div>
+                    <div class="form-group col-lg-12 m-b-10">
+                        <label for="templateTags">标签：</label>
+                        <input type="text" class="form-control full" placeholder="请填写标签" id="templateTags">
+                    </div>
+                    <div class="form-group col-lg-12" style="text-align:center"><button class="btn btn-default" onclick="saveTemplate()">保存模板</button></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/plugins/jqueryMd5/jquery.md5.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/ajax.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/pages/index.js"></script>
+    <script src="../js/pages/tableTemplate.js"></script>
+    <script>
+        $("#aaa").on("change", function () {
+            var formData = new FormData();
+            formData.append("file", $("#aaa")[0].files[0]);
+            $.ajax({
+                url: "http://192.168.3.15:8001/api/LoanOrder/UploadAttachmentFile",
+                type: 'POST',
+                data: formData,
+                // 告诉jQuery不要去处理发送的数据
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                beforeSend: function (xhr) {
+                    console.log("正在进行，请稍候");
+                    xhr.setRequestHeader('attachmentId', '59eda139f83b994f880ac51c');
+                },
+                success: function (responseStr) {
+                    if (responseStr.status === 0) {
+                        console.log("成功" + responseStr);
+                    } else {
+                        console.log("失败");
+                    }
+                },
+                error: function (responseStr) {
+                    console.log("error");
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>

@@ -89,7 +89,8 @@ export class TableComponent implements OnInit {
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   @ViewChild("pagingBar")
-  private pagingBar: ElementRef;
+  // private pagingBar: ElementRef;
+  private pagingBar:any;
 
   constructor(private router: Router,
               private convertUtil: ConvertUtil) {
@@ -127,7 +128,8 @@ export class TableComponent implements OnInit {
   }
 
   pageTo(page: number) {
-    this.pagingBar.nativeElement.navigateToPage(page);
+    // this.pagingBar.nativeElement.navigateToPage(page);
+    this.pagingBar.navigateToPage(page);
   }
 
   TAG_FORMART: (v: any) => any = v => {

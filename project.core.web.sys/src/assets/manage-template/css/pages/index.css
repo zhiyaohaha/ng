@@ -1,0 +1,269 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-size: 16px;
+}
+
+textarea {
+    resize: none;
+}
+
+.top-menu {
+    width: 100%;
+    height: 3rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
+    transition: all .25s;
+}
+
+.left-menu {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    bottom: 0;
+    width: 12.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-shadow: 6px 0 6px rgba(0, 0, 0, .1);
+    z-index: 1;
+    transition: all .25s;
+}
+
+.left-menu li {
+    height: 50px;
+    line-height: 50px;
+    text-indent: 2rem;
+}
+
+.left-menu li a {
+    display: block;
+    color: #666;
+    text-decoration: none;
+}
+
+.left-menu li a:hover {
+    background-color: red;
+}
+
+.main-container {
+    position: absolute;
+    background-color: #fff;
+    /* left: 12.5rem; */
+    /* top: 3rem; */
+    /* bottom: 0; */
+    /* right: 0; */
+    padding: .75rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.m-l-1 {
+    margin-left: 20px;
+}
+
+.m-l-2 {
+    margin-left: 40px;
+}
+
+.m-l-3 {
+    margin-left: 60px;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+#formDomTarget {
+    padding-bottom: 100px;
+    border:1px solid #ccc;
+    border-radius: 4px;
+}
+
+#formDomTargetL,
+#formDomTargetR {
+    padding-bottom: 30px;
+    background-color: red;
+}
+
+.w100 {
+    width: 80px !important;
+}
+
+.form-base-info label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+
+.form-base-info>div {
+    margin: 10px 0;
+}
+
+.form-base-info select,
+.form-base-info input {
+    width: 200px !important;
+}
+
+#formDom {
+    padding-left: 14px;
+}
+
+#collections,
+#collectionsDetail {
+    display: none;
+    height: 65vh;
+    overflow-y: auto;
+    padding-left: 14px;
+}
+
+.dom-panel {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #666;
+    padding: 10px;
+    border-radius: 2px;
+    position: relative;
+}
+
+.dom-panel .del-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.2;
+    transition: opacity .6s ease;
+}
+
+.dom-panel:hover .del-panel {
+    opacity: 1;
+}
+
+.input-panel-title {
+    width: 200px;
+}
+
+.dom-panel-content {
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+    min-height: 200px;
+    overflow: hidden;
+}
+
+.dom-panel-content::after {
+    content: "内容区";
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0;
+    background-color: #f5f5f5;
+}
+
+.new-row {
+    margin-top: 10px;
+    position: relative;
+}
+
+.new-row .rowlr,
+.new-row .rowl,
+.new-row .rowr {
+    padding: 30px 30px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+    min-height: 60px;
+}
+
+.new-row .rowlr::after,
+.new-row .rowl::after,
+.new-row .rowr::after {
+    content: "拖入DOM列表内容";
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0;
+    background-color: #f5f5f5;
+}
+
+.new-row .del-panel-row {
+    opacity: 0.2;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    transition: opacity 0.6s ease;
+}
+
+.new-row:hover .del-panel-row {
+    opacity: 1;
+}
+
+.element-wrap {
+    height: 50px;
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ddd;
+    transition: width .6s ease;
+}
+
+.del-panel-field {
+    position: absolute;
+    opacity: 0.2;
+    right: -1px;
+    top: -1px;
+    z-index: 1;
+    transition: opacity .6s ease;
+}
+
+.btn-zoom {
+    position: absolute;
+    opacity: 0.2;
+    right: 20px;
+    top: -1px;
+    z-index: 1;
+    transition: opacity .6s ease;
+}
+
+.element-wrap:hover .del-panel-field,
+.element-wrap:hover .btn-zoom {
+    opacity: 1;
+}
+
+.element-wrap label {
+    position: absolute;
+    line-height: 30px;
+    left: 20px;
+}
+
+.additional i {
+    position: relative;
+    top: -4px;
+}

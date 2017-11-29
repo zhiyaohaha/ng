@@ -4,6 +4,8 @@ import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {MdSidenav} from "@angular/material";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: "app-template",
@@ -14,8 +16,9 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 export class TemplateComponent implements OnInit, AfterViewInit {
 
   selectRow; //每一行的具体数据
-
-
+  selectRowId; //每一行的id
+  dangerousUrl:any;
+  trustedUrl:any;
   /**
    * 表格title
    */
@@ -50,7 +53,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   constructor(private sharepageService: SharepageService,
               private routerInfo: ActivatedRoute,
               private router: Router,
-              private lodaingService: TdLoadingService
+              private lodaingService: TdLoadingService,
+              private sanitizer: DomSanitizer
   ) {
     this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
     /**
@@ -151,10 +155,14 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.sharepageService.getEditParams({ id: $event.row.id })
-      .subscribe(r => {
-        this.selectRow = r.data;
-      });
+    // this.selectRowId =  $event.row.id;
+    this.dangerousUrl = '../../../assets/manage-template/pages/detailTemplate.html?id='+$event.row.id;
+            // http://localhost:4200/assets/manage-template/pages/detailTemplate.html
+    this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
+    // this.sharepageService.getEditParams({ id: $event.row.id })
+    //   .subscribe(r => {
+    //     this.selectRow = r.data;
+    //   });
   }
 
 
