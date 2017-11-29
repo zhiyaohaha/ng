@@ -183,7 +183,7 @@ $(".table-content").on("click", ".addnotes", function(){
                 </div>
                 <div class="col-sm-1 checkbox">
                     <label><input type="checkbox" class="fieldHidden">隐藏</label>
-                    <label><input type="checkbox" class="fieldNested" disabled>嵌套</label>
+                   
                 </div>
                 <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i>
@@ -424,21 +424,21 @@ function bindFelds(data){
         }
         html1 += `<li class="clone">
             <div class="row m-b-10">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <label for="">表头字段：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段" ${disabled} value="${data[i].name}">
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <label for="">表头标题：</label>
                     <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题" ${disabled} value="${data[i].label}">
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-3">
                     <label for="">表格管道：</label>
                     <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道" value="${data[i].pipe}">${fieldPipeOptions}</select>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1 checkbox">
                     <input type="checkbox" class="fieldHidden" ${disabled} ${data[i].hidden ? "checked" : ""}>隐藏
-                    <input type="checkbox" class="fieldNested" disabled ${data[i].nested ? "checked" : ""}>嵌套
+                    
                 </div>
                 ${html}
             </div>
