@@ -16,9 +16,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class TemplateComponent implements OnInit, AfterViewInit {
 
   selectRow; //每一行的具体数据
-  selectRowId; //每一行的id
-  dangerousUrl:any;
-  trustedUrl:any;
+  dangerousUrl:string;
+  trustedUrl;
+  editUrl:string;//编辑url
+  @ViewChild("sidenav")
+  private sidenav: MdSidenav;
+
   /**
    * 表格title
    */
@@ -81,6 +84,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
           index: localStorage.getItem(this.pagecode + "cp"),
           filters: ""
         });
+        //每次订阅不同的页面，关闭右侧弹出的iframe
+        this.sidenav.close();
       });
 
     /**
@@ -155,10 +160,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 点击行
    */
   rowClickEvent($event) {
-    // this.selectRowId =  $event.row.id;
-    this.dangerousUrl = '../../../assets/manage-template/pages/detailTemplate.html?id='+$event.row.id;
-            // http://localhost:4200/assets/manage-template/pages/detailTemplate.html
-    this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
+    this.setIframeSrc($event.row.id);
     // this.sharepageService.getEditParams({ id: $event.row.id })
     //   .subscribe(r => {
     //     this.selectRow = r.data;
@@ -170,6 +172,26 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 添加
    */
   newAdd() {
+    this.setIframeSrc('');
   }
 
+  /**
+   *根据不同的url，设置不同的iframe src（添加和修改都跳转到iframe） 
+   */
+  setIframeSrc(id){
+    let pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+    switch(pagecode){
+      case "TemplateMgr.TableMgr":this.editUrl="table";break;  //表格
+      case "TemplateMgr.SelectMgr":this.editUrl="mutilple";break;  //多选
+      case "TemplateMgr.FormMgr":this.editUrl="form";break;  //表单
+      case "TemplateMgr.DetailMgr":this.editUrl="detail";break;  //详细
+    }
+    if(id){
+      this.dangerousUrl = '../../../assets/manage-template/pages/'+this.editUrl+'Template.html?id='+id;
+    }else{
+      this.dangerousUrl = '../../../assets/manage-template/pages/'+this.editUrl+'Template.html';
+    }
+    
+    this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
+  }
 }
