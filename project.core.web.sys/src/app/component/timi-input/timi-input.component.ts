@@ -25,8 +25,8 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   selector: "timi-input",
   template: `
     <div class="box form-item clearfix">
-      <div class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
-      <div class="box-item item-control-wrapper wrapper{{columns}}">
+      <div class="box-item item-label"><label>{{labelName}}</label></div>
+      <div class="box-item item-control-wrapper">
         <div #wrap class="item-control">
           <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" disabled="{{disabled}}"
                  name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
