@@ -1,16 +1,21 @@
 :host /deep/{
-  md-sidenav-container {
-    height: 100%;
-    .main-container {
-      padding: 10px;
+    md-sidenav-container {
+      height: 100%;
+      .main-container {
+        padding: 10px;
+      }
     }
-  }
-  md-sidenav {
-    width:99%;
-  }
-  .add-button {
-    left: 40px;
-    top: -3px;
-  }
+    md-sidenav {
+      width:92.33%;
+    }
+    .add-button {
+      left: 40px;
+      top: -3px;
+    }
+    iframe{
+      border-width:0px;
+      // overflow-y : hidden; 
+      // height:200%;
+    }
   }
   
