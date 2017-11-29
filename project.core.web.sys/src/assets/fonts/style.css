@@ -61,7 +61,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.timi-search:before {
+  content: "\e914";
+}
 .timi-download:before {
   content: "\e917";
 }
