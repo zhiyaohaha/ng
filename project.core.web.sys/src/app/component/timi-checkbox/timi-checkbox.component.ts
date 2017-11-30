@@ -17,7 +17,7 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
       <div *ngIf="isShowSearch">
-            <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" _ngcontent-c27 class="item-input" placeholder="请输入关键词">            
+            <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" class="item-input" placeholder="请输入关键词">            
       </div>
         <div #wrap class="item-control">      
           <free-checkbox [label]="'全选'"
