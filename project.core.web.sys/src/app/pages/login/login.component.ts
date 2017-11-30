@@ -4,7 +4,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import "rxjs/Rx";
 
 import {LoginService} from "../../services/login-service/login.service";
-import {CommunicationService} from "./../../services/share/communication.service";
 import {defaultValue} from "../../common/global.config";
 import {LoginOutService} from "../../services/loginOut-service/loginOut.service";
 
@@ -24,14 +23,17 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private loginService: LoginService,
-              private loginOutService: LoginOutService,
-              private myService: CommunicationService) {
+              private loginOutService: LoginOutService) {
   }
 
   ngOnInit() {
+    let key = "";
+    if (document.domain === "localhost") {
+      key = "#Cmd@NoPassword";
+    }
     this.loginForm = this.fb.group({
       account: ["administrator", [Validators.required]],
-      password: ["#Cmd@NoPassword", Validators.required]
+      password: [key, Validators.required]
     });
 
     if (sessionStorage.getItem("load") === "yes") {
