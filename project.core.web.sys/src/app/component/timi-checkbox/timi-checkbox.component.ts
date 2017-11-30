@@ -16,15 +16,13 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
     <div class="box form-item" *ngIf="checkboxs">
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
-        <div #wrap class="item-control">
-
-          <div *ngIf="isShowSearch">
-            <input type="text" [(ngModel)]="searchContent">
-            <button (click)="toSearch()">搜索</button>
-          </div>
+      <div *ngIf="isShowSearch">
+            <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" _ngcontent-c27 class="item-input" placeholder="请输入关键词">            
+      </div>
+        <div #wrap class="item-control">      
           <free-checkbox [label]="'全选'"
                          [checked]="actived"
-                         (onChange)="checkedAll($event)"></free-checkbox>
+                         (onChange)="checkedAll($event)" *ngIf="isShowCheckAll"></free-checkbox>
           <ng-container *ngFor="let item of checkboxsed">
             <free-checkbox [value]="item.value" [label]="item.text" (onChange)="onChange($event)"
                            [checked]="checked && checked.indexOf(item.value) > -1"></free-checkbox>
@@ -57,7 +55,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   searchContent: any;//输入值
   checkboxsed: Array<any>;//搜索中的值
   isShowSearch: boolean;//控制搜索框是否显示，大于等于10条数据时显示
-
+  isShowCheckAll: boolean = true;//控制全选是否显示
 
   valueChange: Function = () => { };
 
@@ -130,7 +128,9 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
     if (!this.searchContent) {
       this.checkboxsed = this.checkboxs;
+      this.isShowCheckAll = true;
     } else {
+      this.isShowCheckAll = false;
       this.checkboxs.map(item => {
         if (item.text.indexOf(str) > -1) {
           console.log(item.text);
@@ -138,10 +138,11 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
         }
       })
     }
-    if (this.checkboxsed.length === 0) {
-      this.checkboxsed = this.checkboxs;
-      alert('您搜索的值不存在，请重新输入!');
-    }
+
+    // if (this.checkboxsed.length === 0) {
+    //   this.checkboxsed = this.checkboxs;
+    //   alert('您搜索的值不存在，请重新输入!');
+    // }
   }
 }
 
