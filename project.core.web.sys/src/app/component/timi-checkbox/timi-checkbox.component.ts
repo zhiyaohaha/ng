@@ -17,8 +17,11 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
       <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
         <div #wrap class="item-control">
-          <input type="text" [(ngModel)]="searchContent">
-          <button (click)="toSearch()">搜索</button>
+
+          <div *ngIf="isShowSearch">
+            <input type="text" [(ngModel)]="searchContent">
+            <button (click)="toSearch()">搜索</button>
+          </div>
           <free-checkbox [label]="'全选'"
                          [checked]="actived"
                          (onChange)="checkedAll($event)"></free-checkbox>
@@ -52,8 +55,10 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   outPutArr = []; //抛出结果数组
 
   searchContent: any;//输入值
-  checkboxsed: Array<any>;
+  checkboxsed: Array<any>;//搜索中的值
+  isShowSearch: boolean;//控制搜索框是否显示
 
+  test:number=4;
 
 
   valueChange: Function = () => { };
@@ -63,9 +68,12 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
     this.checkboxsed = this.checkboxs;
-   
     console.log(this.checkboxs);
-    
+    if (this.checkboxs.length > 10) {
+      this.isShowSearch = true;
+    }else{
+      this.isShowSearch = false;
+    }
   }
 
   /**
@@ -121,10 +129,6 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   toSearch() {
     this.checkboxsed = [];
     let str = this.searchContent;
-    //let reg = eval("/" +str+ "/ig");
-    
-    let reg = new RegExp(str,'ig');
-    //let reg = new RegExp(str, "ig");
 
     if (!this.searchContent) {
       this.checkboxsed = this.checkboxs;
@@ -136,14 +140,11 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
         }
       })
     }
-
-    if (this.checkboxsed.length===0) {
+    if (this.checkboxsed.length === 0) {
       this.checkboxsed = this.checkboxs;
       alert('您搜索的值不存在，请重新输入!');
     }
-
   }
-
 }
 
 @NgModule({
