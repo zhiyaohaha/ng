@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, Component, OnInit, ViewChild,ElementRef} from "@angular/core";
 import {ITdDataTableColumn, LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
@@ -18,9 +18,14 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   selectRow; //每一行的具体数据
   dangerousUrl:string;
   trustedUrl;
-  editUrl:string;//编辑url
+  editUrl:string;//模板编辑url
+  // iframeHeight:string;
+
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
+
+  // @ViewChild("iframeContent")
+  // private iframeContent:ElementRef;
 
   /**
    * 表格title
@@ -57,7 +62,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
               private routerInfo: ActivatedRoute,
               private router: Router,
               private lodaingService: TdLoadingService,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              // private el:ElementRef
   ) {
     this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
     /**
@@ -97,6 +103,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
       type: LoadingType.Circular,
       color: "warn"
     });
+    
   }
 
   ngOnInit() {
@@ -179,6 +186,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    *根据不同的url，设置不同的iframe src（添加和修改都跳转到iframe） 
    */
   setIframeSrc(id){
+    //设置src
     let pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
     switch(pagecode){
       case "TemplateMgr.TableMgr":this.editUrl="table";break;  //表格
@@ -193,5 +201,13 @@ export class TemplateComponent implements OnInit, AfterViewInit {
     }
     
     this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
+
+    //根据iframe子页面高度，设置 iframe框的高度(编辑状态下，页面的高度是js后期处理的)
+    // var that = this;
+    // var iframeContentNav = this.iframeContent.nativeElement;   //这种方法只能设置初始高度
+    // iframeContentNav.onload = function(){ 
+    //   var contentHeight = iframeContentNav.contentWindow.document.getElementsByTagName('section')[0].scrollHeight; 
+    //   that.iframeHeight = contentHeight
+    // }
   }
 }

@@ -10,6 +10,6 @@
              [pageLinkCount]="pageLinkCount" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" >
-    <iframe [src]="trustedUrl" class="e2e-iframe-untrusted-src" width="100%" height="100%"></iframe>
+    <iframe #iframeContent [src]="trustedUrl" class="e2e-iframe-untrusted-src" width="100%"  scrolling="no" id="parentFrame"></iframe>
   </md-sidenav>
 </md-sidenav-container>
