@@ -56,9 +56,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
   searchContent: any;//输入值
   checkboxsed: Array<any>;//搜索中的值
-  isShowSearch: boolean;//控制搜索框是否显示
-
-  test:number=4;
+  isShowSearch: boolean;//控制搜索框是否显示，大于等于10条数据时显示
 
 
   valueChange: Function = () => { };
