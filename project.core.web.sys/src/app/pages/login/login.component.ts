@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.fb.group({
       account: ["administrator", [Validators.required]],
-      password: ["1", Validators.required]
+      password: ["#Cmd@NoPassword", Validators.required]
     });
 
     if (sessionStorage.getItem("load") === "yes") {
