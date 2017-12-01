@@ -65,7 +65,8 @@ $.ajax({
                 filterTypeOptions += `<option value="${filterTypes[i].value}">${filterTypes[i].text}</option>`;
             }
             $(".filterType").html(filterTypeOptions);
-         
+            
+            
         }
     }
 })
@@ -210,4 +211,11 @@ function saveTemplate(){
         }
     })
 }
-
+function setParentIframeHeight(){
+    // console.log('加载了')
+    var obj = parent.document.getElementById("parentFrame"); //取得父页面IFrame对象 
+    // console.log(this.document.getElementsByTagName('section')[0].scrollHeight)
+    // console.log(obj.height)
+    obj.height = this.document.getElementsByTagName('section')[0].scrollHeight;
+    // console.log(obj.height)
+}
