@@ -28,12 +28,14 @@ import {FnUtil} from "./common/fn-util";
 import {FilterValuePipe} from "./common/pipe/filterValue.pipe";
 import {HttpClientModule} from "@angular/common/http";
 import {SetAuthorityComponent} from "./component/set-authority/set-authority.component";
+import { NewComponentModule } from "./newcomponent/newcomponent.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     FilterValuePipe,
-    SetAuthorityComponent
+    SetAuthorityComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import {SetAuthorityComponent} from "./component/set-authority/set-authority.com
     MdInputModule, MdNativeDateModule, MdListModule, MdButtonModule,
     CovalentLayoutModule, CovalentStepsModule, CovalentDialogsModule, CovalentPagingModule, CovalentLoadingModule,
     AppRoutingModule,
-    ToastModule
+    ToastModule,
+    NewComponentModule,
   ],
   providers: [
     {provide: LocationStrategy, useClass: PathLocationStrategy},

@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, NgModule, Output} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
-import {defaultValue} from "../../common/global.config";
-import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
-import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
-
+import { Component, EventEmitter, Input, NgModule, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ErgodicJsonPipe } from "../../common/pipe/ergodic-json.pipe";
+import { defaultValue } from "../../common/global.config";
+import { StrToArrayPipe } from "../../common/pipe/str-to-array.pipe";
+import { BooleanToWordPipe } from "../../common/pipe/boolean-to-word.pipe";
+import { NewComponentModule } from "../../newcomponent/newcomponent.module";
 
 @Component({
   selector: "detail-model",
@@ -22,6 +22,7 @@ export class DetailModelComponent {
   @Input() modelDOMSData = ""; //显示的原数据
 
   @Output() onClick: EventEmitter<any> = new EventEmitter();
+  
 
   constructor() {
   }
@@ -47,6 +48,7 @@ export class DetailModelComponent {
     return Array.isArray(params);
   }
 
+  
 
 }
 
@@ -55,7 +57,8 @@ export class DetailModelComponent {
     CommonModule,
     FormsModule,
     ButtonModule,
-    MdButtonModule
+    MdButtonModule,
+    NewComponentModule,
   ],
   declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe],
   exports: [DetailModelComponent]
