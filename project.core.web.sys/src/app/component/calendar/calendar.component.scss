@@ -1,15 +1,16 @@
-@import "../../../assets/sass/mixin";
+@import "../../../assets/scss/mixin";
 
 .free-calendar {
   position: relative;
   display: inline-block;
+  line-height: 30px;
 
   &.free-calendar-inline {
-    box-shadow: 0 0.0625em 0.1875em 0 rgba(0, 0, 0, 0.1),
-    0 0.5em 0 -0.25em #f2f2f2,
-    0 0.5em 0.1875em -0.25em rgba(0, 0, 0, 0.1),
-    0 1em 0 -0.5em #e5e5e5,
-    0 1em 0.1875em -0.5em rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    .free-calendar-wrapper {
+      position: relative;
+    }
 
     .calendar {
       position: relative;
@@ -19,6 +20,15 @@
 
   .free-calendar-header {
     border-bottom: 1px solid #d9d9d9;
+  }
+
+  tr td,
+  tr th {
+    width: 14.8%;
+  }
+
+  table {
+    width: 100%;
   }
 
   .free-calendar-year,
@@ -107,6 +117,9 @@
       transform: translate(0, -50%);
     }
 
+    &.free-select-timeonly:before {
+      content: "\f017";
+    }
   }
 
   .free-calendar-wrapper {
@@ -257,6 +270,36 @@
 
       .calendar-today {
         font-size: .75rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .free-calendar-time {
+    display: flex;
+    justify-content: center;
+    padding-top: .25rem;
+
+    .free-calendar-selector {
+      width: 22px;
+      margin: 0 5px;
+      display: flex;
+      font-size: 13px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .free-calendar-selector-wrapper {
+        line-height: 22px;
+      }
+
+      & > span {
+        margin: 0;
+      }
+
+      span:first-child,
+      span:last-child {
+        padding: 0 5px;
         cursor: pointer;
       }
     }

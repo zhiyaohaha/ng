@@ -1,16 +1,14 @@
-import { ToastService } from "./../../component/toast/toast.service";
-import { Component, OnInit, HostBinding } from "@angular/core";
-import { MdSnackBar } from "@angular/material";
-import { fadeIn } from "./../../common/animations";
-import { LoginOutService } from "../../services/loginOut-service/loginOut.service";
+import {ToastService} from "./../../component/toast/toast.service";
+import {Component, OnInit} from "@angular/core";
+import {fadeIn} from "./../../common/animations";
+import {LoginOutService} from "../../services/loginOut-service/loginOut.service";
 
-import { FileUploader } from "ng2-file-upload";
-import { ConvertUtil } from "../../common/convert-util";
-import { BaseService } from "../../services/base.service";
-import { WebSocketService } from "../../services/share/web-socket.service";
-import { HttpSign } from "../../models/HttpSign";
-import { globalUrl } from "../../common/global.config";
-import { environment } from "environments/environment";
+import {FileUploader} from "ng2-file-upload";
+import {ConvertUtil} from "../../common/convert-util";
+import {BaseService} from "../../services/base.service";
+import {WebSocketService} from "../../services/share/web-socket.service";
+import {globalUrl} from "../../common/global.config";
+import {environment} from "environments/environment";
 
 @Component({
   selector: "app-root",
@@ -26,27 +24,22 @@ export class MainComponent implements OnInit {
     {value: "pizza-1", viewValue: "Pizza"},
     {value: "tacos-2", viewValue: "Tacos"}
   ];
-  selected = "pizza-1";
-  
-  imgSrc: any[];
 
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, public snack: MdSnackBar, private toastService: ToastService) { }
+
+  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, private toastService: ToastService) {
+  }
 
   ngOnInit() {
     this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
       data => console.log(data),
       err => console.log(err),
       () => console.log("ws结束！")
-    )
+    );
 
     let data = "{'account':'administrator','password':'1'}";
     setTimeout(() => {
       //this.wsService.loginSocket(this.wsService, data);
     }, 1000)
-  }
-
-  loginOut() {
-    this._loginoutservice.loginOut();
   }
 
   timestamp;
@@ -58,11 +51,11 @@ export class MainComponent implements OnInit {
     isHTML5: true,
     allowedFileType: ["image"],
     method: "POST"
-  })
+  });
 
   /**
    * 拖拽状态改变的回调函数
-   * @param  
+   * @param
    */
   fileOverBase($event) {
     this.isDropZoneOver = $event;
@@ -70,7 +63,7 @@ export class MainComponent implements OnInit {
 
   /**
    * 文件拖拽完成的回调函数
-   * @param  
+   * @param
    */
   fileDropOver($event) {
     console.log($event);
@@ -79,7 +72,7 @@ export class MainComponent implements OnInit {
   uploadAllFiles() {
     this.timestamp = this.util.timestamp();
     this.sign = this.util.toMd5(this.timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
-    this.uploader.options.headers = [{ name: "timestamp", value: this.timestamp }, { name: "sign", value: this.sign }];
+    this.uploader.options.headers = [{name: "timestamp", value: this.timestamp}, {name: "sign", value: this.sign}];
     this.uploader.uploadAll();
     let _self = this;
 
@@ -88,15 +81,15 @@ export class MainComponent implements OnInit {
       console.log("onErrorItem");
       e.progress = 0;
       console.log(_self.uploader)
-    }
+    };
 
     this.uploader.onErrorItem = function (e) {
       console.log(e)
-    }
+    };
 
     this.uploader.onCompleteItem = function (e) {
       console.log("onCompleteItem");
-    }
+    };
 
     this.uploader.onCompleteAll = function () {
       console.log("onCompleteAll");
@@ -106,7 +99,7 @@ export class MainComponent implements OnInit {
 
   /**
    * 移除某一项
-   * @param item 
+   * @param item
    */
   removeItem(item) {
     item.remove();
@@ -127,7 +120,7 @@ export class MainComponent implements OnInit {
    * 提交成功过后修改文件名
    */
   renameFile(id, name) {
-    this.http.post("/api/file/rename", { key: id, value: name }).subscribe(r => console.log(r));
+    this.http.post("/api/file/rename", {key: id, value: name}).subscribe(r => console.log(r));
   }
 
   sendMsg() {
