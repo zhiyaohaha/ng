@@ -478,6 +478,7 @@ function getDetail(){
                 setTimeout(function() {
                     if(result.filters.length > 0) bindFilters(result.filters);
                     $("#templateSorts ul").html(bindSorts(result.sorts));
+                    $("#templateSorts li:last").find("i").removeClass("fa-minus-circle dellnotes").addClass("fa-plus-circle addnotes");
                     setDroppable();
                     setParentIframeHeight();
                 }, 2000);
@@ -629,7 +630,7 @@ function bindSorts(data){
                         <input type="checkbox" class="sortDesc" ${data[i].desc ? "checked" : ""}>倒序
                     </div>
                     <div class="col-sm-2">
-                        <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
+                        <i class="fa fa-minus-circle dellnotes" data-name="sort" aria-hidden="true"></i>
                     </div>
                 </div>
             </li>
