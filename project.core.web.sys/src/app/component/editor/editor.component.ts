@@ -10,11 +10,11 @@ import {
   Output,
   Renderer2,
   ViewChild
-} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DomRenderer} from '../common/dom';
-import {ColorPickerModule} from '../colorpicker/colorpicker.component';
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
+} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {DomRenderer} from "../../common/dom";
+import {ColorPickerModule} from "../colorpicker/colorpicker.component";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -590,7 +590,9 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   setSize(value: any) {
-    if (!value) { return; }
+    if (!value) {
+      return;
+    }
     if (!/%/.test(value)) {
       return value + 'px';
     }
@@ -1600,6 +1602,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
     this.unbindMouseleaveListener();
   }
 }
+
 @NgModule({
   imports: [CommonModule, FormsModule, ColorPickerModule],
   declarations: [EditorComponent],
