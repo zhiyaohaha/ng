@@ -39,6 +39,7 @@ function setDroppable(){
     var templateFiltersDrop = true;
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
+            console.log(222)
             if(templateFiltersDrop ){
                 var str = $(this).find(".filterField").val();
                 var value = $(this).find(".filterField").data("value");
@@ -386,11 +387,12 @@ function saveTemplate() {
     $("#templateFilters li").each(function(index, item){
         var _self = $(item);
         if(!_self.find(".filterField").data("value")){
-            alert
             return false;
         }
+        // console.log( _self.find(".filterField").data("value"))
+        // console.log( _self.find(".filterField").val())
         filters.push({
-            fields:  _self.find(".filterField").data("value").split(","),            
+            "fields":  _self.find(".filterField").data("value").split(","),            
             "name": _self.find(".bindName").val(),
             "bindMethod": _self.find(".bindMethod").val(),
             "bindTarget": _self.find(".bindTarget").val(),
@@ -564,42 +566,52 @@ function bindFelds(data){
 function bindFilters(data){
     var html = "";
     for(var i = 0; i < data.length; i++){
-        var fields = [];
+        var fieldsValue = [];
+        var fieldsLabel = [];
         var $clone = $("#templateFilters .clone").clone(true);
         $clone.find(".filterType").val(data[i].type);
         $clone.find(".filterUiDisplayType").val(data[i].ui.displayType);
+        // console.log(data[i].fields)
         if (data[i].fields) {
             for(var j = 0; j < data[i].fields.length; j++){
-                fields.push(getcollectionsContent(data[i].fields[j]))
+                fieldsValue.push(getcollectionsContent(data[i].fields[j]))
+                fieldsLabel.push(data[i].fields[j])
             }
-        }      
-        // console.log(data[i])  
+        }
+
         $clone.find(".bindMethod").val(data[i].bindMethod);
         var  bindTargetVal =  data[i].bindTarget;
-        $.ajax({
-            type: "GET",
-            url: urlprefix + "/api/Template/GetBindTarget",
-            data: $.getAuth({"bindMethod":data[i].bindMethod}),
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(r){
-                if(r.code === "0" && r.data){
-                    var node = $("#templateFilters").find(".bindTarget");
-                    node.append(`<option>请选择绑定目标</option>`);
-                    for (var i = r.data.length - 1; i >= 0; i--) {
-                        node.append(`<option value="${r.data[i].value}">${r.data[i].text}</option>`);
-                    }
-                    $clone.find(".bindTarget").val(bindTargetVal);
-                }                        
-            }
-        })
+        (function(i1,$clone){
+            $.ajax({
+                type: "GET",
+                url: urlprefix + "/api/Template/GetBindTarget",
+                data: $.getAuth({"bindMethod":data[i1].bindMethod}),
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(r){
+                    // console.log(i)
+                    if(r.code === "0" && r.data){
+                        $clone.find(".bindTarget").val("");
+                        var node = $("#templateFilters").find(".bindTarget");
+                        node.append(`<option>请选择绑定目标</option>`);
+                        for (var i = r.data.length - 1; i >= 0; i--) {
+                            node.append(`<option value="${r.data[i].value}">${r.data[i].text}</option>`);
+                        }
+                        console.log(data[i1].bindTarget)
+                        $clone.find(".bindTarget").val(data[i1].bindTarget);
+                    }                        
+                }
+            })
+        })(i,$clone)
         // setTimeout(() => {   //iframe 加载的时间比较短
-            $clone.find(".bindTarget").val(data[i].bindTarget);
+            // $clone.find(".bindTarget").val(data[i].bindTarget);
         // }, 1000);
-        $clone.find(".filterField").val(fields.join(","));
-        $clone.find(".filterField").data("value", fields.join(","));
+        $clone.find(".filterField").val(fieldsValue.join(","));
+        // console.log(fields)
+        $clone.find(".filterField").data("value",fieldsLabel.join(","));
+
         $clone.find(".filterUiLabel").val(data[i].ui.label);
         $clone.find(".bindName").val(data[i].name);
         $clone.find(".filterValue").val(data[i].value);
