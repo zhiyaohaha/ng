@@ -181,12 +181,12 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   @Input() counter: boolean;
   @Input() undoManager: boolean;
   @Output() onUploadCompleted: EventEmitter<any> = new EventEmitter();
-  @ViewChild('container') containerViewChild: ElementRef;
-  @ViewChild('toolbar') toolbarViewChild: ElementRef;
-  @ViewChild('editor') editorViewChild: ElementRef;
-  @ViewChild('modal') modalViewChild: ElementRef;
-  @ViewChild('linkPopup') linkPopupViewChild: ElementRef;
-  @ViewChild('tablePopup') tablePopupViewChild: ElementRef;
+  @ViewChild("container") containerViewChild: ElementRef;
+  @ViewChild("toolbar") toolbarViewChild: ElementRef;
+  @ViewChild("editor") editorViewChild: ElementRef;
+  @ViewChild("modal") modalViewChild: ElementRef;
+  @ViewChild("linkPopup") linkPopupViewChild: ElementRef;
+  @ViewChild("tablePopup") tablePopupViewChild: ElementRef;
   linkPopup: HTMLDivElement;
   tablePopup: HTMLDivElement;
   linkUrl: HTMLInputElement;
