@@ -148,7 +148,6 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   }
 
   writeValue(value: any) {
-
     if (this.options) {
       this.options.map(r => {
         r.checked = false;
@@ -158,6 +157,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     if (value) {
       this.selected = value;
       this.getValue();
+      this.onChange.emit(value);
     } else {
       this.value = "";
     }
@@ -216,6 +216,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
         this.multipleTotal = true;
       }
     } else {
+      option.checked = false;
       this.multipleTotal = false;
       const selected = this.selected;
       let i = selected.length;
