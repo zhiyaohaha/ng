@@ -10,40 +10,81 @@ var collectionsContent; //下拉数据源选择过后的数据内容
 
 var detailId = ""; //查询详情的ID
 
-$(document).ready(function(){
-    $("#templateFields ul li").droppable({
+//设置可拖拽赋值
+function setDroppable(){
+    var templateFieldsDrop = true;
+    $("#templateFields ul li").not(":first").droppable({  //表头第一个选项禁止拖入修改
         drop: function(event, ui){
-            $(this).find(".fieldName").val(DOMvalue);
-            $(this).find(".fieldLabel").val(DOMdescription);
-            if($.repeatStr(DOMvalue, ".") > 0){
-                $(this).find(".fieldNested").prop("checked", true);
-            }else{
-                $(this).find(".fieldNested").prop("checked", false);
-            }
+            console.log(templateFieldsDrop)
+            if(templateFieldsDrop){
+                $(this).find(".fieldName").val(DOMvalue);
+                $(this).find(".fieldLabel").val(DOMdescription);
+                if($.repeatStr(DOMvalue, ".") > 0){
+                    $(this).find(".fieldNested").prop("checked", true);
+                }else{
+                    $(this).find(".fieldNested").prop("checked", false);
+                }
+             }else{
+                templateFieldsDrop  = true; 
+             }
         }
+    }).css("cursor","move")
+    $("#templateFields  ul#templateFieldsSortUI").sortable({
+        start:function(event,ui){
+            templateFieldsDrop = false;
+        }
+      
     })
 
+    var templateFiltersDrop = true;
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
-            var str = $(this).find(".filterField").val();
-            var value = $(this).find(".filterField").data("value");
-            if(str){
-                str += ","+DOMdescription;
-                value += ","+DOMvalue;
-            }else{
-                str = DOMdescription;
-                value = DOMvalue;
-            }
-            $(this).find(".filterField").val(str).data("value", value);
+            if(templateFiltersDrop ){
+                var str = $(this).find(".filterField").val();
+                var value = $(this).find(".filterField").data("value");
+                if(str){
+                    str += ","+DOMdescription;
+                    value += ","+DOMvalue;
+                }else{
+                    str = DOMdescription;
+                    value = DOMvalue;
+                }
+                $(this).find(".filterField").val(str).data("value", value);
+             }else{
+                templateFiltersDrop   = true; 
+             }
+        }
+    }).css("cursor","move")
+    $("#templateFilters  ul").sortable({
+        revert: true,
+        start:function(event,ui){
+            templateFiltersDrop = false;
         }
     })
 
+    var templateSortsDrop = true;
     $("#templateSorts ul li").droppable({
         drop: function(event, ui){
-            $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
+            if(templateSortsDrop){
+                $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
+             }else{
+                templateSortsDrop = true; 
+             }
+        }
+    }).css("cursor","move")
+    $("#templateSorts  ul").sortable({
+        revert: true,
+        start:function(event,ui){
+            templateSortsDrop  = false;
         }
     })
 
+    $("i.fa-plus-circle").css("cursor","default");
+}
+
+
+$(document).ready(function(){
+    setDroppable()
     $("#templateFilters").on("change", ".bindMethod", function(){
         var _self = $(this);
         $.ajax({
@@ -193,17 +234,29 @@ $(".table-content").on("click", ".addnotes", function(){
             </div>
         </li>
         `);
+        var droped = true;
         parent.find("li:last").droppable({
             drop: function(event, ui){
-                $(this).find(".fieldName").val(DOMvalue);
-                $(this).find(".fieldLabel").val(DOMdescription);
-                if($.repeatStr(DOMvalue, ".") > 0){
-                    $(this).find(".fieldNested").prop("checked", true);
+                if(droped){
+                    $(this).find(".fieldName").val(DOMvalue);
+                    $(this).find(".fieldLabel").val(DOMdescription);
+                    if($.repeatStr(DOMvalue, ".") > 0){
+                        $(this).find(".fieldNested").prop("checked", true);
+                    }else{
+                        $(this).find(".fieldNested").prop("checked", false);
+                    }
                 }else{
-                    $(this).find(".fieldNested").prop("checked", false);
+                    droped = true;
                 }
             }
+        }).css("cursor","move");
+        parent.sortable({
+            start:function(event,ui){
+                droped = false;
+            }
         })
+    
+        $("i.fa-plus-circle").css("cursor","default");
     }else if (name === "filter"){
         parent.append(`
         <li>
@@ -248,11 +301,12 @@ $(".table-content").on("click", ".addnotes", function(){
                 </div>
                 <div class="col-sm-9 m-b-10">
                     <label for="">筛选项字段：</label>
-                    <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 175px) !important;">
+                    <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容,否则和筛选项有关的选项将无法保存" style="width:calc(100% - 175px) !important;" disabled>
                 </div>
             </div>
         </li>
         `);
+        var droped = true;
         parent.find("li:last").droppable({
             drop: function(event, ui){
                 var str = $(this).find(".filterField").val();
@@ -266,30 +320,45 @@ $(".table-content").on("click", ".addnotes", function(){
                 }
                 $(this).find(".filterField").val(str).data("value", value);
             }
+        }).css("cursor","move");
+        parent.sortable({
+            start:function(event,ui){
+                droped = false;
+            }
         })
+
+        $("i.fa-plus-circle").css("cursor","default");
     }else if (name === "sort"){
         parent.append(`
         <li>
             <div class="row m-b-10">
-                <div class="col-sm-4">
+                <div class="col-sm-9">
                     <label for="">影响规则：</label>
-                    <input type="text" class="form-control sortField">
+                    <input type="text" class="form-control sortField  full" placeholder="请拖拽影响规则内容" disabled>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-1  checkbox">
                     <label for=""></label>
                     <input type="checkbox" class="sortDesc">排序
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
                 </div>
             </div>
         </li>
         `);
+        var droped = true;
         parent.find("li:last").droppable({
             drop: function(event, ui){
                 $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
             }
+        }).css("cursor","move");
+        parent.sortable({
+            start:function(event,ui){
+                droped = false;
+            }
         })
+
+        $("i.fa-plus-circle").css("cursor","default");
     }
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
 })
@@ -317,6 +386,7 @@ function saveTemplate() {
     $("#templateFilters li").each(function(index, item){
         var _self = $(item);
         if(!_self.find(".filterField").data("value")){
+            alert
             return false;
         }
         filters.push({
@@ -361,6 +431,7 @@ function saveTemplate() {
         data.id = detailId;
         url = "/api/Template/UpdateTableTemplate";
     }
+    // console.log(data)
     $.ajax({
         type: "POST",
         url: urlprefix + url,///api/Template/AddTableTemplate /api/Template/UpdateTableTemplate
@@ -372,6 +443,9 @@ function saveTemplate() {
         dataType: "json",
         success: function(res){
             console.log(res);
+            if(res.code === "0"){
+                alert("保存成功");
+            }
         }
     })
 }
@@ -399,13 +473,12 @@ function getDetail(){
                 $("#templateTags").val(result.tags ? result.tags.join(",") : "");
                 $("#templateDescription").val(result.description);
                 
-                $("#templateFields ul").html(bindFelds(result.fields));
-
+                // $("#templateFields ul").html(bindFelds(result.fields));
+                bindFelds(result.fields);
                 setTimeout(function() {
                     if(result.filters.length > 0) bindFilters(result.filters);
-                
                     $("#templateSorts ul").html(bindSorts(result.sorts));
-
+                    setDroppable();
                     setParentIframeHeight();
                 }, 2000);
             }
@@ -416,6 +489,8 @@ function getDetail(){
 //绑定表头
 function bindFelds(data){
     var html1 = "";
+    var html2 = "";
+    // console.log(data)
     for(var i = 0; i < data.length; i++) {
         var disabled = i === 0 ? "disabled" : "";
         var html = "";
@@ -426,29 +501,62 @@ function bindFelds(data){
         }else if ( i === data.length -1){
             html = `<div class="col-sm-2"><i class="fa fa-plus-circle addnotes" data-name="header" aria-hidden="true"></i></div>`
         }
-        html1 += `<li class="clone">
-            <div class="row m-b-10">
-                <div class="col-sm-3">
-                    <label for="">表头字段：</label>
-                    <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段" ${disabled} value="${data[i].name}">
+        if(data[i].name == "id"){
+                html1 += `<li class="clone">
+                <div class="row m-b-10">
+                    <div class="col-sm-3">
+                        <label for="">表头字段：</label>
+                        <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段" ${disabled} value="${data[i].name}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="">表头标题：</label>
+                        <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题" ${disabled} value="${data[i].label}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="">表格管道：</label>
+                        <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道" value="" ${disabled}>${fieldPipeOptions}</select>
+                    </div>
+                    <div class="col-sm-1 checkbox">
+                        <input type="checkbox" class="fieldHidden"  ${data[i].hidden ? "checked" : ""}>隐藏
+                        
+                    </div>
+                    ${html}
                 </div>
-                <div class="col-sm-3">
-                    <label for="">表头标题：</label>
-                    <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题" ${disabled} value="${data[i].label}">
+            </li>
+            <script>
+                $("#templateFields ul#templateFieldsSortUI li:eq(${i}) .fieldPipe").val('${data[i].pipe}');
+            </script>
+            `;
+        }else{
+            html2 += `<li class="clone">
+                <div class="row m-b-10">
+                    <div class="col-sm-3">
+                        <label for="">表头字段：</label>
+                        <input type="text" class="form-control input-sm m-b-10 fieldName" placeholder="请填写一个表头字段" ${disabled} value="${data[i].name}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="">表头标题：</label>
+                        <input type="text" class="form-control input-sm m-b-10 fieldLabel" placeholder="请填写一个表头标题" ${disabled} value="${data[i].label}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="">表格管道：</label>
+                        <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道" value="" ${disabled}>${fieldPipeOptions}</select>
+                    </div>
+                    <div class="col-sm-1 checkbox">
+                        <input type="checkbox" class="fieldHidden"  ${data[i].hidden ? "checked" : ""}>隐藏
+                        
+                    </div>
+                    ${html}
                 </div>
-                <div class="col-sm-3">
-                    <label for="">表格管道：</label>
-                    <select class="form-control input-sm m-b-10 fieldPipe" placeholder="请选择一个管道" value="${data[i].pipe}">${fieldPipeOptions}</select>
-                </div>
-                <div class="col-sm-1 checkbox">
-                    <input type="checkbox" class="fieldHidden" ${disabled} ${data[i].hidden ? "checked" : ""}>隐藏
-                    
-                </div>
-                ${html}
-            </div>
-        </li>`;
+            </li>
+            <script>
+                $("#templateFields ul#templateFieldsSortUI li:eq(${i-1}) .fieldPipe").val('${data[i].pipe}');
+            </script>
+            `;
+        }
     }
-    return html1;
+    $("#templateFields ul:first").html(html1);
+    $("#templateFields ul#templateFieldsSortUI").html(html2);
 }
 
 //绑定筛选项
@@ -463,15 +571,36 @@ function bindFilters(data){
             for(var j = 0; j < data[i].fields.length; j++){
                 fields.push(getcollectionsContent(data[i].fields[j]))
             }
-        }        
+        }      
+        // console.log(data[i])  
         $clone.find(".bindMethod").val(data[i].bindMethod);
+        var  bindTargetVal =  data[i].bindTarget;
+        $.ajax({
+            type: "GET",
+            url: urlprefix + "/api/Template/GetBindTarget",
+            data: $.getAuth({"bindMethod":data[i].bindMethod}),
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(r){
+                if(r.code === "0" && r.data){
+                    var node = $("#templateFilters").find(".bindTarget");
+                    node.append(`<option>请选择绑定目标</option>`);
+                    for (var i = r.data.length - 1; i >= 0; i--) {
+                        node.append(`<option value="${r.data[i].value}">${r.data[i].text}</option>`);
+                    }
+                    $clone.find(".bindTarget").val(bindTargetVal);
+                }                        
+            }
+        })
         // setTimeout(() => {   //iframe 加载的时间比较短
             $clone.find(".bindTarget").val(data[i].bindTarget);
         // }, 1000);
         $clone.find(".filterField").val(fields.join(","));
         $clone.find(".filterField").data("value", fields.join(","));
         $clone.find(".filterUiLabel").val(data[i].ui.label);
-        $clone.find(".bindName").val(data[i].bindName);
+        $clone.find(".bindName").val(data[i].name);
         $clone.find(".filterValue").val(data[i].value);
         $clone.find(".filterUiPlaceholder").val(data[i].ui.placeholder);
         $clone.find(".filterUiHidden").attr("checked",data[i].ui.hidden);
@@ -485,26 +614,45 @@ function bindFilters(data){
 
 //绑定排序
 function bindSorts(data){
-    if(!data) return;
     var html = "";
-    for(var i = 0; i < data.length; i++){
+    if(data && data.length>0){
+        for(var i = 0; i < data.length; i++){
+            html += `
+            <li class="clone">
+                <div class="row m-b-10">
+                    <div class="col-sm-9">
+                        <label for="">影响规则：</label>
+                        <input type="text" class="form-control sortField  full" data-value="${data[i].field}" value="${getcollectionsContent(data[i].field)}" placeholder="请拖拽影响规则内容" disabled>
+                    </div>
+                    <div class="col-sm-1  checkbox">
+                        <label for=""></label>
+                        <input type="checkbox" class="sortDesc" ${data[i].desc ? "checked" : ""}>倒序
+                    </div>
+                    <div class="col-sm-2">
+                        <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </li>
+            `;
+        }
+    }else{
         html += `
         <li class="clone">
             <div class="row m-b-10">
-                <div class="col-sm-4">
+                <div class="col-sm-9">
                     <label for="">影响规则：</label>
-                    <input type="text" class="form-control sortField" data-value="${data[i].field}" value="${getcollectionsContent(data[i].field)}">
+                    <input type="text" class="form-control sortField  full" data-value="" value="" placeholder="请拖拽影响规则内容" disabled>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-1  checkbox">
                     <label for=""></label>
-                    <input type="checkbox" class="sortDesc" ${data[i].desc ? "checked" : ""}>倒序
+                    <input type="checkbox" class="sortDesc" }>倒序
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="sort" aria-hidden="true"></i>
                 </div>
             </div>
         </li>
-        `;
+        `;  
     }
     return html;
 }
