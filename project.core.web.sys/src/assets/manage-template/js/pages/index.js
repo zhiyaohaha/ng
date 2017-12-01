@@ -1,4 +1,4 @@
-var urlprefix = `http://api4.cpf360.com`;
+var urlprefix = `http://192.168.0.155:8001`;
 
 //登录
 $.ajax({

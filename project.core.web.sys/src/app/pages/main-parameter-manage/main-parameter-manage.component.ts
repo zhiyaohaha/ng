@@ -2,7 +2,7 @@ import {fadeIn} from "./../../common/animations";
 import {FnUtil} from "./../../common/fn-util";
 import {ToastService} from "./../../component/toast/toast.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {Component, ElementRef, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {
   IPageChangeEvent,
@@ -25,7 +25,6 @@ import {ConvertUtil} from "../../common/convert-util";
 import {BaseService} from "../../services/base.service";
 import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 
-
 @Component({
   selector: "app-main-parameter-manage",
   templateUrl: "./main-parameter-manage.component.html",
@@ -33,7 +32,7 @@ import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
   animations: [fadeIn],
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
-export class MainParameterManageComponent implements OnInit, OnDestroy {
+export class MainParameterManageComponent implements OnInit, OnDestroy, AfterViewInit {
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
 
@@ -65,7 +64,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
 
   fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
-  pageSizes = globalVar.pageSizes; //可选的每页条数
   pageSize: number = globalVar.pageSize; //每页显示条数
   pageLinkCount = globalVar.pageLinkCount; //显示多少页码
   searchTerm: string = ""; //搜索关键字
@@ -83,36 +81,11 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     index: this.currentPage,
     filters: ""
   };
-  getParamsList(params) {
-    this._paramsManageService.getParams(params)
-      .subscribe(res => {
-        if (res.code === "0") {
-          let r = res;
-          if (r.data.data && r.data.data.fields) {
-            this.columns = r.data.data.fields;
-          }
-          if (r.data.data && r.data.data.bindData) {
-            this.filteredData = this.basicData = r.data.data.bindData;
-          }
-          if (r.data.data && r.data.data.filters.length > 0) {
-            r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
-            });
-            this.searchFilters = r.data.data.filters;
-          }
-          this.filteredTotal = r.data.total;
-        }
-      })
-  }
 
   /**
    * 搜索参数列表
    */
   filters = [];
-  onSearch($event) {
-    this.listparam.filters = $event;
-    this.getParamsList(this.listparam);
-  }
 
   /**
    * 点击的表格所在行
@@ -133,31 +106,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     dataTableService: this._dataTableService
   };
 
-  /**
-   * 翻页
-   * @param pagingEvent
-   */
-  page(pagingEvent: IPageChangeEvent): void {
-    this.pageOptions.fromRow = pagingEvent.fromRow;
-    this.pageOptions.currentPage = pagingEvent.page;
-    this.pageOptions.pageSize = pagingEvent.pageSize;
-    //this.loadData();
-    this.listparam = {
-      size: pagingEvent.pageSize,
-      index: pagingEvent.page - 1,
-      filters: ""
-    };
-    this.getParamsList(this.listparam);
-  }
-
-  /**
-   * 表格过滤 排序
-   */
-  loadData() {
-    let result = this._tableSearch.tableFilter(this.pageOptions);
-    this.filteredData = result[0];
-    this.filteredTotal = result[1] as number;
-  }
 
   /**
    * 树结构
@@ -171,44 +119,96 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
 
   routerSubscribe; //路由订阅事件
 
+  pagecode: string;
+  @ViewChild("table") table;
 
-  constructor(
-    private fb: FormBuilder,
-    private _dialogService: TdDialogService,
-    private _dataTableService: TdDataTableService,
-    private _viewContainerRef: ViewContainerRef,
-    private _tableSearch: TableSearch,
-    private _paramsManageService: ParamsManageService,
-    private _util: ConvertUtil,
-    private http: BaseService,
-    private router: Router,
-    private routerInfo: ActivatedRoute,
-    private toastService: ToastService,
-    private fnUtil: FnUtil,
-    private el: ElementRef
-  ) {
+
+  constructor(private fb: FormBuilder,
+              private _dialogService: TdDialogService,
+              private _dataTableService: TdDataTableService,
+              private _viewContainerRef: ViewContainerRef,
+              private _tableSearch: TableSearch,
+              private _paramsManageService: ParamsManageService,
+              private _util: ConvertUtil,
+              private http: BaseService,
+              private router: Router,
+              private routerInfo: ActivatedRoute,
+              private toastService: ToastService,
+              private fnUtil: FnUtil,
+              private el: ElementRef) {
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
 
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+        /**
+         * 每页条数pagesize和当前页码currentPage
+         */
+        if (!localStorage.getItem(this.pagecode + "ps")) {
+          localStorage.setItem(this.pagecode + "ps", "10");
+          localStorage.setItem(this.pagecode + "cp", "0");
+        } else {
+          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
+        }
+
         el.nativeElement.querySelector(".mat-drawer-backdrop").click();
         this.getParamsList({
-          size: this.pageSize,
-          index: 0,
+          size: localStorage.getItem(this.pagecode + "ps"),
+          index: localStorage.getItem(this.pagecode + "cp"),
           filters: ""
         });
         this.loadModal();
       });
 
   }
+
   ngOnInit() {
 
     //this.loadData();
     //this.getParamsList(this.listparam);
 
     //this.loadModal();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (localStorage.getItem(this.pagecode + "cp")) {
+        this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10) + 1);
+      }
+    }, 0);
+  }
+
+  getParamsList(params) {
+    this._paramsManageService.getParams(params)
+      .subscribe(res => {
+        if (res.code === "0") {
+          let r = res;
+          if (r.data.data && r.data.data.fields) {
+            this.columns = r.data.data.fields;
+          }
+          if (r.data.data && r.data.data.bindData) {
+            this.filteredData = this.basicData = r.data.data.bindData;
+          }
+          if (r.data.data && r.data.data.filters.length > 0) {
+            r.data.data.filters.forEach(i => {
+              this.filters.push({"key": i.name, "value": i.value || ""});
+            });
+            this.searchFilters = r.data.data.filters;
+          }
+          this.filteredTotal = r.data.total;
+        }
+      });
+  }
+
+  /**
+   * 列表搜索
+   * @param $event
+   */
+  onSearch($event) {
+    this.listparam.filters = $event;
+    this.getParamsList(this.listparam);
   }
 
   /**
@@ -221,12 +221,13 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.tags = [];
     if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
       for (let i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
-        _tags.push({ "value": this.selectNode.JSONdata.tags[i], "delete": true });
+        _tags.push({"value": this.selectNode.JSONdata.tags[i], "delete": true});
         this.tags.push(this.selectNode.JSONdata.tags[i]);
       }
     }
     this.treeNode.label = _tags;
   }
+
   addChild(e) {
     console.log(e);
   }
@@ -338,6 +339,35 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.getDetailParams();
   }
 
+
+  /**
+   * 翻页
+   * @param pagingEvent
+   */
+  page(pagingEvent: IPageChangeEvent): void {
+    this.pageOptions.fromRow = pagingEvent.fromRow;
+    this.pageOptions.currentPage = pagingEvent.page;
+    this.pageOptions.pageSize = pagingEvent.pageSize;
+    //this.loadData();
+    this.listparam = {
+      size: pagingEvent.pageSize,
+      index: pagingEvent.page - 1,
+      filters: ""
+    };
+    localStorage.setItem(this.pagecode + "ps", pagingEvent.pageSize.toString());
+    localStorage.setItem(this.pagecode + "cp", (pagingEvent.page - 1).toString());
+    this.getParamsList(this.listparam);
+  }
+
+  /**
+   * 表格过滤 排序
+   */
+  loadData() {
+    let result = this._tableSearch.tableFilter(this.pageOptions);
+    this.filteredData = result[0];
+    this.filteredTotal = result[1] as number;
+  }
+
   /**
    * 当打开sidenav触发的事件
    */
@@ -350,7 +380,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * 获取详细的参数
    */
   getDetailParams() {
-    this._paramsManageService.getEditParams({ id: this.clickNode }).subscribe(r => {
+    this._paramsManageService.getEditParams({id: this.clickNode}).subscribe(r => {
       if (r.code === "0" && r.data) {
         this.tree = this.toTreeModel(r.data) as TreeModel;
       }
@@ -374,7 +404,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     let treeData = {
       JSONdata: data,
       value: data.name,
-      settings: { rightMenu: false }
+      settings: {rightMenu: false}
     };
     if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
@@ -391,6 +421,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   modalDOMS: HtmlDomTemplate;
   modalData;
   newModalData;
+
   loadModal() {
     this._paramsManageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -415,7 +446,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   /**
    * 上传文件
    */
-  selected($event) {}
+  selected($event) {
+  }
 
   /**
    * 上传成功
@@ -423,7 +455,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   uploaded($event) {
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.routerSubscribe.unsubscribe();
   }
 

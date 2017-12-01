@@ -10,10 +10,10 @@
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <timi-input [labelName]="child.ui.label" name="{{child.name}}"
                         [(ngModel)]="_modelDOMSData[child.name]"
-                        [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
+                        [placeholder]="child.ui.placeholder"></timi-input>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-            <timi-checkbox *ngIf="child.ui.multiple" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+            <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                            [multiple]="child.ui.multiple" [labelName]="child.ui.label"
                            [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
             <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -31,7 +31,7 @@
                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                            [labelName]="child.ui.label"
-                           [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-textarea>
+                           [placeholder]="child.ui.placeholder"></timi-textarea>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
             <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -83,13 +83,19 @@
               <timi-input [labelName]="child.ui.label" name="{{child.name}}"
                           [(ngModel)]="modelDOMSData[child.name]"
                           [value]="modelDOMSData[child.name]"
-                          [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-input>
+                          [placeholder]="child.ui.placeholder"></timi-input>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-              <timi-checkbox name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+              <!--<timi-checkbox name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"-->
+                             <!--[multiple]="child.ui.multiple" [labelName]="child.ui.label"-->
+                             <!--[checkboxs]="child.bindData || child.ui.label"-->
+                             <!--[columns]="child.ui.columns"></timi-checkbox>-->
+              <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
                              [multiple]="child.ui.multiple" [labelName]="child.ui.label"
-                             [checkboxs]="child.bindData || child.ui.label"
-                             [columns]="child.ui.columns"></timi-checkbox>
+                             [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
+              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                             [labelName]="child.ui.label"
+                             [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
               这个功能还没实现 O(∩_∩)O~

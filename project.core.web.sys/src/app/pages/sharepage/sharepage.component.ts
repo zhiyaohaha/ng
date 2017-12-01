@@ -1,6 +1,5 @@
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {
-  AfterViewInit,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -25,7 +24,6 @@ import {ConvertUtil} from "../../common/convert-util";
 import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
 import {BaseService} from "../../services/base.service";
 import {MdSidenav} from "@angular/material";
-import {TableComponent} from "../../component/table/table.component";
 
 @Component({
   selector: "app-sharepage",
@@ -34,7 +32,7 @@ import {TableComponent} from "../../component/table/table.component";
   animations: [fadeIn],
   providers: [TdLoadingService]
 })
-export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SharepageComponent implements OnInit, OnDestroy {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
   @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild("sidenav")
@@ -67,7 +65,6 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
-  pageSizes = globalVar.pageSizes; //可选的每页条数
   pageSize: number = globalVar.pageSize; //每页显示条数
   pageLinkCount = globalVar.pageLinkCount; //显示多少页码
   searchTerm: string = ""; //搜索关键字
@@ -85,8 +82,7 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
   routerSubscribe; //路由订阅事件
 
   pagecode: string;
-  @ViewChild("table")
-  private table: TableComponent;
+  @ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
@@ -99,18 +95,6 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
               private baseService: BaseService,
               private lodaingService: TdLoadingService
   ) {
-    this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-    /**
-     * 每页条数pagesize和当前页码currentPage
-     */
-    if (!localStorage.getItem(this.pagecode + "ps")) {
-      localStorage.setItem(this.pagecode + "ps", this.pageSize.toString());
-      localStorage.setItem(this.pagecode + "cp", this.currentPage.toString());
-    } else {
-      this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-    }
-
-
 
     /**
      * 路由器结束订阅加载不同的页面
@@ -119,6 +103,30 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+        /**
+         * 每页条数pagesize和当前页码currentPage
+         */
+        if (!localStorage.getItem(this.pagecode + "ps")) {
+          localStorage.setItem(this.pagecode + "ps", "10");
+          localStorage.setItem(this.pagecode + "cp", "0");
+          this.getParamsList({
+            size: 10,
+            index: 0,
+            filters: ""
+          });
+        } else {
+          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
+          console.log("----:", localStorage.getItem(this.pagecode + "cp"));
+          let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
+          if (!a) {
+            this.getParamsList({
+              size: 10,
+              index: localStorage.getItem(this.pagecode + "cp"),
+              filters: ""
+            });
+          }
+        }
         this.selectRow = null;
         this.new = true;
         this.edit = false;
@@ -126,11 +134,7 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
         el.nativeElement.querySelector(".mat-drawer-backdrop").click();
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
-        this.getParamsList({
-          size: localStorage.getItem(this.pagecode + "ps"),
-          index: localStorage.getItem(this.pagecode + "cp"),
-          filters: ""
-        });
+
         this.loadDetailModel();
         this.loadModal();
       });
@@ -150,14 +154,6 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (localStorage.getItem(this.pagecode + "cp")) {
-        this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10) + 1);
-      }
-    }, 0);
   }
 
   /**
@@ -199,6 +195,7 @@ export class SharepageComponent implements OnInit, OnDestroy, AfterViewInit {
    * 翻页
    */
   page($event) {
+    console.log($event);
     this.listparam.index = $event.page - 1;
     this.listparam.size = $event.pageSize;
     localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());

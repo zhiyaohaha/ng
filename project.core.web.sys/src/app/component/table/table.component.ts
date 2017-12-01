@@ -5,6 +5,7 @@ import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} fr
 import {FormsModule} from "@angular/forms";
 import {globalVar} from "../../common/global.config";
 import {TableColumns} from "../../common/interface/table-columns";
+import {TimiPaginationModule} from "../timi-pagination/pagination.component";
 
 const DATE_FORMART: (v: any) => any = v => {
   let date = new Date(v);
@@ -112,18 +113,16 @@ export class TableComponent implements OnInit {
    * 翻页
    */
   page(pagingEvent: IPageChangeEvent) {
+    console.log("table:", pagingEvent);
     this.change.emit(pagingEvent);
   }
 
-  /**
-   * 设置每页大小
-   */
-  setPagesizes(key, value) {
-    localStorage.setItem(key, value);
+  pageTo(page: number) {
+    return this.pagingBar.navigateToPage(page);
   }
 
-  pageTo(page: number) {
-    this.pagingBar.navigateToPage(page);
+  pageChange($event) {
+    console.log($event);
   }
 
   TAG_FORMART: (v: any) => any = v => {
@@ -134,7 +133,7 @@ export class TableComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdSelectModule, CovalentDataTableModule, CovalentPagingModule],
+  imports: [CommonModule, FormsModule, MdSelectModule, CovalentDataTableModule, CovalentPagingModule, TimiPaginationModule],
   declarations: [TableComponent],
   exports: [TableComponent]
 })
