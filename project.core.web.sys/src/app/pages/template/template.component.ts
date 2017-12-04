@@ -156,7 +156,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 翻页
    */
   page($event) {
-    this.listparam.index = $event.page - 1;
+    this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
     localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
     localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
