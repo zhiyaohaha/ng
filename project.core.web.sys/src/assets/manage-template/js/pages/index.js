@@ -1,4 +1,4 @@
-var urlprefix = `http://192.168.0.155:8001`;
+var urlprefix = `http://192.168.6.66:8001`; 
 
 //登录
 $.ajax({
