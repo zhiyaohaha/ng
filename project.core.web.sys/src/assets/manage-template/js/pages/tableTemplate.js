@@ -309,7 +309,7 @@ $(".table-content").on("click", ".addnotes", function(){
                 </div>
             </div>
         </li>
-        `);
+        `); 
         parent.find("li:last").droppable({
             drop: function(event, ui){
                 if(templateFiltersDrop ){
