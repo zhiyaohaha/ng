@@ -11,11 +11,14 @@ var collectionsContent; //下拉数据源选择过后的数据内容
 var detailId = ""; //查询详情的ID
 
 //设置可拖拽赋值
+var templateFieldsDrop = true;
+var templateFiltersDrop = true;
+var templateSortsDrop = true;
 function setDroppable(){
-    var templateFieldsDrop = true;
+    
     $("#templateFields ul li").not(":first").droppable({  //表头第一个选项禁止拖入修改
         drop: function(event, ui){
-            console.log(templateFieldsDrop)
+            // console.log(templateFieldsDrop)
             if(templateFieldsDrop){
                 $(this).find(".fieldName").val(DOMvalue);
                 $(this).find(".fieldLabel").val(DOMdescription);
@@ -36,7 +39,7 @@ function setDroppable(){
       
     })
 
-    var templateFiltersDrop = true;
+    
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
             if(templateFiltersDrop ){
@@ -62,9 +65,10 @@ function setDroppable(){
         }
     })
 
-    var templateSortsDrop = true;
+   
     $("#templateSorts ul li").droppable({
         drop: function(event, ui){
+            console.log("templateSortsDrop : " + templateSortsDrop)
             if(templateSortsDrop){
                 $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
              }else{
@@ -208,6 +212,7 @@ $("#collections").on("change", function(){
 $(".table-content").on("click", ".addnotes", function(){
     var name = $(this).data("name");
     var parent = $(this).parent().parent().parent().parent();
+
     if(name === "header"){
         parent.append(`
         <li>
@@ -234,10 +239,9 @@ $(".table-content").on("click", ".addnotes", function(){
             </div>
         </li>
         `);
-        var droped = true;
         parent.find("li:last").droppable({
             drop: function(event, ui){
-                if(droped){
+                if(templateFieldsDrop){
                     $(this).find(".fieldName").val(DOMvalue);
                     $(this).find(".fieldLabel").val(DOMdescription);
                     if($.repeatStr(DOMvalue, ".") > 0){
@@ -246,13 +250,13 @@ $(".table-content").on("click", ".addnotes", function(){
                         $(this).find(".fieldNested").prop("checked", false);
                     }
                 }else{
-                    droped = true;
+                    templateFieldsDrop = true;
                 }
             }
         }).css("cursor","move");
         parent.sortable({
             start:function(event,ui){
-                droped = false;
+                templateFieldsDrop = false;
             }
         })
     
@@ -305,25 +309,28 @@ $(".table-content").on("click", ".addnotes", function(){
                 </div>
             </div>
         </li>
-        `);
-        var droped = true;
+        `); 
         parent.find("li:last").droppable({
             drop: function(event, ui){
-                var str = $(this).find(".filterField").val();
-                var value = $(this).find(".filterField").data("value");
-                if(str){
-                    str += ","+DOMdescription;
-                    value += ","+DOMvalue;
+                if(templateFiltersDrop ){
+                    var str = $(this).find(".filterField").val();
+                    var value = $(this).find(".filterField").data("value");
+                    if(str){
+                        str += ","+DOMdescription;
+                        value += ","+DOMvalue;
+                    }else{
+                        str = DOMdescription;
+                        value = DOMvalue;
+                    }
+                    $(this).find(".filterField").val(str).data("value", value);
                 }else{
-                    str = DOMdescription;
-                    value = DOMvalue;
+                    templateFiltersDrop = true; 
                 }
-                $(this).find(".filterField").val(str).data("value", value);
             }
         }).css("cursor","move");
         parent.sortable({
             start:function(event,ui){
-                droped = false;
+                templateFiltersDrop  = false;
             }
         })
 
@@ -346,15 +353,18 @@ $(".table-content").on("click", ".addnotes", function(){
             </div>
         </li>
         `);
-        var droped = true;
         parent.find("li:last").droppable({
             drop: function(event, ui){
-                $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
+                if(templateSortsDrop){
+                    $(this).find(".sortField").val(DOMdescription).data("value", DOMvalue);
+                 }else{
+                    templateSortsDrop = true; 
+                 }
             }
         }).css("cursor","move");
         parent.sortable({
             start:function(event,ui){
-                droped = false;
+                templateSortsDrop = false;
             }
         })
 
@@ -595,7 +605,7 @@ function bindFilters(data){
                         for (var i = r.data.length - 1; i >= 0; i--) {
                             node.append(`<option value="${r.data[i].value}">${r.data[i].text}</option>`);
                         }
-                        console.log(data[i1].bindTarget)
+                        // console.log(data[i1].bindTarget)
                         $clone.find(".bindTarget").val(data[i1].bindTarget);
                     }                        
                 }

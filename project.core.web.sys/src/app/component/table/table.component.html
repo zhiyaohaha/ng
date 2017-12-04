@@ -35,16 +35,15 @@
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
-  <h3>No results to display.</h3>
+  <h3>未查询到结果</h3>
 </div>
-<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals" (change)="page($event)"
-               [pageLinkCount]="pageLinkCount">
-  <span hide-xs>每页条数:</span>
-  <md-select [style.width.px]="50" [(ngModel)]="pageSize">
-    <md-option *ngFor="let size of pageSizes" [value]="size">
-      {{size}}
-    </md-option>
-  </md-select>
-  <span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>
-</td-paging-bar>
-<timi-pagination [total]="10" [pageSize]="10" [activeIndex]="7" (onChange)="pageChange($event)"></timi-pagination>
+<!--<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals">-->
+  <!--<span hide-xs>每页条数:</span>-->
+  <!--<md-select [style.width.px]="50" [(ngModel)]="pageSize">-->
+    <!--<md-option *ngFor="let size of pageSizes" [value]="size">-->
+      <!--{{size}}-->
+    <!--</md-option>-->
+  <!--</md-select>-->
+  <!--<span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>-->
+<!--</td-paging-bar>-->
+<timi-pagination *ngIf="dataTable.hasData" [total]="totals" [pageSize]="pageSize" (onChange)="pageChange($event)"></timi-pagination>

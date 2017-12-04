@@ -13,7 +13,7 @@ var collection; //数据源
 
 var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
 var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
-var cmdFormDom = `<option value="">触发Dom</option>`; //cmdOptions 触发dom下拉选项
+var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions 触发dom下拉选项
 
 var detailId = ""; //查询详情url中的ID
 detailId = $.request("id") || "";
@@ -598,7 +598,7 @@ function bindCmds(data) {
                     <script>
                         $('.form-inline-${index} select.cmdOptions').val('${el.name}')
                         $('.form-inline-${index} select.cmdFormTemplate').val('${el.formTemplate}');
-                        $('#cmdsGroup .cmdFormDom').val('${el.triggerDom}');    //设置命令栏-触发dom
+                        $('.form-inline-${index} select.cmdFormDom').val('${el.triggerDom}');    //设置命令栏-触发dom
                     </script>`;
 
         }
