@@ -4,13 +4,7 @@ import {ToastService} from "./../../component/toast/toast.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
-import {
-  IPageChangeEvent,
-  ITdDataTableColumn,
-  TdDataTableService,
-  TdDataTableSortingOrder,
-  TdDialogService
-} from "@covalent/core";
+import {ITdDataTableColumn, TdDataTableService, TdDataTableSortingOrder, TdDialogService} from "@covalent/core";
 
 import "rxjs/add/operator/startWith";
 import "rxjs/add/observable/merge";
@@ -344,14 +338,13 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    * 翻页
    * @param pagingEvent
    */
-  page(pagingEvent: IPageChangeEvent): void {
-    this.pageOptions.fromRow = pagingEvent.fromRow;
-    this.pageOptions.currentPage = pagingEvent.page;
+  page(pagingEvent): void {
+    this.pageOptions.currentPage = pagingEvent.activeIndex;
     this.pageOptions.pageSize = pagingEvent.pageSize;
     //this.loadData();
     this.listparam = {
       size: pagingEvent.pageSize,
-      index: pagingEvent.page - 1,
+      index: pagingEvent.activeIndex,
       filters: ""
     };
     localStorage.setItem(this.pagecode + "ps", pagingEvent.pageSize.toString());
