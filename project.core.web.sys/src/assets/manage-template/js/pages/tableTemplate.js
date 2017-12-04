@@ -39,7 +39,6 @@ function setDroppable(){
     var templateFiltersDrop = true;
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
-            console.log(222)
             if(templateFiltersDrop ){
                 var str = $(this).find(".filterField").val();
                 var value = $(this).find(".filterField").data("value");
@@ -389,8 +388,6 @@ function saveTemplate() {
         if(!_self.find(".filterField").data("value")){
             return false;
         }
-        // console.log( _self.find(".filterField").data("value"))
-        // console.log( _self.find(".filterField").val())
         filters.push({
             "fields":  _self.find(".filterField").data("value").split(","),            
             "name": _self.find(".bindName").val(),
@@ -566,34 +563,33 @@ function bindFelds(data){
 function bindFilters(data){
     var html = "";
     for(var i = 0; i < data.length; i++){
+        // var fields = [];
         var fieldsValue = [];
         var fieldsLabel = [];
-        var $clone = $("#templateFilters .clone").clone(true);
+        // var $clone = $("#templateFilters .clone").clone(true);   //clone(true)  克隆dom，并且克隆事件 （生成的dom无法拖拽）
+        var $clone = $("#templateFilters .clone").clone();          //clone()  只克隆dom
         $clone.find(".filterType").val(data[i].type);
         $clone.find(".filterUiDisplayType").val(data[i].ui.displayType);
-        // console.log(data[i].fields)
         if (data[i].fields) {
             for(var j = 0; j < data[i].fields.length; j++){
+                // fields.push(getcollectionsContent(data[i].fields[j]))
                 fieldsValue.push(getcollectionsContent(data[i].fields[j]))
                 fieldsLabel.push(data[i].fields[j])
             }
-        }
-
+        }       
         $clone.find(".bindMethod").val(data[i].bindMethod);
         var  bindTargetVal =  data[i].bindTarget;
         (function(i1,$clone){
             $.ajax({
                 type: "GET",
                 url: urlprefix + "/api/Template/GetBindTarget",
-                data: $.getAuth({"bindMethod":data[i1].bindMethod}),
+                data: $.getAuth({"bindMethod":data[i].bindMethod}),
                 crossDomain: true,
                 xhrFields: {
                     withCredentials: true
                 },
                 success: function(r){
-                    // console.log(i)
                     if(r.code === "0" && r.data){
-                        $clone.find(".bindTarget").val("");
                         var node = $("#templateFilters").find(".bindTarget");
                         node.append(`<option>请选择绑定目标</option>`);
                         for (var i = r.data.length - 1; i >= 0; i--) {
@@ -606,12 +602,12 @@ function bindFilters(data){
             })
         })(i,$clone)
         // setTimeout(() => {   //iframe 加载的时间比较短
-            // $clone.find(".bindTarget").val(data[i].bindTarget);
+            //  $clone.find(".bindTarget").val(bindTargetVal);
         // }, 1000);
+        // $clone.find(".filterField").val(fields.join(","));
+        // $clone.find(".filterField").data("value", fields.join(","));
         $clone.find(".filterField").val(fieldsValue.join(","));
-        // console.log(fields)
         $clone.find(".filterField").data("value",fieldsLabel.join(","));
-
         $clone.find(".filterUiLabel").val(data[i].ui.label);
         $clone.find(".bindName").val(data[i].name);
         $clone.find(".filterValue").val(data[i].value);
