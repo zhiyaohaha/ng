@@ -576,7 +576,7 @@ function bindFilters(data){
                 fieldsValue.push(getcollectionsContent(data[i].fields[j]))
                 fieldsLabel.push(data[i].fields[j])
             }
-        }      
+        }       
         $clone.find(".bindMethod").val(data[i].bindMethod);
         var  bindTargetVal =  data[i].bindTarget;
         (function(i1,$clone){
