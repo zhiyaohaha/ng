@@ -1,0 +1,51 @@
+<h4 class="">{{modelDOMS.ui.label}}</h4>
+<ng-container *ngFor="let child of modelDOMS.childrens">
+  <ng-container [ngSwitch]="child.ui.displayType">
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+         [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+      <timi-input [labelName]="child.ui.label" name="{{child.name}}"
+                  [(ngModel)]="_modelDOMSData[child.name]"
+                  [placeholder]="child.ui.placeholder"></timi-input>
+    </div>
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+      <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                     [multiple]="child.ui.multiple" [labelName]="child.ui.label"
+                     [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
+      <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                     [labelName]="child.ui.label"
+                     [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
+    </div>
+    <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
+           [(ngModel)]="_modelDOMSData[child.name]" placeholder="{{child.ui.placeholder}}"
+           disabled="{{child.ui.disabled}}" spellcheck="false"
+           [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+         [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+      <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                     [labelName]="child.ui.label"
+                     [placeholder]="child.ui.placeholder"></timi-textarea>
+    </div>
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+      <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                   pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
+                   [columns]="child.ui.columns" [multiple]="child.ui.multiple"
+                   [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
+                   (onChange)="selectChange($event, child.cmds)"></timi-select>
+    </div>
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+      <div>
+        <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                            [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
+                            [columns]="child.ui.columns"
+                            (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
+      </div>
+    </div>
+    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+      <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                       [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
+                       [columns]="child.ui.columns"></timi-chip-group>
+    </div>
+  </ng-container>
+</ng-container>
+
+
