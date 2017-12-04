@@ -1,18 +1,19 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {ChipModule} from "../chip/chip.component";
-import {RadioModule} from "../radio/radio.component";
-import {CheckboxModule} from "../checkbox/checkbox.component";
-import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {TimiInputModule} from "../timi-input/timi-input.component";
-import {TimiChipModule} from "../timi-chip/chip.component";
-import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
-import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
-import {TimiSelectModule} from "../timi-select/select.component";
-import {BaseService} from "../../services/base.service";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ChipModule } from "../chip/chip.component";
+import { RadioModule } from "../radio/radio.component";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { TimiFileUploaderModule } from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import { TimiInputModule } from "../timi-input/timi-input.component";
+import { TimiChipModule } from "../timi-chip/chip.component";
+import { TimiTextareaModule } from "../timi-textarea/timi-textarea.component";
+import { TimiCheckboxModule } from "../timi-checkbox/timi-checkbox.component";
+import { TimiSelectModule } from "../timi-select/select.component";
+import { BaseService } from "../../services/base.service";
+import { EditorModule } from "app/component/editor/editor.component";
 
 
 @Component({
@@ -49,6 +50,8 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
+  text:any;//富文本内容
+
   constructor(private baseService: BaseService) {
   }
 
@@ -66,7 +69,8 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event) {
-    this.ngSubmit.emit($event);
+    console.log($event)
+    this.ngSubmit.emit($event);   
   }
 
 
@@ -130,9 +134,20 @@ export class ResponsiveModelComponent implements OnInit {
     CommonModule,
     FormsModule,
     ButtonModule,
-    MdInputModule, MdSelectModule, MdDatepickerModule, MdButtonModule,
-    ChipModule, CheckboxModule, RadioModule, TimiFileUploaderModule, TimiInputModule, TimiChipModule,
-    TimiTextareaModule, TimiCheckboxModule, TimiSelectModule
+    MdInputModule,
+    MdSelectModule,
+    MdDatepickerModule,
+    MdButtonModule,
+    ChipModule,
+    CheckboxModule,
+    RadioModule,
+    TimiFileUploaderModule, 
+    TimiInputModule, 
+    TimiChipModule,
+    TimiTextareaModule, 
+    TimiCheckboxModule, 
+    TimiSelectModule,
+    EditorModule
   ],
   declarations: [ResponsiveModelComponent],
   exports: [ResponsiveModelComponent]

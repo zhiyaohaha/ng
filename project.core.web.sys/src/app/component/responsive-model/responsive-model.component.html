@@ -68,8 +68,8 @@
                              [columns]="child.ui.columns"></timi-chip-group>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-            富文本
-          </div>
+              <free-editor [(ngModel)]="text" [counter]="true" name="{{child.name}}"></free-editor>
+          </div> 
         </ng-container>
       </ng-container>
     </div>
@@ -154,13 +154,15 @@
                                [columns]="child.ui.columns"></timi-chip-group>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              富文本
+              <free-editor [style]="{width: 900}" [(ngModel)]="text" [counter]="true" [ngModelOptions]="{standalone: true}"></free-editor>
             </div>
           </ng-container>
         </ng-container>
       </div>
     </ng-container>
   </ng-template>
+
+  
   <div style="text-align: center;padding: 20px;" [ngSwitch]="btnType">
     <ng-container *ngSwitchCase="'new'">
       <button md-raised-button (click)="onSubmit(form.value)">确定</button>
