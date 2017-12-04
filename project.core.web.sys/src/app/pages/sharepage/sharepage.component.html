@@ -8,8 +8,7 @@
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
-             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')"
-             [pageLinkCount]="pageLinkCount" (change)="page($event)"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
   <ng-template #authorityModal></ng-template>
@@ -27,4 +26,4 @@
     </div>
   </md-sidenav>
 </md-sidenav-container>
-<button (click)="table.pageTo(1)">跳跳跳</button>
+<!--<button (click)="table.pageTo(1)">跳跳跳</button>-->
