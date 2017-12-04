@@ -8,12 +8,14 @@ import {FormsModule} from "@angular/forms";
   selector: "timi-pagination",
   template: `
     <div class="free-pagination">
-      <span [style.fontSize.px]="12">每页条数：</span>
+      <span class="small-span">每页条数：</span>
       <md-select [style.width.px]="50" [(ngModel)]="pageSize" (change)="changePageSize($event)">
         <md-option *ngFor="let size of pageSizes" [value]="size">
           {{size}}
         </md-option>
       </md-select>
+      <span class="small-span">共{{pageCount}}页</span>
+      <span class="small-span">共{{totalRecord || 0}}条</span>
       <ul>
         <timi-pagination-item [disabled]="isFirst" (click)="changePageToFirst()">
           <i class="fa fa-backward"></i>
@@ -41,7 +43,6 @@ export class TimiPaginationComponent implements OnInit {
   _activeIndex = 0; //当前页码
   _pageSize = 10; //当前每页条数
   pageSizes = globalVar.pageSizes; //可选页码
-  lastIndex: number;
   @Input() maxPage = 5;
   @Input()
   set activeIndex(value: number) {
@@ -60,22 +61,44 @@ export class TimiPaginationComponent implements OnInit {
   isFirst: boolean;
   isLast: boolean;
   first = 0;
+  totalRecord: number; //总条数
+  pageCount: number; //总页数
+  start: number;
+  end: number;
 
-  @Input()
+  @Input() //传入的页数
   set total(value: number) {
-    for (let i = 0; i < value; i++) {
+    this.totalRecord = value;
+    this.pageCount = Math.ceil(value / this.pageSize);
+    this._total = [];
+    for (let i = 0; i < this.pageCount; i++) {
       this._total.push(i);
+    }
+    if (this.maxPage > this.pageCount) {
+      this.countPage(this.pageCount);
+    } else if (this.maxPage < this.pageCount) {
+      const middle = Math.floor(this.maxPage / 2);
+      this.start = this.activeIndex - middle;
+      this.end = this.activeIndex + middle;
+      if (this.maxPage < this.pageCount && this.start <= 0) {
+        this.start = 0;
+        this.end = this.maxPage - 1;
+      }
+      if (this.maxPage < this.pageCount && this.end >= this.pageCount) {
+        this.start = this.pageCount - this.maxPage;
+        this.end = this.pageCount - 1;
+      }
+      this.countPage(this.end, this.start);
     }
   }
 
   get total(): number {
-    return this._total.length - 1;
+    return this.totalRecord;
   }
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor() {
-    this.lastIndex = this.total;
   }
 
   ngOnInit() {
@@ -87,7 +110,7 @@ export class TimiPaginationComponent implements OnInit {
    */
   checkStartOrEnd() {
     this.isFirst = (this.activeIndex === 0);
-    this.isLast = (this.activeIndex === this.total);
+    this.isLast = (this.activeIndex === this.pageCount - 1);
   }
 
   /**
@@ -116,9 +139,22 @@ export class TimiPaginationComponent implements OnInit {
    */
   changePage(page: number) {
 
-    if (this.maxPage < this.total) {
-
+    const middle = Math.floor(this.maxPage / 2);
+    this.start = page - middle;
+    this.end = page + middle;
+    if (this.maxPage < this.pageCount && this.start <= 0) {
+      this.start = 0;
+      this.end = this.maxPage - 1;
     }
+    if (this.maxPage < this.pageCount && this.end >= this.pageCount) {
+      this.start = this.pageCount - this.maxPage;
+      this.end = this.pageCount - 1;
+    }
+    if (this.maxPage > this.pageCount) {
+      this.start = 0;
+      this.end = this.pageCount;
+    }
+    this.countPage(this.end, this.start);
 
 
     this.activeIndex = page;
@@ -144,8 +180,19 @@ export class TimiPaginationComponent implements OnInit {
    */
   changePageToLast() {
     if (!this.isLast) {
-      this.activeIndex = this.total;
+      this.activeIndex = this.pageCount - 1;
       this.changePage(this.activeIndex);
+    }
+  }
+
+  countPage(end: number, start = 0) {
+    this._total = [];
+    if (this.pageCount <= this.maxPage) {
+      start = 0;
+      end = this.pageCount - 1;
+    }
+    for (let i = start; i <= end; i++) {
+      this._total.push(i);
     }
   }
 
@@ -154,6 +201,15 @@ export class TimiPaginationComponent implements OnInit {
    */
   changePageSize($event) {
     this.pageSize = $event.value;
+    this.activeIndex = 0;
+    let end;
+    this.pageCount = Math.ceil(this.totalRecord / this.pageSize);
+    if (this.pageCount <= this.maxPage) {
+      end = this.pageCount;
+    } else {
+      end = this.maxPage - 1;
+    }
+    this.countPage(end);
     this.onChange.emit({
       pageSize: this.pageSize,
       activeIndex: this.activeIndex

@@ -122,7 +122,7 @@ export class TableComponent implements OnInit {
   }
 
   pageChange($event) {
-    console.log($event);
+    this.change.emit($event);
   }
 
   TAG_FORMART: (v: any) => any = v => {
