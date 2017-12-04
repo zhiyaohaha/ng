@@ -154,6 +154,27 @@ detailId = $.request("id") || "";
                         }
                     })
                 }else{
+                    //新增时，自动拖拽一个面板(以减少建模板时间)
+                    dragCreateDom_Panel("HtmlDomDisplayType.Panel",$('#formDomTarget'),{
+                        bindMethod:"",
+                        bindTarget:null,
+                        cmds:[],
+                        description:"",
+                        name:"",
+                        ui:{
+                            attrs:null,
+                            classes:null,
+                            disabled:false,
+                            displayType:"HtmlDomDisplayType.Panel",
+                            hidden:false,
+                            label:"",
+                            multiple:false,
+                            pipe:"",
+                            placeholder:"",
+                            required:false,
+                        }
+                    })
+                    //设置父iframe高度
                     setParentIframeHeight()
                 }
             }
@@ -212,8 +233,10 @@ function dragCreateDom_Panel(domval,that,editData){
             dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
         }
     }
-
     objData[id] = editData;
+    $(document).ready(function() {
+        $("#"+id).click();
+    });
 }
 function dragCreateDom_PanelBody(domval,that,editData){
     var id = $.generateGUID();
