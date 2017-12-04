@@ -66,4 +66,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     return (<any>componentRef.instance);
   }
 
+  
+
 }

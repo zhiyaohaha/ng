@@ -9,7 +9,7 @@ import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
 import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
 import {FnUtil} from "../../common/fn-util";
 import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
-
+import { NewComponentModule } from "../../newcomponent/newcomponent.module";
 
 @Component({
   selector: "detail-model",
@@ -73,6 +73,7 @@ export class DetailModelComponent implements OnInit{
   galleryImages: NgxGalleryImage[];
 
   @Output() onClick: EventEmitter<any> = new EventEmitter();
+  
 
   constructor( private fnUtil: FnUtil) {
   }
@@ -105,7 +106,6 @@ export class DetailModelComponent implements OnInit{
     return Array.isArray(params);
   }
 
-
 }
 
 @NgModule({
@@ -114,6 +114,7 @@ export class DetailModelComponent implements OnInit{
     FormsModule,
     ButtonModule,
     MdButtonModule,
+    NewComponentModule,
     NgxGalleryModule
   ],
   declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe],
