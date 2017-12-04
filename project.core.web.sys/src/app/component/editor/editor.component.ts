@@ -166,6 +166,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
       </div>
     </div>
   `,
+  styleUrls: ["./editor.component.scss"],
   providers: [DomRenderer, CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
