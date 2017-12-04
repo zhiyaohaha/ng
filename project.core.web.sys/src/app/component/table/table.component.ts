@@ -1,6 +1,6 @@
 import {CommonModule} from "@angular/common";
 import {MdSelectModule} from "@angular/material";
-import {CovalentDataTableModule, CovalentPagingModule, IPageChangeEvent} from "@covalent/core";
+import {CovalentDataTableModule} from "@covalent/core";
 import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {globalVar} from "../../common/global.config";
@@ -112,13 +112,9 @@ export class TableComponent implements OnInit {
   /**
    * 翻页
    */
-  page(pagingEvent: IPageChangeEvent) {
-    console.log("table:", pagingEvent);
-    this.change.emit(pagingEvent);
-  }
 
   pageTo(page: number) {
-    return this.pagingBar.navigateToPage(page);
+
   }
 
   pageChange($event) {
@@ -133,7 +129,7 @@ export class TableComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdSelectModule, CovalentDataTableModule, CovalentPagingModule, TimiPaginationModule],
+  imports: [CommonModule, FormsModule, MdSelectModule, CovalentDataTableModule, TimiPaginationModule],
   declarations: [TableComponent],
   exports: [TableComponent]
 })
