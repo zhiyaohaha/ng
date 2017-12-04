@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiURL: "http://192.168.0.155:8001"
+  apiURL: "http://192.168.6.66:8001"
   //apiURL: "http://192.168.3.127:8001"
 };
