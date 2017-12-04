@@ -66,7 +66,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
   fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
   pageSize: number = globalVar.pageSize; //每页显示条数
-  pageLinkCount = globalVar.pageLinkCount; //显示多少页码
   searchTerm: string = ""; //搜索关键字
   sortBy: string = "";
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
@@ -82,7 +81,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   routerSubscribe; //路由订阅事件
 
   pagecode: string;
-  @ViewChild("table") table;
+  //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
@@ -118,14 +117,12 @@ export class SharepageComponent implements OnInit, OnDestroy {
         } else {
           this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
           console.log("----:", localStorage.getItem(this.pagecode + "cp"));
-          let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
-          if (!a) {
-            this.getParamsList({
-              size: 10,
-              index: localStorage.getItem(this.pagecode + "cp"),
-              filters: ""
-            });
-          }
+          // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
+          this.getParamsList({
+            size: this.pageSize,
+            index: localStorage.getItem(this.pagecode + "cp"),
+            filters: ""
+          });
         }
         this.selectRow = null;
         this.new = true;
@@ -196,7 +193,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
    */
   page($event) {
     console.log($event);
-    this.listparam.index = $event.page - 1;
+    this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
     localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
     localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
