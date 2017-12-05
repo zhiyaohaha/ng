@@ -760,6 +760,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   onUploadChange(e) {
+    console.log(e.target.files);
     const files = e.target.files;
     let file = null;
     let url = null;

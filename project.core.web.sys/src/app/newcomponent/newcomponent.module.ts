@@ -6,15 +6,16 @@ import { PreviewComponent } from './preview/preview.component';
 
 
 
+
 @NgModule({
     declarations: [
-        PreviewComponent,
+        PreviewComponent,  
     ],
     imports: [
         FormsModule
     ],
     exports: [
-        PreviewComponent
+        PreviewComponent,
     ],
     providers: [],
 })
