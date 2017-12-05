@@ -42,6 +42,7 @@ const CUSTOME_INPUT_CONTROL_VALUE_ACCESSOR: any = {
         </div>
       </div>
     </div>`,
+    styleUrls: ["./colorpicker.component.scss"],
   providers: [DomRenderer, CUSTOME_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 
