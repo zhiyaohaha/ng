@@ -25,32 +25,45 @@ export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
 export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
 
-  _modelDOMSData = {}; //原始数据
-  _modelDOMS; //页面DOMS结构
+  _modelDOMSData = [{}]; //原始数据
+  _modelDOMS = []; //页面DOMS结构
+  _notes; //可以添加的DOM结构
+  title: string; //标题
+
+  modelDOMSData = [{}]; //需要修改的原数据
 
   @Input() //页面DOMS结构
-  set modelDOMS(value) {
+  set modelDOMS(value: any) {
     console.log(value);
-    this._modelDOMS = value;
-    // value.forEach(item => {
-    //   item.childrens.forEach(i => {
-    //     this._modelDOMSData[i.name] = i.value;
-    //   });
-    // });
+    if (value.childrens) {
+      this._notes = value.childrens;
+      this._notes.map(item => {
+        item.name = item.name.replace(value.name + ".", "");
+      });
+      this._modelDOMS.push(this._notes);
+    }
+    this.title = value.ui.label;
   }
-  get modelDOMS() {
+
+  get  () {
     return this._modelDOMS;
   }
 
-  @Input() modelDOMSData = {}; //需要修改的原数据
+  onModelChange: Function = () => {
+  };
 
-  onModelChange: Function = () => { };
+  constructor() {
+  }
 
-  constructor() { }
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   writeValue(value: any): void {
-    console.log(value);
+    if (Array.isArray(value)) {
+      setTimeout(() => {
+        this.modelDOMSData = value;
+      }, 0);
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -60,12 +73,32 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any): void {
   }
 
+  /**
+   * 输入框失去焦点
+   * @param $event
+   */
+  inputBlur($event) {
+    this.onModelChange(this.modelDOMSData);
+  }
+
+  handleNode(index, type) {
+    if (type === "add") {
+      this._modelDOMS.push(this._notes);
+      this.modelDOMSData.push({});
+    } else if (type === "del") {
+      this._modelDOMS.splice(index, 1);
+      this.modelDOMSData.splice(index, 1);
+    }
+  }
+
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, TimiInputModule, TimiCheckboxModule, TimiTextareaModule, TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule],
+  imports: [CommonModule, FormsModule, TimiInputModule, TimiCheckboxModule, TimiTextareaModule,
+    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule],
   declarations: [DynamicDomsComponent],
   exports: [DynamicDomsComponent]
 })
 
-export class DynamicDomsModule { }
+export class DynamicDomsModule {
+}

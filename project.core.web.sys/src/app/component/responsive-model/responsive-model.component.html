@@ -3,7 +3,7 @@
   <ng-container *ngIf="btnType === 'new';else elseblock;">
     <ng-container *ngFor="let item of modelDOMS;">
       <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
-         *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel'">
+         *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
       <h4 class="">{{item.ui.label}}</h4>
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
@@ -73,6 +73,10 @@
         </ng-container>
       </ng-container>
     </div>
+      <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
+           *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
+        <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}"></dynamic-doms>
+      </div>
     </ng-container>
   </ng-container>
   <!--修改-->
@@ -161,7 +165,7 @@
       </div>
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
-        <!-- <dynamic-doms [modelDOMS]="item" [modelDOMSData]="_modelDOMSData"></dynamic-doms> -->
+        <dynamic-doms [modelDOMS]="item" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}"></dynamic-doms>
       </div>
     </ng-container>
   </ng-template>
