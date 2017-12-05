@@ -1,4 +1,10 @@
+import { ConvertUtil } from '../../common/convert-util';
+import { environment } from '../../../environments/environment.prod';
+import { globalUrl } from '../../common/global.config';
+import { FileUploader } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 import {
+  OnInit,
   AfterViewInit,
   Component,
   ElementRef,
@@ -93,7 +99,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
           </div>
           <div class="editor-upload">
             <i class="fa fa-plus"></i> Upload
-            <input type="file" name="photo" accept="image/*"
+            <input type="file" name="photo" accept="image/*" ng2FileSelect [uploader]="uploader"
                    class="editor-file-input" (change)="onUploadChange($event)"/>
           </div>
         </div>
@@ -169,8 +175,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ["./editor.component.scss"],
   providers: [DomRenderer, CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
-export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
-
+export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnDestroy {
   @Input() buttons: any;
   @Input() style: any;
   @Input() toolbar: boolean;
@@ -188,6 +193,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   @ViewChild("modal") modalViewChild: ElementRef;
   @ViewChild("linkPopup") linkPopupViewChild: ElementRef;
   @ViewChild("tablePopup") tablePopupViewChild: ElementRef;
+  uploader: FileUploader; //上传对象
   linkPopup: HTMLDivElement;
   tablePopup: HTMLDivElement;
   linkUrl: HTMLInputElement;
@@ -255,7 +261,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   onTouchedChange: Function = () => {
   };
 
-  constructor(public domRenderer: DomRenderer, public renderer2: Renderer2) {
+  constructor(public domRenderer: DomRenderer, public renderer2: Renderer2, private util: ConvertUtil) {
     this.style = {
       width: '600px',
       height: '200px'
@@ -497,6 +503,15 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
           this.alignIcon = '\uf039';
         }
       }];
+  }
+
+  ngOnInit() {
+    this.uploader = new FileUploader({
+      url: environment.apiURL + "/api/file/upload",
+      method: "POST",
+      allowedFileType: ["image"]
+      // autoUpload: true
+    });
   }
 
   ngAfterViewInit() {
@@ -760,29 +775,57 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
   }
 
   onUploadChange(e) {
-    console.log(e.target.files);
-    const files = e.target.files;
-    let file = null;
-    let url = null;
-    if (files && files.length > 0) {
-      file = files[0];
-      try {
-        const fileReader = new FileReader();
-        fileReader.onload = (event: any) => {
-          url = event.target.result;
-          const img = '<img src="' + url + '"/>';
-          this.execCommand('insertHTML', img);
-          this.onUploadCompleted.emit({
-            files: files,
-            base64: url
-          });
-        };
-        fileReader.readAsDataURL(file);
-      } catch (e) {
+    let timestamp = this.util.timestamp();
+    let sign = this.util.toMd5(timestamp + globalUrl.private_key);
+    this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, { name: "type", value: "WithPath" }];
+    this.uploader.uploadAll();
 
-      }
+    let _self = this;
+
+    this.uploader.onErrorItem = function (e) {
+      console.log("onErrorItem");
+      e.progress = 0;
+      console.log(_self.uploader);
     }
-    this.closeModal();
+
+    this.uploader.onSuccessItem = function (e) {
+      let json=JSON.parse(e._xhr.response).data[0];
+      let {id,path}=json;
+
+      const img = '<img src="' + path + '" style="width:200px;heigth:200px"/>';//预览图效果，需要设置尺寸
+      _self.execCommand('insertHTML', img);
+
+      // _self.src = e.base;
+      // _self.success.emit(e);
+      // _self.valueChange(e.id);
+    };
+
+
+    // const files = e.target.files;
+    // let file = null;
+    // let url = null;
+    // console.log(files[0]);
+    
+    // if (files && files.length > 0) {
+    //   file = files[0];
+    //   try {
+    //     const fileReader = new FileReader();
+    //     fileReader.onload = (event: any) => {
+          
+    //       url = event.target.result;
+    //       const img = '<img src="' + url + '"/>';
+    //       this.execCommand('insertHTML', img);
+    //       this.onUploadCompleted.emit({
+    //         files: files,
+    //         base64: url
+    //       });
+    //     };
+    //     fileReader.readAsDataURL(file);
+    //   } catch (e) {
+
+    //   }
+    // }
+    // this.closeModal();
   }
 
   uploadImage(value: string) {
@@ -1606,7 +1649,7 @@ export class EditorComponent implements ControlValueAccessor, AfterViewInit, OnD
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ColorPickerModule],
+  imports: [CommonModule, FormsModule, ColorPickerModule, FileUploadModule],
   declarations: [EditorComponent],
   exports: [EditorComponent]
 })

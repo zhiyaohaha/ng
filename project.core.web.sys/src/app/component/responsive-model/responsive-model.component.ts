@@ -70,8 +70,9 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event) {
+    console.log($event);
     
-    this.ngSubmit.emit($event);   
+    //this.ngSubmit.emit($event);   
   }
 
 

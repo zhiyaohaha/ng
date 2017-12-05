@@ -113,6 +113,7 @@ export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
     }
 
     this.uploader.onSuccessItem = function (e) {
+      
       _self.src = e.base;
       _self.success.emit(e);
       _self.valueChange(e.id);
