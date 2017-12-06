@@ -1,3 +1,5 @@
+import { style } from '@angular/animations';
+import { LoginGuard } from './../../guards/login.guard';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { PreviewService } from "app/services/preview/preview.service";
 
@@ -79,13 +81,18 @@ export class PreviewComponent implements OnInit {
   //拖拽图片
   drag(event, prePic){
    
-    // let distanceX = event.clientX - prePic.offsetLeft;
-    // let distanceY = event.clientY - prePic.offsetTop;
+    let distanceX = event.clientX - prePic.offsetLeft;
+    let distanceY = event.clientY - prePic.offsetTop;
+
     
-    document.onmousemove=function (evt) {
-      let left = evt.clientX;
-      let top = evt.clientY;
+    document.onmousemove=(evt) => {
+      let left = evt.clientX - distanceX;
+      let top = evt.clientY - distanceY;
       
+      console.log(evt.clientX);
+      console.log(evt.clientY);
+      
+
       prePic.style.left=left+'px';
       prePic.style.top=top+'px';
     }
@@ -93,6 +100,7 @@ export class PreviewComponent implements OnInit {
     document.onmouseup=function () {
       document.onmousemove=null;
       document.onmouseup=null;
+
     }
 
     return false;
