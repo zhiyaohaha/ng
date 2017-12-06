@@ -49,8 +49,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     return this._modelDOMS;
   }
 
-  onModelChange: Function = () => {
-  };
+  onModelChange: Function = () => { };
 
   constructor() {
   }
@@ -81,6 +80,20 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     this.onModelChange(this.modelDOMSData);
   }
 
+  /**
+   * 下拉框change事件
+   * @param $event
+   * @param child
+   */
+  selectChange($event, dom) {
+    this.onModelChange(this.modelDOMSData);
+  }
+
+  /**
+   * 添加删除DOM
+   * @param index 当前索引
+   * @param type 添加/删除
+   */
   handleNode(index, type) {
     if (type === "add") {
       this._modelDOMS.push(this._notes);

@@ -26,13 +26,13 @@
                        [labelName]="child.ui.label"
                        [placeholder]="child.ui.placeholder"></timi-textarea>
       </div>
-      <!--<div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">-->
-        <!--<timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"-->
-                     <!--pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"-->
-                     <!--[columns]="child.ui.columns" [multiple]="child.ui.multiple"-->
-                     <!--[freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"-->
-                     <!--(onChange)="selectChange($event, child.cmds)"></timi-select>-->
-      <!--</div>-->
+      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+        <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
+                     pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
+                     [columns]="child.ui.columns" [multiple]="child.ui.multiple"
+                     [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
+                     (onChange)="selectChange($event, child.cmds)"></timi-select>
+      </div>
       <!--<div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">-->
         <!--<div>-->
           <!--<timi-file-uploader name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"-->
