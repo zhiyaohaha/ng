@@ -17,6 +17,7 @@
     width: 30%;
     margin-left: -15%;
     margin-top: -10%;
+    cursor: move;
 }
 .prePic{    
     width: 100%;
@@ -43,4 +44,35 @@
 }
 .preBtn li:last-child{
     margin-right: 0;
+}
+.switch{
+    width: 100%;
+    height: 10%;
+    position: absolute;
+    top: 50%;
+    overflow: hidden;
+
+}
+.left,.right{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.left{
+    float: left;
+    margin-left: 6%;
+    border-top:20px transparent dashed;
+    border-left:20px transparent dashed;
+    border-bottom:20px transparent dashed;
+    border-right:20px rgba(1, 1, 1, .7) solid;
+    overflow:hidden;
+}
+.right{
+    float: right;
+    margin-right: 6%;
+    border-top:20px transparent dashed;
+    border-right:20px transparent dashed;
+    border-bottom:20px transparent dashed;
+    border-left:20px rgba(1, 1, 1, .7) solid;
+    overflow:hidden;
 }

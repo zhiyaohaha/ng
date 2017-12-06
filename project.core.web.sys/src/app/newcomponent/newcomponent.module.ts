@@ -1,6 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { PreviewComponent } from './preview/preview.component';
 
@@ -12,7 +13,8 @@ import { PreviewComponent } from './preview/preview.component';
         PreviewComponent,  
     ],
     imports: [
-        FormsModule
+        FormsModule,
+        CommonModule
     ],
     exports: [
         PreviewComponent,

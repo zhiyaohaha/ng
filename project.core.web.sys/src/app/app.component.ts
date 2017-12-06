@@ -2,6 +2,8 @@ import { globalUrl } from "./common/global.config";
 import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from "@angular/core";
 import { App } from "./pages/app";
 import { WebSocketService } from "./services/share/web-socket.service";
+import { PreviewService } from "app/services/preview/preview.service";
+
 
 @Component({
   selector: "app-root",
@@ -9,6 +11,7 @@ import { WebSocketService } from "./services/share/web-socket.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit, AfterViewInit {
+
 
   @ViewChild("modalPortal", { read: ViewContainerRef }) _modalPortal;
   @ViewChild("overlayPortal", { read: ViewContainerRef }) _overlayPortal;
@@ -20,13 +23,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   routerState: boolean = true;
   routerStateCode: string = "active";
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver,
-              private app: App,
-              private wsService: WebSocketService) {
-    this.app.intance = this;
+  constructor(
+    private _componentFactoryResolver: ComponentFactoryResolver,
+    private app: App,
+    private wsService: WebSocketService,
+    private previewService: PreviewService
+    ) {
+    this.app.intance = this; 
   }
 
   ngOnInit() {
+    
     // this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
     //   data => console.log(data),
     //   err => console.log(err),
@@ -35,12 +42,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     setInterval(() => {
       // this.wsService.sendMesssage("asdfasdfdf21314564");
     }, 2000);
-
+    
   }
 
   ngAfterViewInit() {
-
   }
+
+  
 
   insertPages(component: any, overlayIndex: number, opt?: any) {
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(component);

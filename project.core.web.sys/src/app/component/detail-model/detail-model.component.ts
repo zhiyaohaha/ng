@@ -1,15 +1,17 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
-import {defaultValue} from "../../common/global.config";
-import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
-import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
-import {FnUtil} from "../../common/fn-util";
-import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ErgodicJsonPipe } from "../../common/pipe/ergodic-json.pipe";
+import { defaultValue } from "../../common/global.config";
+import { StrToArrayPipe } from "../../common/pipe/str-to-array.pipe";
+import { BooleanToWordPipe } from "../../common/pipe/boolean-to-word.pipe";
+import { FnUtil } from "../../common/fn-util";
+import { NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from "../ngx-gallery";
 import { NewComponentModule } from "../../newcomponent/newcomponent.module";
+import { PreviewService } from './../../services/preview/preview.service';
+
 
 @Component({
   selector: "detail-model",
@@ -17,12 +19,13 @@ import { NewComponentModule } from "../../newcomponent/newcomponent.module";
   styleUrls: ["./detail-model.component.scss"]
 })
 
-export class DetailModelComponent implements OnInit{
+export class DetailModelComponent implements OnInit {
 
   imgSrc = defaultValue.imgSrc; //图片默认地址
 
   filds: string[]; //图片字段
   imgUrls: string[]; //图片地址
+
 
   _modelDOMS; //模版
   @Input()
@@ -73,9 +76,10 @@ export class DetailModelComponent implements OnInit{
   galleryImages: NgxGalleryImage[];
 
   @Output() onClick: EventEmitter<any> = new EventEmitter();
-  
 
-  constructor( private fnUtil: FnUtil) {
+
+  constructor(private fnUtil: FnUtil, private previewService: PreviewService) {
+      
   }
 
   ngOnInit() {
@@ -96,6 +100,11 @@ export class DetailModelComponent implements OnInit{
     //     this.onClick.emit(obj);
     //     break;
     // }
+  }
+
+  toShow() {
+    this.previewService.showPreview(true);
+    this.previewService.getUrl(this.imgUrls); 
   }
 
   /**

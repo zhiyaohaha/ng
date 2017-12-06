@@ -29,6 +29,7 @@ import {FilterValuePipe} from "./common/pipe/filterValue.pipe";
 import {HttpClientModule} from "@angular/common/http";
 import {SetAuthorityComponent} from "./component/set-authority/set-authority.component";
 import { NewComponentModule } from "./newcomponent/newcomponent.module";
+import { PreviewService } from './services/preview/preview.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { NewComponentModule } from "./newcomponent/newcomponent.module";
     FnUtil,
     WebSocketService,
     ToastService,
-    CommunicationService
+    CommunicationService,
+    PreviewService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [SetAuthorityComponent],

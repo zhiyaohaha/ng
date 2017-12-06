@@ -8,4 +8,4 @@
 <div #overlayPortal></div>
 <div #loadingPortal></div>
 <div #toastPortal></div>
-<!-- <free-preview *ngIf="showPreview" (outShowPreview)="getShowPreview()"></free-preview> -->
+<free-preview *ngIf="previewService.isShowPreview" [picArray]="previewService.imgUrls"></free-preview>
