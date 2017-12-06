@@ -133,7 +133,10 @@ detailId = $.request("id") || "";
                             var result = res.data;
                             if(result){
                                 //1.菜单栏信息
-                                $("#collections").val(result.collection).change();
+                                // $("#collections").val(result.collection).change();   //与table的数据源select dom不同，这里的数据源dom是div
+                                $(document).ready(function() { 
+                                    $("#collections").children("div[data-value='"+result.collection+"']").click();
+                                });
                                 $("#templateName").val(result.name);
                                 $("#templateTitle").val(result.title);
                                 $("#templatePlatform").val(result.platform);
@@ -405,7 +408,9 @@ $("#collections").on("click", "div",function(){
         success: function(res){
             if(res.code === "0"){
                 $("#collections").hide();
-                $("#collectionsDetail").show();
+                if($("#formDom").css("display") == "none"){   //防止手动选择数据源以后，dom列表和数据源列表出现在一起
+                    $("#collectionsDetail").show();
+                }
             }
             var html = "";
             res.data.forEach(function(el){
