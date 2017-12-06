@@ -51,8 +51,6 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
-  text: any; //富文本内容
-
   constructor(private baseService: BaseService) {
   }
 

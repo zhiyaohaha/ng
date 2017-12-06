@@ -68,7 +68,7 @@
                              [columns]="child.ui.columns"></timi-chip-group>
           </div>
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              <free-editor [(ngModel)]="text" [counter]="true" name="{{child.name}}"></free-editor>
+              <free-editor [(ngModel)]="_modelDOMSData[child.name]" [counter]="true" name="{{child.name}}"></free-editor>
           </div>
         </ng-container>
       </ng-container>
@@ -158,7 +158,7 @@
                                [columns]="child.ui.columns"></timi-chip-group>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              <free-editor [style]="{width: 900}" name="{{child.name}}" [(ngModel)]="text" [counter]="true"></free-editor>
+              <free-editor [style]="{width: 900}" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [counter]="true"></free-editor>
             </div>
           </ng-container>
         </ng-container>
