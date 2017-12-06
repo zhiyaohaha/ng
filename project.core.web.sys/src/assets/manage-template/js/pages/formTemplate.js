@@ -152,6 +152,29 @@ $.ajax({
                     }
                 })
             }else{
+                //新增时，自动拖拽一个面板(以减少建模板时间)
+                dragCreateDom_Panel("HtmlDomDisplayType.Panel",$('#formDomTarget'),{
+                    bindMethod:"",
+                    bindTarget:"",
+                    cmds:[],
+                    description:"",
+                    name:"",
+                    ui:{
+                        attrs:null,
+                        classes:null,
+                        columns:0,
+                        disabled:false,
+                        displayType:"HtmlDomDisplayType.Panel",
+                        hidden:false,
+                        label:"",
+                        multiple:false,
+                        placeholder:"",
+                        required:false,
+                        sort:0,                        
+                    },
+                    value:""
+                },"add")
+                //设置父iframe高度
                 setParentIframeHeight()
             }
         }
@@ -161,7 +184,7 @@ $.ajax({
 //渲染需要编辑的模板组件-面板
 function renderResultDoms(doms){
     //还原面板组件(中间dom和右侧设置)
-    dragCreateDom_Panel(doms.ui.displayType,$('#formDomTarget'),doms)
+    dragCreateDom_Panel(doms.ui.displayType,$('#formDomTarget'),doms,"edit")
 }
 /**
  * [dragCreateDom_Panel 还原各面板组件]
@@ -173,7 +196,7 @@ function renderResultDoms(doms){
  */
 
 //绑定页面拖拽的组件内容
-function dragCreateDom_Panel(domval,that,editData){
+function dragCreateDom_Panel(domval,that,editData,status){
     var id = $.generateGUID();
     generateObj(id);
     that.append(displayDOM(domval, id));
@@ -215,6 +238,32 @@ function dragCreateDom_Panel(domval,that,editData){
     }
 
     objData[id] = editData;
+
+    if(status == "add"){   //新增状态下,默认点击，自动拖入的面板；拖入一个隐藏
+        dragCreateDom_PanelBody("HtmlDomDisplayType.Hidden",$('#'+id),{  
+            bindMethod: "",
+            bindTarget: null,
+            description: "",
+            cmds:[],
+            name: "id",
+            ui: {
+                attrs: null,
+                classes: null,
+                columns:2,
+                disabled: false,
+                displayType: "HtmlDomDisplayType.Hidden",
+                hidden: true,
+                label: "",
+                multiple: false,
+                placeholder: "",
+                required: false,
+                sort: 0
+            }
+        })
+        $(document).ready(function() { //新增状态下,默认点击，自动拖入的面板； 编辑状态下,因为面板较多，所以无需默认第一个面板
+            $("#"+id).click();
+        });
+    }
 }
 function dragCreateDom_PanelBody(domval,that,editData){
     var id = $.generateGUID();
@@ -1089,9 +1138,9 @@ function boxDom() {
 
             arr.push(objData[wrapId]);
         })
-        if(index === 0) {
-            arr.push({bindMethod:"",bindTarget:null,description:"",name:"id",ui:{attrs:null,classes:null,columns:1,disabled:false,displayType:"HtmlDomDisplayType.Hidden",hidden:true,label:"",multiple:false,placeholder:"",required:false,sort:0}})
-        }
+        // if(index === 0) {
+        //     arr.push({bindMethod:"",bindTarget:null,description:"",name:"id",ui:{attrs:null,classes:null,columns:1,disabled:false,displayType:"HtmlDomDisplayType.Hidden",hidden:true,label:"",multiple:false,placeholder:"",required:false,sort:0}})
+        // }
         objData[panelId].childrens = arr;
         objData[panelId].ui.sort = index;
         objData[panelId].ui.columns = 2;
@@ -1123,22 +1172,22 @@ function saveTemplate() {
     }else{         //新增模板
         detailTemplateOperateUrl  = 'Add';  
     }
-    // console.log(data)
-    $.ajax({
-        type: "POST",
-        url: urlprefix + "/api/Template/"+detailTemplateOperateUrl+"FormTemplate", 
-        data: $.postAuth(data),
-        crossDomain: true,
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function(res) {
-            console.log(res)
-            if(res.code === "0"){
-                alert("保存成功");
-            }
-        }
-    })
+    console.log(data)
+    // $.ajax({
+    //     type: "POST",
+    //     url: urlprefix + "/api/Template/"+detailTemplateOperateUrl+"FormTemplate", 
+    //     data: $.postAuth(data),
+    //     crossDomain: true,
+    //     xhrFields: {
+    //         withCredentials: true
+    //     },
+    //     success: function(res) {
+    //         console.log(res)
+    //         if(res.code === "0"){
+    //             alert("保存成功");
+    //         }
+    //     }
+    // })
 }
 function setParentIframeHeight(){
     // console.log('加载了')
