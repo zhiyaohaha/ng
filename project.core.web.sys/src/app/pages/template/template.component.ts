@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, OnInit, ViewChild,ElementRef} from "@angular/core";
+import {AfterViewInit, Component, OnInit, ViewChild} from "@angular/core";
 import {ITdDataTableColumn, LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {MdSidenav} from "@angular/material";
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: "app-template",
@@ -16,9 +16,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class TemplateComponent implements OnInit, AfterViewInit {
 
   selectRow; //每一行的具体数据
-  dangerousUrl:string;
+  dangerousUrl: string;
   trustedUrl;
-  editUrl:string;//模板编辑url
+  editUrl: string; //模板编辑url
   // iframeHeight:string;
 
   @ViewChild("sidenav")
@@ -103,7 +103,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
       type: LoadingType.Circular,
       color: "warn"
     });
-    
+
   }
 
   ngOnInit() {
@@ -183,7 +183,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   *根据不同的url，设置不同的iframe src（添加和修改都跳转到iframe） 
+   *根据不同的url，设置不同的iframe src（添加和修改都跳转到iframe）
    */
   setIframeSrc(id){
     //设置src
@@ -199,15 +199,22 @@ export class TemplateComponent implements OnInit, AfterViewInit {
     }else{
       this.dangerousUrl = '../../../assets/manage-template/pages/'+this.editUrl+'Template.html';
     }
-    
+
     this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
 
     //根据iframe子页面高度，设置 iframe框的高度(编辑状态下，页面的高度是js后期处理的)
     // var that = this;
     // var iframeContentNav = this.iframeContent.nativeElement;   //这种方法只能设置初始高度
-    // iframeContentNav.onload = function(){ 
-    //   var contentHeight = iframeContentNav.contentWindow.document.getElementsByTagName('section')[0].scrollHeight; 
+    // iframeContentNav.onload = function(){
+    //   var contentHeight = iframeContentNav.contentWindow.document.getElementsByTagName('section')[0].scrollHeight;
     //   that.iframeHeight = contentHeight
     // }
+  }
+
+  /**
+   * 侧滑打开
+   */
+  sidenavOpen() {
+
   }
 }

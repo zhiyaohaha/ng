@@ -15,7 +15,7 @@ var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; /
 var collection; //数据源
 
 var detailId = ""; //查询详情url中的ID
-detailId = $.request("id") || "";
+detailId = $.request("id") || "";  
 
     //获取下拉框选项
     $.ajax({
@@ -133,7 +133,10 @@ detailId = $.request("id") || "";
                             var result = res.data;
                             if(result){
                                 //1.菜单栏信息
-                                $("#collections").val(result.collection).change();
+                                // $("#collections").val(result.collection).change();   //与table的数据源select dom不同，这里的数据源dom是div
+                                $(document).ready(function() { 
+                                    $("#collections").children("div[data-value='"+result.collection+"']").click();
+                                });
                                 $("#templateName").val(result.name);
                                 $("#templateTitle").val(result.title);
                                 $("#templatePlatform").val(result.platform);
@@ -173,17 +176,17 @@ detailId = $.request("id") || "";
                             placeholder:"",
                             required:false,
                         }
-                    })
+                    },"add")
                     //设置父iframe高度
                     setParentIframeHeight()
                 }
             }
         }
     })
-//渲染需要编辑的模板组件-面板
+//渲染需要编辑的模板组件-面板      
 function renderResultDoms(doms){
     //还原面板组件(中间dom和右侧设置)
-    dragCreateDom_Panel(doms.ui.displayType,$('#formDomTarget'),doms)
+    dragCreateDom_Panel(doms.ui.displayType,$('#formDomTarget'),doms,"edit")
 }
 /**
  * [dragCreateDom_Panel 还原各面板组件]
@@ -193,7 +196,7 @@ function renderResultDoms(doms){
  * @param  {[object]} that     [存放 还原组件的父组件的dom]
  * @param  {[object]} editData  [需要还原的组件的data]
  */
-function dragCreateDom_Panel(domval,that,editData){
+function dragCreateDom_Panel(domval,that,editData,status){
     var id = $.generateGUID();
     generateObj(id);
     that.append(displayDOM(domval, id));
@@ -205,12 +208,42 @@ function dragCreateDom_Panel(domval,that,editData){
     $('#'+id).find(".dom-panel-content").droppable({  //手动设置面板可拖放组件
         greedy: true,
         drop: function() {
-            if(DOMvalue === "HtmlDomDisplayType.Panel"){   //面板不能再嵌入面板
-                return false;
-            }
             var id1 = $.generateGUID();
             generateObj(id1);
             $(this).append(displayDOM(DOMvalue,id1));
+            //嵌套面板(二层嵌套面板，面板里面嵌套面板)
+            if(DOMvalue === "HtmlDomDisplayType.Panel"){
+                $('#'+id1).find(".dom-panel-content").droppable({
+                    greedy: true,
+                    drop: function(event, ui) {
+                        if(DOMvalue === "HtmlDomDisplayType.Panel"){   //二级面板不能再嵌入面板。
+                            return false;
+                        }
+                        if(DOMvalue){
+                            var id2 = $.generateGUID();
+                            generateObj(id2);
+                            $(this).append(displayDOM(DOMvalue, id2));
+                            if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){  //二级面板,按钮作用域
+                                $("#"+id2).droppable({
+                                    greedy: true,
+                                    drop: function(event ,ui){
+                                        if(DOMvalue === "HtmlDomDisplayType.Button"){  //二级面板,按钮作用域，再嵌入按钮
+                                            var id3 = $.generateGUID();
+                                            generateObj(id3);
+                                            $(this).append(displayDOM("HtmlDomDisplayType.Button", id3));
+                                        }
+                                        DOMvalue = "";
+                                        $("#"+id3).click();
+                                    }
+                                })
+                            }
+                            DOMvalue = "";
+                            $("#"+id2).click();
+                        }
+                    }
+                });
+                $("#"+id1).click();
+            }
             //手动设置 还原的按钮域，可放置按钮
             if(DOMvalue === 'HtmlDomDisplayType.ButtonRegion'){
                 $('#'+id1).droppable({  
@@ -228,27 +261,31 @@ function dragCreateDom_Panel(domval,that,editData){
     })
     //还原单个组件(中间dom和右侧设置)
     var domsChildrens = editData.childrens;
-    if(domsChildrens  && domsChildrens.length > 0){     
+    if(domsChildrens  && domsChildrens.length > 0){
+        // console.log(domsChildrens.length)     
         for (var i = 0; i < domsChildrens.length; i++) {
             dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
         }
     }
     objData[id] = editData;
-    $(document).ready(function() {
-        $("#"+id).click();
-    });
+    if(status == "add"){  //新增状态下,默认点击，自动拖入的面板； 编辑状态下,因为面板较多，所以无需默认第一个面板
+        $(document).ready(function() {
+            $("#"+id).click();
+        });
+    }
 }
 function dragCreateDom_PanelBody(domval,that,editData){
     var id = $.generateGUID();
     generateObj(id);
-    that.find('div.dom-panel-content').append(displayDOM(domval, id));
-    //单个组件设置，列数
+    that.children('div.dom-panel-content').append(displayDOM(domval, id));
+    var domsChildrens = editData.childrens;
+    // 单个组件设置，列数
     if(editData.ui.displayType !== 'HtmlDomDisplayType.Button'){
         var contentWidth = editData.ui.columns * 50;
         $('#'+id).css('width',contentWidth+'%');
         $('#'+id).attr('data-col',editData.ui.columns);
     }
-    //单个组件设置,显示内容
+    // 单个组件设置,显示内容
     var spanText = "";
     switch(editData.ui.displayType) {
         case "HtmlDomDisplayType.StaticText":
@@ -260,6 +297,45 @@ function dragCreateDom_PanelBody(domval,that,editData){
     }
     $('#'+id).find('span').html(editData.ui.label ? editData.ui.label : spanText);
     $('#'+id).find("input[type='button']").val(editData.ui.label ?editData.ui.label :'按钮');
+    //嵌套面板(二层嵌套面板，面板里面嵌套面板)
+    // console.log(domval)
+    if(domval === "HtmlDomDisplayType.Panel"){
+        $('#'+id).find(".dom-panel-content").droppable({
+            greedy: true,
+            drop: function(event, ui) {
+                if(DOMvalue === "HtmlDomDisplayType.Panel"){   //二级面板不能再嵌入面板。
+                    return false;
+                }
+                if(DOMvalue){
+                    var id2 = $.generateGUID();
+                    generateObj(id2);
+                    $(this).append(displayDOM(DOMvalue, id2));
+                    if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){  //二级面板,按钮作用域
+                        $("#"+id2).droppable({
+                            greedy: true,
+                            drop: function(event ,ui){
+                                if(DOMvalue === "HtmlDomDisplayType.Button"){  //二级面板,按钮作用域，再嵌入按钮
+                                    var id3 = $.generateGUID();
+                                    generateObj(id3);
+                                    $(this).append(displayDOM("HtmlDomDisplayType.Button", id3));
+                                }
+                                DOMvalue = "";
+                                $("#"+id3).click();
+                            }
+                        })
+                    }
+                    DOMvalue = "";
+                    $("#"+id2).click();
+                }
+            }
+        });
+        $("#"+id).click();
+        if(domsChildrens  && domsChildrens.length > 0){     
+            for (var i = 0; i < domsChildrens.length; i++) {
+                dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
+            }
+        }
+    }
     //还原，按钮域下的,按钮组件
     if(domval === "HtmlDomDisplayType.ButtonRegion"){
         //手动设置 还原的按钮域，可放置按钮
@@ -273,7 +349,6 @@ function dragCreateDom_PanelBody(domval,that,editData){
                 }
             }
         })
-        var domsChildrens = editData.childrens;
         if(domsChildrens  && domsChildrens.length > 0){     
             for (var i = 0; i < domsChildrens.length; i++) {
                 dragCreateDom_Panel_ButtonRegion(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
@@ -333,7 +408,9 @@ $("#collections").on("click", "div",function(){
         success: function(res){
             if(res.code === "0"){
                 $("#collections").hide();
-                $("#collectionsDetail").show();
+                if($("#formDom").css("display") == "none"){   //防止手动选择数据源以后，dom列表和数据源列表出现在一起
+                    $("#collectionsDetail").show();
+                }
             }
             var html = "";
             res.data.forEach(function(el){
@@ -680,12 +757,46 @@ $("#formDomTarget").droppable({
                     greedy: true,
                     drop: function(event, ui) {
                         if(DOMvalue){
-                            if(DOMvalue === "HtmlDomDisplayType.Panel"){   //面板不能再嵌入面板
-                                return false;
-                            }
+                            // if(DOMvalue === "HtmlDomDisplayType.Panel"){   //面板不能再嵌入面板
+                            //     return false;
+                            // }
                             var id = $.generateGUID();
                             generateObj(id);
                             $(this).append(displayDOM(DOMvalue, id));
+                            //嵌套面板(二层嵌套面板，面板里面嵌套面板)
+                            if(DOMvalue === "HtmlDomDisplayType.Panel"){
+                                $('#'+id).find(".dom-panel-content").droppable({
+                                    greedy: true,
+                                    drop: function(event, ui) {
+                                        if(DOMvalue === "HtmlDomDisplayType.Panel"){   //二级面板不能再嵌入面板。
+                                            return false;
+                                        }
+                                        if(DOMvalue){
+                                            var id2 = $.generateGUID();
+                                            generateObj(id2);
+                                            $(this).append(displayDOM(DOMvalue, id2));
+                                            if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){  //二级面板,按钮作用域
+                                                $("#"+id2).droppable({
+                                                    greedy: true,
+                                                    drop: function(event ,ui){
+                                                        if(DOMvalue === "HtmlDomDisplayType.Button"){  //二级面板,按钮作用域，再嵌入按钮
+                                                            var id3 = $.generateGUID();
+                                                            generateObj(id3);
+                                                            $(this).append(displayDOM("HtmlDomDisplayType.Button", id3));
+                                                        }
+                                                        DOMvalue = "";
+                                                        $("#"+id3).click();
+                                                    }
+                                                })
+                                            }
+                                            DOMvalue = "";
+                                            $("#"+id2).click();
+                                        }
+                                    }
+                                });
+                                DOMvalue = "";
+                                $("#"+id).click();
+                            }
                             if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){
                                 $("#"+id).droppable({
                                     greedy: true,
@@ -750,7 +861,7 @@ function displayDOM(key, id) {
             return $(returnDom(`<span>显示一段文字</span>`, id));
             break;
         case "HtmlDomDisplayType.Panel":
-            return $(`<div class="dom-panel" id="${id}">
+            return $(`<div class="dom-panel" id="${id}"  data-col="2" style="width:100%;min-height:100px;float:right;">
                     <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
                     <div class="dom-panel-content"></div></div>`);
             break;
@@ -963,35 +1074,44 @@ function saveTriggerWhere(obj) {
 }
 
 //dom数据
-function boxDom() {
+function boxDomChild(domPanelOneLevel){  //(一级和二级)面板里面的内容
     var dom = [];
-    $(".dom-panel").each(function(index, element){
+    domPanelOneLevel.each(function(index, element){  //一级面板
         var panelId = $(this).attr("id");
-        var arr = [];
-        $(this).children(".dom-panel-content").children(".element-wrap").each(function(i, el){
-            var wrapId = $(this).attr("id");
-            objData[wrapId].ui.sort = i;
-            objData[wrapId].ui.columns = $(this).data("col");
-
-            var arr_ = [];
-            if($(this).children(".element-wrap").length > 0){
-                $(this).children(".element-wrap").each(function(item, e){
-                    var wrapId_ = $(this).attr("id");
-                    objData[wrapId_].ui.sort = i;
-                    objData[wrapId_].ui.columns = $(this).data("col");
-                    arr_.push(objData[wrapId_])
-                })
-                objData[wrapId].childrens = arr_;
+        var that = $(this);
+        objData[panelId].childrens = [];
+        $(this).children(".dom-panel-content").children().each(function(index, element){
+            if($(this).hasClass("dom-panel")){
+                // console.log('面板')
+                var childPanel =  boxDomChild($(this));
+                objData[panelId].childrens =  objData[panelId].childrens.concat(childPanel);
+            }else{
+                // console.log('组件')
+                var wrapId = $(this).attr("id");
+                objData[wrapId].ui.sort = index;
+                objData[wrapId].ui.columns = $(this).data("col");
+                var arr_ = [];
+                if($(this).children(".element-wrap").length > 0){
+                    $(this).children(".element-wrap").each(function(item, e){
+                        var wrapId_ = $(this).attr("id");
+                        objData[wrapId_].ui.sort = index;
+                        objData[wrapId_].ui.columns = $(this).data("col");
+                        arr_.push(objData[wrapId_])
+                    })
+                    objData[wrapId].childrens = arr_ ;
+                }
+                objData[panelId].childrens =  objData[panelId].childrens.concat(objData[wrapId]);
             }
-
-            arr.push(objData[wrapId]);
         })
-        objData[panelId].childrens = arr;
+       
         objData[panelId].ui.sort = index;
         objData[panelId].ui.columns = 2;
         dom.push(objData[panelId]);
     })
     return dom;
+}
+function boxDom() {
+    return boxDomChild($("#formDomTarget>.dom-panel"))
 }
 
 //保存详细模板
@@ -1010,6 +1130,7 @@ function saveTemplate() {
             "tags": tags,
             "doms": boxDom(),
     };
+    // console.log(data)
     var detailTemplateOperateUrl = '';        
     if(detailId){    //编辑模板
         detailTemplateOperateUrl  = 'Update';

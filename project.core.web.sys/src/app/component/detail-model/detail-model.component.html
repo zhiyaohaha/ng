@@ -41,7 +41,7 @@
             <p *ngFor="let item of modelDOMSData[child.name]">{{item}}</p>
           </div>
           <ng-template #elseblock>
-            <div class="span">{{modelDOMSData[child.name]}}</div>
+            <div class="span">{{child.name | ergodicJson : modelDOMSData}}</div>
           </ng-template>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
