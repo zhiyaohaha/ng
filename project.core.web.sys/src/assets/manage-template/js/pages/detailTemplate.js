@@ -1147,7 +1147,7 @@ function saveTemplate() {
             withCredentials: true
         },
         success: function(res) {
-            console.log(res)
+            // console.log(res)
             if(res.code === "0"){
                 alert("保存成功");
             }

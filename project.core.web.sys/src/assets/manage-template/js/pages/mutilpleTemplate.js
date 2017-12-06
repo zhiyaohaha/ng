@@ -4,6 +4,12 @@ var filterTypeOptions = `<option>请选择筛选类型</option>`;//筛选类型�
 var DOMvalue = ""; //拖拽的元素的字段
 var DOMdescription = ""; //拖拽元素的标题
 
+var detailId = ""; //查询详情url中的ID
+detailId = $.request("id") || "";
+
+var collectionsContent; //下拉数据源选择过后的数据内容
+var editRestore = true;
+
 (function($){
 
     $("#templateFields ul li,#templateValues ul li").droppable({
@@ -32,7 +38,7 @@ var DOMdescription = ""; //拖拽元素的标题
 //绑定平台下拉框
 $.ajax({
     type: "GET",
-    url: urlprefix + "/api/Template/GetTableTemplateFormData",
+    url: urlprefix + "/api/Template/GetSelectTemplateFormData",
     data: $.getAuth(),
     crossDomain: true,
     xhrFields: {
@@ -52,24 +58,92 @@ $.ajax({
             //平台
             bindSelect(res.data.platforms, "请选择平台", "templatePlatform");
             
-            //展示类型
-            var displayTypes = res.data.displayTypes;
-            for(var i = 0; i < displayTypes.length; i++){
-                displayTypeOptions += `<option value="${displayTypes[i].value}">${displayTypes[i].text}</option>`;
-            }
-            $(".displayType").html(displayTypeOptions);
+            //展示类型（无）
+            // var displayTypes = res.data.displayTypes;
+            // for(var i = 0; i < displayTypes.length; i++){
+            //     displayTypeOptions += `<option value="${displayTypes[i].value}">${displayTypes[i].text}</option>`;
+            // }
+            // $(".displayType").html(displayTypeOptions);
 
             //筛选类型
-            var filterTypes = res.data.filterTypes;
+            var filterTypes = res.data.fieldFilterTypes;
             for(var i = 0; i < filterTypes.length; i++){
                 filterTypeOptions += `<option value="${filterTypes[i].value}">${filterTypes[i].text}</option>`;
             }
             $(".filterType").html(filterTypeOptions);
             
-            
+            if(detailId){
+                getDetail();
+            }else{
+                setParentIframeHeight()
+            }    
         }
     }
 })
+
+//获取修改数据
+function getDetail(){
+    // console.log(detailId)
+    $.ajax({
+        type: "GET",
+        url: urlprefix + "/api/Template/GetSelectTemplateFormDetail",
+        data: $.getAuth({id: detailId}),
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        dataType: "json",
+        success: function(res){
+            var result = res.data;
+            if(result){
+                // console.log(result)
+                $("#collections").val(result.collection).change();
+                $("#templateName").val(result.name);
+                $("#templateTitle").val(result.title);
+                $("#templatePlatform").val(result.platform);
+                $("#templateTags").val(result.tags ? result.tags.join(",") : "");
+                $("#templateDescription").val(result.description);
+
+                $("#childrens").attr("checked",result.childrens);
+                $("#bindTextField").val(result.bindTextField),
+                $("#bindValueField").val(result.bindValueField),
+                bindFilters(result.filter);
+                $("#depth").val(result.depth);
+                setParentIframeHeight();
+            }
+        }
+    })
+}
+
+//获取数据源的描述
+function getcollectionsContent(val){
+    var desc = "";
+    collectionsContent.forEach(function(item, index){
+        if(item.name === val){
+            desc = item.description;
+            return false;
+        }
+    })
+    return desc;
+}
+
+//绑定筛选项
+function bindFilters(data){
+    // var html = "";
+    // console.log(data)
+    for(var i = 0; i < data.length; i++){
+        // var fields = [];
+        var fieldsValue = [];
+        var fieldsLabel = [];
+        var $clone = $("#templateFilters li:first").clone();        
+        $clone.find(".filterType").val(data[i].type);
+        $clone.find(".filterValue").val(data[i].value);
+        $clone.find(".filterField").val(data[i].fields);
+        $("#templateFilters ul").append($clone);
+    }
+    $("#templateFilters  li:first").remove();
+}
+
 
 //下拉框值改变，获取值
 $("#collections").on("change", function(){
@@ -109,6 +183,30 @@ $("#collections").on("change", function(){
                     drag: function() {},
                     stop: function() {}
                 });
+
+                if(editRestore){  //用于编辑状态下，第一次还原(需要数据源的数据才能还原)
+                    var bindTextField  = $("#bindTextField").val();
+                    $("#templateFields").find("input.fieldLabel").val(getcollectionsContent(bindTextField));
+
+                    var bindValueField  =  $("#bindValueField").val();
+                    $("#templateValues").find("input.fieldLabel").val(getcollectionsContent(bindValueField));
+                    
+                    $("#templateFilters ul").children().each(function(index, element){
+                        var filterLi = $(this).find(".filterField").val();
+                        filterLi = filterLi.split(",");
+                        var fieldsValue = [];
+                        var fieldsLabel = [];
+                        if (filterLi) {
+                            for(var j = 0; j < filterLi.length; j++){
+                                fieldsValue.push(getcollectionsContent(filterLi[j]))
+                                fieldsLabel.push(filterLi[j])
+                            }
+                        }   
+                        $(this).find(".filterField").val(fieldsValue.join(","));
+                        $(this).find(".filterField").data("value",fieldsLabel.join(","));
+                    })
+                    editRestore = false;
+                }
             }
         },
         error: function(res){
@@ -197,9 +295,15 @@ function saveTemplate(){
         depth: $("#depth").val(),
         tags: $("#templateTags").val() ? $("#templateTags").val().split(",") : null
     }
+    // console.log(data)
+    var url = "/api/Template/AddSelectTemplate";
+    if(detailId){
+        data.id = detailId;
+        url = "/api/Template/UpdateSelectTemplate";
+    }
     $.ajax({
         type: "POST",
-        url: urlprefix + "/api/Template/AddSelectTemplate",
+        url: urlprefix + url,
         data: $.postAuth(data),
         crossDomain: true,
         xhrFields: {
@@ -207,7 +311,10 @@ function saveTemplate(){
         },
         dataType: "json",
         success: function(res){
-            console.log(res);
+            // console.log(res);
+            if(res.code === "0"){
+                alert("保存成功");
+            }
         }
     })
 }
