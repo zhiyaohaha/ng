@@ -975,6 +975,8 @@ $(".additional").on("click", ".addnotes", function(){
         })
     }
     $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
+
+    setParentIframeHeight()
 })
 //删除属性或样式
 $(".additional").on("click", ".delnotes", function(){

@@ -371,6 +371,8 @@ $(".table-content").on("click", ".addnotes", function(){
         $("i.fa-plus-circle").css("cursor","default");
     }
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
+
+    setParentIframeHeight()
 })
 //删除添加的项
 $(".table-content").on("click", ".dellnotes", function(){

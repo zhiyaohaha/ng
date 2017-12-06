@@ -260,6 +260,8 @@ $("#templateFilters").on("click", ".addnotes", function(){
         })
 
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
+
+    setParentIframeHeight()
 })
 //删除添加的项
 $("#templateFilters").on("click", ".dellnotes", function(){
