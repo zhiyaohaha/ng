@@ -15,7 +15,7 @@ var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; /
 var collection; //数据源
 
 var detailId = ""; //查询详情url中的ID
-detailId = $.request("id") || "";
+detailId = $.request("id") || "";  
 
     //获取下拉框选项
     $.ajax({
@@ -180,7 +180,7 @@ detailId = $.request("id") || "";
             }
         }
     })
-//渲染需要编辑的模板组件-面板
+//渲染需要编辑的模板组件-面板      
 function renderResultDoms(doms){
     //还原面板组件(中间dom和右侧设置)
     dragCreateDom_Panel(doms.ui.displayType,$('#formDomTarget'),doms,"edit")

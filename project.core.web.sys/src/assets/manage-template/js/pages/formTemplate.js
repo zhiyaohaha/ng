@@ -1089,6 +1089,9 @@ function boxDom() {
 
             arr.push(objData[wrapId]);
         })
+        if(index === 0) {
+            arr.push({bindMethod:"",bindTarget:null,description:"",name:"id",ui:{attrs:null,classes:null,columns:1,disabled:false,displayType:"HtmlDomDisplayType.Hidden",hidden:true,label:"",multiple:false,placeholder:"",required:false,sort:0}})
+        }
         objData[panelId].childrens = arr;
         objData[panelId].ui.sort = index;
         objData[panelId].ui.columns = 2;
@@ -1120,6 +1123,7 @@ function saveTemplate() {
     }else{         //新增模板
         detailTemplateOperateUrl  = 'Add';  
     }
+    // console.log(data)
     $.ajax({
         type: "POST",
         url: urlprefix + "/api/Template/"+detailTemplateOperateUrl+"FormTemplate", 
