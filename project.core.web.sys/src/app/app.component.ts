@@ -1,8 +1,7 @@
-import { globalUrl } from "./common/global.config";
-import { Component, AfterViewInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit } from "@angular/core";
-import { App } from "./pages/app";
-import { WebSocketService } from "./services/share/web-socket.service";
-import { PreviewService } from "app/services/preview/preview.service";
+import {AfterViewInit, Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
+import {App} from "./pages/app";
+import {WebSocketService} from "./services/share/web-socket.service";
+import {PreviewService} from "app/services/preview/preview.service";
 
 
 @Component({
@@ -23,17 +22,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   routerState: boolean = true;
   routerStateCode: string = "active";
 
+  isShowPreview; //是否显示图片预览
+  imgUrls; //图片预览的所有链接
+
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private app: App,
     private wsService: WebSocketService,
     private previewService: PreviewService
     ) {
-    this.app.intance = this; 
+    this.app.intance = this;
+    this.isShowPreview = previewService.isShowPreview;
+    this.imgUrls = previewService.imgUrls;
   }
 
   ngOnInit() {
-    
+
     // this.wsService.createObservableSocket(globalUrl.wsUrl).subscribe(
     //   data => console.log(data),
     //   err => console.log(err),
@@ -42,13 +46,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     setInterval(() => {
       // this.wsService.sendMesssage("asdfasdfdf21314564");
     }, 2000);
-    
+
   }
 
   ngAfterViewInit() {
   }
 
-  
+
 
   insertPages(component: any, overlayIndex: number, opt?: any) {
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(component);
@@ -74,6 +78,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     return (<any>componentRef.instance);
   }
 
-  
+
 
 }
