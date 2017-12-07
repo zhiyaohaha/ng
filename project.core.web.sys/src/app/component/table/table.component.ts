@@ -3,7 +3,7 @@ import {MdSelectModule} from "@angular/material";
 import {CovalentDataTableModule} from "@covalent/core";
 import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {globalVar} from "../../common/global.config";
+import {defaultValue, globalVar} from "../../common/global.config";
 import {TableColumns} from "../../common/interface/table-columns";
 import {TimiPaginationModule} from "../timi-pagination/pagination.component";
 
@@ -44,6 +44,8 @@ const number: (num: any) => any = num => {
 })
 
 export class TableComponent implements OnInit {
+
+  imgQuality = defaultValue.imgQuality;
 
   @Input() clickAuthority; // 点击权限
   @Input() data; // 表格数据内容
