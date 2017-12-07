@@ -96,10 +96,6 @@ export class PreviewComponent implements OnInit {
       let left = evt.clientX - distanceX;
       let top = evt.clientY - distanceY;
 
-      console.log(evt.clientX);
-      console.log(evt.clientY);
-
-
       prePic.style.left = left + "px";
       prePic.style.top = top + "px";
     };

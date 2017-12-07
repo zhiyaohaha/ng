@@ -1,13 +1,13 @@
-import {CommonModule} from "@angular/common";
-import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {TimiInputModule} from "../timi-input/timi-input.component";
-import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
-import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
-import {TimiSelectModule} from "../timi-select/select.component";
-import {MdInputModule} from "@angular/material";
-import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {TimiChipModule} from "../timi-chip/chip.component";
+import { CommonModule } from "@angular/common";
+import { Component, forwardRef, Input, NgModule, OnInit } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { TimiInputModule } from "../timi-input/timi-input.component";
+import { TimiCheckboxModule } from "../timi-checkbox/timi-checkbox.component";
+import { TimiTextareaModule } from "../timi-textarea/timi-textarea.component";
+import { TimiSelectModule } from "../timi-select/select.component";
+import { MdInputModule } from "@angular/material";
+import { TimiFileUploaderModule } from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import { TimiChipModule } from "../timi-chip/chip.component";
 
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,6 +29,8 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   _modelDOMS = []; //页面DOMS结构
   _notes; //可以添加的DOM结构
   title: string; //标题
+  isWarpBox: boolean = true;
+  emptyArr = [];
 
   modelDOMSData = [{}]; //需要修改的原数据
 
@@ -40,12 +42,13 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this._notes.map(item => {
         item.name = item.name.replace(value.name + ".", "");
       });
+      
       this._modelDOMS.push(this._notes);
     }
     this.title = value.ui.label;
   }
 
-  get  () {
+  get() {
     return this._modelDOMS;
   }
 
@@ -55,13 +58,18 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
+    
   }
 
-  writeValue(value: any): void {
+  
+
+  writeValue(value: any) {
     if (Array.isArray(value)) {
-      setTimeout(() => {
-        this.modelDOMSData = value;
-      }, 0);
+  
+      this.modelDOMSData = value;
+      for(let i=0;i<value.length-1;i++){
+        this._modelDOMS.push(this._notes);
+      }  
     }
   }
 
@@ -103,6 +111,60 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this.modelDOMSData.splice(index, 1);
     }
   }
+
+  //拖拽换行
+  // toMove(event, movebox, boxheight) {
+  //   let moveDistance = 0;//上下移动的距离，用于判断是向上排序还是向下排序以及排序第几行
+  //   let disDown = 0;//鼠标按下时的Y坐标
+  //   let disUp = 0;//鼠标移动终止时的Y坐标
+  //   let boxHeight = 0;//获取容器高度
+  //   let distanceX = event.clientX - movebox.offsetLeft;
+  //   let distanceY = event.clientY - movebox.offsetTop;
+
+  //   //设置z-index把提高层
+  //   movebox.style.zIndex = "999";
+  //   disDown = event.clientY;
+  //   boxHeight = boxheight.offsetHeight;//clientHeight也可以
+
+
+  //   document.onmousemove = (evt) => {
+  //     let left = evt.clientX - distanceX;
+  //     let top = evt.clientY - distanceY;
+  //     let floor = 0;
+
+  //     movebox.style.left = left + "px";
+  //     movebox.style.top = top + "px";
+
+  //     disUp = evt.clientY;
+  //     moveDistance = disDown - disUp;
+  //     floor = Math.round(moveDistance / boxHeight);//四舍五入层数
+      
+      
+  //     // //判断移动格数，大于零上移，小于零下移
+  //     // if (moveDistance > 0 && floor > 1) {
+  //     //   //此时向上移动floor层数
+  //     //   console.log("上移");
+        
+  //     // }else if(moveDistance < 0 && floor < -1){
+  //     //   //此时向下移动floor层数
+  //     //   console.log('下移');
+        
+  //     // }
+
+  //     //待解决,移动盒子包裹覆盖问题!!!
+
+  //   };
+
+  //   document.onmouseup = () => {
+  //     document.onmousemove = null;
+  //     document.onmouseup = null;
+  //   };
+
+
+
+
+  //   return false;
+  // }
 
 }
 
