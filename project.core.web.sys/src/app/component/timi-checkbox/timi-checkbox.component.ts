@@ -1,8 +1,7 @@
-import { CommonModule } from "@angular/common";
-import { Component, forwardRef, Input, NgModule, OnInit } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { CheckboxModule } from "../checkbox/checkbox.component";
-import { FormsModule } from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {CheckboxModule} from "../checkbox/checkbox.component";
 
 const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,8 +13,8 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
   selector: "timi-checkbox",
   template: `
     <div class="box form-item" *ngIf="checkboxs">
-      <div *ngIf="multiple" class="box-item item-label label{{columns}}"><label>{{labelName}}</label></div>
-      <div *ngIf="multiple" class="box-item item-control-wrapper wrapper{{columns}}">
+      <div *ngIf="multiple" class="box-item item-label"><label>{{labelName}}</label></div>
+      <div *ngIf="multiple" class="box-item item-control-wrapper">
       <div *ngIf="isShowSearch">
             <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" class="item-input" placeholder="请输入关键词">            
       </div>
