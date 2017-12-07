@@ -57,7 +57,7 @@
   <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
        *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
     <h4>{{item.ui.label}}</h4>
-    <ng-container *ngFor="let data of modelDOMSData[item.name]; let i = index;">
+    <ng-container *ngFor="let data of modelDOMSData[item.name]">
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
