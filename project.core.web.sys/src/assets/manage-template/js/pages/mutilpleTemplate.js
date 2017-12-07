@@ -8,8 +8,8 @@ var detailId = ""; //查询详情url中的ID
 detailId = $.request("id") || "";
 
 var collectionsContent; //下拉数据源选择过后的数据内容
-var editRestore = true;
-
+var editRestore = true; //用于编辑状态下，第一次还原(需要数据源的数据才能还原)
+var templateFiltersDrop  = true; 
 (function($){
 
     $("#templateFields ul li,#templateValues ul li").droppable({
@@ -21,18 +21,24 @@ var editRestore = true;
 
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
-            var str = $(this).find(".filterField").val();
-            var value = $(this).find(".filterField").data("value");
-            if(str){
-                str += ","+DOMdescription;
-                value += ","+DOMvalue;
+            if(templateFiltersDrop){
+                var str = $(this).find(".filterField").val();
+                var value = $(this).find(".filterField").data("value");
+                if(str){
+                    str += ","+DOMdescription;
+                    value += ","+DOMvalue;
+                }else{
+                    str = DOMdescription;
+                    value = DOMvalue;
+                }
+                $(this).find(".filterField").val(str).data("value", value);
             }else{
-                str = DOMdescription;
-                value = DOMvalue;
+                templateFiltersDrop  = true; 
             }
-            $(this).find(".filterField").val(str).data("value", value);
         }
-    })
+    }).css("cursor","move");
+
+    $("i.fa-plus-circle").css("cursor","default");
 })(jQuery)
 
 //绑定平台下拉框
@@ -142,6 +148,30 @@ function bindFilters(data){
         $("#templateFilters ul").append($clone);
     }
     $("#templateFilters  li:first").remove();
+    $("#templateFilters ul").sortable({
+        start:function(event,ui){
+            templateFiltersDrop = false;
+        }
+    })
+    $("#templateFilters ul").find("li:last").droppable({
+            drop: function(event, ui){
+                if(templateFiltersDrop){
+                    var str = $(this).find(".filterField").val();
+                    var value = $(this).find(".filterField").data("value");
+                    if(str){
+                        str += ","+DOMdescription;
+                        value += ","+DOMvalue;
+                    }else{
+                        str = DOMdescription;
+                        value = DOMvalue;
+                    }
+                    $(this).find(".filterField").val(str).data("value", value);
+                }else{
+                    templateFiltersDrop  = true; 
+                }
+            }
+     })
+    $("#templateFilters  li").not(":last").find("i").removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 }
 
 
@@ -230,7 +260,7 @@ $("#templateFilters").on("click", ".addnotes", function(){
                         </div>
                         <div class="col-sm-12 m-b-10">
                             <label for="">筛选项字段：</label>
-                            <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 183px) !important;">
+                            <input class="form-control input-sm filterField" type="text" placeholder="请拖拽筛选项内容" style="width:calc(100% - 183px) !important;" disabled>
                         </div>
                         <div class="col-sm-8 m-b-10">
                             <label for="">筛选值：</label>
@@ -244,21 +274,32 @@ $("#templateFilters").on("click", ".addnotes", function(){
             </div>
         </li>
     `);
+    parent.sortable({
+        start:function(event,ui){
+            templateFiltersDrop = false;
+        }
+    })
+    
     parent.find("li:last").droppable({
-            drop: function(event, ui){
-                var str = $(this).find(".filterField").val();
-                var value = $(this).find(".filterField").data("value");
-                if(str){
-                    str += ","+DOMdescription;
-                    value += ","+DOMvalue;
+            drop: function(event, ui){     
+                if(templateFiltersDrop){
+                    var str = $(this).find(".filterField").val();
+                    var value = $(this).find(".filterField").data("value");
+                    if(str){
+                        str += ","+DOMdescription;
+                        value += ","+DOMvalue;
+                    }else{
+                        str = DOMdescription;
+                        value = DOMvalue;
+                    }
+                    $(this).find(".filterField").val(str).data("value", value);
                 }else{
-                    str = DOMdescription;
-                    value = DOMvalue;
+                    templateFiltersDrop  = true; 
                 }
-                $(this).find(".filterField").val(str).data("value", value);
             }
-        })
-
+        }).css("cursor","move");
+    
+    $("i.fa-plus-circle").css("cursor","default");
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
 
     setParentIframeHeight()
