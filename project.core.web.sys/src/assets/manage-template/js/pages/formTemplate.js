@@ -984,7 +984,10 @@ function displayDOM(key, id) {
             break;   
         case "HtmlDomDisplayType.TimeSpan" :
             return $(returnDom(`<span>待定，先放着吧</span>`, id));
-            break;                 
+            break;     
+        case "HtmlDomDisplayType.RichText":
+            return $(returnDom(`<label></label><textarea class='form-control' placeholder='' style="height: 30px;"></textarea>`, id));
+            break;        
         default :
             return "";
             break;
