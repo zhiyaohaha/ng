@@ -1,10 +1,8 @@
-import { ConvertUtil } from '../../common/convert-util';
-import { environment } from '../../../environments/environment.prod';
-import { globalUrl } from '../../common/global.config';
-import { FileUploader } from 'ng2-file-upload';
-import { FileUploadModule } from 'ng2-file-upload';
+import {ConvertUtil} from '../../common/convert-util';
+import {environment} from '../../../environments/environment.prod';
+import {globalUrl} from '../../common/global.config';
+import {FileUploader, FileUploadModule} from 'ng2-file-upload';
 import {
-  OnInit,
   AfterViewInit,
   Component,
   ElementRef,
@@ -13,6 +11,7 @@ import {
   Input,
   NgModule,
   OnDestroy,
+  OnInit,
   Output,
   Renderer2,
   ViewChild
@@ -786,7 +785,7 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
       console.log("onErrorItem");
       e.progress = 0;
       console.log(_self.uploader);
-    }
+    };
 
     this.uploader.onSuccessItem = function (e) {
       let json=JSON.parse(e._xhr.response).data[0];
@@ -805,13 +804,13 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
     // let file = null;
     // let url = null;
     // console.log(files[0]);
-    
+
     // if (files && files.length > 0) {
     //   file = files[0];
     //   try {
     //     const fileReader = new FileReader();
     //     fileReader.onload = (event: any) => {
-          
+
     //       url = event.target.result;
     //       const img = '<img src="' + url + '"/>';
     //       this.execCommand('insertHTML', img);

@@ -17,4 +17,22 @@
     display: inline-block;
     width: 69%;
   }
+
+  .box-item {
+    float: left;
+    box-sizing: border-box;
+  }
+  .item-label {
+    text-align: right;
+    width: 120px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    &::after {
+      content: ":";
+      margin: 0 8px 0 2px;
+    }
+  }
+  .item-control-wrapper {
+    width: calc(100% - 120px);
+  }
 }
