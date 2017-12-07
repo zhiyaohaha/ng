@@ -1,17 +1,17 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { MdButtonModule } from "@angular/material";
-import { ButtonModule } from "../button/button.directive";
-import { ErgodicJsonPipe } from "../../common/pipe/ergodic-json.pipe";
-import { defaultValue } from "../../common/global.config";
-import { StrToArrayPipe } from "../../common/pipe/str-to-array.pipe";
-import { BooleanToWordPipe } from "../../common/pipe/boolean-to-word.pipe";
-import { FnUtil } from "../../common/fn-util";
-import { NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from "../ngx-gallery";
-import { NewComponentModule } from "../../newcomponent/newcomponent.module";
-import { PreviewService } from './../../services/preview/preview.service';
-
+import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {MdButtonModule} from "@angular/material";
+import {ButtonModule} from "../button/button.directive";
+import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
+import {defaultValue} from "../../common/global.config";
+import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
+import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
+import {FnUtil} from "../../common/fn-util";
+import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
+import {NewComponentModule} from "../../newcomponent/newcomponent.module";
+import {PreviewService} from "../../services/preview/preview.service";
+import {LastdotPipe} from "../../common/pipe/lastdot.pipe";
 
 @Component({
   selector: "detail-model",
@@ -32,6 +32,7 @@ export class DetailModelComponent implements OnInit {
   get modelDOMS() {
     return this._modelDOMS;
   }
+
   set modelDOMS(value) {
     this._modelDOMS = value;
     this.filds = [];
@@ -49,6 +50,7 @@ export class DetailModelComponent implements OnInit {
   get modelDOMSData() {
     return this._modelDOMSData;
   }
+
   set modelDOMSData(value) {
     this.imgUrls = [];
     this._modelDOMSData = value;
@@ -79,13 +81,20 @@ export class DetailModelComponent implements OnInit {
 
 
   constructor(private fnUtil: FnUtil, private previewService: PreviewService) {
-      
+
   }
 
   ngOnInit() {
     this.galleryOptions = [
-      { width: "200px", height: "200px", imageSize: "contain", imageArrowsAutoHide: true, thumbnails: this.imgUrls.length > 1, previewZoom: true },
-      { "breakpoint": 500, "width": "100%", "height": "200px" }
+      {
+        width: "200px",
+        height: "200px",
+        imageSize: "contain",
+        imageArrowsAutoHide: true,
+        thumbnails: this.imgUrls.length > 1,
+        previewZoom: true
+      },
+      {"breakpoint": 500, "width": "100%", "height": "200px"}
     ];
   }
 
@@ -104,7 +113,7 @@ export class DetailModelComponent implements OnInit {
 
   toShow() {
     this.previewService.showPreview(true);
-    this.previewService.getUrl(this.imgUrls); 
+    this.previewService.getUrl(this.imgUrls);
   }
 
   /**
@@ -126,7 +135,7 @@ export class DetailModelComponent implements OnInit {
     NewComponentModule,
     NgxGalleryModule
   ],
-  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe],
+  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe, LastdotPipe],
   exports: [DetailModelComponent]
 })
 
