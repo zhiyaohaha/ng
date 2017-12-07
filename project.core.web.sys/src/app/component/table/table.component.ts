@@ -83,6 +83,7 @@ export class TableComponent implements OnInit {
   @Input() pageSize = globalVar.pageSize; // 每页显示的条数
   @Input() pageSizes = globalVar.pageSizes; // 可选的每页条数
   @Input() pageLinkCount = globalVar.pageLinkCount; // 显示多少页码
+  @Input() activeIndex: number; //当前页码
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
   @Output() rowSelect: EventEmitter<any> = new EventEmitter();
   @Output() change: EventEmitter<any> = new EventEmitter();

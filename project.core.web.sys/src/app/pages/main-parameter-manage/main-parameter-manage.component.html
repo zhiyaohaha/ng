@@ -162,7 +162,7 @@
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
              [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')"
-             [pageLinkCount]="pageLinkCount" (change)="page($event)"
+             [pageLinkCount]="pageLinkCount" [activeIndex]="currentPage" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
 </md-sidenav-container>

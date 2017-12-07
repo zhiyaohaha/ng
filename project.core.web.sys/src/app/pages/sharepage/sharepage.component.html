@@ -7,7 +7,7 @@
     </button>
   </div>
 
-  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
              [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 

@@ -46,4 +46,4 @@
   <!--</md-select>-->
   <!--<span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>-->
 <!--</td-paging-bar>-->
-<timi-pagination *ngIf="dataTable.hasData" [total]="totals" [pageSize]="pageSize" (onChange)="pageChange($event)"></timi-pagination>
+<timi-pagination *ngIf="dataTable.hasData" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex" (onChange)="pageChange($event)"></timi-pagination>

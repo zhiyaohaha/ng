@@ -145,6 +145,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
           localStorage.setItem(this.pagecode + "cp", "0");
         } else {
           this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
+          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
+          console.log(this.currentPage);
         }
 
         el.nativeElement.querySelector(".mat-drawer-backdrop").click();
@@ -339,6 +341,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    * @param pagingEvent
    */
   page(pagingEvent): void {
+    console.log(pagingEvent);
     this.pageOptions.currentPage = pagingEvent.activeIndex;
     this.pageOptions.pageSize = pagingEvent.pageSize;
     //this.loadData();
@@ -348,7 +351,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
       filters: ""
     };
     localStorage.setItem(this.pagecode + "ps", pagingEvent.pageSize.toString());
-    localStorage.setItem(this.pagecode + "cp", (pagingEvent.page - 1).toString());
+    localStorage.setItem(this.pagecode + "cp", (pagingEvent.activeIndex).toString());
     this.getParamsList(this.listparam);
   }
 

@@ -116,7 +116,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           });
         } else {
           this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          console.log("----:", localStorage.getItem(this.pagecode + "cp"));
+          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
           // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
           this.getParamsList({
             size: this.pageSize,
