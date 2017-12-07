@@ -32,6 +32,14 @@
       <div *ngSwitchDefault>{{value}}</div>
     </ng-container>
   </ng-template>
+  <ng-template tdDataTableTemplate="_icon" let-value="value" let-column="column">
+    <ng-container [ngSwitch]="columnsPipes[column]">
+      <div *ngSwitchCase="'HtmlPipe.Image'">
+        <img *ngIf="value" [src]="value" class="table-img">
+      </div>
+      <div *ngSwitchDefault>{{value}}</div>
+    </ng-container>
+  </ng-template>
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
