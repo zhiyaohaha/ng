@@ -23,5 +23,6 @@ export const globalUrl = {
 
 export const defaultValue = {
   imgSrc: "http://data.cpf360.com/default/default.jpg",
+  imgQuality: "?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_30",
   defaultAvatar: "http://data.cpf360.com/default/avatar.jpg"
 };
