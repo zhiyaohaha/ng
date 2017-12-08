@@ -47,7 +47,6 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   set value(value) {
     this._value = value;
-    this.valueChange(this._value);
   }
 
   _value;
@@ -123,6 +122,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
     } else {
       this.renderer.addClass(this.wrapRef.nativeElement, "error");
     }
+    this.valueChange(this._value);
   }
 
   /*允许拖放*/

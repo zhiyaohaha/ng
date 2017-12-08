@@ -1,5 +1,5 @@
-<td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="clickAuthority != -1"
-               (rowClick)="rowClickEvent($event)" (rowSelect)="rowSelectEvent($event)">
+<td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="clickAuthority != -1" (rowClick)="rowClickEvent($event)"
+  (rowSelect)="rowSelectEvent($event)">
   <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
           <div layout="row">
               <span flex>{{value}}</span>
@@ -8,7 +8,7 @@
       </ng-template>-->
   <!-- 图片 -->
   <ng-template tdDataTableTemplate="img" let-value="value">
-    <img [src]="value"/>
+    <img [src]="value" />
   </ng-template>
   <!-- 操作按钮 -->
   <ng-template tdDataTableTemplate="btns" let-value="value">
@@ -16,6 +16,7 @@
       <button fButton color="deepblue" class="add-button">{{btn}}</button>
     </td>
   </ng-template>
+
   <ng-template tdDataTableTemplate="banner" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
       <div *ngSwitchCase="'HtmlPipe.Image'">
@@ -24,6 +25,7 @@
       <div *ngSwitchDefault>{{value}}</div>
     </ng-container>
   </ng-template>
+
   <ng-template tdDataTableTemplate="qrcode" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
       <div *ngSwitchCase="'HtmlPipe.Image'">
@@ -32,6 +34,7 @@
       <div *ngSwitchDefault>{{value}}</div>
     </ng-container>
   </ng-template>
+
   <ng-template tdDataTableTemplate="_icon" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
       <div *ngSwitchCase="'HtmlPipe.Image'">
@@ -40,18 +43,39 @@
       <div *ngSwitchDefault>{{value}}</div>
     </ng-container>
   </ng-template>
+
+  <ng-template tdDataTableTemplate="contentImages" let-value="value" let-column="column">
+    <ng-container [ngSwitch]="columnsPipes[column]">
+
+      <div *ngSwitchCase="'HtmlPipe.Image'">
+        <img *ngIf="value" [src]="value + imgQuality" class="table-img">
+      </div>
+
+      <div *ngSwitchCase="'HtmlPipe.ImageTag'">
+        <div *ngIf="value.length>1">
+          <img *ngFor="let item of value" [src]="item + imgQuality" class="table-img">
+        </div>
+        <div *ngIf="value.length==1">
+          <img *ngIf="value" [src]="value + imgQuality" class="table-img">
+        </div>
+      </div>
+
+      <div *ngSwitchDefault>{{value}}</div>
+    </ng-container>
+  </ng-template>
+
 </td-data-table>
 
 <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
   <h3>未查询到结果</h3>
 </div>
 <!--<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totals">-->
-  <!--<span hide-xs>每页条数:</span>-->
-  <!--<md-select [style.width.px]="50" [(ngModel)]="pageSize">-->
-    <!--<md-option *ngFor="let size of pageSizes" [value]="size">-->
-      <!--{{size}}-->
-    <!--</md-option>-->
-  <!--</md-select>-->
-  <!--<span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>-->
+<!--<span hide-xs>每页条数:</span>-->
+<!--<md-select [style.width.px]="50" [(ngModel)]="pageSize">-->
+<!--<md-option *ngFor="let size of pageSizes" [value]="size">-->
+<!--{{size}}-->
+<!--</md-option>-->
+<!--</md-select>-->
+<!--<span hide-xs></span> {{pagingBar.range}} <span hide-xs>共 {{pagingBar.total}}</span>-->
 <!--</td-paging-bar>-->
 <timi-pagination *ngIf="dataTable.hasData" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex" (onChange)="pageChange($event)"></timi-pagination>

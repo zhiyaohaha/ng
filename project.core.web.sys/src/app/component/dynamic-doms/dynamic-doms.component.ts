@@ -64,7 +64,6 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   writeValue(value: any) {
     this.afterMoveData = value;
     if (Array.isArray(value)) {
-
       this.modelDOMSData = value;
       for (let i = 0; i < value.length - 1; i++) {
         this._modelDOMS.push(this._notes);
