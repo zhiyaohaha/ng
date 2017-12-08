@@ -33,6 +33,8 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   emptyArr = [];
 
   modelDOMSData = [{}]; //需要修改的原数据
+  afterMoveData = [{}]; //移动过后的数据
+
 
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
@@ -42,7 +44,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this._notes.map(item => {
         item.name = item.name.replace(value.name + ".", "");
       });
-      
+
       this._modelDOMS.push(this._notes);
     }
     this.title = value.ui.label;
@@ -58,18 +60,16 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
-    
   }
 
-  
-
   writeValue(value: any) {
+    this.afterMoveData = value;
     if (Array.isArray(value)) {
-  
+
       this.modelDOMSData = value;
-      for(let i=0;i<value.length-1;i++){
+      for (let i = 0; i < value.length - 1; i++) {
         this._modelDOMS.push(this._notes);
-      }  
+      }
     }
   }
 
@@ -112,59 +112,61 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+
   //拖拽换行
-  // toMove(event, movebox, boxheight) {
-  //   let moveDistance = 0;//上下移动的距离，用于判断是向上排序还是向下排序以及排序第几行
-  //   let disDown = 0;//鼠标按下时的Y坐标
-  //   let disUp = 0;//鼠标移动终止时的Y坐标
-  //   let boxHeight = 0;//获取容器高度
-  //   let distanceX = event.clientX - movebox.offsetLeft;
-  //   let distanceY = event.clientY - movebox.offsetTop;
+  toMove(event, movebox, boxheight, i) {
+    
+    let moveDistance = 0;//上下移动的距离，用于判断是向上排序还是向下排序以及排序第几行
+    let disDown = 0;//鼠标按下时的Y坐标
+    let disUp = 0;//鼠标移动终止时的Y坐标
+    let boxHeight = 0;//获取容器高度
+    let floor = 0;//变化层数
 
-  //   //设置z-index把提高层
-  //   movebox.style.zIndex = "999";
-  //   disDown = event.clientY;
-  //   boxHeight = boxheight.offsetHeight;//clientHeight也可以
+    let distanceX = event.clientX - movebox.offsetLeft;
+    let distanceY = event.clientY - movebox.offsetTop;
 
 
-  //   document.onmousemove = (evt) => {
-  //     let left = evt.clientX - distanceX;
-  //     let top = evt.clientY - distanceY;
-  //     let floor = 0;
 
-  //     movebox.style.left = left + "px";
-  //     movebox.style.top = top + "px";
+    disDown = event.clientY;
+    boxHeight = boxheight.offsetHeight;//clientHeight也可以
 
-  //     disUp = evt.clientY;
-  //     moveDistance = disDown - disUp;
-  //     floor = Math.round(moveDistance / boxHeight);//四舍五入层数
+    document.onmousemove = (evt) => {
+      let left = evt.clientX - distanceX;
+      let top = evt.clientY - distanceY;
+
+      movebox.style.left = left + "px";
+      movebox.style.top = top + "px";
+
+      disUp = evt.clientY;
+      moveDistance = disDown - disUp;
+      floor = Math.round(moveDistance / boxHeight);//四舍五入层数
+
+      //待解决,移动盒子包裹覆盖问题!!!
+
+    };
+
+    document.onmouseup = () => {
+      let insertValue = this.modelDOMSData[i];
       
+      document.onmousemove = null;
+      document.onmouseup = null;
+      movebox.style.top = 0 + 'px';
+      movebox.style.left = 0 + 'px';
       
-  //     // //判断移动格数，大于零上移，小于零下移
-  //     // if (moveDistance > 0 && floor > 1) {
-  //     //   //此时向上移动floor层数
-  //     //   console.log("上移");
-        
-  //     // }else if(moveDistance < 0 && floor < -1){
-  //     //   //此时向下移动floor层数
-  //     //   console.log('下移');
-        
-  //     // }
+      //判断移动格数，大于零上移，小于零下移
+      if (moveDistance > 0 && i != 0) {
+        //此时向上移动floor层数
+        this.modelDOMSData.splice(i - floor, 0, insertValue);
+        this.modelDOMSData.splice(i + floor, 1);
 
-  //     //待解决,移动盒子包裹覆盖问题!!!
+      }else if(moveDistance < 0 && i != this.modelDOMSData.length){
+        //此时向下移动floor层数
+        this.modelDOMSData.splice(i - floor+1, 0, insertValue);
+        this.modelDOMSData.splice(i, 1);
+      }
+    };
+  }
 
-  //   };
-
-  //   document.onmouseup = () => {
-  //     document.onmousemove = null;
-  //     document.onmouseup = null;
-  //   };
-
-
-
-
-  //   return false;
-  // }
 
 }
 
