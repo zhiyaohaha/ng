@@ -1,20 +1,25 @@
 .wrap {
   position: relative;
 }
+
 .form-group {
   margin-bottom: 10px;
   float: left;
 }
+
 .columns1 {
   width: 50%;
 }
+
 .columns2 {
   width: 100%;
 }
+
 .radio-label, .checkbox-label {
   display: inline-block;
   width: 30%;
 }
+
 free-checkbox, free-radio {
   display: inline-block;
   width: 69%;
@@ -36,7 +41,8 @@ free-checkbox, free-radio {
     opacity: 1;
   }
 }
-.moveBox{
+
+.moveBox {
   position: relative;
   left: 0;
   top: 0;

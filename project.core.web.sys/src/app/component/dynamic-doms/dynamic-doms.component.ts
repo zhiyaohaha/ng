@@ -1,13 +1,13 @@
-import { CommonModule } from "@angular/common";
-import { Component, forwardRef, Input, NgModule, OnInit } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { TimiInputModule } from "../timi-input/timi-input.component";
-import { TimiCheckboxModule } from "../timi-checkbox/timi-checkbox.component";
-import { TimiTextareaModule } from "../timi-textarea/timi-textarea.component";
-import { TimiSelectModule } from "../timi-select/select.component";
-import { MdInputModule } from "@angular/material";
-import { TimiFileUploaderModule } from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import { TimiChipModule } from "../timi-chip/chip.component";
+import {CommonModule} from "@angular/common";
+import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {TimiInputModule} from "../timi-input/timi-input.component";
+import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
+import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
+import {TimiSelectModule} from "../timi-select/select.component";
+import {MdInputModule} from "@angular/material";
+import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import {TimiChipModule} from "../timi-chip/chip.component";
 
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,7 +54,8 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     return this._modelDOMS;
   }
 
-  onModelChange: Function = () => { };
+  onModelChange: Function = () => {
+  };
 
   constructor() {
   }
@@ -115,20 +116,19 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
   //拖拽换行
   toMove(event, movebox, boxheight, i) {
-    
-    let moveDistance = 0;//上下移动的距离，用于判断是向上排序还是向下排序以及排序第几行
-    let disDown = 0;//鼠标按下时的Y坐标
-    let disUp = 0;//鼠标移动终止时的Y坐标
-    let boxHeight = 0;//获取容器高度
-    let floor = 0;//变化层数
+
+    let moveDistance = 0; //上下移动的距离，用于判断是向上排序还是向下排序以及排序第几行
+    let disDown = 0; //鼠标按下时的Y坐标
+    let disUp = 0; //鼠标移动终止时的Y坐标
+    let boxHeight = 0; //获取容器高度
+    let floor = 0; //变化层数
 
     let distanceX = event.clientX - movebox.offsetLeft;
     let distanceY = event.clientY - movebox.offsetTop;
 
 
-
     disDown = event.clientY;
-    boxHeight = boxheight.offsetHeight;//clientHeight也可以
+    boxHeight = boxheight.offsetHeight; //clientHeight也可以
 
     document.onmousemove = (evt) => {
       let left = evt.clientX - distanceX;
@@ -139,7 +139,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
       disUp = evt.clientY;
       moveDistance = disDown - disUp;
-      floor = Math.round(moveDistance / boxHeight);//四舍五入层数
+      floor = Math.round(moveDistance / boxHeight); //四舍五入层数
 
       //待解决,移动盒子包裹覆盖问题!!!
 
@@ -147,21 +147,21 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
     document.onmouseup = () => {
       let insertValue = this.modelDOMSData[i];
-      
+
       document.onmousemove = null;
       document.onmouseup = null;
-      movebox.style.top = 0 + 'px';
-      movebox.style.left = 0 + 'px';
-      
+      movebox.style.top = 0 + "px";
+      movebox.style.left = 0 + "px";
+
       //判断移动格数，大于零上移，小于零下移
-      if (moveDistance > 0 && i != 0) {
+      if (moveDistance > 0 && i !== 0) {
         //此时向上移动floor层数
         this.modelDOMSData.splice(i - floor, 0, insertValue);
         this.modelDOMSData.splice(i + floor, 1);
 
-      }else if(moveDistance < 0 && i != this.modelDOMSData.length){
+      } else if (moveDistance < 0 && i !== this.modelDOMSData.length) {
         //此时向下移动floor层数
-        this.modelDOMSData.splice(i - floor+1, 0, insertValue);
+        this.modelDOMSData.splice(i - floor + 1, 0, insertValue);
         this.modelDOMSData.splice(i, 1);
       }
     };
