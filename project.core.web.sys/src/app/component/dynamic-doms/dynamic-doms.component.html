@@ -2,7 +2,7 @@
 
 <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight>
 
-  <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox *ngIf="true">
+  <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
     <ng-container *ngFor="let child of item">
 
       <ng-container [ngSwitch]="child.ui.displayType">
@@ -10,8 +10,7 @@
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
           <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                      [placeholder]="child.ui.placeholder"
-                      (blur)="inputBlur($event)">
+                      [placeholder]="child.ui.placeholder" (blur)="inputBlur($event)">
           </timi-input>
         </div>
         <!-- 第二行 -->
