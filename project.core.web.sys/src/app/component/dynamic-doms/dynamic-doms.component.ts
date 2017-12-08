@@ -29,8 +29,6 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   _modelDOMS = []; //页面DOMS结构
   _notes; //可以添加的DOM结构
   title: string; //标题
-  isWarpBox: boolean = true;
-  emptyArr = [];
 
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
