@@ -51,12 +51,14 @@
         <img *ngIf="value" [src]="value + imgQuality" class="table-img">
       </div>
 
-      <div *ngSwitchCase="'HtmlPipe.ImageTag'">
-        <div *ngIf="value.length>1">
-          <img *ngFor="let item of value" [src]="item + imgQuality" class="table-img">
-        </div>
-        <div *ngIf="value.length==1">
-          <img [src]="value + imgQuality" class="table-img">
+      <div *ngIf="value">
+        <div *ngSwitchCase="'HtmlPipe.ImageTag'">
+          <div *ngIf="value.length>1">
+            <img *ngFor="let item of value" [src]="item + imgQuality" class="table-img">
+          </div>
+          <div *ngIf="value.length==1">
+            <img [src]="value + imgQuality" class="table-img">
+          </div>
         </div>
       </div>
 
