@@ -9,30 +9,20 @@
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/jQueryUI/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="../css/pages/index.css">
+    <style>
+        .form-horizontal>.form-group>label{
+            padding-left:0px;padding-right:0px;
+        }
+        html { overflow: hidden; }
+        .container-fluid .fixedDivRight,.container-fluid  .fixedDivCenter{
+            overflow-y:auto;
+        }
+    </style>
 </head>
 <body>
-    <!-- <div class="top-menu"></div> -->
-    <!-- <aside class="left-menu">
-        <ul>
-            <li>
-                <a href="./formTemplate.html">模板表单编辑器</a>
-            </li>
-            <li>
-                <a href="./tableTemplate.html">模板表格编辑器</a>
-            </li>
-            <li>
-                <a href="./mutilpleTemplate.html">模板多选编辑器</a>
-            </li>
-            <li>
-                <a href="./detailTemplate.html">模板详细编辑器</a>
-            </li>
-        </ul>
-    </aside> -->
-    <section class="main-container">
-        <div class="row form-inline form-base-info">
-            <!-- <div class="col-sm-12">
-                <h3>详细编辑器</h3>
-            </div> -->
+    <section class="container-fluid">
+        <div class="row form-inline form-base-info" id="fixedDivTop">
+            <div class="col-sm-3"></div>
             <div class="col-sm-3">
                 <div class="form-group">
                     <label for="">模板名称：</label>
@@ -52,28 +42,9 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <label for="">标签：</label>
-                    <input type="text" class="form-control" placeholder="请填写标签" id="templateTags">
-                </div>
-            </div>
-        <div class="row form-inline form-base-info">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <label for="">描述：</label>
-                    <input type="text" class="form-control" placeholder="请填写描述" id="templateDescription">
-                </div>
-            </div>
-            <div class="col-sm-9">
-                <div class="form-group">
-                    <button class="form-control" onclick="saveTemplate()">保存模板</button>
-                </div>
-            </div>
-        </div>
         </div>
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-2 " style="margin-top:-47px;">
                 <div style="text-align:center;">
                     <button class="btn btn-default lists" data-name="formDom">DOM列表</button>
                     <button class="btn btn-default lists" data-name="collections">数据源列表</button>
@@ -87,19 +58,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-7" id="formDomTarget">
-                <!-- <div class="dom-panel hide">
-                    <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
-                    <div class="dom-panel-content">
-                        <div class="element-wrap">
-                            <button class="btn btn-default btn-xs btn-zoom" data-col="1"><i class="fa fa-expand"></i></button>
-                            <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
-                            <input type='text' class='form-control input-sm' placeholder='输入框'>
+            <div class="col-sm-7  fixedDivCenter" id="fixedDivCenter">
+                <div class="col-sm-12 m-b-10" id="formDomTarget"></div>
+                <div class="form-horizontal">
+                    <div class="form-group  m-b-10">
+                        <label for="templateDescription" class="col-sm-1 control-label">描述：</label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control full" placeholder="请填写描述" id="templateDescription"></textarea>
                         </div>
-                    </div>                          
-                </div> -->
+                    </div>
+                    <div class="form-group  m-b-10">
+                        <label for="templateTags" class="col-sm-1 control-label" >标签：</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" placeholder="请填写标签" id="templateTags">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 m-b-10">
+                            <button class="btn btn-default  center-block" onclick="saveTemplate()">保存模板</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 fixedDivRight" id="fixedDivRight">
                 <label for="bindTitle">标题：</label>
                 <input class="form-control input-sm m-b-10" type="text" id="bindTitle" placeholder="标题">
                 <label for="displayType">展示类型：</label>
@@ -148,7 +129,7 @@
                                 <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
                             </div>
                             <label for="">命令栏—绑定字段集合：</label><br>
-                            <div class="form-group">
+                            <div class="form-group" style="width:95%">
                                 <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
                             </div>
                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
@@ -212,8 +193,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <button class="btn btn-default" onclick="save()">保存</button>
+                    <div class="col-sm-12 m-b-10">
+                        <button class="btn btn-default  m-b-10" onclick="save()">保存</button>
                     </div>
                 </div>
             </div>
