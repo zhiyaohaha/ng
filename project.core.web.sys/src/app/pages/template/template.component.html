@@ -9,7 +9,7 @@
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
              [pageLinkCount]="pageLinkCount" (change)="page($event)" [activeIndex]="currentPage"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
-  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" >
-    <iframe #iframeContent [src]="trustedUrl" class="e2e-iframe-untrusted-src" width="100%"  scrolling="no" id="parentFrame"></iframe>
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" id="sidenav">
+    <iframe #iframeContent [src]="trustedUrl" class="e2e-iframe-untrusted-src" width="100%"  scrolling="no" id="parentFrame" height="{{sidenavHeight}}"></iframe>
   </md-sidenav>
 </md-sidenav-container>

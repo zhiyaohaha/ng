@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, Component, OnInit, ViewChild,ElementRef} from "@angular/core";
 import {ITdDataTableColumn, LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
@@ -24,6 +24,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
+  sidenavHeight;
   // @ViewChild("iframeContent")
   // private iframeContent:ElementRef;
 
@@ -63,7 +64,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
               private router: Router,
               private lodaingService: TdLoadingService,
               private sanitizer: DomSanitizer,
-              // private el:ElementRef
+              private el:ElementRef
   ) {
     this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
     /**
@@ -112,6 +113,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
+      this.sidenavHeight = this.el.nativeElement.querySelector("#sidenav").clientHeight;
       if (localStorage.getItem(this.pagecode + "cp")) {
         this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10) + 1);
       }

@@ -17,6 +17,8 @@ var collection; //数据源
 var detailId = ""; //查询详情url中的ID
 detailId = $.request("id") || "";  
 
+var ifameParentHeight = parent.document.getElementById("parentFrame").height; //取得父页面IFrame对象 
+var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高度
     //获取下拉框选项
     $.ajax({
         type: "GET",
@@ -683,7 +685,7 @@ function bindCmds(data) {
                         </div>
                         <div class="form-group" style="width:95%">
                             <label for="">命令栏—绑定字段集合：</label><br>
-                            <input type="text" class="form-control input-sm m-b-10  cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}" disabled>
+                            <input type="text" class="form-control input-sm m-b-10  cmdFields" placeholder="绑定字段集合1" value="${el.bindParamFields.join(",")}" disabled>
                         </div>
                         <i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>
                     </div>
@@ -722,7 +724,7 @@ function bindCmds(data) {
             </div>
             <label for="">命令栏—绑定字段集合：</label><br>
             <div class="form-group" style="width:95%">
-                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
+                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合1" disabled>
             </div>
             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
         </div>`; 
@@ -1016,7 +1018,7 @@ $(".additional").on("click", ".addnotes", function(){
                                             </div>
                                             <label for="">命令栏—绑定字段集合：</label><br>
                                             <div class="form-group" style="width:95%">
-                                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
+                                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合1" disabled>
                                             </div>
                                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
                                         </div>`);
@@ -1241,6 +1243,7 @@ function saveTemplate() {
 }
 function setParentIframeHeight(){
     // console.log('变化')
-    var obj = parent.document.getElementById("parentFrame"); //取得父页面IFrame对象 
-    obj.height = this.document.getElementsByTagName('section')[0].scrollHeight;
+    var height = (ifameParentHeight - fixedDivTopHeight)+10;  //中间和右侧的高度 = 外部侧滑栏高度 - 顶部高度
+    $("#fixedDivCenter").height(height); 
+    $("#fixedDivRight").height(height);
 }
