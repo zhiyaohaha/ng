@@ -173,6 +173,10 @@ $.ajax({
 
 //下拉框值改变，获取值
 $("#collections").on("change", function(){
+
+    //选择数据源，动态填写 模板名称，模板标题
+    $("#templateName").val($(this).val());
+    $("#templateTitle").val($(this).find("option:selected").html());
     $.ajax({
         type: "GET",
         url: urlprefix + "/api/Template/GetFieldsByCollection",

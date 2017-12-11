@@ -13,28 +13,9 @@
 </head>
 
 <body>
-    <!-- <div class="top-menu"></div>
-    <aside class="left-menu">
-        <ul>
-            <li>
-                <a href="./formTemplate.html">模板表单编辑器</a>
-            </li>
-            <li>
-                <a href="./tableTemplate.html">模板表格编辑器</a>
-            </li>
-            <li>
-                <a href="#">模板多选编辑器</a>
-            </li>
-            <li>
-                <a href="./detailTemplate.html">模板多选编辑器</a>
-            </li>
-        </ul>
-    </aside> -->
-    <section class="main-container">
+    <section class="container-fluid">
         <div class="row form-inline table-base-info">
-            <!-- <div class="col-sm-12">
-                <h3>模板多选编辑器</h3>
-            </div> -->
+            <div class="col-sm-3"></div>
             <div class="col-sm-3">
                 <div class="form-group"><label for="" class="text-left">模板名称：</label><input type="text" class="form-control" placeholder="请填写模板名称" id="templateName"></div>
             </div>
@@ -44,20 +25,11 @@
             <div class="col-sm-3">
                 <div class="form-group"><label for="templatePlatform">平台：</label><select class="form-control" placeholder="请选择一个平台" id="templatePlatform"></select></div>
             </div>
-            <div class="col-sm-3">
-                <div class="form-group"><label for="">标签：</label><input type="text" class="form-control" placeholder="请填写标签" id="templateTags"></div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group"><label for="">描述：</label><input type="text" class="form-control" placeholder="请填写描述" id="templateDescription"></div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group"><button class="form-control" onclick="saveTemplate()">保存模板</button></div>
-            </div>
         </div>
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <select id="collections" class="form-control"></select>
+                    <select  style="margin-top:-44px" id="collections" class="form-control"></select>
                 </div>
                 <div id="collectionsContent"></div>
             </div>
@@ -150,6 +122,17 @@
                         </li>
                     </ul>
                 </div>
+                <div class="row">
+                    <div class="form-group col-sm-12 m-b-10">
+                        <label for="templateDescription">描述：</label>
+                        <textarea class="form-control full" placeholder="请填写描述" id="templateDescription"></textarea>
+                    </div>
+                    <div class="form-group col-sm-12 m-b-10">
+                        <label for="templateTags">标签：</label>
+                        <input type="text" class="form-control full" placeholder="请填写标签" id="templateTags">
+                    </div>
+                    <div class="form-group col-sm-12" style="text-align:center"><button class="btn btn-default" onclick="saveTemplate()">保存模板</button></div>
+                </div>
             </div>
         </div>
     </section>
@@ -161,36 +144,6 @@
     <script src="../js/common.js"></script>
     <script src="../js/pages/index.js"></script>
     <script src="../js/pages/mutilpleTemplate.js"></script>
-    <script>
-        $("#aaa").on("change", function () {
-            var formData = new FormData();
-            formData.append("file", $("#aaa")[0].files[0]);
-            $.ajax({
-                url: "http://192.168.3.15:8001/api/LoanOrder/UploadAttachmentFile",
-                type: 'POST',
-                data: formData,
-                // 告诉jQuery不要去处理发送的数据
-                processData: false,
-                // 告诉jQuery不要去设置Content-Type请求头
-                contentType: false,
-                beforeSend: function (xhr) {
-                    console.log("正在进行，请稍候");
-                    xhr.setRequestHeader('attachmentId', '59eda139f83b994f880ac51c');
-                },
-                success: function (responseStr) {
-                    if (responseStr.status === 0) {
-                        console.log("成功" + responseStr);
-                    } else {
-                        console.log("失败");
-                    }
-                },
-                error: function (responseStr) {
-                    console.log("error");
-                }
-            });
-        })
-
-    </script>
 </body>
 
 </html>
