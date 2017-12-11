@@ -7,7 +7,7 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class FnUtil {
 
-  private menus = this.convertUtil.toJSON(localStorage.getItem("menus")); //用户菜单
+  private menus ;
 
   private _subject: Subject<any> = new Subject<any>();
 
@@ -31,6 +31,7 @@ export class FnUtil {
   public searchAPI(key: string, param: string = "code") {
     let apis;
     let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
+    this.menus = this.convertUtil.toJSON(localStorage.getItem("menus")); //用户菜单
     this.menus.filter(r => {
       r.childrens.filter(cc => {
         if (cc.code === pageCode) {
