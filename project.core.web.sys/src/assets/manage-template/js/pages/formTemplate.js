@@ -18,6 +18,9 @@ var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions
 var detailId = ""; //查询详情url中的ID
 detailId = $.request("id") || "";
 
+var ifameParentHeight = parent.document.getElementById("parentFrame").height; //取得父页面IFrame对象 
+var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高度
+
 //获取下拉框选项
 $.ajax({
     type: "GET",
@@ -150,7 +153,7 @@ $.ajax({
                                     renderResultDoms(doms[i]);
                                 }
                             }
-                            setParentIframeHeight()
+                            setChildScrollHeight()
                         }
                     }
                 })
@@ -178,7 +181,7 @@ $.ajax({
                     value:""
                 },"add")
                 //设置父iframe高度
-                setParentIframeHeight()
+                setChildScrollHeight()
             }
         }
     }
@@ -211,70 +214,78 @@ function dragCreateDom_Panel(domval,that,editData,status){
     $('#'+id).find(".dom-panel-content").droppable({  //手动设置面板可拖放组件
         greedy: true,
         drop: function() {
-            // if(DOMvalue === "HtmlDomDisplayType.Panel"){   //面板不能再嵌入面板
-            //     return false;
-            // }
-            var id1 = $.generateGUID();
-            generateObj(id1);
-            $(this).append(displayDOM(DOMvalue,id1));
-            //嵌套面板(二层嵌套面板，面板里面嵌套面板)
-            if(DOMvalue === "HtmlDomDisplayType.Panel"){
-                $('#'+id1).find(".dom-panel-content").droppable({
-                    greedy: true,
-                    drop: function(event, ui) {
-                        if(DOMvalue === "HtmlDomDisplayType.Panel"){   //二级面板不能再嵌入面板。
-                            return false;
-                        }
-                        if(DOMvalue){
-                            var id2 = $.generateGUID();
-                            generateObj(id2);
-                            $(this).append(displayDOM(DOMvalue, id2));
-                            if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){  //二级面板,按钮作用域
-                                $("#"+id2).droppable({
-                                    greedy: true,
-                                    drop: function(event ,ui){
-                                        if(DOMvalue === "HtmlDomDisplayType.Button"){  //二级面板,按钮作用域，再嵌入按钮
-                                            var id3 = $.generateGUID();
-                                            generateObj(id3);
-                                            $(this).append(displayDOM("HtmlDomDisplayType.Button", id3));
-                                        }
-                                        DOMvalue = "";
-                                        $("#"+id3).click();
-                                    }
-                                })
+            if(DOMvalue){
+                var id1 = $.generateGUID();
+                generateObj(id1);
+                $(this).append(displayDOM(DOMvalue,id1));
+                //嵌套面板(二层嵌套面板，面板里面嵌套面板)
+                if(DOMvalue === "HtmlDomDisplayType.Panel"){
+                    $('#'+id1).find(".dom-panel-content").droppable({
+                        greedy: true,
+                        drop: function(event, ui) {
+                            if(DOMvalue === "HtmlDomDisplayType.Panel"){   //二级面板不能再嵌入面板。
+                                return false;
                             }
-                            DOMvalue = "";
-                            $("#"+id2).click();
+                            if(DOMvalue){
+                                var id2 = $.generateGUID();
+                                generateObj(id2);
+                                $(this).append(displayDOM(DOMvalue, id2));
+                                if(DOMvalue === "HtmlDomDisplayType.ButtonRegion"){  //二级面板,按钮作用域
+                                    $("#"+id2).droppable({
+                                        greedy: true,
+                                        drop: function(event ,ui){
+                                            if(DOMvalue === "HtmlDomDisplayType.Button"){  //二级面板,按钮作用域，再嵌入按钮
+                                                var id3 = $.generateGUID();
+                                                generateObj(id3);
+                                                $(this).append(displayDOM("HtmlDomDisplayType.Button", id3));
+                                            }
+                                            DOMvalue = "";
+                                            $("#"+id3).click();
+                                        }
+                                    })
+                                }
+                                DOMvalue = "";
+                                $("#"+id2).click();
+                            }
                         }
-                    }
-                });
+                    });
+                    $(".dom-panel-content").sortable({  //二级面板里面的组件可拖拽排序
+                        revert: true
+                    })
+                    $("#"+id1).click();
+                }
+                //手动设置 还原的按钮域，可放置按钮
+                if(DOMvalue === 'HtmlDomDisplayType.ButtonRegion'){
+                    $('#'+id1).droppable({  
+                        greedy: true,
+                        drop: function() {
+                            if(DOMvalue === 'HtmlDomDisplayType.Button'){
+                                var idBtn = $.generateGUID();
+                                generateObj(idBtn);
+                                $(this).append(displayDOM(DOMvalue ,idBtn));
+                            }
+                        }
+                    })
+                }
+                DOMvalue = "";
                 $("#"+id1).click();
-            }
-            //手动设置 还原的按钮域，可放置按钮
-            if(DOMvalue === 'HtmlDomDisplayType.ButtonRegion'){
-                $('#'+id1).droppable({  
-                    greedy: true,
-                    drop: function() {
-                        if(DOMvalue === 'HtmlDomDisplayType.Button'){
-                            var idBtn = $.generateGUID();
-                            generateObj(idBtn);
-                            $(this).append(displayDOM(DOMvalue ,idBtn));
-                        }
-                    }
-                })
             }
         }
     })
+
+    //一级面板的label
+    var  componentLabel =  editData.ui.label;
+    $("#"+id).children(".dom-panel-content").append(`<style>#${id}>.dom-panel-content::after {
+        content: "${componentLabel?componentLabel:"内容区"}";}</style>`);    
     //还原单个组件(中间dom和右侧设置)
     var domsChildrens = editData.childrens;
-    if(domsChildrens  && domsChildrens.length > 0){     
+    if(domsChildrens  && domsChildrens.length > 0){
+        // console.log(domsChildrens.length)     
         for (var i = 0; i < domsChildrens.length; i++) {
             dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
         }
     }
-
     objData[id] = editData;
-
     if(status == "add"){   //新增状态下,默认点击，自动拖入的面板；拖入一个隐藏
         dragCreateDom_PanelBody("HtmlDomDisplayType.Hidden",$('#'+id),{  
             bindMethod: "",
@@ -301,34 +312,41 @@ function dragCreateDom_Panel(domval,that,editData,status){
         });
     }
 }
+
 function dragCreateDom_PanelBody(domval,that,editData){
     var id = $.generateGUID();
     generateObj(id);
-    // that.find('div.dom-panel-content').append(displayDOM(domval, id));
-    // //单个组件设置，列数(单个按钮除外)
     that.children('div.dom-panel-content').append(displayDOM(domval, id));
     var domsChildrens = editData.childrens;
+    // 单个组件设置，列数
     // 单个组件设置，列数(单个按钮除外)
     if(editData.ui.displayType !== 'HtmlDomDisplayType.Button'){
         var contentWidth = editData.ui.columns * 50;
-        $('#'+id).css('width',contentWidth+'%');
+        // console.log(id)
+        $('#'+id).parent().css('width',contentWidth+'%');
         $('#'+id).attr('data-col',editData.ui.columns);
     }
 
     //单个组件设置,显示内容
-    var spanText = "";
-    switch(editData.ui.displayType) {
-        case "HtmlDomDisplayType.StaticText":
-            spanText="显示一些文字";break;
-        case "HtmlDomDisplayType.StaticTextArea":
-            spanText="显示一段文字";break;
-        case "HtmlDomDisplayType.Image":
-            spanText="显示一些图片";break;
-    }
-    $('#'+id).find('span').html(editData.ui.label ? editData.ui.label : spanText);
-    $('#'+id).find("input[type='button']").val(editData.ui.label ?editData.ui.label :'按钮');
-    $('#'+id).find('label').html(editData.ui.label);
-        //嵌套面板(二层嵌套面板，面板里面嵌套面板)
+    // var spanText = "";
+    // switch(editData.ui.displayType) {
+    //     case "HtmlDomDisplayType.StaticText":
+    //         spanText="显示一些文字";break;
+    //     case "HtmlDomDisplayType.StaticTextArea":
+    //         spanText="显示一段文字";break;
+    //     case "HtmlDomDisplayType.Image":
+    //         spanText="显示一些图片";break;
+    // }
+    // $('#'+id).find('span').html(editData.ui.label ? editData.ui.label : spanText);
+    // $('#'+id).find("input[type='button']").val(editData.ui.label ?editData.ui.label :'按钮');
+    //根据拖入的标题修改各个组件的label
+    var  componentLabel =  editData.ui.label;
+    $("#"+id).siblings(".element-label").children("label").html(componentLabel?componentLabel+ ":":"标题:");  
+    $("#"+id).children("input[type='button']").val(componentLabel?componentLabel:"按钮");
+    $("#"+id).children(".dom-panel-content").append(`<style>#${id}>.dom-panel-content::after {
+        content: "${componentLabel?componentLabel:"内容区"}";}</style>`);    //面板的label
+
+    //嵌套面板(二层嵌套面板，面板里面嵌套面板)
     // console.log(domval)
     if(domval === "HtmlDomDisplayType.Panel"){
         $('#'+id).find(".dom-panel-content").droppable({
@@ -451,6 +469,10 @@ $(".lists").on("click",function(){
 $("#collections").on("click", "div",function(){
     collection = $(this).data("value");
     $(".lists").eq(1).data("name","collectionsDetail");
+
+    //选择数据源，动态填写 模板名称，模板标题
+    $("#templateName").val($(this).data("value"))
+    $("#templateTitle").val($(this).text())
     $.ajax({
         type: "GET",
         url: urlprefix + "/api/Template/GetFieldsByCollection",
@@ -508,13 +530,15 @@ $(".back-collections").on("click",function(){
 // });
 
 $(document).on("click", ".btn-zoom", function(){
-    var colNum = $(this).parent().data("col") || "";
+    var colNum = $(this).parent().parent().data("col") || "";
+    // console.log(colNum)
     if(colNum === 2){
-        $(this).parent().data("col", 1).css("width", "50%");
+        $(this).parent().parent().data("col", 1).css("width", "50%");
         $(this).find("i").removeClass("fa-compress").addClass("fa-expand");
     }
     else if (colNum === 1){
-        $(this).parent().data("col", 2).css("width", "100%");
+       $(this).parent().parent().data("col", 2).css("width", "100%");
+        $(this).parent().css("width", "100%");
         $(this).find("i").removeClass("fa-expand").addClass("fa-compress");
     }
     
@@ -568,9 +592,15 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     var _self = $(this);
     var id = _self.attr("id");
     activeId = id;
-    // console.log(objData[id])
+    // console.log($(this))
+    // console.log(id)
     //绑定值
     $("#bindTitle").val(objData[id].ui.label);
+    //根据拖入的标题修改各个组件的label
+    $("#"+id).siblings(".element-label").children("label").html(objData[id].ui.label?objData[id].ui.label+":":"标题:");  
+    $("#"+id).children("input[type='button']").val(objData[id].ui.label?objData[id].ui.label:"按钮");
+    $("#"+id).children(".dom-panel-content").append(`<style>#${activeId}>.dom-panel-content::after {
+        content: "${objData[id].ui.label?objData[id].ui.label:"内容区"}";}</style>`)    //面板的label
     $("#displayType").val(objData[id].ui.displayType);
     $("#bindField").val(objData[id].name);
     $("#bindMethod").val(objData[id].bindMethod);
@@ -716,7 +746,7 @@ function bindCmds(data) {
                             <label for="">命令栏—触发地址：</label><br>
                             <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="${el.triggerUrl}">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="width:95%">
                             <label for="">命令栏—绑定字段集合：</label><br>
                             <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}" disabled>
                         </div>
@@ -762,7 +792,7 @@ function bindCmds(data) {
             <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址">
         </div>
         <label for="">命令栏—绑定字段集合：</label><br>
-        <div class="form-group">
+        <div class="form-group" style="width:95%">
             <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
         </div>
         <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
@@ -798,7 +828,8 @@ $("#formDomTarget").on("click", ".del-panel", function(){
 $("#formDomTarget").on("click", ".del-panel-field",function(){
     var parent = $(this).parent();
     var id = parent.attr("id");
-    parent.remove();
+    // parent.remove();
+    parent.parent().remove();
     delete objData[id];
     return false;
 })
@@ -810,7 +841,11 @@ $("#bindField, #bindTitle").droppable({
         $("#bindField").val(bindField);
         $("#bindTitle").val(bindTitle);
         // $("#"+activeId).find("label").html(bindTitle);  面板组件拖入值时，子组件label都会被赋予 面板的拖入值
-        $("#"+activeId+">label").html(bindTitle);  
+        // $("#"+activeId+">label").html(bindTitle);
+        $("#"+activeId).children("input[type='button']").val(bindTitle);       //按钮组件的label
+        $("#"+activeId).siblings(".element-label").children("label").html(bindTitle+":");  //其它组件的label
+        $("#"+activeId).children(".dom-panel-content").append(`<style> #${activeId}>.dom-panel-content::after {
+            content: "${bindTitle}";}</style>`)    //面板的label  
     }
 });
 $("#formDomTarget").droppable({
@@ -864,6 +899,9 @@ $("#formDomTarget").droppable({
                                         }
                                     }
                                 });
+                                $(".dom-panel-content").sortable({  //二级面板里面的组件可拖拽排序
+                                    revert: true
+                                })
                                 DOMvalue = "";
                                 $("#"+id).click();
                             }
@@ -907,96 +945,158 @@ $("#formDomTarget").sortable({
 
 //返回对应拖动的DOM
 function displayDOM(key, id) {
+    setChildScrollHeight()
     switch(key) {
+        //动态DOM 
         case "HtmlDomDisplayType.Hidden": 
-            return $(returnDom(`<label></label><input type='text' class='form-control input-sm' placeholder="">`, id));
+            return $(returnDynamicDom("隐藏",`<label></label><input type='text' class='form-control input-sm' placeholder="">`, id));
             break;
         case "HtmlDomDisplayType.Text":
-            return $(returnDom(`<label></label><input type='text' class='form-control input-sm' placeholder="">`, id));
+            return $(returnDynamicDom("文本",`<label></label><input type='text' class='form-control input-sm' placeholder="输入框">`, id));
             break;
         case "HtmlDomDisplayType.Textarea":
-            return $(returnDom(`<label></label><textarea class='form-control' placeholder='' style="height: 30px;"></textarea>`, id));
+            return $(returnDynamicDom("文本域",`<label></label><textarea class='form-control' placeholder='' style="height: 30px;"></textarea>`, id));
             break;
         case "HtmlDomDisplayType.Select":
-            return $(returnDom(`<div class="col-lg-6"><select class="form-control input-sm" placeholder="下拉框"></select></div>`, id));
+            return $(returnDynamicDom("下拉框",`<div class="col-lg-1"></div><div class="col-lg-6"><select class="form-control input-sm" placeholder="下拉框"></select></div>`, id));
             break;
         case "HtmlDomDisplayType.Checkbox":
-            return $(returnDom(`<input type="checkbox">`, id));
+            return $(returnDynamicDom("复选框",`<div class="text-center"><input type="checkbox"></div>`, id));
             break;
         case "HtmlDomDisplayType.Radiobox":
-            return $(returnDom(`<input type="radio">`, id));
+            return $(returnDynamicDom("单选框",`<div class="text-center"><input type="radio"></div>`, id));
             break;
         case "HtmlDomDisplayType.Upload":
-            return $(returnDom(`<input type='file' class='form-control'>`, id));
+            return $(returnDynamicDom("上传",`<input type='file' class='form-control'>`, id));
             break;
+        case "HtmlDomDisplayType.Tags":
+            return $(returnDynamicDom("标签",`<label></label><input type='text' class='form-control' placeholder=''>`, id));
+            break;
+        case "HtmlDomDisplayType.Date":
+            return $(returnDynamicDom("日期",`<input type="date" class="form-control">`, id));
+            break;
+        case "HtmlDomDisplayType.Password":
+            return $(returnDynamicDom("密码",`<label></label><input type='password' class='form-control' placeholder=''>`, id));
+            break;
+        case "HtmlDomDisplayType.DateRange":
+            return $(returnDynamicDom("日期域",`<div class="time-range"></div>`, id));
+            break;
+        case "HtmlDomDisplayType.Submit":
+            return $(returnDynamicDom("提交",`<button type='submit' class='btn btn-info center-block'>提交</button>`, id));
+            break;
+        case "HtmlDomDisplayType.AddressSelect":
+            return $(returnDynamicDom("地址下拉框",`<div class="col-lg-3" style="padding-left:0px;padding-right:0px;"><select class="form-control address-select"></select></div>
+                        <div class="col-lg-3" style="padding-left:5px;padding-right:5px;"><select class="form-control address-select"></select></div>
+                        <div class="col-lg-6" style="padding-left:0px;padding-right:0px;"><input type="text" class="form-control address-input" placeholder="详细地址"></div>`, id));
+            break;
+        case  "HtmlDomDisplayType.DateTime":
+            return $(returnDynamicDom("时间",`<span style="padding-left:35px;">待定，先放着吧</span>`, id));
+            break;   
+        case "HtmlDomDisplayType.TimeSpan" :
+            return $(returnDynamicDom("时间间隔",`<span style="padding-left:65px;">待定，先放着吧</span>`, id));
+            break;     
+        case "HtmlDomDisplayType.RichText":
+            return $(returnDynamicDom("富文本",`<label></label><textarea class='form-control' placeholder='' style="height: 30px;"></textarea>`, id));
+            break;
+            
+        //静态DOM 
         case "HtmlDomDisplayType.Panel":
             return $(`<div class="dom-panel" id="${id}"  data-col="2" style="width:100%;min-height:100px;float:right;">
             <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
             <div class="dom-panel-content"></div></div>`);
             break;
-        case "HtmlDomDisplayType.Tags":
-            return $(returnDom(`<label></label><input type='text' class='form-control' placeholder=''>`, id));
-            break;
-        case "HtmlDomDisplayType.Date":
-            return $(returnDom(`<input type="date" class="form-control">`, id));
-            break;
-        case "HtmlDomDisplayType.Password":
-            return $(returnDom(`<label></label><input type='password' class='form-control' placeholder=''>`, id));
-            break;
-        case "HtmlDomDisplayType.DateRange":
-            return $(returnDom(`<div class="time-range"></div>`, id));
-            break;
         case "HtmlDomDisplayType.Button":
-            return $(`<div class="element-wrap" id="${id}" data-col="1" style="display: inline-block;width: unset;transform:scale(0.7);top:-10px;left:-10px;">
-                            <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i>
-                            </button><input type="button" class="btn btn-default" value="按钮"></div>`);
+            return $(`<div class="element-wrap-parent" data-col="1" style="display: inline-block;float:left;width: unset;transform:scale(0.7);top:-10px;left:-10px;">
+                <div class="element-wrap" id="${id}" >
+                    <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
+                    <input type="button" class="btn btn-default" value="按钮">
+                </div></div>`);
             break;
         case "HtmlDomDisplayType.ButtonRegion": 
-            return $(returnDom(``, id));
-            break;
-        case "HtmlDomDisplayType.Submit":
-            return $(returnDom(`<button type='submit' class='btn btn-info'>提交</button>`, id));
-            break;
-        case "HtmlDomDisplayType.AddressSelect":
-            return $(returnDom(`<div class="col-lg-3"><select class="form-control address-select"></select></div>
-                        <div class="col-lg-3"><select class="form-control address-select"></select></div>
-                        <div class="col-lg-6"><input type="text" class="form-control address-input" placeholder="详细地址"></div>`, id));
-            break;
-
-        case "HtmlDomDisplayType.Text":
-            return $(returnDom(`<input type='text' class='form-control input-sm' placeholder='输入框'>`, id));
-            break;
+            return $(returnStaticDom("按钮域",`<span></span>`, id));
+            break;   
         case "HtmlDomDisplayType.StaticText":
-            return $(returnDom(`<span>显示一些文字</span>`, id));
+            return $(returnStaticDom("静态文本",`<span></span>`, id));
         case "HtmlDomDisplayType.StaticTextArea":
-            return $(returnDom(`<span>显示一段文字</span>`, id));
+            return $(returnStaticDom("静态文本域",`<span></span>`, id));
             break;
-       case "HtmlDomDisplayType.Table":
-            return $(`<div class="element-wrap" id="${id}" data-col="2" style="width:100%;min-height:100px;">
-                                <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
-                                <div class="table-wrap" style="height:100%;"></div></div>`);
+        case "HtmlDomDisplayType.Table":
+            return $(returnStaticDom("表格",``,id));
             break;
         case "HtmlDomDisplayType.Image":
-            return $(returnDom(`<span>显示一些图片</span>`, id));
-            break;   
-        case  "HtmlDomDisplayType.DateTime":
-            return $(returnDom(`<span>待定，先放着吧</span>`, id));
-            break;   
-        case "HtmlDomDisplayType.TimeSpan" :
-            return $(returnDom(`<span>待定，先放着吧</span>`, id));
-            break;     
-        case "HtmlDomDisplayType.RichText":
-            return $(returnDom(`<label></label><textarea class='form-control' placeholder='' style="height: 30px;"></textarea>`, id));
-            break;        
+            return $(returnStaticDom("图片",`<span></span>`, id));
+            break;  
         default :
             return "";
-            break;
+        break;
     }
 }
-function returnDom(html, id) {
-    return `<div class="element-wrap" id="${id}" data-col="1">
-            <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
-            <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>${html}</div>`;
+function  returnDynamicDom(type,html, id) {
+    return `
+            <style>.element-wrap-${id}-span::after{content:'${type}'}</style>
+                <div class="element-wrap-parent" data-col="1">
+                    <div class="element-label">
+                        <label>标题:</label>
+                    </div>
+                    <div class="element-wrap" id="${id}" >
+                        <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
+                        <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
+                        ${html}
+                        <span></span>    
+                    </div>
+                </div>
+            <script>
+                $('#'+'${id}>span').addClass("element-wrap-${id}-span")
+            </script>
+            `; 
+}
+function returnStaticDom(type,html, id) {
+    var displayHtml = ``;
+    if(type=="表格"){
+        displayHtml =`
+        <div class="element-wrap-parent"  data-col="2" style="width:100%;min-height:100px;float:left;">
+            <div class="element-label">
+                <label>标题:</label>
+            </div>
+            <div class="element-wrap" id="${id}">
+                <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
+                <div class="table-wrap" style="height:100%;"></div>
+                <span></span>
+            </div>
+        </div>`;
+    }else if(type == "按钮域"){
+        displayHtml = `
+        <div class="element-wrap-parent" data-col="1">
+            <div class="element-label">
+                <label>标题:</label>
+            </div>
+            <div class="element-wrap" id="${id}"  style="padding-left:30px;height:55px;">
+                <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
+                <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
+                ${html}
+            </div>
+        </div>`
+    } 
+    else{
+        displayHtml = `
+        <div class="element-wrap-parent" data-col="1">
+            <div class="element-label">
+                <label>标题:</label>
+            </div>
+            <div class="element-wrap" id="${id}" >
+                <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
+                <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
+                ${html}
+            </div>
+        </div>`
+    }
+    return `
+            <style>.element-wrap-${id}-span::after{content:'${type}'}</style>
+            ${displayHtml}
+            <script>
+                $('#'+'${id}>span').addClass("element-wrap-${id}-span")
+            </script>
+            `;
 }
 
 //添加属性或样式
@@ -1047,7 +1147,7 @@ $(".additional").on("click", ".addnotes", function(){
                                                 <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
                                             </div>
                                             <label for="">命令栏—绑定字段集合：</label><br>
-                                            <div class="form-group">
+                                            <div class="form-group" style="width:95%">
                                                 <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
                                             </div>
                                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
@@ -1090,7 +1190,7 @@ $(".additional").on("click", ".addnotes", function(){
     }
      $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 
-     setParentIframeHeight()
+     setChildScrollHeight()
 })
 //删除属性或样式
 $(".additional").on("click", ".delnotes", function(){
@@ -1278,15 +1378,15 @@ function boxDomChild(domPanelOneLevel){  //(一级和二级)面板里面的内�
                 // console.log('面板')
                 var childPanel =  boxDomChild($(this));
                 objData[panelId].childrens =  objData[panelId].childrens.concat(childPanel);
-            }else{
+            }else if($(this).hasClass("element-wrap-parent")){
                 // console.log('组件')
-                var wrapId = $(this).attr("id");
+                var wrapId = $(this).children(".element-wrap").attr("id");
                 objData[wrapId].ui.sort = index;
                 objData[wrapId].ui.columns = $(this).data("col");
                 var arr_ = [];
-                if($(this).children(".element-wrap").length > 0){
-                    $(this).children(".element-wrap").each(function(item, e){
-                        var wrapId_ = $(this).attr("id");
+                if($(this).find(".element-wrap-parent").length > 0){      //按钮域
+                    $(this).find(".element-wrap-parent").each(function(item, e){
+                        var wrapId_ = $(this).children(".element-wrap").attr("id");
                         objData[wrapId_].ui.sort = index;
                         objData[wrapId_].ui.columns = $(this).data("col");
                         arr_.push(objData[wrapId_])
@@ -1340,18 +1440,16 @@ function saveTemplate() {
             withCredentials: true
         },
         success: function(res) {
-            console.log(res)
+            // console.log(res)
             if(res.code === "0"){
                 alert("保存成功");
             }
         }
     })
 }
-function setParentIframeHeight(){
-    // console.log('加载了')
-    var obj = parent.document.getElementById("parentFrame"); //取得父页面IFrame对象 
-    // console.log(this.document.getElementsByTagName('section')[0].scrollHeight)
-    // console.log(obj.height)
-    obj.height = this.document.getElementsByTagName('section')[0].scrollHeight;
-    // console.log(obj.height)
+function setChildScrollHeight(){
+    // console.log('变化')
+    var height = (ifameParentHeight - fixedDivTopHeight)+10;  //中间和右侧的高度 = 外部侧滑栏高度 - 顶部高度
+    $("#fixedDivCenter").height(height); 
+    $("#fixedDivRight").height(height);
 }

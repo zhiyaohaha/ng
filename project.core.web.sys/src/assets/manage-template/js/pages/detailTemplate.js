@@ -154,7 +154,7 @@ var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高�
                                     }
                                 }
 
-                                setParentIframeHeight()
+                                setChildScrollHeight()
                             }
                         }
                     })
@@ -180,7 +180,7 @@ var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高�
                         }
                     },"add")
                     //设置父iframe高度
-                    setParentIframeHeight()
+                    setChildScrollHeight()
                 }
             }
         }
@@ -685,7 +685,7 @@ function bindCmds(data) {
                         </div>
                         <div class="form-group" style="width:95%">
                             <label for="">命令栏—绑定字段集合：</label><br>
-                            <input type="text" class="form-control input-sm m-b-10  cmdFields" placeholder="绑定字段集合1" value="${el.bindParamFields.join(",")}" disabled>
+                            <input type="text" class="form-control input-sm m-b-10  cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}" disabled>
                         </div>
                         <i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>
                     </div>
@@ -724,7 +724,7 @@ function bindCmds(data) {
             </div>
             <label for="">命令栏—绑定字段集合：</label><br>
             <div class="form-group" style="width:95%">
-                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合1" disabled>
+                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
             </div>
             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
         </div>`; 
@@ -765,7 +765,7 @@ $("#formDomTarget").on("click", ".del-panel-field",function(){
     return false;
 })
 
-// 
+//拖拽赋值
 $("#bindField, #bindTitle").droppable({
     drop: function( event, ui ) {
         if(!activeId){return false}   //在没有拖入面板之前，就先拖入数据
@@ -890,7 +890,7 @@ $(".cmdFields, .cmdTriggerWhere").droppable({
 
 //返回对应拖动的DOM
 function displayDOM(key, id) {
-    setParentIframeHeight()
+    setChildScrollHeight()
     switch(key) {
         case "HtmlDomDisplayType.ButtonRegion": 
             return $(returnDom("按钮域",`<span></span>`, id));
@@ -1018,7 +1018,7 @@ $(".additional").on("click", ".addnotes", function(){
                                             </div>
                                             <label for="">命令栏—绑定字段集合：</label><br>
                                             <div class="form-group" style="width:95%">
-                                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合1" disabled>
+                                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
                                             </div>
                                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
                                         </div>`);
@@ -1060,7 +1060,7 @@ $(".additional").on("click", ".addnotes", function(){
     }
     $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 
-    setParentIframeHeight()
+    setChildScrollHeight()
 })
 //删除属性或样式
 $(".additional").on("click", ".delnotes", function(){
@@ -1241,7 +1241,7 @@ function saveTemplate() {
         }
     })
 }
-function setParentIframeHeight(){
+function setChildScrollHeight(){
     // console.log('变化')
     var height = (ifameParentHeight - fixedDivTopHeight)+10;  //中间和右侧的高度 = 外部侧滑栏高度 - 顶部高度
     $("#fixedDivCenter").height(height); 
