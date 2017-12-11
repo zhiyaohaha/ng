@@ -14,7 +14,7 @@ import {DomSanitizer} from "@angular/platform-browser";
   providers: [SharepageService]
 })
 export class TemplateComponent implements OnInit, AfterViewInit {
-
+  pageIndex; //当前页数
   selectRow; //每一行的具体数据
   dangerousUrl: string;
   trustedUrl;
@@ -74,9 +74,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
       localStorage.setItem(this.pagecode + "cp", this.currentPage.toString());
     } else {
       this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
+      this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
     }
-
-
 
     /**
      * 路由器结束订阅加载不同的页面
@@ -85,6 +84,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+        this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
+        this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
         this.getParamsList({
           size: localStorage.getItem(this.pagecode + "ps"),
           index: localStorage.getItem(this.pagecode + "cp"),
