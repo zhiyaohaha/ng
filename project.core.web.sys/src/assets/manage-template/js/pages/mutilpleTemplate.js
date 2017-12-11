@@ -81,7 +81,7 @@ $.ajax({
             if(detailId){
                 getDetail();
             }else{
-                setParentIframeHeight()
+                setChildScrollHeight()
             }    
         }
     }
@@ -115,7 +115,7 @@ function getDetail(){
                 $("#bindValueField").val(result.bindValueField),
                 bindFilters(result.filter);
                 $("#depth").val(result.depth);
-                setParentIframeHeight();
+                setChildScrollHeight();
             }
         }
     })
@@ -302,7 +302,7 @@ $("#templateFilters").on("click", ".addnotes", function(){
     $("i.fa-plus-circle").css("cursor","default");
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
 
-    setParentIframeHeight()
+    setChildScrollHeight()
 })
 //删除添加的项
 $("#templateFilters").on("click", ".dellnotes", function(){
@@ -361,11 +361,10 @@ function saveTemplate(){
         }
     })
 }
-function setParentIframeHeight(){
-    // console.log('加载了')
-    var obj = parent.document.getElementById("parentFrame"); //取得父页面IFrame对象 
-    // console.log(this.document.getElementsByTagName('section')[0].scrollHeight)
-    // console.log(obj.height)
-    obj.height = this.document.getElementsByTagName('section')[0].scrollHeight;
-    // console.log(obj.height)
+var ifameParentHeight = parent.document.getElementById("parentFrame").height; //取得父页面IFrame对象 
+var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高度
+
+function setChildScrollHeight(){
+    var height = (ifameParentHeight - fixedDivTopHeight);  //中间和右侧的高度 = 外部侧滑栏高度 - 顶部高度
+    $("#fixedDivContent").height(height); 
 }

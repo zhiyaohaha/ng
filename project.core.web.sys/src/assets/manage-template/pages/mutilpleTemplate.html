@@ -10,11 +10,17 @@
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/jQueryUI/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="../css/pages/formTemplate.css">
+    <style>
+            html { overflow: hidden; }
+            .container-fluid  .fixedDivContent{
+                overflow-y:auto;
+            }
+    </style>
 </head>
 
 <body>
     <section class="container-fluid">
-        <div class="row form-inline table-base-info">
+        <div class="row form-inline table-base-info" id="fixedDivTop">
             <div class="col-sm-3"></div>
             <div class="col-sm-3">
                 <div class="form-group"><label for="" class="text-left">模板名称：</label><input type="text" class="form-control" placeholder="请填写模板名称" id="templateName"></div>
@@ -33,7 +39,7 @@
                 </div>
                 <div id="collectionsContent"></div>
             </div>
-            <div class="col-sm-9 form-inline table-content">
+            <div class="col-sm-9 form-inline table-content fixedDivContent" id="fixedDivContent">
                 <div id="templateFields">
                     <h4>绑定文本</h4>
                     <ul>
@@ -131,7 +137,7 @@
                         <label for="templateTags">标签：</label>
                         <input type="text" class="form-control full" placeholder="请填写标签" id="templateTags">
                     </div>
-                    <div class="form-group col-sm-12" style="text-align:center"><button class="btn btn-default" onclick="saveTemplate()">保存模板</button></div>
+                    <div class="form-group col-sm-12 m-b-10" style="text-align:center"><button class="btn btn-default" onclick="saveTemplate()">保存模板</button></div>
                 </div>
             </div>
         </div>
