@@ -4,22 +4,16 @@
   overflow: hidden;
   .label-wrap {
     float: left;
-    width: 30%;
+    width: 120px;
     text-align: right;
     label::after {
       content: ":";
       margin: 0 8px 0 2px;
     }
   }
-  .label2 {
-    width: 15%;
-  }
   .chip-wrap {
     float: left;
-    width: 70%;
-  }
-  .wrap2 {
-    width: 85%;
+    width: calc(100% - 120px);
   }
 
   .timi-chip {

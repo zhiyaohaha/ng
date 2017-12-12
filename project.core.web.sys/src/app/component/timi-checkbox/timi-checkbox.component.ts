@@ -29,8 +29,8 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
           </ng-container>
         </div>
       </div>
-      <div *ngIf="!multiple" class="box-item item-control-wrapper clearfix wrapper{{columns}}"
-           style="margin-left: 30%;">
+      <div *ngIf="!multiple" class="box-item item-control-wrapper clearfix"
+           style="margin-left: 120px;">
         <div #wrap class="item-control">
           <free-checkbox [label]="checkboxs" [checked]="checked" (onChange)="onChange($event)"></free-checkbox>
         </div>
