@@ -15,7 +15,7 @@
     float: left;
   }
   label {
-    width: 30%;
+    width: 120px;
     color: rgba(0, 0, 0, 0.5);
     text-align: right;
     &::after {
@@ -23,9 +23,6 @@
       position: relative;
       margin: 0 8px 0 2px;
     }
-  }
-  .label2 {
-    width: 15%;
   }
   .preview {
     width: 200px;
