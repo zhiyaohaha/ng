@@ -3,7 +3,7 @@
     float: left;
     .label {
       float: left;
-      width: 30%;
+      width: 120px;
       text-align: right;
       color: rgba(0, 0, 0, 0.5);
       &::after {
@@ -14,7 +14,7 @@
     }
     .span {
       float: left;
-      width: 70%;
+      width: calc(100% - 120px);
     }
     .img-wrap {
       display: flex;
