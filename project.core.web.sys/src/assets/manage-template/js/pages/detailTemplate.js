@@ -276,7 +276,6 @@ function dragCreateDom_Panel(domval,that,editData,status){
     //还原单个组件(中间dom和右侧设置)
     var domsChildrens = editData.childrens;
     if(domsChildrens  && domsChildrens.length > 0){
-        // console.log(domsChildrens.length)     
         for (var i = 0; i < domsChildrens.length; i++) {
             dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
         }
@@ -288,7 +287,7 @@ function dragCreateDom_Panel(domval,that,editData,status){
         });
     }
 }
-function dragCreateDom_PanelBody(domval,that,editData){
+function dragCreateDom_PanelBody(domval,that,editData){  //（一级和二级）面板下面组件
     var id = $.generateGUID();
     generateObj(id);
     that.children('div.dom-panel-content').append(displayDOM(domval, id));
@@ -515,7 +514,7 @@ function generateObj(id) {
                 "displayType": DOMvalue,
                 "placeholder": "",
                 "sort": 0,
-                "columns": 0,
+                "columns":1,
                 "attrs": [
                     {
                         "key": "",
@@ -543,7 +542,6 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     var _self = $(this);
     var id = _self.attr("id");
     activeId = id;
-    // console.log(objData[id])
     //绑定值
     $("#bindTitle").val(objData[id].ui.label);
     //根据拖入的标题修改各个组件的label
@@ -583,7 +581,8 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     // $("#bindCss").val(objData[id].bindCss);
     // console.log(objData[id].ui)
     // bindCmds(objData[id].ui.cmds);
-    bindCmds(objData[id].cmds);
+    // bindCmds(objData[id].cmds);
+    objData[id].cmds?bindCmds(objData[id].cmds):"";
     bindAttrAndCss("attrGroup", objData[id].ui.attrs);
     bindAttrAndCss("cssGroup", objData[id].ui.classes);
     $("#bindDisabled").prop("checked",objData[id].ui.disabled);
@@ -750,12 +749,70 @@ function bindCmds(data) {
     })
 }
 
+//复制dom-panel
+$("#formDomTarget").on("click", ".copy-panel", function(){
+    var parent = $(this).parent();
+    var domPanelContent = parent.parent("#formDomTarget");
+    var id = $(this).parent().attr("id");
+    if(parent.parent().hasClass("dom-panel-content")) {  //二级面板-组件
+        domPanelContent = parent.parent(".dom-panel-content");
+    }else{ //一级面板-组件
+        domPanelContent = parent.parent("#formDomTarget");
+    }
+    objData[id].ui.columns = parent.data("col");        //复制行数
+    objdataChildrens($(this).siblings(".dom-panel-content"),objData[id]); //循环一级面板里面的组件
+    dragCreateDom_Panel(objData[id].ui.displayType,domPanelContent,objData[id],"add");
+})
 //关闭dom-panel
 $("#formDomTarget").on("click", ".del-panel", function(){
     $(this).parent().remove();
 })
 
-//关闭dom-panel下的行
+//复制组件和面板的时候循环，子组件。修改objdata-childrends
+function objdataChildrens(that,objDataId){
+    // console.log(that)
+    objDataId.childrens = [];
+    that.children().each(function(index, element){
+        if($(this).hasClass("dom-panel")){   //循环单个组件--二级面板
+            // console.log('面板')
+            objdataChildrens($(this).children(".dom-panel-content"),objDataId);
+            // objDataId.childrens =  objDataId.childrens.concat(childPanel);
+        }else if($(this).hasClass("element-wrap-parent")){   //循环单个组件--按钮域
+            // console.log('组件')
+            var wrapId = $(this).children(".element-wrap").attr("id");
+            objData[wrapId].ui.sort = index;
+            objData[wrapId].ui.columns = $(this).data("col");
+            var arr_ = [];
+            objData[wrapId].childrens = [];
+            if($(this).find(".element-wrap-parent").length > 0){      //按钮域
+                $(this).find(".element-wrap-parent").each(function(item, e){
+                    var wrapId_ = $(this).children(".element-wrap").attr("id");
+                    objData[wrapId_].ui.sort = index;
+                    objData[wrapId_].ui.columns = $(this).data("col");
+                    arr_.push(objData[wrapId_])
+                })
+                objData[wrapId].childrens = arr_ ;
+            }
+            objDataId.childrens =  objDataId.childrens.concat(objData[wrapId]);
+        }
+    })
+}
+
+
+//复制单个组件
+$("#formDomTarget").on("click", ".copy-panel-field",function(){
+    var parent = $(this).parent().parent();
+    var id = $(this).parent().attr("id");
+    objdataChildrens($(this).parent(),objData[id]);  //循环单个组件--按钮域和二级面板，其它组件不需要
+    objData[id].ui.columns = parent.data("col");        //复制行数
+    if(!parent.parent().hasClass("dom-panel-content")){   
+        dragCreateDom_Panel_ButtonRegion(objData[id].ui.displayType,parent.parent(".element-wrap"),objData[id]);  //按钮域下面的按钮复制
+    }else{
+        dragCreateDom_PanelBody(objData[id].ui.displayType,parent.parent().parent(".dom-panel"),objData[id]); 
+    }
+})
+
+//关闭单个组件
 $("#formDomTarget").on("click", ".del-panel-field",function(){
     var parent = $(this).parent();
     var id = parent.attr("id");
@@ -902,12 +959,14 @@ function displayDOM(key, id) {
             break;
         case "HtmlDomDisplayType.Panel":
             return $(`<div class="dom-panel" id="${id}"  data-col="2" style="width:100%;min-height:100px;float:right;">
+                    <button class="btn btn-default btn-xs copy-panel" title="复制该组件"><i class="fa fa-files-o"></i></button>
                     <button class="btn btn-default btn-xs del-panel" title="删除该面板"><i class="fa fa-times"></i></button>
                     <div class="dom-panel-content"></div></div>`);
             break;
         case "HtmlDomDisplayType.Button":
             return $(`<div class="element-wrap-parent" data-col="1" style="display: inline-block;float:left;width: unset;transform:scale(0.7);top:-10px;left:-10px;">
                     <div class="element-wrap" id="${id}" >
+                        <button class="btn btn-default btn-xs copy-panel-field copy-panel-field-two" title="复制该组件"><i class="fa fa-files-o"></i></button>
                         <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
                         <input type="button" class="btn btn-default" value="按钮">
                     </div></div>`);
@@ -933,6 +992,7 @@ function returnDom(type,html, id) {
                 <label>标题:</label>
             </div>
             <div class="element-wrap" id="${id}">
+                <button class="btn btn-default btn-xs copy-panel-field copy-panel-field-two" title="复制该组件"><i class="fa fa-files-o"></i></button>
                 <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
                 <div class="table-wrap" style="height:100%;"></div>
                 <span></span>
@@ -945,19 +1005,21 @@ function returnDom(type,html, id) {
                 <label>标题:</label>
             </div>
             <div class="element-wrap" id="${id}"  style="padding-left:30px;height:55px;">
+                <button class="btn btn-default btn-xs copy-panel-field" title="复制该组件"><i class="fa fa-files-o"></i></button>
                 <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
                 <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
                 ${html}
             </div>
         </div>`
     } 
-    else{
+    else{  //静态文本，静态文本域，图片
         displayHtml = `
         <div class="element-wrap-parent" data-col="1">
             <div class="element-label">
                 <label>标题:</label>
             </div>
             <div class="element-wrap" id="${id}" >
+                <button class="btn btn-default btn-xs copy-panel-field" title="复制该组件"><i class="fa fa-files-o"></i></button>
                 <button class="btn btn-default btn-xs btn-zoom"><i class="fa fa-expand"></i></button>
                 <button class="btn btn-default btn-xs del-panel-field" title="删除该组件"><i class="fa fa-times"></i></button>
                 ${html}
