@@ -3,15 +3,16 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MdButtonModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
-import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
+// import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 import {defaultValue} from "../../common/global.config";
-import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
-import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
+// import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
+// import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
 import {FnUtil} from "../../common/fn-util";
 import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
 import {NewComponentModule} from "../../newcomponent/newcomponent.module";
 import {PreviewService} from "../../services/preview/preview.service";
-import {LastdotPipe} from "../../common/pipe/lastdot.pipe";
+// import {LastdotPipe} from "../../common/pipe/lastdot.pipe";
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 
 @Component({
   selector: "detail-model",
@@ -133,9 +134,9 @@ export class DetailModelComponent implements OnInit {
     ButtonModule,
     MdButtonModule,
     NewComponentModule,
-    NgxGalleryModule
+    NgxGalleryModule,SharedPipeModule 
   ],
-  declarations: [DetailModelComponent, ErgodicJsonPipe, StrToArrayPipe, BooleanToWordPipe, LastdotPipe],
+  declarations: [DetailModelComponent],
   exports: [DetailModelComponent]
 })
 

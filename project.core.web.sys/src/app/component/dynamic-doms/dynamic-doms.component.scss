@@ -1,7 +1,11 @@
 .wrap {
   position: relative;
-}
 
+}
+.wrap-border{
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+}
 .form-group {
   margin-bottom: 10px;
   float: left;
@@ -48,3 +52,44 @@ free-checkbox, free-radio {
   top: 0;
   cursor: move;
 }
+// 静态模板样式
+
+.form-group {
+  .label {
+    float: left;
+    width:25%;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.5);
+    // &::after {
+    //   content: ':';
+    //   position: relative;
+    //   margin: 0 8px 0 2px;
+    // }
+  }
+  .span {
+    float: left;
+    width: 70%;
+  }
+  .img-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+  }
+}
+// .bindData 
+// .bindDataClass  .form-item .item-label::after{
+//   content:"" !important;
+// }
+// .bindDataClass   .item-label::after{
+//   content:"" !important;
+// // }
+// .bindDataClass  .columns1{
+//     // width:20%;
+// }
+// .bindDataClass  .form-item{
+//     width:10% !important;
+// }
