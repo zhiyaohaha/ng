@@ -32,10 +32,10 @@
   .columns2 {
     width: 100%;
     .label {
-      width: 15%;
+      width: 120px;
     }
     .span {
-      width: 85%;
+      width: calc(100% - 120px);
     }
   }
 }
