@@ -36,8 +36,6 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   bindData; //附件项数据
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
-    console.log("@@@@@@@@@@@@@@@@#################*******&&&&&&&&&&");
-    console.log(value);
     if(value.bindData){
         this.bindData = value.bindData;
     }
@@ -72,6 +70,9 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       for (let i = 0; i < value.length - 1; i++) {
         this._modelDOMS.push(this._notes);
       }
+    }
+    if (!value) {
+      this.onModelChange(null);
     }
   }
 
