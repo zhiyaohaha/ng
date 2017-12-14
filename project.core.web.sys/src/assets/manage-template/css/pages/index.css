@@ -157,15 +157,20 @@ li {
     position: relative;
 }
 
-.dom-panel .del-panel {
+.dom-panel .del-panel,.dom-panel .copy-panel {
     position: absolute;
-    right: 0;
     top: 0;
     opacity: 0.2;
     transition: opacity .6s ease;
 }
+.dom-panel .del-panel {
+    right: 0;
+}
+.dom-panel .copy-panel {
+    right: 20px;
+}
 
-.dom-panel:hover .del-panel {
+.dom-panel:hover .del-panel,.dom-panel:hover .copy-panel {
     opacity: 1;
 }
 
@@ -255,26 +260,33 @@ li {
     background-color: #f5f5f5;
 }
 
-.del-panel-field {
+.del-panel-field,.btn-zoom,.copy-panel-field{
     position: absolute;
     opacity: 0.2;
-    right: -1px;
     top: -1px;
     z-index: 1;
     transition: opacity .6s ease;
+}
+
+.del-panel-field {
+    right: -1px;
 }
 
 .btn-zoom {
-    position: absolute;
-    opacity: 0.2;
     right: 20px;
-    top: -1px;
-    z-index: 1;
-    transition: opacity .6s ease;
 }
 
+.copy-panel-field {
+    right:40px;
+}
+.copy-panel-field-two{
+    right:20px !important;
+}
+
+
 .element-wrap:hover .del-panel-field,
-.element-wrap:hover .btn-zoom {
+.element-wrap:hover .btn-zoom ,
+.element-wrap:hover .copy-panel-field{
     opacity: 1;
 }
 
@@ -287,4 +299,13 @@ li {
 .additional i {
     position: relative;
     top: -4px;
+}
+
+
+.form-horizontal>.form-group>label{
+    padding-left:0px;padding-right:0px;
+}
+html { overflow: hidden; }
+.container-fluid .fixedDivRight,.container-fluid  .fixedDivCenter{
+    overflow-y:auto;
 }

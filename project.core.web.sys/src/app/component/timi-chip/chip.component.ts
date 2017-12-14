@@ -24,10 +24,10 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
 @Component({
   selector: "timi-chip-group",
   template: `
-    <div class="label-wrap label{{columns}}">
+    <div class="label-wrap">
       <label>{{labeName}}</label>
     </div>
-    <div class="chip-wrap wrap{{columns}}" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="chip-wrap" onkeydown="if(event.keyCode==13){return false;}">
       <div class="timi-chip-group" [ngClass]="chipClass">
         <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
         <input spellcheck="false" type="text" placeholder="{{placeholder}}"

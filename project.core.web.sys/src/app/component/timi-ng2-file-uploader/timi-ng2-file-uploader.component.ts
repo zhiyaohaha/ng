@@ -23,13 +23,13 @@ export const TIMI_UPLOAD_FILE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimiFileUploaderComponent),
   multi: true
-}
+};
 
 @Component({
   selector: "timi-file-uploader",
   template: `
     <div class="clearfix">
-      <label class="label{{columns}}">{{btnName}}</label>
+      <label>{{btnName}}</label>
       <div class="preview">
         <img [src]="src">
         <input type="file" ng2FileSelect (change)="selectedFileOnChanged($event)" [uploader]="uploader">
@@ -98,22 +98,22 @@ export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
       console.log("onErrorItem");
       e.progress = 0;
       console.log(_self.uploader);
-    }
+    };
 
     this.uploader.onErrorItem = function (e) {
       _self.toastService.creatNewMessage("上传失败");
-    }
+    };
 
     this.uploader.onCompleteItem = function (e) {
       console.log("onCompleteItem");
-    }
+    };
 
     this.uploader.onCompleteAll = function () {
       console.log("onCompleteAll");
-    }
+    };
 
     this.uploader.onSuccessItem = function (e) {
-      
+
       _self.src = e.base;
       _self.success.emit(e);
       _self.valueChange(e.id);

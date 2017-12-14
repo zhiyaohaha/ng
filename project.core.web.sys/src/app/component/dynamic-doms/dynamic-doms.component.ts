@@ -8,7 +8,7 @@ import {TimiSelectModule} from "../timi-select/select.component";
 import {MdInputModule} from "@angular/material";
 import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
-
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DynamicDomsComponent),
@@ -33,15 +33,19 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
 
-
+  bindData; //附件项数据
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
+    console.log("@@@@@@@@@@@@@@@@#################*******&&&&&&&&&&");
     console.log(value);
+    if(value.bindData){
+        this.bindData = value.bindData;
+    }
     if (value.childrens) {
       this._notes = value.childrens;
       this._notes.map(item => {
         item.name = item.name.replace(value.name + ".", "");
-      });
+    });
 
       this._modelDOMS.push(this._notes);
     }
@@ -169,7 +173,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
 @NgModule({
   imports: [CommonModule, FormsModule, TimiInputModule, TimiCheckboxModule, TimiTextareaModule,
-    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule],
+    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule, SharedPipeModule ],
   declarations: [DynamicDomsComponent],
   exports: [DynamicDomsComponent]
 })
