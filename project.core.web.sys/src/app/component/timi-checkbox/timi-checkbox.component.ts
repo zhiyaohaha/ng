@@ -15,11 +15,11 @@ const TIMI_CHECKBOX_VALUE_ACCESSOR: any = {
     <div class="box form-item" *ngIf="checkboxs">
       <div *ngIf="multiple" class="box-item item-label"><label>{{labelName}}</label></div>
       <div *ngIf="multiple" class="box-item item-control-wrapper">
-      <div *ngIf="isShowSearch">
-            <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" class="item-input" placeholder="请输入关键词">            
-      </div>
-        
-        <div #wrap class="item-control">      
+        <div *ngIf="isShowSearch">
+          <input type="text" [(ngModel)]="searchContent" (keyup)="toSearch()" class="item-input" placeholder="请输入关键词">
+        </div>
+
+        <div #wrap class="item-control">
           <free-checkbox [label]="'全选'"
                          [checked]="actived"
                          (onChange)="checkedAll($event)" *ngIf="isShowCheckAll"></free-checkbox>
@@ -52,10 +52,10 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   checked: any; //默认选中的项
   outPutArr = []; //抛出结果数组
 
-  searchContent: any;//输入值
-  checkboxsed: Array<any>;//搜索中的值
-  isShowSearch: boolean;//控制搜索框是否显示，大于等于10条数据时显示
-  isShowCheckAll: boolean = true;//控制全选是否显示
+  searchContent: any; //输入值
+  checkboxsed: Array<any>; //搜索中的值
+  isShowSearch: boolean; //控制搜索框是否显示，大于等于10条数据时显示
+  isShowCheckAll: boolean = true; //控制全选是否显示
 
   valueChange: Function = () => { };
 
@@ -67,7 +67,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
     console.log(this.checkboxs);
     if (this.checkboxs.length > 10) {
       this.isShowSearch = true;
-    }else{
+    } else {
       this.isShowSearch = false;
     }
   }
@@ -106,8 +106,9 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
-
-
+    if (!this.multiple && !value) {
+      this.valueChange(false);
+    }
     this.checked = value; //设置默认选中的项
     if (value) {
       this.actived = value.length === this.checkboxs.length;
