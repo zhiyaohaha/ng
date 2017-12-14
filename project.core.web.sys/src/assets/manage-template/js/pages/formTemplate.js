@@ -1291,7 +1291,8 @@ function save(){
                 "disabled": $('#bindDisabled').is(':checked'),
                 "hidden": $('#bindHide').is(':checked'),
                 "required": $('#bindRequired').is(':checked'),
-                "multiple": $('#bindMulti').is(':checked')
+                "multiple": $('#bindMulti').is(':checked'),
+                "value":$('#defaultValue').val()
             },
             "description": $("#bindDescription").val()
         }
