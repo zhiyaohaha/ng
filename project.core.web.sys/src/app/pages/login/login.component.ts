@@ -28,18 +28,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     let key = "";
+    let name = "";
     if (document.domain === "localhost") {
+      name = "administrator";
       key = "#Cmd@NoPassword";
     }
     this.loginForm = this.fb.group({
-      account: ["administrator", [Validators.required]],
+      account: [name, [Validators.required]],
       password: [key, Validators.required]
     });
 
-    if (sessionStorage.getItem("load") === "yes") {
-      this.loginOutService.loginOut();
-      sessionStorage.clear();
-    }
+    this.loginOutService.loginOut();
+    sessionStorage.clear();
+    localStorage.clear();
+
+    // if (sessionStorage.getItem("load") === "yes") {
+    //
+    // }
   }
 
   /**
