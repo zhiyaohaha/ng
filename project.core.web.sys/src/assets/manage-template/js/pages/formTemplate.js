@@ -176,7 +176,7 @@ $.ajax({
                         multiple:false,
                         placeholder:"",
                         required:false,
-                        sort:0,                        
+                        sort:0,                      
                     },
                     value:""
                 },"add")
@@ -293,6 +293,7 @@ function dragCreateDom_Panel(domval,that,editData,status){
             description: "",
             cmds:[],
             name: "id",
+            value:"",
             ui: {
                 attrs: null,
                 classes: null,
@@ -304,7 +305,7 @@ function dragCreateDom_Panel(domval,that,editData,status){
                 multiple: false,
                 placeholder: "",
                 required: false,
-                sort: 0
+                sort: 0  
             }
         })
 
@@ -610,7 +611,6 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     $("#bindField").val(objData[id].name);
     $("#bindMethod").val(objData[id].bindMethod);
     $("#bindTarget").val(objData[id].bindTarget);
-
     if($("#bindMethod").val() && $("#bindTarget").children().length == 0){  //编辑时有值，但是无optiobns选项
         $.ajax({
             type: "GET",
@@ -644,6 +644,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     $("#bindRequired").prop("checked",objData[id].ui.required);
     $("#bindMulti").prop("checked",objData[id].ui.multiple);
     $("#bindDescription").val(objData[id].description);
+    $('#defaultValue').val(objData[id].value)
     return false;
 })
 
@@ -1282,6 +1283,7 @@ function save(){
             "bindMethod": $("#bindMethod").val(),
             "bindTarget": $("#bindTarget").val(),
             "cmds": saveCmds(),
+            "value":$('#defaultValue').val(),
             ui: {
                 "label": $("#bindTitle").val(),
                 "displayType": $("#displayType").val(),
@@ -1292,7 +1294,7 @@ function save(){
                 "hidden": $('#bindHide').is(':checked'),
                 "required": $('#bindRequired').is(':checked'),
                 "multiple": $('#bindMulti').is(':checked'),
-                "value":$('#defaultValue').val()
+                
             },
             "description": $("#bindDescription").val()
         }
