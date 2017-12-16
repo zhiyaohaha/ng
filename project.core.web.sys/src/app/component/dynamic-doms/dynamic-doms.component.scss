@@ -80,16 +80,14 @@ free-checkbox, free-radio {
     }
   }
 }
-// .bindData 
-// .bindDataClass  .form-item .item-label::after{
-//   content:"" !important;
-// }
-// .bindDataClass   .item-label::after{
-//   content:"" !important;
-// // }
-// .bindDataClass  .columns1{
-//     // width:20%;
-// }
-// .bindDataClass  .form-item{
-//     width:10% !important;
-// }
+//附件项
+.label-level-1{
+  padding-left:10%;
+  // width:26%;
+  // text-align:center;
+}
+.label-level-2{
+  padding-left:17%;
+  // width: 52%;
+  // text-align:center;
+}

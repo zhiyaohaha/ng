@@ -9,6 +9,7 @@ import {MdInputModule} from "@angular/material";
 import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import {CheckboxModule} from "../checkbox/checkbox.component";
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DynamicDomsComponent),
@@ -32,12 +33,20 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
-
-  bindData; //附件项数据
+ 
+  bindData = [{}]; //附件项数据
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
+    console.log('改变了')
     if(value.bindData){
-        this.bindData = value.bindData;
+       console.log(typeof value.bindData )
+        // this.bindData = value.bindData;
+        // this.modelDOMSData = value.bindData;  
+        for (var key in value.bindData) {  
+          var val = value.bindData[key];  
+          this.bindData[key] = val;  
+          this.modelDOMSData[key] = val;  
+        }  
     }
     if (value.childrens) {
       this._notes = value.childrens;
@@ -63,7 +72,25 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   ngOnInit() {
   }
 
+
+  //对ngmodel中 需要使用 管道的数据进行手动处理
+  updateAmount(data,value,event){
+    var key = value.split(".").pop();
+    data[key] = event;
+    this.onModelChange(this.modelDOMSData);  //手动触发值的修改
+  }
+  //根据chebox的选项，是否发送该项数据
+  changePostData(value,data){
+      // var deldataIndex = this.modelDOMSData.indexOf(data);
+      // if(!value){
+      //   this.modelDOMSData.splice(deldataIndex,1); 
+      //   console.log(this.modelDOMSData)
+      // }
+      // console.log(this.bindData)
+  }
+
   writeValue(value: any) {
+    // console.log(value)
     this.afterMoveData = value;
     if (Array.isArray(value)) {
       this.modelDOMSData = value;
@@ -174,7 +201,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
 @NgModule({
   imports: [CommonModule, FormsModule, TimiInputModule, TimiCheckboxModule, TimiTextareaModule,
-    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule, SharedPipeModule ],
+    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule, SharedPipeModule ,CheckboxModule],
   declarations: [DynamicDomsComponent],
   exports: [DynamicDomsComponent]
 })
