@@ -34,18 +34,17 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
  
-  bindData = [{}]; //附件项数据
+  bindData = []; //附件项数据
+  ephemeralData = [{}]
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
-    console.log('改变了')
     if(value.bindData){
-       console.log(typeof value.bindData )
         // this.bindData = value.bindData;
         // this.modelDOMSData = value.bindData;  
         for (var key in value.bindData) {  
           var val = value.bindData[key];  
           this.bindData[key] = val;  
-          this.modelDOMSData[key] = val;  
+          this.ephemeralData[key] = val;  
         }  
     }
     if (value.childrens) {
@@ -77,20 +76,22 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   updateAmount(data,value,event){
     var key = value.split(".").pop();
     data[key] = event;
-    this.onModelChange(this.modelDOMSData);  //手动触发值的修改
   }
   //根据chebox的选项，是否发送该项数据
-  changePostData(value,data){
-      // var deldataIndex = this.modelDOMSData.indexOf(data);
-      // if(!value){
-      //   this.modelDOMSData.splice(deldataIndex,1); 
-      //   console.log(this.modelDOMSData)
-      // }
-      // console.log(this.bindData)
+  changePostData(value,level,key,data){
+    var postdata = (level == 2 ? this.modelDOMSData[key]: this.modelDOMSData)  //判断是否是2级面板
+    // if(value){
+    //   postdata.push(data)
+    // }else{
+    //   var deldataIndex = postdata.indexOf(data);
+    //   if(deldataIndex !== -1){
+    //     postdata.splice(deldataIndex,1); 
+    //   }
+    // }
+    this.onModelChange(this.modelDOMSData);
   }
 
   writeValue(value: any) {
-    // console.log(value)
     this.afterMoveData = value;
     if (Array.isArray(value)) {
       this.modelDOMSData = value;

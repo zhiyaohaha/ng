@@ -1,7 +1,6 @@
 <h4 class="">{{title}}</h4>
-
-<div *ngIf="!bindData">
-      <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData}">
+<div *ngIf="!bindData.length">
+      <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData.length}">
         <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
           <ng-container *ngFor="let child of item">
             <ng-container [ngSwitch]="child.ui.displayType">
@@ -246,9 +245,10 @@
     
       </div>
 </div>
-<div *ngIf="bindData">
+<div *ngIf="bindData.length">
+  
     <div  *ngFor="let binddata of bindData;let k = index;">
-        <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData}">
+        <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData.length}">
           <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
             <ng-container *ngFor="let child of item">
               <ng-container [ngSwitch]="child.ui.displayType">
@@ -257,24 +257,24 @@
                     <!-- 应该是一个多维数组，用k作为下标 -->
                     <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
                     [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                          <div class="label-level-1"><free-checkbox [label]="binddata.name" (onChange)="changePostData($event.checked,modelDOMSData[k])"></free-checkbox></div>
+                          <div class="label-level-1"><free-checkbox [label]="binddata.name" (onChange)="changePostData($event.checked,1,0,ephemeralData[k])"></free-checkbox></div>
                           <ng-container [ngSwitch]="child.ui.pipe">
-                            <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData |
+                            <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : ephemeralData |
                               date:"yyyy-MM-dd HH:mm:ss"}}
                             </div>
-                            <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
+                            <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : ephemeralData |
                               date:"yyyy-MM-dd"}}
                             </div>
                             <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                            <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
+                            <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : ephemeralData}}</div>
                           </ng-container>
                     </div>
                     <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                      <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="modelDOMSData[k][child.name]"
+                      <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="ephemeralData[k][child.name]"
                                     [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData"
                                     [columns]="child.ui.columns">
                       </timi-checkbox>
-                      <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="modelDOMSData[k][child.name]"
+                      <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="ephemeralData[k][child.name]"
                                     [labelName]="child.ui.label"
                                     [checkboxs]="child.ui.label" [columns]="child.ui.columns">
                       </timi-checkbox>
@@ -288,8 +288,8 @@
                                 <!-- 动态组件判断 -->
                                 <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                                   <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name | lastdot : data}}"
-                                                [ngModel]="modelDOMSData[k]['_attachments'][j][child.name | lastdot : data]" 
-                                                (ngModelChange)="updateAmount(modelDOMSData[k]['_attachments'][j],child.name,$event)"
+                                                [ngModel]="ephemeralData[k]['_attachments'][j][child.name | lastdot : data]" 
+                                                (ngModelChange)="updateAmount(ephemeralData[k]['_attachments'][j],child.name,$event)"
                                                 [labelName]="child.ui.label"
                                                 [checkboxs]="child.ui.label" [columns]="child.ui.columns">
                                   </timi-checkbox>
@@ -297,8 +297,8 @@
                                 <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                                     [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                                   <timi-textarea name="{{child.name| lastdot : data}}"  
-                                                [ngModel]="modelDOMSData[k]['_attachments'][j][child.name | lastdot : data]" 
-                                                (ngModelChange)="updateAmount(modelDOMSData[k]['_attachments'][j],child.name,$event)"
+                                                [ngModel]="ephemeralData[k]['_attachments'][j][child.name | lastdot : data]" 
+                                                (ngModelChange)="updateAmount(ephemeralData[k]['_attachments'][j],child.name,$event)"
                                                 [labelName]="child.ui.label"
                                                 [placeholder]="child.ui.placeholder">
                                   </timi-textarea>
@@ -306,16 +306,16 @@
                                 <!-- 静态组件判断 -->
                                 <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
                                       [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                                    <div  class="label-level-2"><free-checkbox [label]="binddataItem.name" (onChange)="changePostData($event.checked,modelDOMSData[k]['_attachments'][j])"></free-checkbox></div>
+                                    <div  class="label-level-2"><free-checkbox [label]="binddataItem.name" (onChange)="changePostData($event.checked,2,k,ephemeralData[k]['_attachments'][j])"></free-checkbox></div>
                                     <ng-container [ngSwitch]="child.ui.pipe">
-                                      <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData |
+                                      <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : ephemeralData |
                                         date:"yyyy-MM-dd HH:mm:ss"}}
                                       </div>
-                                      <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
+                                      <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : ephemeralData |
                                         date:"yyyy-MM-dd"}}
                                       </div>
                                       <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                                      <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
+                                      <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : ephemeralData}}</div>
                                     </ng-container>
                                 </div>
                               </ng-container>
