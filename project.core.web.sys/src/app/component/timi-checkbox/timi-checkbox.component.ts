@@ -64,7 +64,8 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
     this.checkboxsed = this.checkboxs;
-    console.log(this.checkboxs);
+    // console.log(this.checkboxs);
+    if(!this.checkboxs) return false;
     if (this.checkboxs.length > 10) {
       this.isShowSearch = true;
     } else {
@@ -111,7 +112,9 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
     }
     this.checked = value; //设置默认选中的项
     if (value) {
-      this.actived = value.length === this.checkboxs.length;
+      if(this.checkboxs){
+        this.actived = value.length === this.checkboxs.length;
+      }
       this.outPutArr = value;
     }
   }
