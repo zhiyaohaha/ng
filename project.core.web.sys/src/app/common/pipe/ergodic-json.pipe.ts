@@ -21,16 +21,19 @@ export class ErgodicJsonPipe implements PipeTransform {
     if (value.indexOf(".") > 0) {
       let arr = value.split(".");
       for (let i = 0; i < arr.length; i++) {
-        if (!args[arr[i]]) {
+        if (typeof args[arr[i]] === "undefined") {
           return "";
         }
         args = args[arr[i]];
         if (Array.isArray(args)) {
-          let temp = [];
-          args.forEach((element) => {
-            temp.push(element[arr[i + 1]]);
-          });
-          return temp;
+          // let temp = [];
+          // args.forEach((element) => {
+          //   temp.push(element[arr[i + 1]]);
+          // });
+          // return temp;
+          return args.join(",");
+        } else if (typeof args === "string" || typeof args === "number") {
+          return args;
         }
       }
       return args;
