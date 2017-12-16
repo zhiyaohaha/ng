@@ -79,7 +79,9 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   }
   //根据chebox的选项，是否发送该项数据
   changePostData(value,level,key,data){
-    var postdata = (level == 2 ? this.modelDOMSData[key]: this.modelDOMSData)  //判断是否是2级面板
+    this.modelDOMSData.splice(this.modelDOMSData.indexOf({}),1)
+    // var postdata = (level == 2 ? this.modelDOMSData[key]: this.modelDOMSData)  //判断是否是2级面板
+    // console.log(postdata)
     // if(value){
     //   postdata.push(data)
     // }else{
@@ -88,6 +90,15 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     //     postdata.splice(deldataIndex,1); 
     //   }
     // }
+    // this.onModelChange(this.modelDOMSData);
+    if(value){
+      this.modelDOMSData.push(data)
+    }else{
+      var deldataIndex = this.modelDOMSData.indexOf(data);
+      if(deldataIndex !== -1){
+        this.modelDOMSData.splice(deldataIndex,1); 
+      }
+    }
     this.onModelChange(this.modelDOMSData);
   }
 
