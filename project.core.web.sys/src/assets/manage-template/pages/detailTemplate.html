@@ -72,115 +72,127 @@
                 </div>
             </div>
             <div class="col-sm-3 fixedDivRight" id="fixedDivRight">
-                <label for="bindTitle">标题：</label>
-                <input class="form-control input-sm m-b-10" type="text" id="bindTitle" placeholder="标题">
-                <label for="displayType">展示类型：</label>
-                <select class="form-control input-sm m-b-10" id="displayType" disabled>
-                </select>
-                <label for="bindField">绑定字段：</label>
-                <input class="form-control input-sm m-b-10" type="text" placeholder="绑定字段" id="bindField">
-                <label for="bindMethod">绑定方式：</label>
-                <select class="form-control input-sm m-b-10" id="bindMethod">
-                </select>
-                <label for="bindTarget">绑定目标：</label>
-                <select class="form-control input-sm m-b-10" id="bindTarget">
-                </select>
-                <label for="bindTarget">绑定管道：</label>
-                <select class="form-control input-sm m-b-10" id="bindPipe"></select>
-                <label for="bindPlaceholder">占位符：</label>
-                <input class="form-control input-sm m-b-10" type="text" placeholder="占位符" id="bindPlaceholder">
-                <div class="row">
-                    <div class="col-sm-12 additional" id="cmdsGroup">
-                        <label for="">命令栏</label>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <label for="">命令栏—命令名称：</label><br>
-                                <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称"></select>
+                <ul  class="nav nav-tabs">
+                    <li class="active"> <a href="#tabBasis" data-toggle="tab">基础</a></li>
+                    <li><a href="#tabOrder" data-toggle="tab">命令</a></li>
+                    <li><a href="#tabAdvanced" data-toggle="tab">高级</a></li>
+                </ul>
+                <div  class="tab-content">
+                    <div class="tab-pane fade in active" id="tabBasis">
+                        <label for="bindTitle">标题：</label>
+                        <input class="form-control input-sm m-b-10" type="text" id="bindTitle" placeholder="标题">
+                        <label for="bindField">绑定字段：</label>
+                        <input class="form-control input-sm m-b-10" type="text" placeholder="绑定字段" id="bindField">
+                        <label for="displayType">展示类型：</label>
+                        <select class="form-control input-sm m-b-10" id="displayType" disabled>
+                        </select>
+                        <label for="bindTarget">绑定管道：</label>
+                        <select class="form-control input-sm m-b-10" id="bindPipe"></select>
+                        <label for="bindPlaceholder">占位符：</label>
+                        <input class="form-control input-sm m-b-10" type="text" placeholder="占位符" id="bindPlaceholder">
+                        <div class="row">
+                            <div class="col-sm-12 form-group">
+                                <label for="">选项：</label><br>
+                                <label for="">
+                                    <input type="checkbox" id="bindDisabled"/> 禁用
+                                </label>
+                                <label for="">
+                                    <input type="checkbox" id="bindHide"/> 隐藏
+                                </label>
+                                <label for="">
+                                    <input type="checkbox" id="bindRequired"/> 必选
+                                </label>
+                                <label for="">
+                                    <input type="checkbox" id="bindMulti"/> 多值
+                                </label>
                             </div>
-                            <div class="form-group">
-                                <label for="">命令栏—表单模板：</label><br>
-                                <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板"></select>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="">描述：</label>
+                                <textarea class="form-control m-b-10" id="bindDescription" placeholder="描述" style="height: 70px; resize: none;"></textarea>
                             </div>
-                            <div class="triggerWhereGroup">
-                                <label for="">命令栏—键值对：</label>
-                                <div class="formTemplate-wrap">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabOrder">
+                        <div class="row">
+                            <div class="col-sm-12 additional" id="cmdsGroup">
+                                <!-- <label for="">命令栏</label> -->
+                                <div class="form-inline">
                                     <div class="form-group">
-                                        <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
+                                        <label for="">命令名称：</label><br>
+                                        <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">表单模板：</label><br>
+                                        <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板"></select>
+                                    </div>
+                                    <div class="triggerWhereGroup">
+                                        <label for="">键值对：</label>
+                                        <div class="formTemplate-wrap">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">触发地址：</label><br>
+                                        <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
+                                    </div>
+                                    <label for="">绑定字段集合：</label><br>
+                                    <div class="form-group" style="width:95%">
+                                        <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
+                                    </div>
+                                    <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabAdvanced">
+                        <label for="bindMethod">绑定方式：</label>
+                        <select class="form-control input-sm m-b-10" id="bindMethod">
+                        </select>
+                        <label for="bindTarget">绑定目标：</label>
+                        <select class="form-control input-sm m-b-10" id="bindTarget">
+                        </select>
+                        <div class="row">
+                            <div class="col-sm-12 additional" id="attrGroup">
+                                <label for="">属性：</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键" name="key">
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
                                     </div>
                                     <div class="form-group">
-                                        <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                                        <i class="fa fa-plus-circle addnotes" data-name="attr" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="">命令栏—触发地址：</label><br>
-                                <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
-                            </div>
-                            <label for="">命令栏—绑定字段集合：</label><br>
-                            <div class="form-group" style="width:95%">
-                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
-                            </div>
-                            <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 additional" id="attrGroup">
-                        <label for="">属性：</label>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键" name="key">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-plus-circle addnotes" data-name="attr" aria-hidden="true"></i>
+                        <div class="row">
+                            <div class="col-sm-12 additional" id="cssGroup">
+                                <label for="">样式：</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键" name="key">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="css" aria-hidden="true"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 additional" id="cssGroup">
-                        <label for="">样式：</label>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="键" name="key">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-plus-circle addnotes" data-name="css" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-sm-12 form-group">
-                        <label for="">选项：</label><br>
-                        <label for="">
-                            <input type="checkbox" id="bindDisabled"/> 禁用
-                        </label>
-                        <label for="">
-                            <input type="checkbox" id="bindHide"/> 隐藏
-                        </label>
-                        <label for="">
-                            <input type="checkbox" id="bindRequired"/> 必选
-                        </label>
-                        <label for="">
-                            <input type="checkbox" id="bindMulti"/> 多值
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <label for="">描述：</label>
-                        <textarea class="form-control m-b-10" id="bindDescription" placeholder="描述" style="height: 70px; resize: none;"></textarea>
                     </div>
                 </div>
                 <div class="row">

@@ -669,23 +669,23 @@ function bindCmds(data) {
                 </div>`
             html += `<div class="form-inline form-inline-${index}">
                         <div class="form-group">
-                            <label for="">命令栏—命令名称：</label><br>
+                            <label for="">命令名称：</label><br>
                             <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
                         </div>
                          <div class="form-group">
-                             <label for="">命令栏—表单模板：</label><br>
+                             <label for="">表单模板：</label><br>
                             <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
                         </div>
                         <div class="triggerWhereGroup">
-                             <label for="">命令栏—键值对：</label>
+                             <label for="">键值对：</label>
                             `+ triggerWhereHtml +`
                         </div>
                         <div class="form-group">
-                            <label for="">命令栏—触发地址：</label><br>
+                            <label for="">触发地址：</label><br>
                             <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="${el.triggerUrl}">
                         </div>
                         <div class="form-group" style="width:95%">
-                            <label for="">命令栏—绑定字段集合：</label><br>
+                            <label for="">绑定字段集合：</label><br>
                             <input type="text" class="form-control input-sm m-b-10  cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}" disabled>
                         </div>
                         <i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>
@@ -698,15 +698,15 @@ function bindCmds(data) {
     })
        html += `<div class="form-inline">
             <div class="form-group">
-                <label for="">命令栏—命令名称：</label><br>
+                <label for="">命令名称：</label><br>
                 <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
             </div>
             <div class="form-group">
-                 <label for="">命令栏—表单模板：</label><br>
+                 <label for="">表单模板：</label><br>
                 <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
             </div>
             <div class="triggerWhereGroup">
-                <label for="">命令栏—键值对：</label>
+                <label for="">键值对：</label>
                 <div class="formTemplate-wrap">
                     <div class="form-group">
                         <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
@@ -720,10 +720,10 @@ function bindCmds(data) {
                 </div>
             </div>
             <div class="form-group">
-                <label for="">命令栏—触发地址：</label><br>
+                <label for="">触发地址：</label><br>
                 <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
             </div>
-            <label for="">命令栏—绑定字段集合：</label><br>
+            <label for="">绑定字段集合：</label><br>
             <div class="form-group" style="width:95%">
                 <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
             </div>
@@ -1059,15 +1059,15 @@ $(".additional").on("click", ".addnotes", function(){
     }else if (name === "cmds"){
         $(this).parent().parent().append(`<div class="form-inline">
                                             <div class="form-group">
-                                                <label for="">命令栏—命令名称：</label><br>
+                                                <label for="">命令名称：</label><br>
                                                 <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="">命令栏—表单模板：</label><br>
+                                                <label for="">表单模板：</label><br>
                                                 <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
                                             </div>
                                             <div class="triggerWhereGroup">
-                                                <label for="">命令栏—键值对：</label>
+                                                <label for="">键值对：</label>
                                                 <div class="formTemplate-wrap">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
@@ -1081,10 +1081,10 @@ $(".additional").on("click", ".addnotes", function(){
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="">命令栏—触发地址：</label><br>
+                                                <label for="">触发地址：</label><br>
                                                 <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="">
                                             </div>
-                                            <label for="">命令栏—绑定字段集合：</label><br>
+                                            <label for="">绑定字段集合：</label><br>
                                             <div class="form-group" style="width:95%">
                                                 <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
                                             </div>
