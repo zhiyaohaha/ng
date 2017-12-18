@@ -111,6 +111,16 @@ $(document).ready(function(){
         })
     })
 
+    $("#templateFilters .filterType").change(function(){
+        if($(this).val() == "FieldFilterType.Keywords"){
+            var $row = $(this).parents('.row:first');
+            
+            $row.find(".displayType").val("HtmlDomDisplayType.Text");
+            $row.find(".bindName").val("keywords");
+            $row.find(".filterUiLabel").val("关键字");
+        }
+    });
+
     detailId = $.request("id") || "";
 })
 //绑定平台下拉框
@@ -270,6 +280,14 @@ $(".table-content").on("click", ".addnotes", function(){
         <li>
             <div class="row">
                 <div class="col-sm-3 m-b-10">
+                    <label for="">筛选类型：</label>
+                    <select class="form-control input-sm filterType" placeholder="请选择一个筛选类型">${filterTypeOptions}</select>
+                </div>
+                <div class="col-sm-9 m-b-10">
+                    <label for="displayType">展示类型：</label>
+                    <select class="form-control input-sm displayType filterUiDisplayType" placeholder="请选择一个展示类型">${displayTypeOptions}</select>
+                </div>
+                <div class="col-sm-3 m-b-10">
                     <label for="">绑定项名称：</label>
                     <input type="text" class="form-control input-sm bindName" placeholder="请输入绑定项名称">
                 </div>
@@ -286,14 +304,6 @@ $(".table-content").on("click", ".addnotes", function(){
                 </div>
                 <div class="col-sm-2">
                     <i class="fa fa-plus-circle addnotes" data-name="filter" aria-hidden="true"></i>
-                </div>
-                <div class="col-sm-3 m-b-10">
-                    <label for="">筛选类型：</label>
-                    <select class="form-control input-sm filterType" placeholder="请选择一个筛选类型">${filterTypeOptions}</select>
-                </div>
-                <div class="col-sm-9 m-b-10">
-                    <label for="displayType">展示类型：</label>
-                    <select class="form-control input-sm displayType filterUiDisplayType" placeholder="请选择一个展示类型">${displayTypeOptions}</select>
                 </div>
                 <div class="col-sm-3 m-b-10">
                     <label for="bindMethod">绑定方式：</label>
@@ -337,6 +347,15 @@ $(".table-content").on("click", ".addnotes", function(){
                 templateFiltersDrop  = false;
             }
         })
+        parent.find("li:last .filterType").change(function(){
+            if($(this).val() == "FieldFilterType.Keywords"){
+                var $row = $(this).parents('.row:first');
+                
+                $row.find(".displayType").val("HtmlDomDisplayType.Text");
+                $row.find(".bindName").val("keywords");
+                $row.find(".filterUiLabel").val("关键字");
+            }
+        });
 
         $("i.fa-plus-circle").css("cursor","default");
     }else if (name === "sort"){
