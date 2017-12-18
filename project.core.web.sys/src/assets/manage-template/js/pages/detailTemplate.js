@@ -541,6 +541,7 @@ function generateObj(id) {
 }
 
 $(document).on("click", ".element-wrap, .dom-panel", function(){
+    $('#rightTab a[href="#tabBasis"]').tab('show');
     var _self = $(this);
     var id = _self.attr("id");
     activeId = id;
