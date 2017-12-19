@@ -650,7 +650,7 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
       let json=JSON.parse(e._xhr.response).data[0];
       let {id,path}=json;
  
-      const img = '<img src="' + path + '" style="width:200px;heigth:200px"/>';//预览图效果，需要设置尺寸
+      const img = '<img src="' + path + '"/>';//预览图效果，需要设置尺寸
       _self.execCommand('insertHTML', img);
 
       // _self.src = e.base;

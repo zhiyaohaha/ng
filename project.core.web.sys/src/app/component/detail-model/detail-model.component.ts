@@ -113,6 +113,7 @@ export class DetailModelComponent implements OnInit {
   }
 
   toShow() {
+    console.log(1);
     this.previewService.showPreview(true);
     this.previewService.getUrl(this.imgUrls);
   }

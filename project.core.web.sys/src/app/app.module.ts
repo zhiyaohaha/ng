@@ -30,13 +30,13 @@ import {HttpClientModule} from "@angular/common/http";
 import {SetAuthorityComponent} from "./component/set-authority/set-authority.component";
 import { NewComponentModule } from "./newcomponent/newcomponent.module";
 import { PreviewService } from './services/preview/preview.service';
+import { RegionService } from "app/services/region/region.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     FilterValuePipe,
     SetAuthorityComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -57,6 +57,7 @@ import { PreviewService } from './services/preview/preview.service';
     ToastService,
     CommunicationService,
     PreviewService,
+    RegionService
   ],
   bootstrap: [AppComponent],
   entryComponents: [SetAuthorityComponent],

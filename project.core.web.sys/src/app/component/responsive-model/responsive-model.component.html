@@ -75,6 +75,14 @@
                              name="{{child.name}}"></free-editor>
               </div>
             </div>
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+              <div class="box-item item-label">
+                <label>{{child.ui.label}}</label>
+              </div>
+              <div class="box-item item-control-wrapper">
+                <free-region></free-region>
+              </div>
+            </div>
           </ng-container>
         </ng-container>
       </div>
@@ -171,6 +179,9 @@
                 <free-editor [(ngModel)]="modelDOMSData[child.name]" [counter]="true"
                              name="{{child.name}}"></free-editor>
               </div>
+            </div>
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+              hhhh
             </div>
           </ng-container>
         </ng-container>

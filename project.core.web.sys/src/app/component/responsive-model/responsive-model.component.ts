@@ -15,12 +15,14 @@ import {TimiSelectModule} from "../timi-select/select.component";
 import {BaseService} from "../../services/base.service";
 import {EditorModule} from "app/component/editor/editor.component";
 import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
+import { NewComponentModule } from "app/newcomponent/newcomponent.module";
+import { RegionComponent } from "app/newcomponent/region/region.component";
 
 
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
-  styleUrls: ["./responsive-model.component.scss"]
+  styleUrls: ["./responsive-model.component.scss"],
 })
 
 export class ResponsiveModelComponent implements OnInit {
@@ -146,9 +148,11 @@ export class ResponsiveModelComponent implements OnInit {
     TimiCheckboxModule,
     TimiSelectModule,
     EditorModule,
-    DynamicDomsModule
+    DynamicDomsModule,
+    NewComponentModule
   ],
   declarations: [ResponsiveModelComponent],
+  providers: [RegionComponent],
   exports: [ResponsiveModelComponent]
 })
 

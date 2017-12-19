@@ -4,13 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { PreviewComponent } from './preview/preview.component';
-
-
-
+import { RegionComponent } from 'app/newcomponent/region/region.component';
 
 @NgModule({
     declarations: [
-        PreviewComponent,  
+        PreviewComponent,
+        RegionComponent
     ],
     imports: [
         FormsModule,
@@ -18,6 +17,7 @@ import { PreviewComponent } from './preview/preview.component';
     ],
     exports: [
         PreviewComponent,
+        RegionComponent
     ],
     providers: [],
 })

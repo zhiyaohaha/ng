@@ -1,0 +1,35 @@
+<div class="regionBox">
+
+  <p>
+    <span>选择省份：</span>
+    <button (click)="onSubmit($event,checkedAll)" class="submit">提交</button>
+  </p>
+
+  <div class="all">
+    <input type="checkbox" (click)="allChecked($event,checkedAll)" #checkedAll id="all">
+    <label for="all">全国</label>
+
+    <div class="province" *ngFor="let province of result;let i = index">
+      <input type="checkbox" (click)="getProvince($event,province,i)" #province id=`province${{i}}` class="hidden">
+      <label for=`province${{i}}` [class.active]="province.checked" class="pad">{{result[i].b}}</label>
+
+      <ul *ngIf='province.checked && !checkedAll.checked'>
+        <li *ngFor="let city of result[i].c;let j = index" class="city">
+          <input type="checkbox" (click)="getCity($event,province,city,i,j)" #city id="city${{result[i].c[j].a}}" class="hidden">
+          <label for="city${{result[i].c[j].a}}" [class.active]="city.checked" class="pad">{{result[i].c[j].b}}</label>
+
+          <ul *ngIf="city.checked" class="county">
+            <li *ngFor="let county of result[i].c[j].c;let l = index" class="county">
+              <input type="checkbox" (click)="getCounty($event,county,i,j,l)" #county id=`county${{result[i].c[j].c[l].a}}` class="hidden">
+              <label for=`county${{result[i].c[j].c[l].a}}` [class.active]="county.checked" class="pad">{{result[i].c[j].c[l].b}}</label>
+            </li>
+          </ul>
+
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>
