@@ -41,7 +41,6 @@ export class ErgodicJsonPipe implements PipeTransform {
           return args;
         }
       }
-      console.log(args)
       return args;
     }
     return args[value];
