@@ -81,14 +81,12 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
   writeValue(value: any) {
     this.afterMoveData = value;
-    // this._modelDOMS = [];  
-    console.log(this.modelDOMSData)
-    // if(value == "clear" || Array.isArray(value)){
-    //     this._modelDOMS = [];    //产品附件默认组不清空
-    //     this.onModelChange(null);
-    // }
-    this._modelDOMS = [];
-    if (Array.isArray(value)) {
+
+    if(value == "clear" ){   //修改清空附件组
+      this._modelDOMS = [];
+    }
+    if (Array.isArray(value)) {  
+      this._modelDOMS = [];  
 
       this.modelDOMSData = [];
       
@@ -102,6 +100,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this.onModelChange(null);
     }
   }
+  
   registerOnChange(fn: any): void {
     this.onModelChange = fn;
   }

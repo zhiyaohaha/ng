@@ -113,7 +113,7 @@ export class ResponsiveModelComponent implements OnInit {
             if(r.data && r.data.length>0){
               this._modelDOMSData[option[i].triggerDom] = r.data;  //附件项数据修改，dynamic组件数据随之修改
             }else{
-              this._modelDOMSData[option[i].triggerDom] = null;
+              this._modelDOMSData[option[i].triggerDom] = "clear";
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
