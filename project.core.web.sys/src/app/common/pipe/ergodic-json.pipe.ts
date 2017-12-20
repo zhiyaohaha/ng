@@ -21,8 +21,13 @@ export class ErgodicJsonPipe implements PipeTransform {
     if (value.indexOf(".") > 0) {
       let arr = value.split(".");
       for (let i = 0; i < arr.length; i++) {
-        if (typeof args[arr[i]] === "undefined") {
-          continue;
+        // if (typeof args[arr[i]] === "undefined")
+        if (!args[arr[i]]) {  //可能是null和 undefined 
+            if (typeof args[arr[i]] === "undefined"){
+              continue;
+            }else{  //null
+              return "";
+            }
         }
         args = args[arr[i]];
         if (Array.isArray(args)) {
@@ -36,6 +41,7 @@ export class ErgodicJsonPipe implements PipeTransform {
           return args;
         }
       }
+      console.log(args)
       return args;
     }
     return args[value];
