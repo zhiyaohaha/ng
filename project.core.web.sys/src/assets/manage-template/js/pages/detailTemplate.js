@@ -280,6 +280,9 @@ function dragCreateDom_Panel(domval,that,editData,status){
             dragCreateDom_PanelBody(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
         }
     }
+
+
+
     objData[id] = editData;
     if(status == "add"){  //新增状态下,默认点击，自动拖入的面板； 编辑状态下,因为面板较多，所以无需默认第一个面板
         $(document).ready(function() {
@@ -731,23 +734,35 @@ function bindCmds(data) {
             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
         </div>`; 
     $("#cmdsGroup").append(html);
-    $(".cmdFields, .cmdTriggerWhere").droppable({
+    $(".cmdFields").droppable({
         drop: function(event, ui){
-            /******11.17 add : 拖入以后则禁止输入  start********/
-            $(this).attr('disabled','disabled')
-            /******11.17 add : 拖入以则禁止输入  end********/
-            if($(this).val()){               
-                // $(this).data("value", $(this).data("value") +","+bindField);
-                
-                /******11.17 update : 可以先输入再拖入  start********/
-                    $(this).data("value", $(this).data("value") ? $(this).data("value") : $(this).val() +","+bindField);
-                /******11.17 update : 可以先输入再拖入  end********/
-
+            if($(this).val()){
+                $(this).data("value", $(this).data("value")+","+bindField);
                 $(this).val($(this).val()+","+bindTitle);
             }else{
                 $(this).data("value", bindField);
                 $(this).val(bindTitle);
             }
+        }
+    })
+    $(".cmdTriggerWhere").droppable({
+        drop: function(event, ui){
+            /******11.17 add : 拖入以后则禁止输入  start********/
+            /******11.17 add : 拖入以则禁止输入  end********/
+            if($(this).val()){
+                if($(this).attr('disabled')){  
+                    $(this).data("value", $(this).data("value")+","+bindField);    
+                }else{  //表示第一次拖入
+                    $(this).data("value", $(this).val()+","+bindField);   
+                }
+                $(this).val($(this).val()+","+bindTitle);
+            }else{
+                $(this).data("value", bindField);
+                $(this).val(bindTitle);
+            }
+            $(this).attr('disabled','disabled')
+
+            console.log($(this).data("value"))
         }
     })
 }
@@ -940,7 +955,7 @@ $("#formDomTarget").sortable({
     placeholder: "ui-state-highlight",
     revert: true
 })
-$(".cmdFields, .cmdTriggerWhere").droppable({
+$(".cmdFields").droppable({
     drop: function(event, ui){
         if($(this).val()){
             $(this).data("value", $(this).data("value")+","+bindField);
@@ -948,7 +963,27 @@ $(".cmdFields, .cmdTriggerWhere").droppable({
         }else{
             $(this).data("value", bindField);
             $(this).val(bindTitle);
-        }        
+        }
+    }
+})
+$(".cmdTriggerWhere").droppable({
+    drop: function(event, ui){
+        /******11.17 add : 拖入以后则禁止输入  start********/
+        /******11.17 add : 拖入以则禁止输入  end********/
+        if($(this).val()){
+            if($(this).attr('disabled')){  
+                $(this).data("value", $(this).data("value")+","+bindField);    
+            }else{  //表示第一次拖入
+                $(this).data("value", $(this).val()+","+bindField);   
+            }
+            $(this).val($(this).val()+","+bindTitle);
+        }else{
+            $(this).data("value", bindField);
+            $(this).val(bindTitle);
+        }
+        $(this).attr('disabled','disabled')
+
+        console.log($(this).data("value"))
     }
 })
 
@@ -1091,18 +1126,37 @@ $(".additional").on("click", ".addnotes", function(){
                                             </div>
                                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
                                         </div>`);
-
-        $(".cmdFields, .cmdTriggerWhere").droppable({
-            drop: function(event, ui){
-                if($(this).val()){
-                    $(this).data("value", $(this).data("value")+","+bindField);
-                    $(this).val($(this).val()+","+bindTitle);
-                }else{
-                    $(this).data("value", bindField);
-                    $(this).val(bindTitle);
+            $(".cmdFields").droppable({
+                drop: function(event, ui){
+                    if($(this).val()){
+                        $(this).data("value", $(this).data("value")+","+bindField);
+                        $(this).val($(this).val()+","+bindTitle);
+                    }else{
+                        $(this).data("value", bindField);
+                        $(this).val(bindTitle);
+                    }
                 }
-            }
-        })
+            })
+            $(".cmdTriggerWhere").droppable({
+                drop: function(event, ui){
+                    /******11.17 add : 拖入以后则禁止输入  start********/
+                    /******11.17 add : 拖入以则禁止输入  end********/
+                    if($(this).val()){
+                        if($(this).attr('disabled')){  
+                            $(this).data("value", $(this).data("value")+","+bindField);    
+                        }else{  //表示第一次拖入
+                            $(this).data("value", $(this).val()+","+bindField);   
+                        }
+                        $(this).val($(this).val()+","+bindTitle);
+                    }else{
+                        $(this).data("value", bindField);
+                        $(this).val(bindTitle);
+                    }
+                    $(this).attr('disabled','disabled')
+        
+                    console.log($(this).data("value"))
+                }
+            })
     }else if (name === "formTemplate"){
         $(this).parent().parent().parent().append(`<div class="formTemplate-wrap">
                                                     <div class="form-group">

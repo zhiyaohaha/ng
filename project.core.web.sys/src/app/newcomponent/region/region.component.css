@@ -1,0 +1,37 @@
+ul{
+  margin-left: 30px;
+}
+.county {
+  overflow: hidden;
+}
+
+.county li {
+  float: left;
+  margin-right: 4px;
+}
+.submit{
+  width: 100px;
+  float: right;
+  background-color: #177BBB;
+  border: none;
+  color: #ffffff;
+  border-radius: 5px;
+}
+.hidden{
+  display: none;
+}
+.pad {
+  color: #666;
+  font-size: 12px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+}
+.active {
+  color: #333 !important;
+  border-radius: 10px;
+  border-color: #cf000d;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+

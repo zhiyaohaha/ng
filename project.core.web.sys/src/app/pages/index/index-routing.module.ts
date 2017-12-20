@@ -29,6 +29,7 @@ const childRoutes: Routes = [
     path: "OrgStructure.GroupMgr",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
   },
+  {path: "LoanMgr.OrderMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "OrgStructure.FinanceMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.BannerMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.NewsMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},

@@ -15,12 +15,14 @@ import {TimiSelectModule} from "../timi-select/select.component";
 import {BaseService} from "../../services/base.service";
 import {EditorModule} from "app/component/editor/editor.component";
 import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
+import { NewComponentModule } from "app/newcomponent/newcomponent.module";
+import { RegionComponent } from "app/newcomponent/region/region.component";
 
 
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
-  styleUrls: ["./responsive-model.component.scss"]
+  styleUrls: ["./responsive-model.component.scss"],
 })
 
 export class ResponsiveModelComponent implements OnInit {
@@ -90,9 +92,9 @@ export class ResponsiveModelComponent implements OnInit {
    * @param option 需要联动的配置
    */
   selectChange($event, option) {
-    if (!$event) {
-      return false;
-    }
+    // if (!$event) {
+    //   return false;
+    // }
     if (option) {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
@@ -102,8 +104,17 @@ export class ResponsiveModelComponent implements OnInit {
         if (!option[i].triggerUrl) {
           return false;
         }
+        // if (!$event) {
+        //   this._modelDOMSData[option[i].triggerDom] = "clear";
+        //   return false;
+        // }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
+            if(r.data && r.data.length>0){
+              this._modelDOMSData[option[i].triggerDom] = r.data;  //附件项数据修改，dynamic组件数据随之修改
+            }else{
+              this._modelDOMSData[option[i].triggerDom] = null;
+            }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });
@@ -146,9 +157,11 @@ export class ResponsiveModelComponent implements OnInit {
     TimiCheckboxModule,
     TimiSelectModule,
     EditorModule,
-    DynamicDomsModule
+    DynamicDomsModule,
+    NewComponentModule
   ],
   declarations: [ResponsiveModelComponent],
+  providers: [RegionComponent],
   exports: [ResponsiveModelComponent]
 })
 

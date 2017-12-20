@@ -20,7 +20,6 @@ detailId = $.request("id") || "";
 
 var ifameParentHeight = parent.document.getElementById("parentFrame").height; //取得父页面IFrame对象 
 var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高度
-
 //获取下拉框选项
 $.ajax({
     type: "GET",
@@ -813,18 +812,10 @@ function bindCmds(data) {
         <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
     </div>`; 
     $("#cmdsGroup").append(html);
-    $(".cmdFields, .cmdTriggerWhere").droppable({
+    $(".cmdFields").droppable({
         drop: function(event, ui){
-            /******11.17 add : 拖入以后则禁止输入  start********/
-            $(this).attr('disabled','disabled')
-            /******11.17 add : 拖入以则禁止输入  end********/
-            if($(this).val()){               
-                // $(this).data("value", $(this).data("value") +","+bindField);
-                
-                /******11.17 update : 可以先输入再拖入  start********/
-                    $(this).data("value", $(this).data("value") ? $(this).data("value") : $(this).val() +","+bindField);
-                /******11.17 update : 可以先输入再拖入  end********/
-
+            if($(this).val()){
+                $(this).data("value", $(this).data("value")+","+bindField);
                 $(this).val($(this).val()+","+bindTitle);
             }else{
                 $(this).data("value", bindField);
@@ -832,6 +823,29 @@ function bindCmds(data) {
             }
         }
     })
+    $(".cmdTriggerWhere").droppable({
+        drop: function(event, ui){
+            /******11.17 add : 拖入以后则禁止输入  start********/
+            /******11.17 add : 拖入以则禁止输入  end********/
+            if($(this).val()){
+                if($(this).attr('disabled')){  
+                    $(this).data("value", $(this).data("value")+","+bindField);    
+                }else{  //表示第一次拖入
+                    $(this).data("value", $(this).val()+","+bindField);   
+                }
+                $(this).val($(this).val()+","+bindTitle);
+            }else{
+                $(this).data("value", bindField);
+                $(this).val(bindTitle);
+            }
+            $(this).attr('disabled','disabled')
+
+            console.log($(this).data("value"))
+        }
+    })
+
+
+    
 }
 
 //复制dom-panel
@@ -1235,7 +1249,7 @@ $(".additional").on("click", ".addnotes", function(){
                                             <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
                                         </div>`);
 
-        $(".cmdFields, .cmdTriggerWhere").droppable({
+        $(".cmdFields").droppable({
             drop: function(event, ui){
                 if($(this).val()){
                     $(this).data("value", $(this).data("value")+","+bindField);
@@ -1244,6 +1258,26 @@ $(".additional").on("click", ".addnotes", function(){
                     $(this).data("value", bindField);
                     $(this).val(bindTitle);
                 }
+            }
+        })
+        $(".cmdTriggerWhere").droppable({
+            drop: function(event, ui){
+                /******11.17 add : 拖入以后则禁止输入  start********/
+                /******11.17 add : 拖入以则禁止输入  end********/
+                if($(this).val()){
+                    if($(this).attr('disabled')){  
+                        $(this).data("value", $(this).data("value")+","+bindField);    
+                    }else{  //表示第一次拖入
+                        $(this).data("value", $(this).val()+","+bindField);   
+                    }
+                    $(this).val($(this).val()+","+bindTitle);
+                }else{
+                    $(this).data("value", bindField);
+                    $(this).val(bindTitle);
+                }
+                $(this).attr('disabled','disabled')
+    
+                console.log($(this).data("value"))
             }
         })
     }else if (name === "formTemplate"){
@@ -1394,63 +1428,6 @@ function saveAttrAndCss(obj){
 }
 
 //dom数据
-// function boxDom() {
-//     var dom = [];
-//     $(".dom-panel").each(function(index, element){
-//         var panelId = $(this).attr("id");
-//         var arr = [];
-//         $(this).find(".element-wrap").each(function(i, el){
-//             var wrapId = $(this).attr("id");
-//             objData[wrapId].ui.sort = i;
-//             objData[wrapId].ui.columns = $(this).data("col");
-//             arr.push(objData[wrapId]);
-//         })
-//         if(index === 0) {
-//             arr.push({bindMethod:"",bindTarget:null,description:"",name:"id",ui:{attrs:null,classes:null,columns:1,disabled:false,displayType:"HtmlDomDisplayType.Hidden",hidden:true,label:"",multiple:false,placeholder:"",required:false,sort:0}})
-//         }
-//         objData[panelId].childrens = arr;
-//         objData[panelId].ui.sort = index;
-//         objData[panelId].ui.columns = 2;
-//         dom.push(objData[panelId]);
-//     })
-//     //dom[0].childrens.append()
-//     return dom;
-// }
-// function boxDom() {
-//     var dom = [];
-//     $(".dom-panel").each(function(index, element){
-//         var panelId = $(this).attr("id");
-//         var arr = [];
-//         $(this).children(".dom-panel-content").children(".element-wrap").each(function(i, el){
-//             var wrapId = $(this).attr("id");
-//             objData[wrapId].ui.sort = i;
-//             objData[wrapId].ui.columns = $(this).data("col");
-
-//             var arr_ = [];
-//             if($(this).children(".element-wrap").length > 0){
-//                 $(this).children(".element-wrap").each(function(item, e){
-//                     var wrapId_ = $(this).attr("id");
-//                     objData[wrapId_].ui.sort = i;
-//                     objData[wrapId_].ui.columns = $(this).data("col");
-//                     arr_.push(objData[wrapId_])
-//                 })
-//                 objData[wrapId].childrens = arr_;
-//             }
-
-//             arr.push(objData[wrapId]);
-//         })
-//         // if(index === 0) {
-//         //     arr.push({bindMethod:"",bindTarget:null,description:"",name:"id",ui:{attrs:null,classes:null,columns:1,disabled:false,displayType:"HtmlDomDisplayType.Hidden",hidden:true,label:"",multiple:false,placeholder:"",required:false,sort:0}})
-//         // }
-//         objData[panelId].childrens = arr;
-//         objData[panelId].ui.sort = index;
-//         objData[panelId].ui.columns = 2;
-//         dom.push(objData[panelId]);
-//     })
-//     return dom;
-// }
-
-//dom数据
 function boxDomChild(domPanelOneLevel){  //(一级和二级)面板里面的内容
     var dom = [];
     domPanelOneLevel.each(function(index, element){  //一级面板
@@ -1513,7 +1490,7 @@ function saveTemplate() {
         data.id = detailId    
     }else{         //新增模板
         detailTemplateOperateUrl  = 'Add';  
-    }
+    }    
     console.log(data)
     $.ajax({
         type: "POST",

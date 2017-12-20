@@ -147,7 +147,7 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.historyValue = '<p><br></p>';
     this.face = 72;
     this.alignIcon = '\uf036';
-    this.fontSize = [12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96];
+    this.fontSize = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
     this.tds = new Array(50).fill(1);
     this.selectedRow = this.selectedCol = 0;
     this.defaultButtons = {
@@ -1303,24 +1303,8 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
   }
 
   changeFontSize(event: any, value: number) {
-
-    let testDiv = document.createElement("div");
-    testDiv.appendChild(this.selectedRange.cloneContents());
-    let selectHtml = testDiv.innerHTML;
-
     this.currentFontSize = value;
-    if (this.selectedRange.commonAncestorContainer.nodeType === 1) {
-      let html;
-      if (this.selectedRange.commonAncestorContainer.innerHTML.indexOf("</p>") !== -1) {
-        html = selectHtml.replace(/font-size: \d{1,2}/ig, `font-size: ${value}`);
-      } else {
-        html = `<span style="font-size: ${value};">${this.selectedRange.toString()}</span>`;
-      }
-      this.execCommand('insertHTML', html);
-    } else if (this.selectedRange.commonAncestorContainer.nodeType === 3) {
-      this.execCommand('insertHTML', `<span style="font-size: ${value}px">${this.getSelectionText()}</span>`);
-    }
-
+    this.execCommand('insertHTML', `<span style="font-size: ${value}px">${this.getSelectionText()}</span>`);
     this.closeModal();
     event.stopPropagation();
   }

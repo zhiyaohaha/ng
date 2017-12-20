@@ -1,49 +1,48 @@
 <h4 class="">{{title}}</h4>
-<div *ngIf="!bindData.length">
-      <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData.length}">
-        <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
-          <ng-container *ngFor="let child of item">
-            <ng-container [ngSwitch]="child.ui.displayType">
-                  <!-- 动态组件判断 -->
-                  <!-- 第一行 -->
+<!-- <div *ngIf="modelDOMSData.length > 1"> -->
+  <div class="wrap clearfix wrap-border" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight >
+      <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
+        <ng-container *ngFor="let child of item">
+          <ng-container [ngSwitch]="child.ui.displayType">
+                  <!-- 一级面板动态组件  -->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                      [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                       [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                     <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
                                 [placeholder]="child.ui.placeholder" (blur)="inputBlur($event)">
                     </timi-input>
                   </div>
-                  <!-- 第二行 -->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
                     <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                pholder="{{child.ui.placeholder || '请选择'}}"
-                                [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
-                                [freeSelectName]="child.ui.label || '请选择'"
-                                [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)">
+                                 pholder="{{child.ui.placeholder || '请选择'}}"
+                                 [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
+                                 [freeSelectName]="child.ui.label || '请选择'"
+                                 [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)">
                     </timi-select>
                   </div>
-    
+           
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                     <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}"
-                                  [(ngModel)]="modelDOMSData[i][child.name]"
-                                  [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData"
-                                  [columns]="child.ui.columns">
+                                   [(ngModel)]="modelDOMSData[i][child.name]"
+                                   [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData"
+                                   [columns]="child.ui.columns">
                     </timi-checkbox>
                     <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                  [labelName]="child.ui.label"
-                                  [checkboxs]="child.ui.label" [columns]="child.ui.columns">
+                                   [labelName]="child.ui.label"
+                                   [checkboxs]="child.ui.label" [columns]="child.ui.columns">
                     </timi-checkbox>
                   </div>
+
                   <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
-                        [(ngModel)]="modelDOMSData[i][child.name]"
-                        placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false"
-                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
+                         [(ngModel)]="modelDOMSData[i][child.name]"
+                         placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false"
+                         [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                      [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                       [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                     <timi-textarea name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]" [labelName]="child.ui.label"
-                                  [placeholder]="child.ui.placeholder">
+                                   [placeholder]="child.ui.placeholder">
                     </timi-textarea>
                   </div>
-    
+          
                   <!--<div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">-->
                   <!--<div>-->
                   <!--<timi-file-uploader name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"-->
@@ -54,302 +53,95 @@
                   <!--</div>-->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                     <timi-chip-group name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                    [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
-                                    [columns]="child.ui.columns">
+                                     [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
+                                     [columns]="child.ui.columns">
                     </timi-chip-group>
                   </div>
-    
-                  <!-- 静态组件判断 -->
-                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
-                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                    <div class="label">{{child.ui.label}}</div>
-                    <div class="img-wrap span" (click)="toShow($event)">
-                      <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
-                        <img *ngFor="let file of child.name | ergodicJson : modelDOMSData" src="{{file || imgSrc}}" alt="">
-                      </ng-template>
-                      <ng-template [ngIf]="!child.ui.multiple">
-                        <img #elseblock src="{{modelDOMSData[child.name] || imgSrc}}" alt="">
-                      </ng-template>
-                    </div>
-                  </div>
-    
+
+                   <!-- 一级面板静态组件 -->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                      <div class="label">{{child.ui.label}}</div>
-                      <ng-container [ngSwitch]="child.ui.pipe">
-                        <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData |
-                          date:"yyyy-MM-dd HH:mm:ss"}}
-                        </div>
-                        <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
-                          date:"yyyy-MM-dd"}}
-                        </div>
-                        <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                        <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
-                      </ng-container>
-                  </div>
-    
-                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
-                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                    <div class="label">{{child.ui.label}}</div>
-                    <div class="span" *ngIf="isArray(modelDOMSData[child.name]);else elseblock;">
-                      <p *ngFor="let item of modelDOMSData[child.name]">{{item}}</p>
-                    </div>
-                    <ng-template #elseblock>
-                      <!--<div class="span">{{child.name | ergodicJson : modelDOMSData}}</div>-->
-                      <div class="span" [innerHTML]="child.name | ergodicJson : modelDOMSData"></div>
-                    </ng-template>
-                  </div>
-                  
-                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
-                        style="text-align: center;">
-                    <ng-container *ngFor="let btn of child.childrens;">
-                      <button md-raised-button (click)="clickEvent(btn.cmds)">{{btn.ui.label}}</button>
-                    </ng-container>
-                  </div>
-    
-                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
                   [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                    <div class="label">{{child.ui.label}}</div>
-                    <div class="span" *ngIf="isArray(data[child.name]);else elseblock;">
-                      <p *ngFor="let item of data[child.name]">{{item}}</p>
-                    </div>
-                    <ng-template #elseblock>
-                      <div class="span" [innerHTML]="child.name | lastdot : data"></div>
-                    </ng-template>
+                        <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
+                        <ng-container [ngSwitch]="child.ui.pipe">
+                          <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData[i] |
+                            date:"yyyy-MM-dd HH:mm:ss"}}
+                          </div>
+                          <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData[i] |
+                            date:"yyyy-MM-dd"}}
+                          </div>
+                          <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
+                          <div class="span" *ngSwitchDefault> {{child.name | ergodicJson : modelDOMSData[i]}}</div>
+                        </ng-container>
                   </div>
-                  
-                <!-- 二级面板 -->
-                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Panel'"
+                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
                   [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                      <div class="form-group columns2">
-                          <div style="width:10%;text-align:center">{{child.ui.label}}</div>
+                      <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
+                      <div class="img-wrap span" (click)="toShow($event)">
+                        
+                        <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
+                       
+                          <img *ngFor="let file of child.name | ergodicJson : modelDOMSData[i]" src="{{file || imgSrc}}" alt="">
+                        </ng-template>
+                        <ng-template [ngIf]="!child.ui.multiple">
+                          <img #elseblock src="{{modelDOMSData[i][child.name] || imgSrc}}" alt="">
+                        </ng-template>
                       </div>
-                      <ng-container *ngFor="let child of child.childrens">
-                          <!-- <p>{{child.ui.displayType}}</p> -->
-                          <ng-container [ngSwitch]="child.ui.displayType">
-                            <!-- 动态组件判断 -->
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-                                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                              <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                          [placeholder]="child.ui.placeholder" (blur)="inputBlur($event)">
-                              </timi-input>
-                            </div>
-    
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-                              <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                          pholder="{{child.ui.placeholder || '请选择'}}"
-                                          [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
-                                          [freeSelectName]="child.ui.label || '请选择'"
-                                          [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)">
-                              </timi-select>
-                            </div>
-                    
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                              <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}"
-                                            [(ngModel)]="modelDOMSData[i][child.name]"
-                                            [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData"
-                                            [columns]="child.ui.columns">
-                              </timi-checkbox>
-                              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                            [labelName]="child.ui.label"
-                                            [checkboxs]="child.ui.label" [columns]="child.ui.columns">
-                              </timi-checkbox>
-                            </div>
-                            <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}"
-                                  [(ngModel)]="modelDOMSData[i][child.name]"
-                                  placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false"
-                                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                                [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                              <timi-textarea name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]" [labelName]="child.ui.label"
-                                            [placeholder]="child.ui.placeholder">
-                              </timi-textarea>
-                            </div>
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                              <timi-chip-group name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
-                                              [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
-                                              [columns]="child.ui.columns">
-                              </timi-chip-group>
-                            </div>
-                    
-                            <!-- 静态组件判断 -->
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
-                                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                              <div class="label">{{child.ui.label}}</div>
-                              <div class="img-wrap span" (click)="toShow($event)">
-                                <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
-                                  <img *ngFor="let file of child.name | ergodicJson : modelDOMSData" src="{{file || imgSrc}}" alt="">
-                                </ng-template>
-                                <ng-template [ngIf]="!child.ui.multiple">
-                                  <img #elseblock src="{{modelDOMSData[child.name] || imgSrc}}" alt="">
-                                </ng-template>
-                              </div>
-                            </div>
-                    
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-                                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                                <div class="label">{{child.ui.label}}</div>
-                                <ng-container [ngSwitch]="child.ui.pipe">
-                                  <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData |
-                                    date:"yyyy-MM-dd HH:mm:ss"}}
-                                  </div>
-                                  <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
-                                    date:"yyyy-MM-dd"}}
-                                  </div>
-                                  <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                                  <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
-                                </ng-container>
-                            </div>
-                    
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
-                                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                              <div class="label">{{child.ui.label}}</div>
-                              <div class="span" *ngIf="isArray(modelDOMSData[child.name]);else elseblock;">
-                                <p *ngFor="let item of modelDOMSData[child.name]">{{item}}</p>
-                              </div>
-                              <ng-template #elseblock>
-                                <div class="span" [innerHTML]="child.name | ergodicJson : modelDOMSData"></div>
-                              </ng-template>
-                            </div>
-                            
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
-                                  style="text-align: center;">
-                              <ng-container *ngFor="let btn of child.childrens;">
-                                <button md-raised-button (click)="clickEvent(btn.cmds)">{{btn.ui.label}}</button>
+                  </div> 
+
+                  <!-- 二级面板-->
+                  <div *ngFor="let binddataItem of modelDOMSData[i]['attachments'];let j=index;">
+                      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Panel'"
+                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                          <ng-container *ngFor="let child of child.childrens">
+                              <ng-container [ngSwitch]="child.ui.displayType">
+                                <!-- 二级面板-动态组件判断 -->
+                                <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                                    <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name | lastdot : data}}"
+                                                  [ngModel]="binddataItem[child.name | lastdot : data]" 
+                                                  (ngModelChange)="updateAmount(binddataItem,child.name,$event)"
+                                                  [labelName]="child.ui.label"
+                                                  [checkboxs]="child.ui.label" [columns]="child.ui.columns">
+                                    </timi-checkbox>
+                                  </div> 
+
+                                <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
+                                    [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                                  <timi-textarea name="{{child.name| lastdot : data}}"  
+                                                [ngModel]="binddataItem[child.name | lastdot : data]" 
+                                                (ngModelChange)="updateAmount(binddataItem,child.name,$event)"
+                                                [labelName]="child.ui.label"
+                                                [placeholder]="child.ui.placeholder">
+                                  </timi-textarea>
+                                </div>
+                                 <!-- 二级面板- 静态组件判断 -->
+                                 <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
+                                 [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                                    <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
+                                    <ng-container [ngSwitch]="child.ui.pipe">
+                                      <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson :binddataItem |
+                                        date:"yyyy-MM-dd HH:mm:ss"}}
+                                      </div>
+                                      <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson :binddataItem |
+                                        date:"yyyy-MM-dd"}}
+                                      </div>
+                                      <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
+                                      <div class="span" *ngSwitchDefault> {{child.name | ergodicJson : binddataItem}}</div>
+                                    </ng-container>
+                                </div>
                               </ng-container>
-                            </div>
-                    
-                            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
-                            [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                              <div class="label">{{child.ui.label}}</div>
-                              <div class="span" *ngIf="isArray(data[child.name]);else elseblock;">
-                                <p *ngFor="let item of data[child.name]">{{item}}</p>
-                              </div>
-                              <ng-template #elseblock>
-                                <div class="span" [innerHTML]="child.name | lastdot : data"></div>
-                              </ng-template>
-                            </div>
-                            
-                            </ng-container>
-                        </ng-container>  
-                  </div>
-            
-            </ng-container>
+                          </ng-container>  
+                      </div>
+                    </div>
           </ng-container>
-          
+        </ng-container>
+       
+        <!-- <div *ngIf="modelDOMSData.length"> -->
           <div class="btn" *ngIf="i === _modelDOMS.length - 1;else elseBlock" (click)="handleNode(i, 'add')">+</div>
           <ng-template #elseBlock>
             <div class="btn" (click)="handleNode(i, 'del')">-</div>
           </ng-template>
         </div>
-    
-      </div>
-</div>
-<div *ngIf="bindData.length">
-  
-    <div  *ngFor="let binddata of bindData;let k = index;">
-        <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':bindData.length}">
-          <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
-            <ng-container *ngFor="let child of item">
-              <ng-container [ngSwitch]="child.ui.displayType">
-                <div class="bindDataClass">
-                  <!-- 临时用于触发数据模型修改end  -->
-                    <!-- 应该是一个多维数组，用k作为下标 -->
-                    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-                    [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                          <div class="label-level-1"><free-checkbox [label]="binddata.name" (onChange)="changePostData($event.checked,1,0,ephemeralData[k])"></free-checkbox></div>
-                          <ng-container [ngSwitch]="child.ui.pipe">
-                            <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : ephemeralData |
-                              date:"yyyy-MM-dd HH:mm:ss"}}
-                            </div>
-                            <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : ephemeralData |
-                              date:"yyyy-MM-dd"}}
-                            </div>
-                            <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                            <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : ephemeralData}}</div>
-                          </ng-container>
-                    </div>
-                    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                      <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="ephemeralData[k][child.name]"
-                                    [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData"
-                                    [columns]="child.ui.columns">
-                      </timi-checkbox>
-                      <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="ephemeralData[k][child.name]"
-                                    [labelName]="child.ui.label"
-                                    [checkboxs]="child.ui.label" [columns]="child.ui.columns">
-                      </timi-checkbox>
-                    </div> 
+      <!-- </div> -->
+  </div>
 
-                    <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
-                    [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                        <div class="label">{{child.ui.label}}</div>
-                        <div class="img-wrap span" (click)="toShow($event)">
-                          
-                          <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
-                         
-                            <img *ngFor="let file of child.name | ergodicJson : modelDOMSData" src="{{file || imgSrc}}" alt="">
-                          </ng-template>
-                          <ng-template [ngIf]="!child.ui.multiple">
-                         
-                            <img #elseblock src="{{ephemeralData[k][child.name] || imgSrc}}" alt="">
-                          </ng-template>
-                        </div>
-                        <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
-                    </div> 
-
-                    <!-- 二级面板 (修改为 该项是数组，是数组则循环)-->
-                    <div *ngFor="let binddataItem of binddata._attachments;let j=index;">
-                        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Panel'"
-                              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                          <ng-container *ngFor="let child of child.childrens">
-                              <ng-container [ngSwitch]="child.ui.displayType">
-                                <!-- 动态组件判断 -->
-                                <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                                  <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name | lastdot : data}}"
-                                                [ngModel]="ephemeralData[k]['_attachments'][j][child.name | lastdot : data]" 
-                                                (ngModelChange)="updateAmount(ephemeralData[k]['_attachments'][j],child.name,$event)"
-                                                [labelName]="child.ui.label"
-                                                [checkboxs]="child.ui.label" [columns]="child.ui.columns">
-                                  </timi-checkbox>
-                                </div> 
-                                <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                                    [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                                  <timi-textarea name="{{child.name| lastdot : data}}"  
-                                                [ngModel]="ephemeralData[k]['_attachments'][j][child.name | lastdot : data]" 
-                                                (ngModelChange)="updateAmount(ephemeralData[k]['_attachments'][j],child.name,$event)"
-                                                [labelName]="child.ui.label"
-                                                [placeholder]="child.ui.placeholder">
-                                  </timi-textarea>
-                                </div>
-                                <!-- 静态组件判断 -->
-                                <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-                                      [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                                    <!-- <div  class="label-level-2"><free-checkbox [label]="binddataItem.name" (onChange)="changePostData($event.checked,2,k,ephemeralData[k]['_attachments'][j])"></free-checkbox></div> -->
-                                    <div  class="label-level-2">{{binddataItem.name}}</div>
-                                    <ng-container [ngSwitch]="child.ui.pipe">
-                                      <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : ephemeralData |
-                                        date:"yyyy-MM-dd HH:mm:ss"}}
-                                      </div>
-                                      <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : ephemeralData |
-                                        date:"yyyy-MM-dd"}}
-                                      </div>
-                                      <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord}}</div>
-                                      <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : ephemeralData}}</div>
-                                    </ng-container>
-                                </div>
-                              </ng-container>
-                          </ng-container>  
-                        </div>
-                    </div>
-                </div>    
-              </ng-container>
-            </ng-container>
-            <ng-template #elseBlock>
-              <div class="btn" (click)="handleNode(i, 'del')">-</div>
-            </ng-template>
-          </div>
-        </div>
-
-        
-      </div>  
-</div>
+<!-- </div> -->
