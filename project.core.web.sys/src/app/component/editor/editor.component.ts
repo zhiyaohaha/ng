@@ -147,7 +147,7 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.historyValue = '<p><br></p>';
     this.face = 72;
     this.alignIcon = '\uf036';
-    this.fontSize = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
+    this.fontSize = [12, 14, 18, 24, 30, 36, 48, 60, 72, 96];
     this.tds = new Array(50).fill(1);
     this.selectedRow = this.selectedCol = 0;
     this.defaultButtons = {
