@@ -1303,8 +1303,26 @@ export class EditorComponent implements OnInit, ControlValueAccessor, AfterViewI
   }
 
   changeFontSize(event: any, value: number) {
+
     this.currentFontSize = value;
-    this.execCommand('insertHTML', `<span style="font-size: ${value}px">${this.getSelectionText()}</span>`);
+
+    let testDiv = document.createElement("div");
+    testDiv.appendChild(this.selectedRange.cloneContents());
+    let selectHtml = testDiv.innerHTML;
+
+    this.currentFontSize = value;
+    if (this.selectedRange.commonAncestorContainer.nodeType === 1) {
+      let html;
+      if (this.selectedRange.commonAncestorContainer.innerHTML.indexOf("</p>") !== -1) {
+        html = selectHtml.replace(/font-size: \d{1,2}/ig, `font-size: ${value}`);
+      } else {
+        html = `<span style="font-size: ${value};">${this.selectedRange.toString()}</span>`;
+      }
+      this.execCommand('insertHTML', html);
+    } else if (this.selectedRange.commonAncestorContainer.nodeType === 3) {
+      this.execCommand('insertHTML', `<span style="font-size: ${value}px">${this.getSelectionText()}</span>`);
+    }
+
     this.closeModal();
     event.stopPropagation();
   }
