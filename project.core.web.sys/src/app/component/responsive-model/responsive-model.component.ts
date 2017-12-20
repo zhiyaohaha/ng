@@ -92,9 +92,9 @@ export class ResponsiveModelComponent implements OnInit {
    * @param option 需要联动的配置
    */
   selectChange($event, option) {
-    if (!$event) {
-      return false;
-    }
+    // if (!$event) {
+    //   return false;
+    // }
     if (option) {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
@@ -104,8 +104,17 @@ export class ResponsiveModelComponent implements OnInit {
         if (!option[i].triggerUrl) {
           return false;
         }
+        // if (!$event) {
+        //   this._modelDOMSData[option[i].triggerDom] = "clear";
+        //   return false;
+        // }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
+            if(r.data && r.data.length>0){
+              this._modelDOMSData[option[i].triggerDom] = r.data;  //附件项数据修改，dynamic组件数据随之修改
+            }else{
+              this._modelDOMSData[option[i].triggerDom] = null;
+            }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });

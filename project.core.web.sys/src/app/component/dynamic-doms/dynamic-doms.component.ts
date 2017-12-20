@@ -10,6 +10,7 @@ import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-up
 import {TimiChipModule} from "../timi-chip/chip.component";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import {CheckboxModule} from "../checkbox/checkbox.component";
+import {defaultValue} from "../../common/global.config";
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DynamicDomsComponent),
@@ -34,19 +35,10 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
  
-  bindData = []; //附件项数据
-  ephemeralData = [{}]
+  imgSrc = defaultValue.imgSrc; //图片默认地址
+
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
-    if(value.bindData){
-        // this.bindData = value.bindData;
-        // this.modelDOMSData = value.bindData;  
-        for (var key in value.bindData) {  
-          var val = value.bindData[key];  
-          this.bindData[key] = val;  
-          this.ephemeralData[key] = val;  
-        }  
-    }
     if (value.childrens) {
       this._notes = value.childrens;
       this._notes.map(item => {
@@ -76,37 +68,33 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   updateAmount(data,value,event){
     var key = value.split(".").pop();
     data[key] = event;
-  }
-  //根据chebox的选项，是否发送该项数据
-  changePostData(value,level,key,data){
-    this.modelDOMSData.splice(this.modelDOMSData.indexOf({}),1)
-    // var postdata = (level == 2 ? this.modelDOMSData[key]: this.modelDOMSData)  //判断是否是2级面板
-    // console.log(postdata)
-    // if(value){
-    //   postdata.push(data)
-    // }else{
-    //   var deldataIndex = postdata.indexOf(data);
-    //   if(deldataIndex !== -1){
-    //     postdata.splice(deldataIndex,1); 
-    //   }
-    // }
-    // this.onModelChange(this.modelDOMSData);
-    if(value){
-      this.modelDOMSData.push(data)
-    }else{
-      var deldataIndex = this.modelDOMSData.indexOf(data);
-      if(deldataIndex !== -1){
-        this.modelDOMSData.splice(deldataIndex,1); 
-      }
-    }
     this.onModelChange(this.modelDOMSData);
+  }
+  
+  /**
+   * 判断是否为数组
+   * @param 判断对象
+   */
+  isArray(params) {
+    return Array.isArray(params);
   }
 
   writeValue(value: any) {
     this.afterMoveData = value;
+    // this._modelDOMS = [];  
+    console.log(this.modelDOMSData)
+    // if(value == "clear" || Array.isArray(value)){
+    //     this._modelDOMS = [];    //产品附件默认组不清空
+    //     this.onModelChange(null);
+    // }
+    this._modelDOMS = [];
     if (Array.isArray(value)) {
+
+      this.modelDOMSData = [];
+      
       this.modelDOMSData = value;
-      for (let i = 0; i < value.length - 1; i++) {
+
+      for (let i = 0; i < value.length; i++) {
         this._modelDOMS.push(this._notes);
       }
     }
@@ -114,7 +102,6 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this.onModelChange(null);
     }
   }
-
   registerOnChange(fn: any): void {
     this.onModelChange = fn;
   }

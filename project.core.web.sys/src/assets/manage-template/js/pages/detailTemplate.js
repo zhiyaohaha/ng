@@ -281,11 +281,7 @@ function dragCreateDom_Panel(domval,that,editData,status){
         }
     }
 
-    //还原单个面板的triggerdom option设置
-    if(editData.name && editData.ui.label)  {
-        cmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
-        $(".cmdFormDom").html(cmdFormDom);
-    }
+
 
     objData[id] = editData;
     if(status == "add"){  //新增状态下,默认点击，自动拖入的面板； 编辑状态下,因为面板较多，所以无需默认第一个面板

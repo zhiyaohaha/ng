@@ -22,7 +22,7 @@ export class ErgodicJsonPipe implements PipeTransform {
       let arr = value.split(".");
       for (let i = 0; i < arr.length; i++) {
         if (typeof args[arr[i]] === "undefined") {
-          return "";
+          continue;
         }
         args = args[arr[i]];
         if (Array.isArray(args)) {
