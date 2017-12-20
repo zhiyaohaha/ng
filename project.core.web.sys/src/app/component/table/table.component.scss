@@ -1,4 +1,18 @@
 :host /deep/ {
+
+  .td-data-table-row, td {
+    height: 30px !important;
+  }
+  .td-data-table-heading, .td-data-table-cell-content-wrapper {
+    padding: 0 2px !important;
+    height: 30px !important;
+    span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
   .table-img {
     width: 25px;
     height: 25px;
