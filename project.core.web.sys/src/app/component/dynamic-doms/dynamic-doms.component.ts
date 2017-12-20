@@ -44,8 +44,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this._notes.map(item => {
         item.name = item.name.replace(value.name + ".", "");
     });
-
-      this._modelDOMS.push(this._notes);
+      // this._modelDOMS.push(this._notes);
     }
     this.title = value.ui.label;
   }
@@ -97,6 +96,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       }
     }
     if (!value) {
+      this._modelDOMS[0] = this._notes;
       this.onModelChange(null);
     }
   }
