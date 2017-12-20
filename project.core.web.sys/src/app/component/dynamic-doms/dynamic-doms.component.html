@@ -76,7 +76,7 @@
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
                   [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                       <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
-                      <div class="img-wrap span" (click)="toShow($event)">
+                      <div class="img-wrap span">
                         
                         <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
                        
