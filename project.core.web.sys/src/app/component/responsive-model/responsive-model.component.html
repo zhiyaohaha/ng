@@ -88,7 +88,7 @@
       </div>
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
-        <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}"></dynamic-doms>
+        <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
       </div>
     </ng-container>
   </ng-container>
@@ -188,7 +188,7 @@
       </div>
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
-        <dynamic-doms [modelDOMS]="item" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}"></dynamic-doms>
+        <dynamic-doms [modelDOMS]="item" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}"  [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
       </div>
     </ng-container>
   </ng-template>

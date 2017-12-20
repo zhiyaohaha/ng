@@ -36,6 +36,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   afterMoveData = [{}]; //移动过后的数据
  
   imgSrc = defaultValue.imgSrc; //图片默认地址
+  @Input() custom;  //用于区分是否显示加减按钮,与边框
 
   @Input() //页面DOMS结构
   set modelDOMS(value: any) {
@@ -69,7 +70,15 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     data[key] = event;
     this.onModelChange(this.modelDOMSData);
   }
-  
+
+  customFun(){  //用于设置是否显示加减按钮,与边框
+      if(this.custom.key == "custom" && this.custom.value == "true"){
+          return true;
+      }else{
+        return false;
+      }
+  }
+
   /**
    * 判断是否为数组
    * @param 判断对象

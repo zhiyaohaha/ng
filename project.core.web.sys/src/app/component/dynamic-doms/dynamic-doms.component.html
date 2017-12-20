@@ -1,6 +1,6 @@
 <h4 class="">{{title}}</h4>
-<!-- <div *ngIf="modelDOMSData.length > 1"> -->
-  <div class="wrap clearfix wrap-border" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight >
+
+  <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':!customFun()}" >
       <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
         <ng-container *ngFor="let child of item">
           <ng-container [ngSwitch]="child.ui.displayType">
@@ -137,13 +137,11 @@
           </ng-container>
         </ng-container>
        
-        <!-- <div *ngIf="modelDOMSData.length"> -->
+        <div *ngIf="customFun()">
           <div class="btn" *ngIf="i === _modelDOMS.length - 1;else elseBlock" (click)="handleNode(i, 'add')">+</div>
           <ng-template #elseBlock>
             <div class="btn" (click)="handleNode(i, 'del')">-</div>
           </ng-template>
         </div>
-      <!-- </div> -->
+      </div>
   </div>
-
-<!-- </div> -->
