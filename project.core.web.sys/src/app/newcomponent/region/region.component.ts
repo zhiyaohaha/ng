@@ -135,6 +135,7 @@ export class RegionComponent implements OnInit {
       this.removeByValue(this.duplicatesProvinceArr, provinceId);
     } else if (!city.checked && isInArray) {
       this.result[i].c[j].checked = false;
+      this.duplicatesProvinceArr.push(provinceId)
 
       for (let n = 0; n < this.result[i].c[j].c.length; n++) {
         this.result[i].c[j].c[n].checked = false;
