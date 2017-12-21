@@ -11,7 +11,7 @@ export const REGION_VALUE_ACCESSOR: any = {
 @Component({
   selector: "free-region",
   templateUrl: "./region.component.html",
-  styleUrls: ["./region.component.css"],
+  styleUrls: ["./region.component.scss"],
   providers: [REGION_VALUE_ACCESSOR]
 })
 export class RegionComponent implements OnInit, AfterViewInit, ControlValueAccessor {
@@ -22,6 +22,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   result: any; //获取data
   checked: boolean = false; //给data增加checked字段
   provinceList: Array<any> = []; //全选时的element
+
+  isShowBox: boolean = true;
 
   allCheckedState: string; //是否全选 "all" or ""
 

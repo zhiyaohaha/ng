@@ -1,0 +1,140 @@
+<md-sidenav-container [@fadeInState]="'active'">
+
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button md-raised-button color="deepblue" class="add-button" (click)="sidenav.open()">报单
+    </button>
+  </div>
+
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
+    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
+    
+  <!-- <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <div class="row">
+      <div class="col-lg-12">
+        <timi-responsive-form [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow"
+          (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+      </div>
+    </div>
+  </md-sidenav> -->
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <div class="row">
+      <div class="col-lg-12">
+        <form>
+
+          <div class="declaration">
+            <h4>报单：</h4>
+            <span>关键字：</span>
+            <input type="text" name="search" placeholder="搜索产品" class ="search">
+            <button class="searchBtn">搜索</button>
+            
+            <ul class="selectType">
+              <li *ngFor="let type of productType;let i = index">
+                <input type="radio" id="type${{i}}" class="hidden" name="productType" #product>
+                <label for="type${{i}}" [class.active]="product.checked">{{type.name}}</label>
+              </li>
+            </ul>
+
+            <ul class="products">
+              <li>
+                <img src="../../../assets/iconred.png" alt="logo" class="pic">
+                <div class="content">
+                  <p>产品名称</p>
+                  <p>利率描述</p>
+                  <p>20万~2000万</p>
+                </div>
+              </li>
+              <li>
+                <img src="../../../assets/iconred.png" alt="logo" class="pic">
+                <div class="content">
+                  <p>产品名称</p>
+                  <p>利率描述</p>
+                  <p>20万~2000万</p>
+                </div>
+              </li>
+              <li>
+                <img src="../../../assets/iconred.png" alt="logo" class="pic">
+                <div class="content">
+                  <p>产品名称</p>
+                  <p>利率描述</p>
+                  <p>20万~2000万</p>
+                </div>
+              </li>
+              <li>
+                <img src="../../../assets/iconred.png" alt="logo" class="pic">
+                <div class="content">
+                  <p>产品名称</p>
+                  <p>利率描述</p>
+                  <p>20万~2000万</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="authentication">
+            <h4>身份认证：</h4>
+            <ul class="info">
+              <li>
+                <span class="left">身份证号：</span>
+                <input type="text">
+                <span class="right">错误提示</span>
+              </li>
+              <li>
+                <span class="left">银行卡号：</span>
+                <input type="text">
+              </li>
+              <li>
+                <span class="left">银行预留手机号：</span>
+                <input type="text">
+                <span class="right"><button>发送验证码</button></span>
+              </li>
+              <li>
+                <span class="left">短信验证码：</span>
+                <input type="text">
+                <span class="right">错误提示</span>
+              </li>
+            </ul>
+
+            <div class="authenticationPic">
+              <div class="portrait">
+                <span>身份证人像面</span>
+              </div>
+              <div class="NationalEmblem">
+                <span>身份证国徽面</span>
+              </div>
+              <div class="life">
+                <span>单人生活照片</span>
+              </div>
+            </div>
+            <div class="authenticationBtn">
+              <button>开始认证</button>
+            </div>
+          </div>
+          
+          <div class="result">
+            <h4>认证结果：</h4>
+            <div class="leftBox">
+              <img src="../../../assets/iconred.png" alt="">
+              <img src="../../../assets/iconblue.png" alt="">
+            </div>
+            <div class="rightBox">
+              <ul>
+                <li>相似度：</li>
+                <li>相似阀值：</li>
+                <li>姓名：</li>
+                <li>性别：</li>
+                <li>年龄：</li>
+                <li>民族：</li>
+                <li>户籍地：</li>
+              </ul>
+            </div>
+            <div class="resultBtn">
+              <button>申请贷款</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </md-sidenav>
+  
+</md-sidenav-container>
