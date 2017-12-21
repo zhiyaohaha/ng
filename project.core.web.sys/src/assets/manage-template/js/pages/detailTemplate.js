@@ -138,9 +138,10 @@ var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高�
                                 // $("#collections").val(result.collection).change();   //与table的数据源select dom不同，这里的数据源dom是div
                                 $(document).ready(function() { 
                                     $("#collections").children("div[data-value='"+result.collection+"']").click();
+                                    $("#templateName").val(result.name);
+                                    $("#templateTitle").val(result.title);
                                 });
-                                $("#templateName").val(result.name);
-                                $("#templateTitle").val(result.title);
+                            
                                 $("#templatePlatform").val(result.platform);
                                 $("#templateTags").val(result.tags ? result.tags.join(",") : "");
                                 $("#templateDescription").val(result.description);
