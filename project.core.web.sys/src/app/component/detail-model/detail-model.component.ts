@@ -3,16 +3,12 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MdButtonModule} from "@angular/material";
 import {ButtonModule} from "../button/button.directive";
-// import {ErgodicJsonPipe} from "../../common/pipe/ergodic-json.pipe";
 import {defaultValue} from "../../common/global.config";
-// import {StrToArrayPipe} from "../../common/pipe/str-to-array.pipe";
-// import {BooleanToWordPipe} from "../../common/pipe/boolean-to-word.pipe";
 import {FnUtil} from "../../common/fn-util";
 import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
 import {NewComponentModule} from "../../newcomponent/newcomponent.module";
 import {PreviewService} from "../../services/preview/preview.service";
-// import {LastdotPipe} from "../../common/pipe/lastdot.pipe";
-import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
 
 @Component({
   selector: "detail-model",
@@ -38,9 +34,11 @@ export class DetailModelComponent implements OnInit {
     this._modelDOMS = value;
     this.filds = [];
     for (let i = 0; i < value.length; i++) {
-      for (let j = 0; j < value[i].childrens.length; j++) {
-        if (value[i].childrens[j].ui.displayType === "HtmlDomDisplayType.Image") {
-          this.filds.push(value[i].childrens[j].name);
+      if (this.isArray(value[i].childrens)) {
+        for (let j = 0; j < value[i].childrens.length; j++) {
+          if (value[i].childrens[j].ui.displayType === "HtmlDomDisplayType.Image") {
+            this.filds.push(value[i].childrens[j].name);
+          }
         }
       }
     }
@@ -113,7 +111,41 @@ export class DetailModelComponent implements OnInit {
   }
 
   toShow() {
-    console.log(1);
+    this.previewService.showPreview(true);
+    this.previewService.getUrl(this.imgUrls);
+  }
+
+  /**
+   * 判断是否为数组
+   * @param 判断对象
+   */
+  isArray(params) {
+    return Array.isArray(params);
+  }
+
+}
+
+@Component({
+  selector: "detail-unit",
+  templateUrl: "./detail-unit.component.html"
+})
+
+export class DetailUnitComponent implements OnInit {
+
+  imgSrc = defaultValue.imgSrc; //图片默认地址
+  imgUrls: string[] = []; //图片地址
+  @Input() modelDOMS;
+  @Input() modelDOMSData;
+
+  constructor(private fnUtil: FnUtil, private previewService: PreviewService) {
+
+  }
+
+  ngOnInit() {
+
+  }
+
+  toShow() {
     this.previewService.showPreview(true);
     this.previewService.getUrl(this.imgUrls);
   }
@@ -135,10 +167,10 @@ export class DetailModelComponent implements OnInit {
     ButtonModule,
     MdButtonModule,
     NewComponentModule,
-    NgxGalleryModule,SharedPipeModule 
+    NgxGalleryModule, SharedPipeModule
   ],
-  declarations: [DetailModelComponent],
-  exports: [DetailModelComponent]
+  declarations: [DetailModelComponent, DetailUnitComponent],
+  exports: [DetailModelComponent, DetailUnitComponent]
 })
 
 export class DetailModelModule {
