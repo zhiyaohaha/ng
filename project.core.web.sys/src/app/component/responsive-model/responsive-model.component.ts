@@ -13,11 +13,12 @@ import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
 import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
 import {TimiSelectModule} from "../timi-select/select.component";
 import {BaseService} from "../../services/base.service";
-import {EditorModule} from "app/component/editor/editor.component";
 import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
-import { NewComponentModule } from "app/newcomponent/newcomponent.module";
-import { RegionComponent } from "app/newcomponent/region/region.component";
-
+import {NewComponentModule} from "app/newcomponent/newcomponent.module";
+import {RegionComponent} from "app/newcomponent/region/region.component";
+import {UEditorModule} from "ngx-ueditor";
+import {globalUrl} from "../../common/global.config";
+import {Md5} from "ts-md5/dist/md5";
 
 @Component({
   selector: "timi-responsive-form",
@@ -26,6 +27,16 @@ import { RegionComponent } from "app/newcomponent/region/region.component";
 })
 
 export class ResponsiveModelComponent implements OnInit {
+
+  config = {
+    toolbars: [["bold", "italic", "underline", "removeformat", "indent", "paragraph", "Fontsize", "forecolor", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "Undo", "Redo"]],
+    autoClearinitialContent: true,
+    wordCount: false,
+    initialFrameHeight: 300,
+    initialFrameWidth: "100%",
+    serverUrl: "http://api2.cpf360.com",
+    imageUrl: "/api/file/upload"
+  };
 
   _modelDOMSData = {}; //添加的数据对象
 
@@ -110,9 +121,9 @@ export class ResponsiveModelComponent implements OnInit {
         // }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
-            if(r.data && r.data.length>0){
+            if (r.data && r.data.length > 0) {
               this._modelDOMSData[option[i].triggerDom] = r.data;  //附件项数据修改，dynamic组件数据随之修改
-            }else{
+            } else {
               this._modelDOMSData[option[i].triggerDom] = "clear";
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
@@ -156,9 +167,84 @@ export class ResponsiveModelComponent implements OnInit {
     TimiTextareaModule,
     TimiCheckboxModule,
     TimiSelectModule,
-    EditorModule,
     DynamicDomsModule,
-    NewComponentModule
+    NewComponentModule,
+    UEditorModule.forRoot({
+      path: "assets/ueditor/",
+      options: {
+        themePath: "/assets/ueditor/themes/"
+      },
+      hook: (UE: any): void => {
+        UE.registerUI("button", function (editor, uiName) {
+          //注册按钮执行时的command命令，使用命令默认就会带有回退操作
+          editor.registerCommand(uiName, {
+            execCommand: function () {
+              console.log(uiName);
+            }
+          });
+          //创建一个button
+          let btn = new UE.ui.Button({
+            //按钮的名字
+            name: uiName,
+            //提示
+            title: "上传图片",
+            //添加额外样式，指定icon图标，这里默认使用一个重复的icon
+            cssRules: "background-position: -380px 0;",
+            getHtmlTpl: function () {
+              return `<div id="##" class="edui-box %%">
+              <div '+ (this.title ? 'title="' + this.title + '"' : '') +' id="##_state" stateful><div class="%%-body">
+              <div id="##_button_body" class="edui-box edui-button-body" onclick="$$.onclick(event, this);">
+              <div class="edui-box edui-icon">
+              <input type="file" accept="image/*" style="width:20px;height:20px;position:absolute;top:0;left:0;opacity:0;" onchange="$$.onupload(this, event);">
+              </div>
+              </div>
+              </div></div></div>`;
+            },
+            //点击时执行的命令
+            onclick: function () {
+              //这里可以不用执行命令,做你自己的操作也可
+              // editor.execCommand(uiName);
+            },
+            onupload: function (this, event) {
+                console.log(event);
+                let formData = new FormData();
+                formData.append("file", event.files[0]);
+                let xhr = new XMLHttpRequest();
+                let timestamp = (new Date().getTime()).toString().substr(0, 10);
+                let sign =  Md5.hashStr(timestamp + globalUrl.private_key).toString();
+                xhr.open("POST", "http://api2.cpf360.com/api/file/upload");
+                xhr.setRequestHeader("timestamp", timestamp);
+                xhr.setRequestHeader("sign", sign);
+                xhr.setRequestHeader("type", "WithPath");
+                xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if (data.code === "0") {
+                      editor.focus();
+                      editor.execCommand("inserthtml", `<img class="imgloadding" src="${data.data[0].path}">`);
+                      event.value = "";
+                    }
+                  }
+                };
+                xhr.send(formData);
+            }
+          });
+          //当点到编辑内容上时，按钮要做的状态反射
+          editor.addListener("selectionchange", function () {
+            let state = editor.queryCommandState(uiName);
+            if (state === -1) {
+              btn.setDisabled(true);
+              btn.setChecked(false);
+            } else {
+              btn.setDisabled(false);
+              btn.setChecked(state);
+            }
+          });
+          //因为你是添加button,所以需要返回这个button
+          return btn;
+        });
+      }
+    })
   ],
   declarations: [ResponsiveModelComponent],
   providers: [RegionComponent],

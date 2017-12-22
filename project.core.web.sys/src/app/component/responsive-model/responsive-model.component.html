@@ -71,8 +71,7 @@
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
               <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
               <div class="box-item item-control-wrapper">
-                <free-editor [(ngModel)]="_modelDOMSData[child.name]" [counter]="true"
-                             name="{{child.name}}"></free-editor>
+                <ueditor name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
               </div>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
@@ -172,12 +171,9 @@
                                [columns]="child.ui.columns"></timi-chip-group>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              <!--<free-editor [style]="{width: 900}" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"-->
-                           <!--[counter]="true"></free-editor>-->
               <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
               <div class="box-item item-control-wrapper">
-                <free-editor [(ngModel)]="modelDOMSData[child.name]" [counter]="true"
-                             name="{{child.name}}"></free-editor>
+                <ueditor name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
               </div>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
