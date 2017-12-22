@@ -24,14 +24,20 @@ ul{
   color: #666;
   font-size: 12px;
   padding: 2px 6px;
-  border: 1px solid transparent;
+
 }
 .active {
   color: #333 !important;
   border-radius: 10px;
-  border-color: #cf000d;
   font-size: 12px;
   padding: 2px 6px;
+  background-color: #cf000d;
+  color: #FFF !important;
 }
+
+.province {
+  line-height: 1.7;
+}
+
 
 
