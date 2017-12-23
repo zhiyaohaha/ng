@@ -19,6 +19,7 @@ import {RegionComponent} from "app/newcomponent/region/region.component";
 import {UEditorModule} from "ngx-ueditor";
 import {globalUrl} from "../../common/global.config";
 import {Md5} from "ts-md5/dist/md5";
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 
 @Component({
   selector: "timi-responsive-form",
@@ -81,7 +82,7 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event) {
-    //console.log($event)
+    // console.log($event)
     this.ngSubmit.emit($event);
   }
 
@@ -108,6 +109,7 @@ export class ResponsiveModelComponent implements OnInit {
     //   return false;
     // }
     if (option) {
+      let that = this;
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
@@ -116,16 +118,51 @@ export class ResponsiveModelComponent implements OnInit {
         if (!option[i].triggerUrl) {
           return false;
         }
-        // if (!$event) {
-        //   this._modelDOMSData[option[i].triggerDom] = "clear";
-        //   return false;
-        // }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
-            if (r.data && r.data.length > 0) {
-              this._modelDOMSData[option[i].triggerDom] = r.data;  //附件项数据修改，dynamic组件数据随之修改
-            } else {
-              this._modelDOMSData[option[i].triggerDom] = "clear";
+            if(r.data && r.data.length>0){
+              if(this.modelDOMSData[option[i].triggerDom] !== undefined){      // 修改页面 
+
+                  if(this.modelDOMSData[option[i].triggerDom] ){                                 //修改页面---修改状态(在新增第一个以后)                    
+                    if(this.modelDOMSData[option[i].triggerDom].length > 0){  
+                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit',function(){
+                          let empty = false;
+                          let num = 0;
+                          for (let k = r.data.length - 1; k >= 0; k--) {   
+                              for (let j = that.modelDOMSData[option[i].triggerDom].length - 1; j >= 0; j--) {
+                                if(r.data[k]['value'] == that.modelDOMSData[option[i].triggerDom][j]){
+                                    num ++;
+                                }
+                              }   
+                          } 
+                          if(num !== that.modelDOMSData[option[i].triggerDom].length){
+                              that.modelDOMSData[option[i].triggerDom] =   r.data;
+                          }
+                      });
+
+                    }else{                                                                    //修改页面---修改状态----修改删除以后再次添加    
+                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit','');
+                    }
+                  }else if(this.modelDOMSData[option[i].triggerDom] === null){                 //修改页面---新增状态(新增第一个时)  
+                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit','');
+                  }
+
+              }else{                                                       //新增页面                                          
+                this.judgeSetChangeData(r.data,option[i].triggerDom,'add',function(){
+                    that._modelDOMSData[option[i].triggerDom] =   r.data;
+                })
+              }
+            }else{      //都不勾选以后，发送null
+              //新增页面-数据 
+              this._modelDOMSData[option[i].triggerDom] = null;
+              this.setNullData(this._modelDOMSData);
+
+              //修改页面-数据
+              if(this.modelDOMSData[option[i].triggerDom]){
+                this.modelDOMSData[option[i].triggerDom] = null;
+              }            
+              this.setNullData(this.modelDOMSData);
+
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
@@ -133,6 +170,42 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
   }
+
+
+  judgeSetChangeData(res,key,status,back){
+    if(res[0]['id']){                                 
+        this.setChangeData(status,key,res);
+    }else{
+       typeof back == 'function'?back():"";
+    }
+  }
+
+  setChangeData(status,key,res){
+    let data = [];
+    for (let k = res.length - 1; k >= 0; k--) {
+      for (const j in res[k]) {
+          if(Array.isArray(res[k][j]) && res[k][j].length>0){
+            data.unshift(res[k]);
+          }
+      }
+    }
+    if(status == 'add'){
+      this._modelDOMSData[key] = data;
+    }else if(status == 'edit'){
+      this.modelDOMSData[key] = data;
+    }
+  }
+
+  setNullData(data){
+    for (const key in data) {
+      if(Array.isArray(data[key])){
+          if (data[key] && data[key].length > 0) {
+              data[key] = null;
+          }
+      }
+    }
+  }
+
 
   /**
    * 筛选出对应的name 赋值bindData
@@ -170,6 +243,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiSelectModule,
     DynamicDomsModule,
     NewComponentModule,
+    SharedPipeModule ,
     UEditorModule.forRoot({
       path: "assets/ueditor/",
       options: {

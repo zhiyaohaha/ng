@@ -90,9 +90,6 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   writeValue(value: any) {
     this.afterMoveData = value;
 
-    if(value == "clear" ){   //修改清空附件组
-      this._modelDOMS = [];
-    }
     if (Array.isArray(value)) {  
       this._modelDOMS = [];  
 
@@ -105,7 +102,10 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       }
     }
     if (!value) {
-      this._modelDOMS[0] = this._notes;
+      this._modelDOMS = []; 
+      if(this.customFun()){   //产品管理 - 增加时不显示默认附件组结构
+        this._modelDOMS[0] = this._notes;
+      }
       this.onModelChange(null);
     }
   }

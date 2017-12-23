@@ -101,6 +101,7 @@
           <ng-container [ngSwitch]="child.ui.displayType">
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+              <!--数据结构改变后： <p>12{{child.name | ergodicJson : modelDOMSData}}34</p> -->
               <timi-input [labelName]="child.ui.label" name="{{child.name}}"
                           [(ngModel)]="modelDOMSData[child.name]"
                           [value]="modelDOMSData[child.name]"

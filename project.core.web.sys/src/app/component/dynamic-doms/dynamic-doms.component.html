@@ -1,5 +1,4 @@
 <h4 class="">{{title}}</h4>
-
   <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':!customFun()}" >
       <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
         <ng-container *ngFor="let child of item">
