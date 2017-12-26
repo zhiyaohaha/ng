@@ -23,7 +23,7 @@
   text-align: center;
   margin: 0;
   min-width: 88px;
-  line-height: 36px;
+  line-height: 34px;
   padding: 0 16px;
   border-radius: 2px;
 }
@@ -53,7 +53,7 @@ button{
   text-align: center;
   margin: 0;
   min-width: 88px;
-  line-height: 36px;
+  line-height: 34px;
   padding: 0 16px;
   border-radius: 2px;
 }
@@ -79,9 +79,15 @@ md-sidenav {
 .declaration .search {
   border-radius: 5px;
 }
+.searchBox{
+  display: inline-block;
+}
 
 .selectType {
-  margin-top: 10px;
+  position: absolute;
+  height: 34px;
+  margin-left: 30px;
+  display: inline-block;
   overflow: hidden;
 }
 
@@ -104,18 +110,23 @@ md-sidenav {
 }
 
 .products {
-  display: flex;
-  overflow: hidden;
+  height: 250px;
+  overflow: auto;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .products li {
-  overflow: hidden;
   box-sizing: border-box;
-  flex: 1;
-  min-width: 180px;
+  float: left;
+  width: 25%;
   height: 86px;
   padding: 4px;
-  float: left;
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: transparent;
+  //transition: width 1s ,border-color 1s;
+  
 }
 
 .pic {
@@ -153,6 +164,11 @@ md-sidenav {
 .info li .right{
   margin-left: 30px;
 }
+
+.authentication{
+  margin-top: 40px;
+}
+
 .authenticationPic{
   display: flex;
 }
@@ -204,5 +220,24 @@ md-sidenav {
 }
 .leftBox img:first-child{
   margin-right: 30px;
+}
+.moreContent{
+  width: 720px;
+  height: 86px;
+  float: left;
+}
+
+.moreContent li{
+  height: 22px;
+  font-size: 12px;
+  line-height: 20px;
+}
+.moreContent li:last-child{
+  width: 100%;
+  clear: both;
+}
+.liActive{
+  width: 100%!important;
+  border-color: #333!important;
 }
 

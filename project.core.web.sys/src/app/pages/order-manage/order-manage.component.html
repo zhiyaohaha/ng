@@ -8,26 +8,19 @@
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
     [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
-    
-  <!-- <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
-    <div class="row">
-      <div class="col-lg-12">
-        <timi-responsive-form [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow"
-          (ngSubmit)="submitMethod($event)"></timi-responsive-form>
-      </div>
-    </div>
-  </md-sidenav> -->
+
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
         <form>
 
           <div class="declaration">
-            <h4>报单：</h4>
-            <span>关键字：</span>
-            <input type="text" name="search" placeholder="搜索产品" class ="search">
-            <button class="searchBtn">搜索</button>
-            
+            <div class="searchBox">
+              <span>关键字：</span>
+              <input type="text" name="search" placeholder="搜索产品" class="search">
+              <button class="searchBtn">搜索</button>
+            </div>
+
             <ul class="selectType">
               <li *ngFor="let type of productType;let i = index">
                 <input type="radio" id="type${{i}}" class="hidden" name="productType" #product>
@@ -36,43 +29,30 @@
             </ul>
 
             <ul class="products">
-              <li>
+              <li *ngFor="let product of productDetail;let i = index" (click)="changeStyle($event,liActive,i)" #liActive id="{{i}}" [class.liActive]="liActive.id==index" class="productList">
                 <img src="../../../assets/iconred.png" alt="logo" class="pic">
-                <div class="content">
+                <div class="content" *ngIf='!(liActive.id==index)'>
                   <p>产品名称</p>
                   <p>利率描述</p>
                   <p>20万~2000万</p>
                 </div>
-              </li>
-              <li>
-                <img src="../../../assets/iconred.png" alt="logo" class="pic">
-                <div class="content">
-                  <p>产品名称</p>
-                  <p>利率描述</p>
-                  <p>20万~2000万</p>
-                </div>
-              </li>
-              <li>
-                <img src="../../../assets/iconred.png" alt="logo" class="pic">
-                <div class="content">
-                  <p>产品名称</p>
-                  <p>利率描述</p>
-                  <p>20万~2000万</p>
-                </div>
-              </li>
-              <li>
-                <img src="../../../assets/iconred.png" alt="logo" class="pic">
-                <div class="content">
-                  <p>产品名称</p>
-                  <p>利率描述</p>
-                  <p>20万~2000万</p>
+                <div class="moreContent" *ngIf='liActive.id==index'>
+                  <ul>
+                    <li>年化：{{product.yearRate}}</li>
+                    <li>月利率：{{product.monthlyRate}}</li>
+                    <li>期限：{{product.term}}</li>
+                    <li>还款方式：{{product.repaymentMethod}}</li>
+                    <li>标签：{{product.name}}</li>
+                    <li>担保方式：{{product.type}}</li>
+                    <!-- <li>准入标准：{{product.applicationConditions}}</li> -->
+                    <li><span>简介：{{product.summary}}</span></li>
+                  </ul>            
                 </div>
               </li>
             </ul>
           </div>
 
-          <div class="authentication">
-            <h4>身份认证：</h4>
+          <div class="authentication" *ngIf="showAuthentication">
             <ul class="info">
               <li>
                 <span class="left">身份证号：</span>
@@ -86,7 +66,9 @@
               <li>
                 <span class="left">银行预留手机号：</span>
                 <input type="text">
-                <span class="right"><button>发送验证码</button></span>
+                <span class="right">
+                  <button>发送验证码</button>
+                </span>
               </li>
               <li>
                 <span class="left">短信验证码：</span>
@@ -110,9 +92,8 @@
               <button>开始认证</button>
             </div>
           </div>
-          
-          <div class="result">
-            <h4>认证结果：</h4>
+
+          <div class="result" *ngIf="false">
             <div class="leftBox">
               <img src="../../../assets/iconred.png" alt="">
               <img src="../../../assets/iconblue.png" alt="">
@@ -132,9 +113,10 @@
               <button>申请贷款</button>
             </div>
           </div>
+
         </form>
       </div>
     </div>
   </md-sidenav>
-  
+
 </md-sidenav-container>
