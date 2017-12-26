@@ -203,7 +203,11 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
     };
   }
 
-
+  //获取带点key的最后一个字段
+  lastdotFun(value){
+    let key = value.split(".").pop();
+    return key;
+  }
 }
 
 @NgModule({
