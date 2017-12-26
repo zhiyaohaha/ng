@@ -11,10 +11,7 @@ import {
   OnInit,
   Output,
   ViewChild,
-  ViewContainerRef,
-  ViewChildren,
-  QueryList,
-  forwardRef
+  ViewContainerRef
 } from "@angular/core";
 import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
 import { SharepageService } from "../../services/sharepage-service/sharepage.service";
@@ -28,13 +25,6 @@ import { SetAuthorityComponent } from "../../component/set-authority/set-authori
 import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { OrderService } from "app/services/order/order.service";
-import { NG_VALUE_ACCESSOR } from "@angular/forms";
-
-export const ORDERMANAGE_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => OrderManageComponent),
-  multi: true
-};
 
 @Component({
   selector: "app-order-manage",
@@ -44,8 +34,6 @@ export const ORDERMANAGE_VALUE_ACCESSOR: any = {
   providers: [TdLoadingService, OrderService]
 })
 export class OrderManageComponent implements OnInit, OnDestroy {
-  [x: string]: any;
-
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
   @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
@@ -97,12 +85,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   //@ViewChild("table") table;
 
   //新增部分
-  @ViewChildren('liActive') liActiveList: QueryList<OrderManageComponent>;
   productType: Array<any> = [];
-  productDetail: any;
-  checked: boolean = false;
-  productId: string;
-  showAuthentication: boolean = false;
 
 
 
@@ -178,9 +161,6 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.orderService.getType().subscribe(res => {
       this.getProductType(res.data[0].childrens);
     })
-    this.orderService.getProductDetail().subscribe(res => {
-      this.getProductDetail(res.data);
-    })
   }
 
   /**
@@ -189,17 +169,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   getProductType(res) {
     this.productType = res;
   }
-  getProductDetail(res) {
-    console.log(res);
-    this.productDetail = res;
-  }
 
-  changeStyle(e, liActive, i) {
-    this.index = i;
-    this.productId = this.productDetail[i].id;
-    this.showAuthentication = true;
-    console.log(this.productId);
-  }
 
 
 
@@ -377,16 +347,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.routerSubscribe.unsubscribe();
   }
 
-  writeValue(obj: any): void {
-  }
 
-  registerOnChange(fn: any): void {
-    this.valueChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-
-  }
 
 
 }
