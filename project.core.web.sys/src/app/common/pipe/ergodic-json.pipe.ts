@@ -40,7 +40,7 @@ export class ErgodicJsonPipe implements PipeTransform {
           //   temp.push(element[arr[i + 1]]);
           // });
           // return temp;
-          return args.join(",");
+          return args;
         } else if (typeof args === "string" || typeof args === "number") {
           return args;
         }

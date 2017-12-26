@@ -143,8 +143,6 @@
               <!--[freeSelectName]="child.ui.label || '请选择'"></free-select>-->
               <timi-select name="{{child.name}}" 
                            [ngModel]="child.name | ergodicJson : modelDOMSData"
-                           
-                           [(ngModel)]="modelDOMSData[child.name]"
                            pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                            [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                            [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
