@@ -19,8 +19,8 @@ import {RegionComponent} from "app/newcomponent/region/region.component";
 import {UEditorModule} from "ngx-ueditor";
 import {globalUrl} from "../../common/global.config";
 import {Md5} from "ts-md5/dist/md5";
-import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
-import { forEach } from "@angular/router/src/utils/collection";
+import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "timi-responsive-form",
@@ -85,16 +85,16 @@ export class ResponsiveModelComponent implements OnInit {
   onSubmit($event) {
     let data = {};
     for (const key in $event) {  //把带点的数据结构处理为，json格式
-          if(key.indexOf(".") > 0){
-            let arr = key.split(".");
-            if(data[arr[0]]){
-              data[arr[0]][arr[1]] = $event[key]
-            }else{
-              data[arr[0]] = {};
-            }
-      }else{
-          data[key] = $event[key];
+      if (key.indexOf(".") > 0) {
+        let arr = key.split(".");
+        if (data[arr[0]]) {
+          data[arr[0]][arr[1]] = $event[key]
+        } else {
+          data[arr[0]] = {};
         }
+      } else {
+        data[key] = $event[key];
+      }
     }
     // console.log(data)
     this.ngSubmit.emit(data);
@@ -134,47 +134,47 @@ export class ResponsiveModelComponent implements OnInit {
         }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
-            if(r.data && r.data.length>0){
-              if(this.modelDOMSData[option[i].triggerDom] !== undefined){      // 修改页面 
+            if (r.data && r.data.length > 0) {
+              if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
 
-                  if(this.modelDOMSData[option[i].triggerDom] ){                                 //修改页面---修改状态(在新增第一个以后)                    
-                    if(this.modelDOMSData[option[i].triggerDom].length > 0){  
-                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit',function(){
-                          let empty = false;
-                          let num = 0;
-                          for (let k = r.data.length - 1; k >= 0; k--) {   
-                              for (let j = that.modelDOMSData[option[i].triggerDom].length - 1; j >= 0; j--) {
-                                if(r.data[k]['value'] == that.modelDOMSData[option[i].triggerDom][j]){
-                                    num ++;
-                                }
-                              }   
-                          } 
-                          if(num !== that.modelDOMSData[option[i].triggerDom].length){
-                              that.modelDOMSData[option[i].triggerDom] =   r.data;
+                if (this.modelDOMSData[option[i].triggerDom]) {                                 //修改页面---修改状态(在新增第一个以后)
+                  if (this.modelDOMSData[option[i].triggerDom].length > 0) {
+                    this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', function () {
+                      let empty = false;
+                      let num = 0;
+                      for (let k = r.data.length - 1; k >= 0; k--) {
+                        for (let j = that.modelDOMSData[option[i].triggerDom].length - 1; j >= 0; j--) {
+                          if (r.data[k]['value'] == that.modelDOMSData[option[i].triggerDom][j]) {
+                            num++;
                           }
-                      });
+                        }
+                      }
+                      if (num !== that.modelDOMSData[option[i].triggerDom].length) {
+                        that.modelDOMSData[option[i].triggerDom] = r.data;
+                      }
+                    });
 
-                    }else{                                                                    //修改页面---修改状态----修改删除以后再次添加    
-                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit','');
-                    }
-                  }else if(this.modelDOMSData[option[i].triggerDom] === null){                 //修改页面---新增状态(新增第一个时)  
-                      this.judgeSetChangeData(r.data,option[i].triggerDom,'edit','');
+                  } else {                                                                    //修改页面---修改状态----修改删除以后再次添加
+                    this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', '');
                   }
+                } else if (this.modelDOMSData[option[i].triggerDom] === null) {                 //修改页面---新增状态(新增第一个时)
+                  this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', '');
+                }
 
-              }else{                                                       //新增页面                                          
-                this.judgeSetChangeData(r.data,option[i].triggerDom,'add',function(){
-                    that._modelDOMSData[option[i].triggerDom] =   r.data;
+              } else {                                                       //新增页面
+                this.judgeSetChangeData(r.data, option[i].triggerDom, 'add', function () {
+                  that._modelDOMSData[option[i].triggerDom] = r.data;
                 })
               }
-            }else{      //都不勾选以后，发送null
-              //新增页面-数据 
+            } else {      //都不勾选以后，发送null
+              //新增页面-数据
               this._modelDOMSData[option[i].triggerDom] = null;
               this.setNullData(this._modelDOMSData);
 
               //修改页面-数据
-              if(this.modelDOMSData[option[i].triggerDom]){
+              if (this.modelDOMSData[option[i].triggerDom]) {
                 this.modelDOMSData[option[i].triggerDom] = null;
-              }            
+              }
               this.setNullData(this.modelDOMSData);
 
             }
@@ -186,36 +186,36 @@ export class ResponsiveModelComponent implements OnInit {
   }
 
 
-  judgeSetChangeData(res,key,status,back){
-    if(res[0]['id']){                                 
-        this.setChangeData(status,key,res);
-    }else{
-       typeof back == 'function'?back():"";
+  judgeSetChangeData(res, key, status, back) {
+    if (res[0]['id']) {
+      this.setChangeData(status, key, res);
+    } else {
+      typeof back == 'function' ? back() : "";
     }
   }
 
-  setChangeData(status,key,res){
+  setChangeData(status, key, res) {
     let data = [];
     for (let k = res.length - 1; k >= 0; k--) {
       for (const j in res[k]) {
-          if(Array.isArray(res[k][j]) && res[k][j].length>0){
-            data.unshift(res[k]);
-          }
+        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
+          data.unshift(res[k]);
+        }
       }
     }
-    if(status == 'add'){
+    if (status === 'add') {
       this._modelDOMSData[key] = data;
-    }else if(status == 'edit'){
+    } else if (status === 'edit') {
       this.modelDOMSData[key] = data;
     }
   }
 
-  setNullData(data){
+  setNullData(data) {
     for (const key in data) {
-      if(Array.isArray(data[key])){
-          if (data[key] && data[key].length > 0) {
-              data[key] = null;
-          }
+      if (Array.isArray(data[key])) {
+        if (data[key] && data[key].length > 0) {
+          data[key] = null;
+        }
       }
     }
   }
@@ -257,82 +257,82 @@ export class ResponsiveModelComponent implements OnInit {
     TimiSelectModule,
     DynamicDomsModule,
     NewComponentModule,
-    SharedPipeModule ,
+    SharedPipeModule,
     UEditorModule.forRoot({
       path: "assets/ueditor/",
       options: {
         themePath: "/assets/ueditor/themes/"
       },
-      hook: (UE: any): void => {
-        UE.registerUI("button", function (editor, uiName) {
-          //注册按钮执行时的command命令，使用命令默认就会带有回退操作
-          editor.registerCommand(uiName, {
-            execCommand: function () {
-              console.log(uiName);
-            }
-          });
-          //创建一个button
-          let btn = new UE.ui.Button({
-            //按钮的名字
-            name: uiName,
-            //提示
-            title: "上传图片",
-            //添加额外样式，指定icon图标，这里默认使用一个重复的icon
-            cssRules: "background-position: -380px 0;",
-            getHtmlTpl: function () {
-              return `<div id="##" class="edui-box %%">
-              <div '+ (this.title ? 'title="' + this.title + '"' : '') +' id="##_state" stateful><div class="%%-body">
-              <div id="##_button_body" class="edui-box edui-button-body" onclick="$$.onclick(event, this);">
-              <div class="edui-box edui-icon">
-              <input type="file" accept="image/*" style="width:20px;height:20px;position:absolute;top:0;left:0;opacity:0;" onchange="$$.onupload(this, event);">
-              </div>
-              </div>
-              </div></div></div>`;
-            },
-            //点击时执行的命令
-            onclick: function () {
-              //这里可以不用执行命令,做你自己的操作也可
-              // editor.execCommand(uiName);
-            },
-            onupload: function (this, event) {
-                console.log(event);
-                let formData = new FormData();
-                formData.append("file", event.files[0]);
-                let xhr = new XMLHttpRequest();
-                let timestamp = (new Date().getTime()).toString().substr(0, 10);
-                let sign =  Md5.hashStr(timestamp + globalUrl.private_key).toString();
-                xhr.open("POST", "http://api2.cpf360.com/api/file/upload");
-                xhr.setRequestHeader("timestamp", timestamp);
-                xhr.setRequestHeader("sign", sign);
-                xhr.setRequestHeader("type", "WithPath");
-                xhr.onreadystatechange = function () {
-                  if (xhr.readyState === 4 && xhr.status === 200) {
-                    let data = JSON.parse(xhr.responseText);
-                    if (data.code === "0") {
-                      editor.focus();
-                      editor.execCommand("inserthtml", `<img class="imgloadding" src="${data.data[0].path}">`);
-                      event.value = "";
-                    }
-                  }
-                };
-                xhr.send(formData);
-            }
-          });
-          //当点到编辑内容上时，按钮要做的状态反射
-          editor.addListener("selectionchange", function () {
-            let state = editor.queryCommandState(uiName);
-            if (state === -1) {
-              btn.setDisabled(true);
-              btn.setChecked(false);
-            } else {
-              btn.setDisabled(false);
-              btn.setChecked(state);
-            }
-          });
-          //因为你是添加button,所以需要返回这个button
-          return btn;
-        });
-      }
+      // hook: (UE: any): void => {
+      //   UE.registerUI("button", function (editor, uiName) {
+      //     //注册按钮执行时的command命令，使用命令默认就会带有回退操作
+      //     editor.registerCommand(uiName, {
+      //       execCommand: function () {
+      //         console.log(uiName);
+      //       }
+      //     });
+      //     //创建一个button
+      //     let btn = new UE.ui.Button({
+      //       //按钮的名字
+      //       name: uiName,
+      //       //提示
+      //       title: "上传图片",
+      //       //添加额外样式，指定icon图标，这里默认使用一个重复的icon
+      //       cssRules: "background-position: -380px 0;",
+      //       getHtmlTpl: function () {
+      //         return `<div id="##" class="edui-box %%">
+      //         <div '+ (this.title ? 'title="' + this.title + '"' : '') +' id="##_state" stateful><div class="%%-body">
+      //         <div id="##_button_body" class="edui-box edui-button-body" onclick="$$.onclick(event, this);">
+      //         <div class="edui-box edui-icon">
+      //         <input type="file" accept="image/*" style="width:20px;height:20px;position:absolute;top:0;left:0;opacity:0;" onchange="$$.onupload(this, event);">
+      //         </div>
+      //         </div>
+      //         </div></div></div>`;
+      //       },
+      //       //点击时执行的命令
+      //       onclick: function () {
+      //         //这里可以不用执行命令,做你自己的操作也可
+      //         // editor.execCommand(uiName);
+      //       },
+      //       onupload: function (this, event) {
+      //           console.log(event);
+      //           let formData = new FormData();
+      //           formData.append("file", event.files[0]);
+      //           let xhr = new XMLHttpRequest();
+      //           let timestamp = (new Date().getTime()).toString().substr(0, 10);
+      //           let sign =  Md5.hashStr(timestamp + globalUrl.private_key).toString();
+      //           xhr.open("POST", "http://api2.cpf360.com/api/file/upload");
+      //           xhr.setRequestHeader("timestamp", timestamp);
+      //           xhr.setRequestHeader("sign", sign);
+      //           xhr.setRequestHeader("type", "WithPath");
+      //           xhr.onreadystatechange = function () {
+      //             if (xhr.readyState === 4 && xhr.status === 200) {
+      //               let data = JSON.parse(xhr.responseText);
+      //               if (data.code === "0") {
+      //                 editor.focus();
+      //                 editor.execCommand("inserthtml", `<img class="imgloadding" src="${data.data[0].path}">`);
+      //                 event.value = "";
+      //               }
+      //             }
+      //           };
+      //           xhr.send(formData);
+      //       }
+      //     });
+      //     //当点到编辑内容上时，按钮要做的状态反射
+      //     editor.addListener("selectionchange", function () {
+      //       let state = editor.queryCommandState(uiName);
+      //       if (state === -1) {
+      //         btn.setDisabled(true);
+      //         btn.setChecked(false);
+      //       } else {
+      //         btn.setDisabled(false);
+      //         btn.setChecked(state);
+      //       }
+      //     });
+      //     //因为你是添加button,所以需要返回这个button
+      //     return btn;
+      //   });
+      // }
     })
   ],
   declarations: [ResponsiveModelComponent],

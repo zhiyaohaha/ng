@@ -8,6 +8,7 @@
 # dependencies
 /node_modules/*
 !node_modules/ng2-file-upload
+!node_modules/ngx-ueditor
 
 # IDEs and editors
 /.idea
