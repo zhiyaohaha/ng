@@ -763,7 +763,7 @@ function bindCmds(data) {
                         </div>
                         <div class="form-group" style="width:95%">
                             <label for="">绑定字段集合：</label><br>
-                            <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}" disabled>
+                            <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}"  data-value="${el.bindParamFields.join(",")}" disabled>
                         </div>
                         <i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>
                     </div>
