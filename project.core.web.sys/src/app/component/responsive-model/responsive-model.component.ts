@@ -20,6 +20,7 @@ import {UEditorModule} from "ngx-ueditor";
 import {globalUrl} from "../../common/global.config";
 import {Md5} from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import { forEach } from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "timi-responsive-form",
@@ -82,8 +83,21 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event) {
-    // console.log($event)
-    this.ngSubmit.emit($event);
+    let data = {};
+    for (const key in $event) {  //把带点的数据结构处理为，json格式
+          if(key.indexOf(".") > 0){
+            let arr = key.split(".");
+            if(data[arr[0]]){
+              data[arr[0]][arr[1]] = $event[key]
+            }else{
+              data[arr[0]] = {};
+            }
+      }else{
+          data[key] = $event[key];
+        }
+    }
+    // console.log(data)
+    this.ngSubmit.emit(data);
   }
 
 

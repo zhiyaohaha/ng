@@ -26,7 +26,11 @@ export class ErgodicJsonPipe implements PipeTransform {
             if (typeof args[arr[i]] === "undefined"){
               continue;
             }else{  //null
-              return "";
+              if(typeof args[arr[i]] === 'number' && !isNaN(args[arr[i]])){   //如果是number，则转换成string
+                  return args[arr[i]].toString();
+              }else{
+                  return args[arr[i]];
+              }  
             }
         }
         args = args[arr[i]];

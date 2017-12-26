@@ -103,7 +103,7 @@
                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <!--数据结构改变后： <p>12{{child.name | ergodicJson : modelDOMSData}}34</p> -->
               <timi-input [labelName]="child.ui.label" name="{{child.name}}"
-                          [(ngModel)]="modelDOMSData[child.name]"
+                          [ngModel]="child.name | ergodicJson : modelDOMSData" 
                           [value]="modelDOMSData[child.name]"
                           [placeholder]="child.ui.placeholder"></timi-input>
             </div>
@@ -113,10 +113,11 @@
               <!--[checkboxs]="child.bindData || child.ui.label"-->
               <!--[columns]="child.ui.columns"></timi-checkbox>-->
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}"
-                             [(ngModel)]="modelDOMSData[child.name]"
+                             [ngModel]="child.name | ergodicJson : modelDOMSData"
                              [multiple]="child.ui.multiple" [labelName]="child.ui.label"
                              [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
-              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" 
+                             [ngModel]="child.name | ergodicJson : modelDOMSData"
                              [labelName]="child.ui.label"
                              [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
             </div>
@@ -129,7 +130,8 @@
                    [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <timi-textarea name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+              <timi-textarea name="{{child.name}}" 
+                             [ngModel]="child.name | ergodicJson : modelDOMSData"
                              [labelName]="child.ui.label"
                              [placeholder]="child.ui.placeholder" [columns]="child.ui.columns"></timi-textarea>
             </div>
@@ -139,7 +141,10 @@
               <!--pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"-->
               <!--[columns]="child.ui.columns" [multiple]="child.ui.multiple"-->
               <!--[freeSelectName]="child.ui.label || '请选择'"></free-select>-->
-              <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+              <timi-select name="{{child.name}}" 
+                           [ngModel]="child.name | ergodicJson : modelDOMSData"
+                           
+                           [(ngModel)]="modelDOMSData[child.name]"
                            pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                            [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                            [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
@@ -160,7 +165,9 @@
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
-                <timi-file-uploader name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                <timi-file-uploader name="{{child.name}}" 
+                                    [ngModel]="child.name | ergodicJson : modelDOMSData"
+                
                                     [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
                                     [columns]="child.ui.columns"
                                     (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
