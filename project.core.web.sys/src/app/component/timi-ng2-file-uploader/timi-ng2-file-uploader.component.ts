@@ -62,6 +62,7 @@ export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
   @Input() btnName: string;
   @Input() columns: string;
   @Input() allowFiles = "image";
+  @Input() headers: Array<any> = [];
 
   @Output() files: EventEmitter<any> = new EventEmitter();
   @Output() success: EventEmitter<any> = new EventEmitter();
@@ -86,10 +87,16 @@ export class TimiFileUploaderComponent implements ControlValueAccessor, OnInit {
 
   selectedFileOnChanged($event) {
     this.files.emit(this.uploader);
-
+    
+    
     let timestamp = this.util.timestamp();
     let sign = this.util.toMd5(timestamp + globalUrl.private_key);
-    this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {name: "type", value: "WithPath"}];
+    let afterHeaders = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, { name: "type", value: "WithPath" }];
+    if(this.headers.length !==0){
+      afterHeaders = afterHeaders.concat(this.headers);
+    }
+    
+    this.uploader.options.headers = afterHeaders;
     this.uploader.uploadAll();
 
     let _self = this;
