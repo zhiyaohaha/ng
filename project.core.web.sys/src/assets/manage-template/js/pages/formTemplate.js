@@ -308,7 +308,7 @@ function dragCreateDom_Panel(domval,that,editData,status){
                 disabled: false,
                 displayType: "HtmlDomDisplayType.Hidden",
                 hidden: true,
-                label: "",
+                label: "唯一标识",
                 multiple: false,
                 placeholder: "",
                 required: false,
