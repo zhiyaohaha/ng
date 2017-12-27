@@ -28,7 +28,7 @@ import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { OrderService } from "app/services/order/order.service";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-
+import { environment } from "../../../environments/environment";
 
 
 export const ORDERMANAGE_VALUE_ACCESSOR: any = {
@@ -116,6 +116,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   showPersonData: boolean = false;//是否展示人物详细信息
   btnDisabled: boolean = true;//验证码按钮是否打开
   testVaule: any;
+  testapi: any = environment.apiURL + '/api/LoanOrder/UploadAttachmentFile';
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
