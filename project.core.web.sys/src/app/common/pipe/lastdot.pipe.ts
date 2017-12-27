@@ -14,7 +14,7 @@ export class LastdotPipe implements PipeTransform {
     if (args && args[key]) {
       return args[key];
     } else {
-      return key;
+      return '';
     }
   }
 

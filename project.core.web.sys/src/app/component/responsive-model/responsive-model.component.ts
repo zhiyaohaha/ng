@@ -96,7 +96,7 @@ export class ResponsiveModelComponent implements OnInit {
         data[key] = $event[key];
       }
     }
-    // console.log(data)
+    console.log(data)
     this.ngSubmit.emit(data);
   }
 
@@ -171,12 +171,11 @@ export class ResponsiveModelComponent implements OnInit {
               this._modelDOMSData[option[i].triggerDom] = null;
               this.setNullData(this._modelDOMSData);
 
-              //修改页面-数据
+             //修改页面-数据
               if (this.modelDOMSData[option[i].triggerDom]) {
                 this.modelDOMSData[option[i].triggerDom] = null;
+                this.setNullData(this.modelDOMSData);
               }
-              this.setNullData(this.modelDOMSData);
-
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }

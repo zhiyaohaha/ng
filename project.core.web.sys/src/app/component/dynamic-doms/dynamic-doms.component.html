@@ -96,8 +96,8 @@
                                 <ng-container [ngSwitch]="child.ui.displayType">
                                   <!-- 二级面板-动态组件判断 -->
                                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                                      <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name | lastdot : data}}"
-                                                    [ngModel]="binddataItem[child.name | lastdot : data]" 
+                                      <timi-checkbox *ngIf="!child.ui.multiple" name="{{lastdotFun(child.name)}}"
+                                                    [ngModel]="binddataItem[lastdotFun(child.name)]" 
                                                     (ngModelChange)="updateAmount(binddataItem,child.name,$event)"
                                                     [labelName]="child.ui.label"
                                                     [checkboxs]="child.ui.label" [columns]="child.ui.columns">
@@ -106,8 +106,8 @@
 
                                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                                       [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-                                    <timi-textarea name="{{child.name| lastdot : data}}"  
-                                                  [ngModel]="binddataItem[child.name | lastdot : data]" 
+                                    <timi-textarea name="{{lastdotFun(child.name)}}"  
+                                                  [ngModel]="binddataItem[lastdotFun(child.name)]" 
                                                   (ngModelChange)="updateAmount(binddataItem,child.name,$event)"
                                                   [labelName]="child.ui.label"
                                                   [placeholder]="child.ui.placeholder">

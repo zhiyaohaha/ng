@@ -54,10 +54,10 @@
       <div *ngIf="value">
         <div *ngSwitchCase="'HtmlPipe.ImageTag'">
           <div *ngIf="value.length>1">
-            <img *ngFor="let item of value" [src]="item + imgQuality" class="table-img">
+            <img *ngFor="let item of value" [src]="item" class="table-img">
           </div>
           <div *ngIf="value.length==1">
-            <img [src]="value + imgQuality" class="table-img">
+            <img [src]="value" class="table-img">
           </div>
         </div>
       </div>

@@ -22,8 +22,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   routerState: boolean = true;
   routerStateCode: string = "active";
 
-  // isShowPreview; //是否显示图片预览
-  // imgUrls; //图片预览的所有链接
+  isShowPreview; //是否显示图片预览
+  imgUrls; //图片预览的所有链接
 
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -32,8 +32,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private previewService: PreviewService
     ) {
     this.app.intance = this;
-    // this.isShowPreview = previewService.isShowPreview;
-    // this.imgUrls = previewService.imgUrls;
+    this.isShowPreview = previewService.isShowPreview;
+    this.imgUrls = previewService.imgUrls;
   }
 
   ngOnInit() {
