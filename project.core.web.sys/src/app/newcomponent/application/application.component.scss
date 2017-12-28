@@ -1,0 +1,42 @@
+input{
+    position: relative;
+    padding: 4px 7px;
+    width: 32%;
+    height: 28px;
+    line-height: 1.5;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all .3s;
+    &:focus {
+      border-color: #3b99fc;
+      box-shadow: 0 0 3px 0 #3b99fc;
+    }
+}
+
+.personInfoPic{
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin-right: 10px;
+}
+.personInfoPic img{
+    width: 100%;
+    height: 100%;
+}
+
+.personInfoConent ul li{
+    width: 29%;
+    float: left;
+}
+.loan{
+    clear: both;
+}
+.loan-info li{
+    width: 50%;
+    float: left;
+}
+select{
+    border-radius: 5px;
+}
+

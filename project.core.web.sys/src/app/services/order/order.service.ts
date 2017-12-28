@@ -34,8 +34,11 @@ export class OrderService {
       "photo": photo
     })
   }
-
-  test(){
-    return this.baseService.post('/api/LoanOrder/UploadAttachmentFile')
+  //申请贷款
+  onSubmitLoan(realId, product){
+    return this.baseService.post('/api/LoanOrder/FourRealRecord',{
+      "realId": realId,
+      "product": product
+    })
   }
 }

@@ -12,6 +12,7 @@ import { SharepageService } from 'app/services/sharepage-service/sharepage.servi
 import { ParamsManageService } from 'app/services/paramsManage-service/paramsManage.service';
 import { TimiFileUploaderModule } from 'app/component/timi-ng2-file-uploader/timi-ng2-file-uploader.component';
 import { TimiInputModule } from 'app/component/timi-input/timi-input.component';
+import { NewComponentModule } from "../../newcomponent/newcomponent.module";
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { TimiInputModule } from 'app/component/timi-input/timi-input.component';
     ResponsiveModelModule, 
     ButtonModule,
     TimiFileUploaderModule,
-    TimiInputModule
+    TimiInputModule,
+    NewComponentModule
   ],
   declarations: [OrderManageComponent],
   providers: [SharepageService, ParamsManageService]
