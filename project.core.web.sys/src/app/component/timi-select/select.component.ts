@@ -34,29 +34,37 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
         <div class="free-select-input">
           <label>{{value || pholder}}</label>
         </div>
+
         <div class="free-select-menu" *ngIf="opened" [@selectState]="'in'" (click)="onMenuClick()">
           <div class="free-select-filter" *ngIf="filter" (click)="clickLi($event)">
             <free-checkbox *ngIf="multiple" [checked]="multipleTotal" (onChange)="onMultipleTotal($event)">
             </free-checkbox>
+
             <div class="free-select-inner">
               <i class="fa fa-search"></i>
               <input type="text" [(ngModel)]="_filterValue" (input)="onFilterChange($event)">
             </div>
           </div>
+
           <div class="free-select-wrapper free-iscroll">
             <ul *ngIf="!multiple">
               <free-select-item
                 *ngFor="let option of filterValue(options, 'text'); index as i"
-                (onClick)="onItemClick($event)" [option]="option"></free-select-item>
+                (onClick)="onItemClick($event)" [option]="option">
+              </free-select-item>
             </ul>
+
             <ul *ngIf="multiple">
               <li *ngFor="let option of filterValue(options, 'text')" (click)="clickLi($event)">
                 <free-checkbox (onChange)="onCheckboxSelect($event, option)" [checked]="option.checked"
-                               [label]="option.text" [value]="option.value"></free-checkbox>
+                               [label]="option.text" [value]="option.value">
+                </free-checkbox>
               </li>
             </ul>
           </div>
+
         </div>
+        
       </div>
     </div>
   `,

@@ -168,14 +168,14 @@ export class ResponsiveModelComponent implements OnInit {
               }
             } else {      //都不勾选以后，发送null
               //新增页面-数据
-              this._modelDOMSData[option[i].triggerDom] = null;
-              this.setNullData(this._modelDOMSData);
+              //this._modelDOMSData[option[i].triggerDom] = null;
+              //this.setNullData(this._modelDOMSData);
 
-             //修改页面-数据
-              if (this.modelDOMSData[option[i].triggerDom]) {
-                this.modelDOMSData[option[i].triggerDom] = null;
-                this.setNullData(this.modelDOMSData);
-              }
+              //修改页面-数据
+              // if (this.modelDOMSData[option[i].triggerDom]) {
+              //   this.modelDOMSData[option[i].triggerDom] = null;
+              //   this.setNullData(this.modelDOMSData);
+              // }
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }

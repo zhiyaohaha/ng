@@ -1,7 +1,9 @@
 <form #form="ngForm">
   <!--添加-->
   <ng-container *ngIf="btnType === 'new';else elseblock;">
+
     <ng-container *ngFor="let item of modelDOMS;">
+
       <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
         <h4 class="">{{item.ui.label}}</h4>
@@ -33,15 +35,19 @@
                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                              [labelName]="child.ui.label"
-                             [placeholder]="child.ui.placeholder"></timi-textarea>
+                             [placeholder]="child.ui.placeholder">
+              </timi-textarea>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
               <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                            pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                            [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                            [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                           (onChange)="selectChange($event, child.cmds)"></timi-select>
+                           (onChange)="selectChange($event, child.cmds)">          
+              </timi-select>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
               <md-input-container>
                 <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
@@ -55,6 +61,7 @@
                 <md-datepicker #picker2></md-datepicker>
               </md-input-container>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
                 <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -63,17 +70,20 @@
                                     (success)="uploaded($event)" (files)="selected($event)"></timi-file-uploader>
               </div>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
               <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                                [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
                                [columns]="child.ui.columns"></timi-chip-group>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
               <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
               <div class="box-item item-control-wrapper">
                 <ueditor name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
               </div>
             </div>
+
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
               <div class="box-item item-label">
                 <label>{{child.ui.label}}</label>
@@ -82,15 +92,24 @@
                 <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"></free-region>
               </div>
             </div>
+
           </ng-container>
         </ng-container>
       </div>
+
+
       <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}"
            *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
         <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
       </div>
+
     </ng-container>
+
   </ng-container>
+
+
+
+
   <!--修改-->
   <ng-template #elseblock>
     <ng-container *ngFor="let item of modelDOMS;">
