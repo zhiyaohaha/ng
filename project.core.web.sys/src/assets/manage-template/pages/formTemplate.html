@@ -75,6 +75,7 @@
                 <ul id="rightTab" class="nav nav-tabs">
                     <li class="active"> <a href="#tabBasis" data-toggle="tab">基础</a></li>
                     <li><a href="#tabOrder" data-toggle="tab">命令</a></li>
+                    <li><a href="#tabVerify" data-toggle="tab">验证</a></li>
                     <li><a href="#tabAdvanced" data-toggle="tab">高级</a></li>
                 </ul>
                 <div  class="tab-content">
@@ -197,6 +198,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabVerify"> 
+                        <div class="row">
+                            <div class="col-sm-12 additional" id="verifyGroup">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="">名称：</label><br>
+                                        <select class="form-control input-sm m-b-10 verifyName" placeholder="验证名称"></select>
+                                    </div>
+                                    <div class="verifyMsgParent verifyLastLine">
+                                        <label for="">验证消息：</label><br>
+                                        <input type="text" class="form-control input-sm m-b-10 verifyMsg" placeholder="验证消息" data-value="">
+                                    </div>
+                                    <div class="verifyParamsParent verifyLineNone">
+                                        <label for="">参数：</label>
+                                        <div class="verifyParams">
+                                            <!-- <input type="text" class="form-control input-sm m-b-10" placeholder="值"> -->
+                                        </div>
+                                    </div>
+                                    <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div> 
                     </div>
                 </div>        
 

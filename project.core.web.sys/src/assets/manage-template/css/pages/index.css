@@ -114,12 +114,13 @@ li {
     width: 153px !important;
 }
 
-#cmdsGroup>.form-inline>.form-group{
+#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group{
     width:100%;
 }
-#cmdsGroup>.form-inline>.form-group>.form-control{
+#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control{
     width:100%;
 }
+
 
 .form-base-info label {
     display: inline-block;
@@ -309,3 +310,11 @@ html { overflow: hidden; }
 .container-fluid .fixedDivRight,.container-fluid  .fixedDivCenter{
     overflow-y:auto;
 }
+
+.verifyLastLine{
+    width:95%;display:inline-block;
+}
+.verifyLineNone{
+    display:none;
+}
+
