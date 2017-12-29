@@ -14,6 +14,8 @@ var collection; //数据源
 var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
 var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
 var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions 触发dom下拉选项
+var verifyData; //验证数据
+var verifyOPtions  = `<option value="">请选择名称</option>`;  //验证名称-下拉选项
 
 var detailId = ""; //查询详情url中的ID
 detailId = $.request("id") || "";
@@ -98,6 +100,16 @@ $.ajax({
                 })
             })
 
+            //验证
+            verifyData = res.data.formVerify;
+            res.data.formVerify.forEach(function (el) {
+                verifyOPtions += `<option value="${el.id}">${el.name}</option>`;
+            })
+            //验证-名称
+            $(".verifyName").html(verifyOPtions);
+            //验证-验证消息,参数
+            bindVertifyEvent()
+
             //下拉框、复选框、单选框
             $("#bindTarget").on("change", function(){
                 $.ajax({
@@ -178,6 +190,7 @@ $.ajax({
                         required:false,
                         sort:0,                      
                     },
+                    verifies:[],
                     value:""
                 },"add")
                 //设置父iframe高度
@@ -186,6 +199,49 @@ $.ajax({
         }
     }
 })
+
+//绑定验证项的-验证消息,参数
+function bindVertifyEvent(){
+    //验证-名称
+    //验证-验证消息,参数
+    $(".verifyName").on("change", function(){
+        var selectedId = $(this).val();
+        var verifyMsgParent = $(this).parent().siblings(".verifyMsgParent");
+        var verifyMsg  = verifyMsgParent.children(".verifyMsg");
+        var verifyParamsParent = $(this).parent().siblings(".verifyParamsParent");
+        var verifyParams = verifyParamsParent.children(".verifyParams");
+        if(selectedId){
+            verifyData.forEach(function(el){
+                if(el.id == selectedId){
+                    //验证-验证消息
+                    verifyMsg.val(el.message);
+                    verifyMsg.data("value",el.regular);
+                    //验证-参数
+                    if(el.needParamsCount){
+                        var html="";
+                        for(var i = el.needParamsCount;i>0;i--){
+                            html+=`<input type="number" class="form-control input-sm m-b-10" placeholder="值">`;
+                        }
+                        verifyMsgParent.removeClass('verifyLastLine');
+                        verifyParamsParent.removeClass('verifyLineNone').addClass("verifyLastLine");
+                        verifyParams.html("").append(html);
+                    }else{
+                        restore(verifyParamsParent,verifyMsgParent,verifyParams)
+                    }
+                }
+            })
+        }else{  //选择 默认选项-“请选择名称”
+            restore(verifyParamsParent,verifyMsgParent,verifyParams)
+            verifyMsg.val("");
+        }
+    })
+    //还原绑定数据    
+    function restore(verifyParamsParent,verifyMsgParent,verifyParams){
+        verifyParamsParent.removeClass('verifyLastLine').addClass("verifyLineNone");
+        verifyMsgParent.addClass('verifyLastLine');
+        verifyParams.html("");
+    }
+}
 
 //渲染需要编辑的模板组件-面板
 function renderResultDoms(doms){
@@ -313,7 +369,8 @@ function dragCreateDom_Panel(domval,that,editData,status){
                 placeholder: "",
                 required: false,
                 sort: 0  
-            }
+            },
+            verifies:[]
         })
 
     }
@@ -653,6 +710,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     $("#bindMulti").prop("checked",objData[id].ui.multiple);
     $("#bindDescription").val(objData[id].description);
     $('#defaultValue').val(objData[id].value)
+    bindVertifyData(objData[id].verifies)
     return false;
 })
 
@@ -847,6 +905,85 @@ function bindCmds(data) {
 
 
     
+}
+
+//绑定验证
+function bindVertifyData(data){
+    // console.log(data)
+    if(data && data.length>0){
+        var html = "";
+        var verifyParamsHtml = "";
+        var verifyParamsChild = "";
+        var verifyParamsHtmlEnd = "";
+        for(var i=0;i <= data.length-1;i++){
+            if(data[i]._params && data[i]._params.length > 0){
+                for(var k = 0;k <= data[i]._params.length - 1;k++){  //disabled  临时修改为：验证保存以后不能修改，只能删除，重新添加验证
+                    verifyParamsChild += `<input type="text" class="form-control input-sm m-b-10" placeholder="值" value="${data[i]._params[k]}" disabled>`;
+                }
+                verifyParamsHtml = `<div class="verifyMsgParent">
+                            <label for="">验证消息：</label><br>
+                            <input type="text" class="form-control input-sm m-b-10 verifyMsg" placeholder="验证消息" data-value="${data[i].regular}" value="${data[i].message}" disabled>
+                        </div>
+                        <div class="verifyParamsParent  verifyLastLine">
+                            <label for="">参数：</label>
+                            <div class="verifyParams">
+                                `+ verifyParamsChild +`
+                            </div>
+                        </div>`;
+            }else{
+                verifyParamsHtml = `<div class="verifyMsgParent verifyLastLine">
+                        <label for="">验证消息：</label><br>
+                        <input type="text" class="form-control input-sm m-b-10 verifyMsg" placeholder="验证消息" data-value="${data[i].regular}" value="${data[i].message}" disabled>
+                    </div>
+                    <div class="verifyParamsParent verifyLineNone">
+                        <label for="">参数：</label>
+                        <div class="verifyParams">
+                            <!-- <input type="text" class="form-control input-sm m-b-10" placeholder="值"> -->
+                        </div>
+                    </div>`;
+            }
+
+            if(i == data.length-1){
+                verifyParamsHtmlEnd = ` <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true" ></i>`;
+            }else{
+                verifyParamsHtmlEnd = ` <i class="fa fa-minus-circle delnotes" data-name="verify" aria-hidden="true"></i>`;
+            }
+
+            html += `<div class="form-inline form-inline-${data[i].id}">
+                        <div class="form-group">
+                            <label for="">名称：</label><br>
+                            <select class="form-control input-sm m-b-10 verifyName" placeholder="验证名称" disabled>${verifyOPtions}</select>
+                        </div>
+                        `+ verifyParamsHtml + verifyParamsHtmlEnd +`
+                    </div>
+                    <script>
+                        $(".form-inline-${data[i].id}").find(".verifyName").val('${data[i].id}');
+                    </script>
+                    `;
+        }
+        $("#verifyGroup").html(html);
+        // $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
+        bindVertifyEvent();
+    }else{
+        $("#verifyGroup").html(`<div class="form-inline">
+                <div class="form-group">
+                    <label for="">名称：</label><br>
+                    <select class="form-control input-sm m-b-10 verifyName" placeholder="验证名称">${verifyOPtions}</select>
+                </div>
+                <div class="verifyMsgParent verifyLastLine">
+                    <label for="">验证消息：</label><br>
+                    <input type="text" class="form-control input-sm m-b-10 verifyMsg" placeholder="验证消息" data-value="">
+                </div>
+                <div class="verifyParamsParent verifyLineNone">
+                    <label for="">参数：</label>
+                    <div class="verifyParams">
+                        <!-- <input type="text" class="form-control input-sm m-b-10" placeholder="值"> -->
+                    </div>
+                </div>
+                <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
+            </div>`);
+        bindVertifyEvent();
+    }
 }
 
 //复制dom-panel
@@ -1304,6 +1441,24 @@ $(".additional").on("click", ".addnotes", function(){
                 }
             }
         })
+    }else if (name === "verify"){
+         $(this).parent().parent().append(`<div class="form-inline">
+                <div class="form-group">
+                    <label for="">名称：</label><br>
+                    <select class="form-control input-sm m-b-10 verifyName" placeholder="验证名称">${verifyOPtions}</select>
+                </div>
+                <div class="verifyMsgParent verifyLastLine">
+                    <label for="">验证消息：</label><br>
+                    <input type="text" class="form-control input-sm m-b-10 verifyMsg" placeholder="验证消息">
+                </div>
+                <div class="verifyParamsParent verifyLineNone">
+                    <label for="">参数：</label>
+                    <div class="verifyParams">
+                    </div>
+                </div>
+                <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
+            </div>`);
+            bindVertifyEvent();
     }
      $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 
@@ -1311,7 +1466,7 @@ $(".additional").on("click", ".addnotes", function(){
 })
 //删除属性或样式
 $(".additional").on("click", ".delnotes", function(){
-    if($(this).data("name") === "cmds"){
+    if($(this).data("name") === "cmds" ||$(this).data("name") ===  "verify"){
         $(this).parent().remove();
     }else{
         $(this).parent().parent().remove();
@@ -1339,8 +1494,10 @@ function save(){
                 "multiple": $('#bindMulti').is(':checked'),
                 
             },
+            "verifies":saveVerifies(),
             "description": $("#bindDescription").val()
         }
+        
         //命令栏-触发dom
         //只有在'有标题，有绑定值的情况下'，才能添加'触发dom的选项'
         if(objData[activeId].name && objData[activeId].ui.label)  
@@ -1428,6 +1585,74 @@ function saveAttrAndCss(obj){
     return arr.length > 0 ? arr : null;
 }
 
+//保存验证的选项数据
+function saveVerifies(){
+    var arr = [];
+    $("#verifyGroup").find(".form-inline").each(function(){
+        var _self = $(this);
+        var verifiesParams = saveVerifiesParams(_self.find(".verifyParams"));
+        var arrChild = {
+            id:_self.find(".verifyName").val(),
+            name:_self.find(".verifyName").find("option:selected").text(),
+            message:dealVerifiesData(_self.find(".verifyMsg").val(),verifiesParams,"message",_self),
+            regular:dealVerifiesData(_self.find(".verifyMsg").data('value'),verifiesParams,"regular",_self),  
+            _params:verifiesParams
+        };
+        var arrChildValid = false;
+        $.each(arrChild,function(key,val){
+            if(typeof val === "object"){
+               if(val && val.length>0){ arrChildValid = true; }     
+            }else{
+                if(val){ arrChildValid = true;}
+            }
+        })
+        if(arrChildValid){arr.push(arrChild)}
+    })
+    return arr;
+}
+//保存验证的选项数据 - 保存参数
+function saveVerifiesParams(obj){
+    var arr = [];
+    obj.children().each(function(){
+        var val = $(this).val();
+        if(val) {
+            arr.push(val);
+        }
+    })
+    if(obj.children().length !== arr.length){
+        alert('请将验证参数输入完整');
+        throw new Error("Something went badly wrong!");  //终止继续执行的‘保存功能’的所有代码
+    }else{
+        return arr.length > 0 ? arr : null;
+    }
+}
+//保存验证的选项数据 - 处理发送的数据(处理 验证消息和正则表达式)
+function dealVerifiesData(originalData,middleData,type,_self){
+    if(!middleData){
+        return originalData;
+    }else{
+        var detalData = originalData;
+        var regMessage = '';
+        var regRegular = '';
+        if(type === "message"){  //验证--- 验证消息
+            if(/.*?参数.*?/.test(detalData)){
+               for(var i = middleData.length-1;i>=0;i--){
+                    detalData = detalData.replace("{参数"+(i+1)+"}",middleData[i]);
+                }
+            }
+            _self.find(".verifyMsg").val(detalData)
+        }else if(type === "regular"){  //验证--- 正则表达式
+            if(/.*?参数.*?/.test(detalData)){ //修改状态下，已经修改的不能再次修改
+                for(var i = middleData.length-1;i>=0;i--){
+                    detalData = detalData.replace("参数"+(i+1),middleData[i]);
+                }
+            }      
+            _self.find(".verifyMsg").data('value',detalData)
+        }
+        return detalData;
+    }
+}
+
 //dom数据
 function boxDomChild(domPanelOneLevel){  //(一级和二级)面板里面的内容
     var dom = [];
@@ -1492,7 +1717,7 @@ function saveTemplate() {
     }else{         //新增模板
         detailTemplateOperateUrl  = 'Add';  
     }    
-    // console.log(data)
+    console.log(data)
     $.ajax({
         type: "POST",
         url: urlprefix + "/api/Template/"+detailTemplateOperateUrl+"FormTemplate", 

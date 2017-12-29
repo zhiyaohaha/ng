@@ -156,7 +156,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   }
 
   writeValue(value: any) {
-    value = String(value);
+    value = value ? String(value) : value;
     if (this.options) {
       this.options.map(r => {
         r.checked = false;
