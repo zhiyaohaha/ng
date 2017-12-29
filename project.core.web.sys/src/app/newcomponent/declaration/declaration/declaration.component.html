@@ -1,4 +1,4 @@
-<form *ngIf="false">
+<form>
 
   <div class="declaration">
     <div class="searchBox">
@@ -13,7 +13,6 @@
           <label for="type{{i}}" [class.active]="product.checked">{{type.name}}</label>
         </li>
       </ul>
-      
     </div>
 
     <ul class="products" [class.productActive]="productsStyle">
@@ -50,62 +49,71 @@
     <ul class="info">
       <li>
         <span class="left">身份证号：</span>
-        <input type="text" (keyup)="authentication($event,person)" #person class="info-input" placeholder="请输入长度为18的身份证号码" maxlength="18">
+        <input type="text" (keyup)="authentication($event,person)" #person class="info-input" placeholder="请输入长度为18的身份证号码">
         <span class="right red" *ngIf="errorOfPerson==1">{{errorMessage}}</span>
         <span class="right red" *ngIf="errorOfPerson==2">{{errorMessage}}</span>
       </li>
-       <!-- *ngIf="showCertification==2" -->
-      <li *ngIf="showCertification==2">
+      <li>
         <span class="left">银行卡号：</span>
         <input type="text" (keyup)="getbankCard($event,bankNum)" #bankNum class="info-input" placeholder="请输入银行卡号" maxlength="19">
         <span class="right red" *ngIf="showBankError">{{errorBank}}</span>
       </li>
-      <li *ngIf="showCertification==2">
+      <li>
         <span class="left">银行预留手机号：</span>
-        <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码" maxlength="11">
+        <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码">
         <span class="right">
           <button type="button" (click)="getPhoneNum($event,phoneNum)">发送验证码</button>
         </span>
       </li>
-      <li *ngIf="showCertification==2">
+      <li>
+
+      </li>
+      <li>
         <span class="left">短信验证码：</span>
-        <input type="text" (keyup)="getCode($event,code)" #code class="info-input" placeholder="请输入长度为4的数字验证码" maxlength="4">
+        <input type="text" (blur)="getCode($event,code)" #code class="info-input" placeholder="请输入长度为4的数字验证码">
         <span class="right red" *ngIf="showCodeError">{{errorCode}}</span>
       </li>
     </ul>
 
-    <div class="authenticationPic" *ngIf="showCertification==2">
+    <div class="authenticationPic">
 
       <timi-file-uploader [btnName]="'身份证人相面'" name="portrait" (success)="uploaded1($event)"></timi-file-uploader>
       <timi-file-uploader [btnName]="'身份证国徽面'" name="NationalEmblem" (success)="uploaded2($event)"></timi-file-uploader>
       <timi-file-uploader [btnName]="'单人生活照片'" name="life" (success)="uploaded3($event)"></timi-file-uploader>
 
     </div>
-    <div class="authenticationBtn" *ngIf="showCertification==2">
-      <button (click)="onCertification($event)" type="button">开始认证</button>
+    <div class="authenticationBtn">
+      <button (click)="onSubmit($event)" type="button">开始认证</button>
     </div>
   </div>
 
-  <div class="result" *ngIf="showPersonData || (showCertification==1)">
+  <div class="result" *ngIf="false">
     <div class="leftBox">
-      <img [src]="personData.portrait" alt="">
-      <img [src]="personData.face" alt="">
+      <img src="../../../assets/iconred.png" alt="">
+      <img src="../../../assets/iconblue.png" alt="">
     </div>
     <div class="rightBox">
       <ul>
-        <li>相似度：{{personData.confidence}}</li>
-        <li>相似阀值：{{personData.similarity}}</li>
-        <li>姓名：{{personData.name}}</li>
-        <li>性别：{{personData._sex}}</li>
-        <li>年龄：{{personData.age}}</li>
-        <li>民族：{{personData.nation}}</li>
-        <li>户籍地：{{personData.domicile}}</li>
+        <!-- <li>相似度：{{personData.confidence}}</li>
+                <li>相似阀值：{{personData.similarity}}</li>
+                <li>姓名：{{personData.name}}</li>
+                <li>性别：{{personData._sex}}</li>
+                <li>年龄：{{personData.age}}</li>
+                <li>民族：{{personData.nation}}</li>
+                <li>户籍地：{{personData.domicile}}</li> -->
+
+        <li>相似度：</li>
+        <li>相似阀值：</li>
+        <li>姓名：</li>
+        <li>性别：</li>
+        <li>年龄：</li>
+        <li>民族：</li>
+        <li>户籍地：</li>
       </ul>
     </div>
     <div class="resultBtn">
-      <button type="button" (click)="onSubmit($event)">申请贷款</button>
+      <button type="button">申请贷款</button>
     </div>
   </div>
 
 </form>
-<my-application></my-application>
