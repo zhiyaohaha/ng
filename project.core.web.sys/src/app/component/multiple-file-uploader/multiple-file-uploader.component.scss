@@ -1,0 +1,122 @@
+.upload-file-wrap {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px #eee;
+  padding: 10px;
+  h2 {
+    text-align: center;
+  }
+  .file-item {
+    margin: 0 20px;
+    border-bottom: 2px solid #ccc;
+    height: 70px;
+    line-height: 70px;
+    list-style: none;
+    .item-progress {
+      position: relative;
+      top: -14px;
+      border-radius: 10px;
+    }
+    i {
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+  span {
+  }
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+  .fa-cloud-upload {
+    font-size: 30px;
+    margin: 20px 0 0 30px;
+    position: relative;
+    overflow: hidden;
+    input {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+  .upload-btn {
+    text-align: right;
+    button {
+      margin-top: 20px;
+    }
+  }
+}
+
+.upload-wrap {
+  padding-bottom: 20px;
+  min-height: 100px;
+  position: relative;
+  border: 1px solid #ccc;
+  .upload-input {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .item {
+    box-sizing: border-box;
+    float: left;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 4px 2px #eee;
+    padding: 4px;
+    margin: 10px;
+    list-style: none;
+    position: relative;
+    border-radius: 2px;
+    .preview-box {
+      img {
+        width: 100px;
+        height: 100px;
+        display: block;
+      }
+    }
+    .item-name {
+      display: block;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .item-alias {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        &:focus {
+          border-bottom-color: purple;
+        }
+      }
+    }
+    i {
+      display: none;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      cursor: pointer;
+      color: #666;
+    }
+    &:hover i {
+      display: block;
+      &:hover {
+        color: #cf000d;
+      }
+    }
+  }
+  .item-success {
+    border-color: green;
+    box-shadow: 0 0 4px 0 green;
+  }
+  .item-error {
+    border-color: #cf000d;
+    box-shadow: 0 0 4px 0 #cf000d;
+  }
+}
