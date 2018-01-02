@@ -9,13 +9,14 @@ import {BaseService} from "../../services/base.service";
 import {WebSocketService} from "../../services/share/web-socket.service";
 import {globalUrl} from "../../common/global.config";
 import {environment} from "environments/environment";
+import {UEditorConfig} from "ngx-ueditor";
 
 @Component({
   selector: "app-root",
   templateUrl: "./main.component.html",
   styleUrls: ["./main.component.scss"],
   animations: [fadeIn],
-  providers: [LoginOutService]
+  providers: [LoginOutService, UEditorConfig]
 })
 export class MainComponent implements OnInit {
 
@@ -24,6 +25,12 @@ export class MainComponent implements OnInit {
     {value: "pizza-1", viewValue: "Pizza"},
     {value: "tacos-2", viewValue: "Tacos"}
   ];
+  aa;
+  config = {
+    toolbars: [["bold", "italic", "underline", "Removeformat", "Simpleupload", "paragraph", "forecolor", "Fontsize", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "Undo", "Redo",]],
+    autoClearinitialContent: true,
+    wordCount: false
+  };
 
 
   constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, private toastService: ToastService) {

@@ -16,6 +16,8 @@ import {FileUploadModule} from "ng2-file-upload";
 import {MdButtonModule, MdInputModule, MdProgressBarModule, MdSelectModule, MdSnackBarModule} from "@angular/material";
 import {strLength} from "../../common/pipe/strLength";
 import {TimiSelectModule} from "../../component/timi-select/select.component";
+import {MultipleFileUploaderModule} from "../../component/multiple-file-uploader/multiple-file-uploader.component";
+import {UEditorModule} from "ngx-ueditor";
 
 @NgModule({
   imports: [
@@ -35,10 +37,17 @@ import {TimiSelectModule} from "../../component/timi-select/select.component";
     MdInputModule,
     MdSelectModule,
     ToastModule,
-    TimiSelectModule
+    TimiSelectModule,
+    MultipleFileUploaderModule,
+    // UEditorModule.forRoot({
+    //   path: "assets/ueditor/",
+    //   options: {
+    //     themePath: "/assets/ueditor/themes/"
+    //   }
+    // })
   ],
   exports: [],
-  declarations: [MainComponent, strLength]
+  declarations: [MainComponent]
 })
 
 export class MainModule {
