@@ -31,7 +31,7 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
       <div class="timi-chip-group" [ngClass]="chipClass">
         <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
         <input spellcheck="false" type="text" placeholder="{{placeholder}}"
-               (focus)="onFocus()" (blur)="onFocus()" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
+               (focus)="onFocus()" (blur)="onBlur($event)" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
                (drop)="drop($event)">
       </div>
     </div>
@@ -80,10 +80,11 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   private _propagateChange = (_: any) => { };
 
-  constructor() {
+  constructor(private er:ElementRef) {
   }
 
   ngOnInit() {
+    this.er.nativeElement.classList.add("ng-pristine-custom");  //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.setChipClass();
   }
 
@@ -111,6 +112,12 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   onFocus() {
+    this.focus = !this.focus;
+    this.setChipClass();
+  }
+
+  onBlur($event) {
+    $event.path[3].className =  $event.path[3].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.focus = !this.focus;
     this.setChipClass();
   }

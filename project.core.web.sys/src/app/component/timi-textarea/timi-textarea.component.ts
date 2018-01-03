@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {AfterViewInit, Component, forwardRef, Input, NgModule, OnInit, Renderer2} from "@angular/core";
+import {AfterViewInit, Component, forwardRef, Input, NgModule, OnInit, Renderer2,ElementRef} from "@angular/core";
 import {DomRenderer} from "../../common/dom";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
@@ -50,13 +50,15 @@ export class TimiTextareaComponent implements ControlValueAccessor, AfterViewIni
 
   private valueChange = (_: any) => { };
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2,private er:ElementRef) {
   }
 
   ngOnInit() {
+      this.er.nativeElement.classList.add("ng-pristine-custom");  //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
   }
 
-  blur($event) {
+  blur($event) {  
+    $event.path[4].className =  $event.path[4].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.value = $event.target.value;
   }
 
