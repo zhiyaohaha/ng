@@ -1717,7 +1717,7 @@ function saveTemplate() {
     }else{         //新增模板
         detailTemplateOperateUrl  = 'Add';  
     }    
-    console.log(data)
+    // console.log(data)
     $.ajax({
         type: "POST",
         url: urlprefix + "/api/Template/"+detailTemplateOperateUrl+"FormTemplate", 
