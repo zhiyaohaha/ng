@@ -3,7 +3,7 @@
       <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
         <ng-container *ngFor="let child of item">
           <ng-container [ngSwitch]="child.ui.displayType">
-                  <!-- 一级面板动态组件  -->
+                  <!-- 一级面板动态组件（附件组）  -->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'"
                        [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                     <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]"
@@ -95,7 +95,7 @@
                       </div>
                   </div> 
 
-                  <!-- 二级面板-->
+                  <!-- 二级面板(附件项)-->
                   <div *ngIf="isArray(modelDOMSData[i][child.name])">
                     <div *ngFor="let binddataItem of modelDOMSData[i][child.name];let j=index;">
                         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Panel'"
@@ -110,7 +110,7 @@
                                                     [labelName]="child.ui.label"
                                                     [checkboxs]="child.ui.label" [columns]="child.ui.columns">
                                       </timi-checkbox>
-                                    </div> 
+                                  </div> 
 
                                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
                                       [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
@@ -121,6 +121,7 @@
                                                   [placeholder]="child.ui.placeholder">
                                     </timi-textarea>
                                   </div>
+                                  
                                   <!-- 二级面板- 静态组件判断 -->
                                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
                                   [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
@@ -136,6 +137,18 @@
                                         <div class="span" *ngSwitchDefault> {{child.name | ergodicJson : binddataItem}}</div>
                                       </ng-container>
                                   </div>
+                                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
+                                  [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                                      <div class="box-item item-label"><label>{{child.ui.label}}</label></div>
+                                      <div class="img-wrap span">
+                                        <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
+                                          <img *ngFor="let file of child.name | ergodicJson : modelDOMSData[i]" src="{{file || imgSrc}}" alt="">
+                                        </ng-template>
+                                        <ng-template [ngIf]="!child.ui.multiple">
+                                          <img #elseblock src="{{binddataItem[lastdotFun(child.name)] || imgSrc}}" alt="">
+                                        </ng-template>
+                                      </div>
+                                  </div> 
                                 </ng-container>
                             </ng-container>  
                         </div>
