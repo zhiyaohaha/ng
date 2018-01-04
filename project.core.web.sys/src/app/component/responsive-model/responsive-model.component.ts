@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, NgModule, OnInit, Output,ElementRef,ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
@@ -43,7 +43,8 @@ export class ResponsiveModelComponent implements OnInit {
   _modelDOMSData = {}; //添加的数据对象
 
   _modelDOMS; //模板
-
+  
+  _errData = []; //错误信息集合
   @Input() //模版
   set modelDOMS(value) {
     this._modelDOMS = value;
@@ -66,7 +67,8 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
-  constructor(private baseService: BaseService) {
+  @ViewChild('form')formDiv:ElementRef;
+  constructor(private baseService: BaseService,private er: ElementRef) {
   }
 
   ngOnInit() {
@@ -83,6 +85,27 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event) {
+  //  显示错误提示
+   let errs = this.er.nativeElement.getElementsByClassName('ng-valid');
+   for(let errItem in errs){
+       let className = errs[errItem].className;
+       if(errs[errItem].className){
+           errs[errItem].className = errs[errItem].className.replace('ng-pristine','ng-dirty');
+       }
+   }
+
+   //如果有错误，则停止提交
+    let errData = this._errData;
+    for(let i in errData ) { 
+         if(errData[i]){
+          return false;   //如果有错误，则停止提交
+         }
+    }
+
+ 
+    //没有错误，可以提交
+    console.log('提交')
+    console.log($event)
     let data = {};
     for (const key in $event) {  //把带点的数据结构处理为，json格式
       if (key.indexOf(".") > 0) {
@@ -93,14 +116,52 @@ export class ResponsiveModelComponent implements OnInit {
           data[arr[0]] = {};
         }
       } else {
-        data[key] = $event[key];
+        data[key] = $event[key] || "";
       }
     }
     console.log(data)
     this.ngSubmit.emit(data);
   }
 
+  vertifyFun(vertify,data,required,displayMsg,key){
+    let msg;
+    // console.log('-----------------')
+    // console.log(vertify)
+    // console.log(data)
+    // console.log(required)
+    // console.log(displayMsg)
+    // console.log(key)
+    // console.log('+++++++++++++++')
+    if(data && data.length>0){
+      if(vertify && vertify.length>0){ //如果有正则
+        let reg;
+        vertify.forEach(item => {
+            reg = new RegExp(item.regular); 
+            if(!reg.test(data)){  //匹配错误，显示error
+                msg = item.message;
+                this._errData[key] = msg;
+                return false;
+            }
+        });
+      }
+    }else{
+      if(required){
+        msg = displayMsg;
+      }
+    }
+    this._errData[key] = msg;
+    return msg;
+  }
 
+  classDisplay(val){
+
+      // console.log(Boolean(val))
+      setTimeout(function(){
+        return Boolean(val);
+      },0)
+      return false;
+      // return Boolean(val);
+  }
   /**
    * 上传文件
    */
@@ -168,14 +229,14 @@ export class ResponsiveModelComponent implements OnInit {
               }
             } else {      //都不勾选以后，发送null
               //新增页面-数据
-              //this._modelDOMSData[option[i].triggerDom] = null;
-              //this.setNullData(this._modelDOMSData);
+              this._modelDOMSData[option[i].triggerDom] = null;
+              this.setNullData(this._modelDOMSData);
 
-              //修改页面-数据
-              // if (this.modelDOMSData[option[i].triggerDom]) {
-              //   this.modelDOMSData[option[i].triggerDom] = null;
-              //   this.setNullData(this.modelDOMSData);
-              // }
+             //修改页面-数据
+              if (this.modelDOMSData[option[i].triggerDom]) {
+                this.modelDOMSData[option[i].triggerDom] = null;
+                this.setNullData(this.modelDOMSData);
+              }
             }
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
