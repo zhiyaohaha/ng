@@ -1,0 +1,37 @@
+<div [@fadeInState]="'active'">
+
+  <div class="topContent">
+    <ul>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+      <li>今日报单数量：XXXXX</li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <div class="headerLeft">
+        <span>时间范围：</span>
+        <input type="text">
+      </div>
+      <div class="headerRight">
+        <span>时间粒度：</span>
+        <input type="radio" name="time" id="day">
+        <label for="day">按日</label>
+        <input type="radio" name="time" id="week">
+        <label for="week">按周</label>
+        <input type="radio" name="time" id="month">
+        <label for="month">按月</label>
+      </div>
+    </div>
+    <free-chart type="line" [data]="lineData"></free-chart>
+  </div>
+  
+</div>

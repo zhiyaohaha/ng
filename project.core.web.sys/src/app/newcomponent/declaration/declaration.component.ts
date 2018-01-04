@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 
 @Component({
-  selector: 'my-declaration',
+  selector: 'free-declaration',
   templateUrl: './declaration.component.html',
   styleUrls: ['./declaration.component.scss'],
   providers: [OrderService]

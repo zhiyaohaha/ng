@@ -10,13 +10,17 @@ import { TimiFileUploaderModule } from 'app/component/timi-ng2-file-uploader/tim
 import { TimiInputModule } from 'app/component/timi-input/timi-input.component';
 import { ApplicationComponent } from './application/application.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
+import { ChartComponent } from './chart/chart.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @NgModule({
     declarations: [
         PreviewComponent,
         RegionComponent,
         DeclarationComponent,
-        ApplicationComponent
+        ApplicationComponent,
+        ChartComponent,
+        StatisticsComponent
     ],
     imports: [
         FormsModule,
@@ -29,7 +33,9 @@ import { TimiSelectModule } from 'app/component/timi-select/select.component';
         PreviewComponent,
         RegionComponent,
         DeclarationComponent,
-        ApplicationComponent
+        ApplicationComponent,
+        ChartComponent,
+        StatisticsComponent
     ],
     providers: [],
 })
