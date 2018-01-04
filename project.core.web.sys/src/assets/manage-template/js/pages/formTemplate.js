@@ -1553,7 +1553,7 @@ function saveCmds(){
     return arr;
 }
 
-//保存触发条件
+//保存触发条件（命令项 键值对）
 function saveTriggerWhere(obj) {
     var arr = [];
     obj.find(".formTemplate-wrap").each(function(){
