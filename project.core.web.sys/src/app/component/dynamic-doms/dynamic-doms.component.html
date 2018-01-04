@@ -56,7 +56,15 @@
                                      [columns]="child.ui.columns">
                     </timi-chip-group>
                   </div>
-
+                  <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                        <timi-file-uploader name="{{child.name}}" 
+                                            [ngModel]="child.name | ergodicJson : modelDOMSData"
+                                            [(ngModel)]="modelDOMSData[i][child.name]"
+                                            [btnName]="child.ui.label" [src]="modelDOMSData[i]['_'+child.name]"
+                                            [columns]="child.ui.columns"
+                                           >
+                        </timi-file-uploader>
+                    </div>
                    <!-- 一级面板静态组件 -->
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
                   [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
