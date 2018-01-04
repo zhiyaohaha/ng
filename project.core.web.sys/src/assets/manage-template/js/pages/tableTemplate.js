@@ -866,7 +866,6 @@ function bindCmds(data){
                 var $triggerWhereGroupClone = $clone.find(".triggerWhereGroup .first").clone();
                 $triggerWhereGroupClone.find(".cmdTriggerWhereKey").val(triggerWhereData[j].key);
                 $triggerWhereGroupClone.find(".cmdTriggerWhereValue").val(triggerWhereData[j].value);
-                console.log(j)
                 if(j < triggerWhereData.length - 1){
                     $triggerWhereGroupClone.find("i").removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle dellnotes");
                 }
