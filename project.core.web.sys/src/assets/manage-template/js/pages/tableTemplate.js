@@ -10,12 +10,17 @@ var collectionsContent; //下拉数据源选择过后的数据内容
 
 var detailId = ""; //查询详情的ID
 
-//设置可拖拽赋值
+var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
+var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
+
+//设置可拖拽赋值 （为了解决赋值 与 拖拽的冲突）
 var templateFieldsDrop = true;
 var templateFiltersDrop = true;
 var templateSortsDrop = true;
+var cmdsGroupDrop = true;
 function setDroppable(){
     
+    //表头 
     $("#templateFields ul li").not(":first").droppable({  //表头第一个选项禁止拖入修改
         drop: function(event, ui){
             // console.log(templateFieldsDrop)
@@ -39,7 +44,7 @@ function setDroppable(){
       
     })
 
-    
+    //筛选项 
     $("#templateFilters ul li").droppable({
         drop: function(event, ui){
             if(templateFiltersDrop ){
@@ -65,7 +70,33 @@ function setDroppable(){
         }
     })
 
-   
+    //命令 
+    $("#cmdsGroup ul li").droppable({
+        drop: function(event, ui){
+            if(cmdsGroupDrop){
+                var str = $(this).find(".cmdFields").val();
+                var value = $(this).find(".cmdFields").data("value");
+                if(str){
+                    str += ","+DOMdescription;
+                    value += ","+DOMvalue;
+                }else{
+                    str = DOMdescription;
+                    value = DOMvalue;
+                }
+                $(this).find(".cmdFields").val(str).data("value", value);
+            }else{
+                cmdsGroupDrop = true; 
+            }
+        }
+    }).css("cursor","move")
+    $("#cmdsGroup   ul").sortable({
+        revert: true,
+        start:function(event,ui){
+            cmdsGroupDrop = false;
+        }
+    })
+    
+    //排序    
     $("#templateSorts ul li").droppable({
         drop: function(event, ui){
             console.log("templateSortsDrop : " + templateSortsDrop)
@@ -171,6 +202,20 @@ $.ajax({
                 filterTypeOptions += `<option value="${filterTypes[i].value}">${filterTypes[i].text}</option>`;
             }
             $(".filterType").html(filterTypeOptions);
+
+            //命令栏-命令名称
+            res.data.domCmd.forEach(function (el) {
+                cmdOptions += `<option value="${el.value}">${el.text}</option>`;
+            })
+            $(".cmdOptions").html(cmdOptions);
+
+            //命令栏-表单模板
+            res.data.formTemplate.forEach(function (el) {
+                cmdFormTemplateOption += `<option value="${el.value}">${el.text}</option>`;
+            })
+            $(".cmdFormTemplate").html(cmdFormTemplateOption);
+
+            
 
             if(detailId){
                 getDetail();
@@ -392,6 +437,99 @@ $(".table-content").on("click", ".addnotes", function(){
         })
 
         $("i.fa-plus-circle").css("cursor","default");
+    }else if (name === "formTemplate"){
+        $(this).parent().parent().parent().append(`<div class="formTemplate-wrap">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>`);
+    }else if (name === "cmds"){
+        parent.append(`
+        <li>
+            <div class="row">
+                <div class="col-sm-3 m-b-10">
+                    <label for="">绑定项名称：</label>
+                    <input type="text" class="form-control input-sm bindName" placeholder="请输入绑定项名称">
+                </div>
+                <div class="col-sm-3 m-b-10">
+                    <label for="">筛选项标题：</label>
+                    <input class="form-control input-sm filterUiLabel" type="text" placeholder="请填写筛选项标题">
+                </div>
+                <div class="col-sm-3 m-b-10">
+                    <label for="">命令名称：</label>
+                    <select class="form-control input-sm cmdOptions" placeholder="命令名称">${cmdOptions}</select>
+                </div>
+                <div class="col-sm-3 m-b-10">
+                    <label for="">表单模板：</label>
+                    <select class="form-control input-sm  cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
+                </div>
+                
+                <div class="col-sm-8 m-b-10 triggerWhereGroup">
+                    <label style="float:left">键值对：</label>
+                    <div class="formTemplate-wrap-parent">
+                        <div class="formTemplate-wrap">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere cmdTriggerWhereKey" placeholder="键" name="key">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhereValue" placeholder="值" name="value">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9 m-b-10">
+                    <label for="">触发地址：</label>
+                    <input type="text" class="form-control  full  cdmAddress" placeholder="触发地址">
+                </div>
+
+                <div class="col-sm-9 m-b-10">
+                    <label for="">绑定字段集合：</label>
+                    <input type="text" class="form-control cmdFields full" placeholder="绑定字段集合" disabled>
+                </div>
+                <div class="col-sm-1 checkbox">
+                    <label for=""></label>
+                    <input type="checkbox" class="inline">在行内
+                </div>
+                <div class="col-sm-2">
+                    <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
+                </div>
+            </div>
+        </li>`
+        );
+        parent.find("li:last").droppable({
+            drop: function(event, ui){
+                if(cmdsGroupDrop){
+                    var str = $(this).find(".cmdFields").val();
+                    var value = $(this).find(".cmdFields").data("value");
+                    if(str){
+                        str += ","+DOMdescription;
+                        value += ","+DOMvalue;
+                    }else{
+                        str = DOMdescription;
+                        value = DOMvalue;
+                    }
+                    $(this).find(".cmdFields").val(str).data("value", value);
+                }else{
+                    cmdsGroupDrop = true; 
+                }
+            }
+        }).css("cursor","move");
+        parent.sortable({
+            start:function(event,ui){
+                cmdsGroupDrop = false;
+            }
+        })
+        $("i.fa-plus-circle").css("cursor","default");
     }
     $(this).removeClass("addnotes fa-plus-circle").addClass("fa-minus-circle dellnotes");
 
@@ -399,11 +537,17 @@ $(".table-content").on("click", ".addnotes", function(){
 })
 //删除添加的项
 $(".table-content").on("click", ".dellnotes", function(){
-    $(this).parent().parent().parent().remove();
+    if($(this).data("name") === "formTemplate"){
+        $(this).parent().parent().remove();
+    }else{
+        $(this).parent().parent().parent().remove();
+    }  
 })
 
 function saveTemplate() {
-    var fields = [], filters = [], sorts = [], tags = [];
+    var fields = [], filters = [], cmds = [],sorts = [], tags = [];
+
+    //表头 
     $("#templateFields li").each(function(index, item){
         var _self = $(item);
         if(!_self.find(".fieldName").val()){
@@ -418,9 +562,10 @@ function saveTemplate() {
         })
     })
 
+    //筛选项 
     $("#templateFilters li").each(function(index, item){
         var _self = $(item);
-        if(!_self.find(".filterField").data("value")){
+        if(!_self.find(".filterField").data("value")){  //“筛选项字段”是必填，否则提交报错
             return false;
         }
         filters.push({
@@ -439,6 +584,30 @@ function saveTemplate() {
         })
     })
 
+    //命令项
+    $("#cmdsGroup li").each(function(index, item){
+        var _self = $(item);
+        cmds.push({
+            "name": _self.find(".bindName").val(),  //名称
+            "inline": _self.find(".inline").is(":checked") ? true : false,  //行内
+            "ui": {
+                "label": _self.find(".filterUiLabel").val() ,      //标题
+                "displayType": "HtmlDomDisplayType.Button"    //展示类型
+            },
+            "cmds": [    //该数组只存一个 如下
+                {
+                "name": _self.find(".cmdOptions").val() ,//命令名称
+                "formTemplate": _self.find(".cmdFormTemplate").val() ,//表单模版
+                "triggerWhere":  saveTriggerWhere(_self.find(".triggerWhereGroup")) ,//触发条件
+                "triggerUrl": _self.find(".cdmAddress").val() ,//触发地址
+                "bindParamFields":_self.find(".cmdFields").data("value") ? _self.find(".cmdFields").data("value").split(",") : []  //绑定参数字段
+                }
+            ]
+        })
+    })
+    // console.log(cmds)
+
+    //排序 
     $("#templateSorts li").each(function(index, item){
         var _self = $(item);
         if(!_self.find(".sortField").data("value")){
@@ -457,6 +626,7 @@ function saveTemplate() {
         description: $("#templateDescription").val(),
         fields: fields,
         filters: filters,
+        cmds:cmds,
         sorts: sorts,
         tags: $("#templateTags").val() ? $("#templateTags").val().split(",") : null
     }
@@ -484,6 +654,23 @@ function saveTemplate() {
     })
 }
 
+//保存触发条件 （命令项 键值对）
+function saveTriggerWhere(obj) {
+    var arr = [];
+    obj.find(".formTemplate-wrap").each(function(){
+        var _self = $(this);
+        // var value1 = _self.find("input[name=key]").data("value");
+
+        /******11.17 update : 如果有拖入的值，则使用拖入的值。没有拖入的值，使用输入的值  start********/
+        var value1 = _self.find("input[name=key]").data("value") ||  _self.find("input[name=key]").val(); 
+        /******11.17 update : end********/
+        var value2 = _self.find("input[name=value]").val();
+        if(value1 && value2) {
+            arr.push({key: value1,value:value2});
+        }
+    })
+    return arr.length > 0 ? arr : null;
+}
 
 //获取修改数据
 function getDetail(){
@@ -509,13 +696,14 @@ function getDetail(){
                 
                 // $("#templateFields ul").html(bindFelds(result.fields));
                 bindFelds(result.fields);
-                setTimeout(function() {
-                    if(result.filters.length > 0) bindFilters(result.filters);
+                setTimeout(function() {  //需要使用数据源collectionsContent，所以需要等待数据源加载完成。
+                    if(result.filters.length  > 0) {bindFilters(result.filters)};
+                    if(result.cmds && result.cmds.length > 0) {bindCmds(result.cmds)};
                     $("#templateSorts ul").html(bindSorts(result.sorts));
                     $("#templateSorts li:last").find("i").removeClass("fa-minus-circle dellnotes").addClass("fa-plus-circle addnotes");
                     setDroppable();
                     setChildScrollHeight();
-                }, 2000);
+                }, 1000);
             }
         }
     })
@@ -654,6 +842,58 @@ function bindFilters(data){
         $("#templateFilters ul").append($clone.removeClass("clone"));
     }
     $("#templateFilters .clone").remove();
+}
+
+
+//绑定命令项
+function bindCmds(data){
+    var html = "";
+    for(var i = 0; i < data.length; i++){
+        // var $clone = $("#templateFilters .clone").clone(true);   //clone(true)  克隆dom，并且克隆事件 （生成的dom无法拖拽）
+        var $clone = $("#cmdsGroup .clone").clone();          //clone()  只克隆dom
+        
+        $clone.find(".bindName").val(data[i].name);  //名称
+        $clone.find(".inline").attr("checked",data[i].inline);   //行内
+        $clone.find(".filterUiLabel").val(data[i].ui.label);     //标题
+        $clone.find(".cmdOptions").val(data[i].cmds[0].name);    //命令名称
+        $clone.find(".cmdFormTemplate").val(data[i].cmds[0].formTemplate);   //表单模版
+
+        //触发条件
+        var triggerWhereData = data[i].cmds[0].triggerWhere;
+        if (triggerWhereData && triggerWhereData.length) {
+            
+            for(var j = 0; j < triggerWhereData.length; j++){
+                var $triggerWhereGroupClone = $clone.find(".triggerWhereGroup .first").clone();
+                $triggerWhereGroupClone.find(".cmdTriggerWhereKey").val(triggerWhereData[j].key);
+                $triggerWhereGroupClone.find(".cmdTriggerWhereValue").val(triggerWhereData[j].value);
+                if(j < triggerWhereData.length - 1){
+                    $triggerWhereGroupClone.find("i").removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle dellnotes");
+                }
+                $clone.find(".formTemplate-wrap-parent").append($triggerWhereGroupClone.removeClass("first"));
+            }
+            $clone.find(".formTemplate-wrap-parent .first").remove();
+        }  
+
+        $clone.find(".cdmAddress").val(data[i].cmds[0].triggerUrl);   //触发地址
+        
+        //绑定参数字段
+        var fieldsValue = [];
+        var fieldsLabel = [];
+        var bindParamFieldsData = data[i].cmds[0].bindParamFields;
+        if (bindParamFieldsData) {
+            for(var j = 0; j < bindParamFieldsData.length; j++){
+                fieldsValue.push(getcollectionsContent(bindParamFieldsData[j]))
+                fieldsLabel.push(bindParamFieldsData[j])
+            }
+        }   
+        $clone.find(".cmdFields").val(fieldsValue.join(","));
+        $clone.find(".cmdFields").data("value",fieldsLabel.join(","));
+        if(i < data.length - 1){
+            $clone.find(".cmdsGroupAddDel i").removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle dellnotes").css("cursor","move");
+        }
+        $("#cmdsGroup ul").append($clone.removeClass("clone"));
+    }
+    $("#cmdsGroup .clone").remove();
 }
 
 //绑定排序

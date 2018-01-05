@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\project.core.web.sys",
+    "\\project.core.web.sys\\src",
+    "\\project.core.web.sys\\src\\app",
+    "\\project.core.web.sys\\src\\app\\component",
+    "\\project.core.web.sys\\src\\app\\component\\responsive-model",
+    "\\project.core.web.sys\\src\\assets",
+    "\\project.core.web.sys\\src\\assets\\manage-template",
+    "\\project.core.web.sys\\src\\assets\\manage-template\\js",
+    "\\project.core.web.sys\\src\\assets\\manage-template\\pages"
+  ],
+  "SelectedNode": "\\project.core.web.sys\\src\\assets\\manage-template\\js\\pages\\formTemplate.js",
+  "PreviewInSolutionExplorer": false
+}

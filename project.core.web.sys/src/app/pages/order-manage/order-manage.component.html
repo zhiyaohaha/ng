@@ -13,9 +13,12 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-         <free-declaration></free-declaration>
+        <!--详细模版内容-->
+        <detail-model *ngIf="detail && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
+                      (onClick)="detailClick($event)"></detail-model>
+         <free-declaration *ngIf="!detail"></free-declaration>
       </div>
     </div>
   </md-sidenav>
-  
+
 </md-sidenav-container>

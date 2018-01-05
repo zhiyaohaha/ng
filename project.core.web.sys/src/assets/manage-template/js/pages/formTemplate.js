@@ -664,7 +664,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     var id = _self.attr("id");
     activeId = id;
     // console.log($(this))
-    // console.log(id)
+    // console.log(objData[id])
     //绑定值
     $("#bindTitle").val(objData[id].ui.label);
     //根据拖入的标题修改各个组件的label
@@ -767,26 +767,133 @@ function bindAttrAndCss(obj, data) {
 function bindCmds(data) {
     $("#cmdsGroup").find(".form-inline").remove();
     var html = "";
-    data.forEach(function(el,index){
-        var triggerWhereHtml = "";
-        if(el.name || el.formTemplate ||   el.triggerUrl || el.bindParamFields || el.triggerWhere || el.triggerDom){
-            if(el.triggerWhere){
-                el.triggerWhere.forEach(function(triggerWhereSon){
-                    triggerWhereHtml += `                            
-                            <div class="formTemplate-wrap">
-                                <div class="form-group">
-                                    <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key" value="${triggerWhereSon.key}">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value" value="${triggerWhereSon.value}">
-                                </div>
-                                <div class="form-group">
-                                    <i class="fa fa-minus-circle delnotes" data-name="formTemplate" aria-hidden="true"></i>
-                                </div>
-                            </div>`
-                })
+    if(data && data.length){
+        data.forEach(function(el,index){
+            var triggerWhereHtml = "";
+            var faIconHtml = "";
+            if(el.name || el.formTemplate ||   el.triggerUrl || el.bindParamFields || el.triggerWhere || el.triggerDom){  //有值
+                if(el.triggerWhere){
+                    el.triggerWhere.forEach(function(triggerWhereSon){
+                        triggerWhereHtml += `                            
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key" value="${triggerWhereSon.key}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value" value="${triggerWhereSon.value}">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-minus-circle delnotes" data-name="formTemplate" aria-hidden="true"></i>
+                                    </div>
+                                </div>`
+                    })
+                }
+                 triggerWhereHtml += `                            
+                    <div class="formTemplate-wrap">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                        </div>
+                    </div>`;
+                if(index < data.length - 1){
+                    faIconHtml = `<i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>`;
+                }else{
+                    faIconHtml = `<i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>`;
+                }
+                html += `<div class="form-inline form-inline-${index}">
+                            <div class="form-group">
+                                <label for="">命令名称：</label><br>
+                                <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
+                            </div>
+                             <div class="form-group">
+                                 <label for="">表单模板：</label><br>
+                                <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
+                            </div>
+                            <div class="form-group">
+                                <label for="触发Dom">触发Dom：</label><br>
+                                <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
+                            </div>
+                            <div class="triggerWhereGroup">
+                                 <label for="">键值对：</label>
+                                `+ triggerWhereHtml +`
+                            </div>
+                            <div class="form-group">
+                                <label for="">触发地址：</label><br>
+                                <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="${el.triggerUrl}">
+                            </div>
+                            <label for="">绑定字段集合：</label><br>
+                            <div class="form-group" style="width:95%">     
+                                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}"  data-value="${el.bindParamFields.join(",")}" disabled>
+                            </div>
+                            `+ faIconHtml +`
+                        </div>
+                        <script>
+                            $('.form-inline-${index} select.cmdOptions').val('${el.name}')
+                            $('.form-inline-${index} select.cmdFormTemplate').val('${el.formTemplate}');
+                            $('.form-inline-${index} select.cmdFormDom').val('${el.triggerDom}');    //设置命令栏-触发dom
+                        </script>`;
+    
+            }else{  //拖入的组件（无值）
+                html += `<div class="form-inline">
+                    <div class="form-group">
+                        <label for="">命令名称：</label><br>
+                        <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">表单模板：</label><br>
+                        <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
+                    </div>
+                    <div class="form-group">
+                        <label for="触发Dom">触发Dom：</label><br>
+                        <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
+                    </div>
+                    <div class="triggerWhereGroup">
+                        <label for="">键值对：</label>
+                        <div class="formTemplate-wrap">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">触发地址：</label><br>
+                        <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址">
+                    </div>
+                    <label for="">绑定字段集合：</label><br>
+                    <div class="form-group" style="width:95%">
+                        <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
+                    </div>
+                    <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
+                </div>`; 
             }
-             triggerWhereHtml += `                            
+        })
+    }else{  //自带的组件（如自带的隐藏域id，面板）
+        html += `<div class="form-inline">
+            <div class="form-group">
+                <label for="">命令名称：</label><br>
+                <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
+            </div>
+            <div class="form-group">
+                <label for="">表单模板：</label><br>
+                <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
+            </div>
+            <div class="form-group">
+                <label for="触发Dom">触发Dom：</label><br>
+                <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
+            </div>
+            <div class="triggerWhereGroup">
+                <label for="">键值对：</label>
                 <div class="formTemplate-wrap">
                     <div class="form-group">
                         <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
@@ -797,79 +904,20 @@ function bindCmds(data) {
                     <div class="form-group">
                         <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
                     </div>
-                </div>`
-            html += `<div class="form-inline form-inline-${index}">
-                        <div class="form-group">
-                            <label for="">命令名称：</label><br>
-                            <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
-                        </div>
-                         <div class="form-group">
-                             <label for="">表单模板：</label><br>
-                            <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
-                        </div>
-                        <div class="form-group">
-                            <label for="触发Dom">触发Dom：</label><br>
-                            <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
-                        </div>
-                        <div class="triggerWhereGroup">
-                             <label for="">键值对：</label>
-                            `+ triggerWhereHtml +`
-                        </div>
-                        <div class="form-group">
-                            <label for="">触发地址：</label><br>
-                            <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址" value="${el.triggerUrl}">
-                        </div>
-                        <div class="form-group" style="width:95%">
-                            <label for="">绑定字段集合：</label><br>
-                            <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" value="${el.bindParamFields.join(",")}"  data-value="${el.bindParamFields.join(",")}" disabled>
-                        </div>
-                        <i class="fa fa-minus-circle delnotes" data-name="cmds" aria-hidden="true"></i>
-                    </div>
-                    <script>
-                        $('.form-inline-${index} select.cmdOptions').val('${el.name}')
-                        $('.form-inline-${index} select.cmdFormTemplate').val('${el.formTemplate}');
-                        $('.form-inline-${index} select.cmdFormDom').val('${el.triggerDom}');    //设置命令栏-触发dom
-                    </script>`;
-
-        }
-    })
-    html += `<div class="form-inline">
-        <div class="form-group">
-            <label for="">命令名称：</label><br>
-            <select class="form-control input-sm m-b-10 cmdOptions" placeholder="命令名称">${cmdOptions}</select>
-        </div>
-        <div class="form-group">
-             <label for="">表单模板：</label><br>
-            <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
-        </div>
-        <div class="form-group">
-            <label for="触发Dom">触发Dom：</label><br>
-            <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
-        </div>
-        <div class="triggerWhereGroup">
-            <label for="">键值对：</label>
-            <div class="formTemplate-wrap">
-                <div class="form-group">
-                    <input type="text" class="form-control input-sm m-b-10 w100 cmdTriggerWhere" placeholder="键" name="key">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control input-sm m-b-10 w100" placeholder="值" name="value">
-                </div>
-                <div class="form-group">
-                    <i class="fa fa-plus-circle addnotes" data-name="formTemplate" aria-hidden="true"></i>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="">触发地址：</label><br>
-            <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址">
-        </div>
-        <label for="">绑定字段集合：</label><br>
-        <div class="form-group" style="width:95%">
-            <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
-        </div>
-        <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
-    </div>`; 
+            <div class="form-group">
+                <label for="">触发地址：</label><br>
+                <input type="text" class="form-control input-sm m-b-10 cdmAddress" placeholder="触发地址">
+            </div>
+            <label for="">绑定字段集合：</label><br>
+            <div class="form-group" style="width:95%">
+                <input type="text" class="form-control input-sm m-b-10 cmdFields" placeholder="绑定字段集合" disabled>
+            </div>
+            <i class="fa fa-plus-circle addnotes" data-name="cmds" aria-hidden="true"></i>
+        </div>`; 
+    }
+
     $("#cmdsGroup").append(html);
     $(".cmdFields").droppable({
         drop: function(event, ui){
@@ -898,13 +946,8 @@ function bindCmds(data) {
                 $(this).val(bindTitle);
             }
             $(this).attr('disabled','disabled')
-
-            console.log($(this).data("value"))
         }
     })
-
-
-    
 }
 
 //绑定验证
@@ -1553,7 +1596,7 @@ function saveCmds(){
     return arr;
 }
 
-//保存触发条件
+//保存触发条件（命令项 键值对）
 function saveTriggerWhere(obj) {
     var arr = [];
     obj.find(".formTemplate-wrap").each(function(){
@@ -1590,7 +1633,8 @@ function saveVerifies(){
     var arr = [];
     $("#verifyGroup").find(".form-inline").each(function(){
         var _self = $(this);
-        var verifiesParams = saveVerifiesParams(_self.find(".verifyParams"));
+        if(!_self.find(".verifyName").val()){return true; }  //当某一项验证 选择“请选择名称”时，不保存该项。
+        var verifiesParams = saveVerifiesParams(_self.find(".verifyParams")); 
         var arrChild = {
             id:_self.find(".verifyName").val(),
             name:_self.find(".verifyName").find("option:selected").text(),
