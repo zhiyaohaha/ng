@@ -106,23 +106,33 @@ export class ResponsiveModelComponent implements OnInit {
     }
 
 
-    //没有错误，可以提交
-    // let data = {};
-    // for (const key in $event) {  //把带点的数据结构处理为，json格式
-    //   if (key.indexOf(".") > 0) {
-    //     let arr = key.split(".");
-    //     if (data[arr[0]]) {
-    //       data[arr[0]][arr[1]] = $event[key];
-    //     } else {
-    //       data[arr[0]] = {};
-    //     }
-    //   } else {
-    //     data[key] = $event[key];
-    //   }
-    // }
-    // console.log($event)
-    // console.log($event)
-     this.ngSubmit.emit($event);
+    //没有错误，可以继续提交
+    let data = {};
+    for (const key in $event) {  //把带点的数据结构处理为，json格式
+      if (key.indexOf(".") > 0) {
+        let arr = key.split(".");
+        if (data[arr[0]]) {
+            data[arr[0]][arr[1]] = $event[key];
+        } else {
+            data[arr[0]] = {};
+            if(typeof $event[key] === "number"){
+              $event[key] = $event[key].toString();
+            }
+            data[arr[0]][arr[1]] = $event[key];
+        }
+      } else {
+        data[key] = $event[key];
+      }
+    }
+    console.log($event)
+    // console.log(data)
+    // this.ngSubmit.emit(data); 
+  }
+
+  //通过basic.logo 获取 basic._logo的值
+  displayLogoFun(value,data){
+    let key = value.split(".");
+    return data[key[0]]["_"+key[1]];
   }
 
   vertifyFun(vertify, data, required, displayMsg, key) {

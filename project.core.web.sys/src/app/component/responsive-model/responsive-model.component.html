@@ -62,7 +62,7 @@
             <div class="form-group columns{{child.ui.columns}} errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
                 <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
-                                    [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
+                                    [btnName]="child.ui.label" [src]="_modelDOMSData['_'+child.name]"
                                     [columns]="child.ui.columns"
                                     (success)="uploaded($event)" (files)="selected($event)" [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-file-uploader>
                 <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必选",child.name)}}</p>                    
@@ -178,10 +178,11 @@
             </div>
             <div class="form-group columns{{child.ui.columns}}  errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
+
                 <timi-file-uploader name="{{child.name}}" 
                                     [ngModel]="child.name | ergodicJson : modelDOMSData"
                                     [(ngModel)]="modelDOMSData[child.name]"
-                                    [btnName]="child.ui.label" [src]="modelDOMSData['_'+child.name]"
+                                    [btnName]="child.ui.label" [src]="displayLogoFun(child.name,modelDOMSData)" 
                                     [columns]="child.ui.columns"
                                     (success)="uploaded($event)" (files)="selected($event)"
                                     [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"
