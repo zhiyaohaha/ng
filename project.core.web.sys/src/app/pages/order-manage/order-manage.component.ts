@@ -28,7 +28,7 @@ import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
-//import { OrderService } from "app/services/order/order.service";
+import { OrderService } from "app/services/order/order.service";
 
 
 export const ORDERMANAGE_VALUE_ACCESSOR: any = {
@@ -42,7 +42,7 @@ export const ORDERMANAGE_VALUE_ACCESSOR: any = {
   templateUrl: "./order-manage.component.html",
   styleUrls: ["./order-manage.component.scss"],
   animations: [fadeIn],
-  providers: [TdLoadingService]
+  providers: [TdLoadingService, OrderService]
 })
 export class OrderManageComponent implements OnInit, OnDestroy {
   [x: string]: any;
@@ -131,7 +131,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     private el: ElementRef,
     private baseService: BaseService,
     private lodaingService: TdLoadingService,
-    //private orderService: OrderService
+    private orderService: OrderService
   ) {
 
     /**
@@ -171,7 +171,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
 
-        this.loadDetailModel();
+        // this.loadDetailModel();
         this.loadModal();
       });
 
@@ -342,6 +342,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.new = false;
     this.detail = true;
     this.btnType = "edit";
+    this.loadDetailModel($event.row.id);
     this.sharepageService.getEditParams({ id: $event.row.id })
       .subscribe(r => {
         this.selectRow = r.data;
@@ -373,8 +374,8 @@ export class OrderManageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  loadDetailModel() {
-    this.sharepageService.getDetailModel().subscribe(res => {
+  loadDetailModel(id) {
+    this.orderService.getDetailModel(id).subscribe(res => {
       if (res.code === "0") {
         this.detailModel = res.data.doms;
       }
