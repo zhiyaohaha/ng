@@ -11,7 +11,7 @@ var bindField; //绑定字段
 var bindPipe; //绑定管道
 var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
 var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
-
+var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions 触发dom下拉选项
 var collection; //数据源
 
 var detailId = ""; //查询详情url中的ID
@@ -50,6 +50,9 @@ var fixedDivTopHeight = $("#fixedDivTop").height(); //当前页面顶部的高�
                     cmdFormTemplateOption += `<option value="${el.value}">${el.text}</option>`;
                 })
                 $(".cmdFormTemplate").html(cmdFormTemplateOption);
+
+                //命令栏-触发dom
+                $(".cmdFormDom").html(cmdFormDom);
 
                 //平台
                 bindSelect(res.data.platforms, "请选择平台", "templatePlatform");
@@ -282,7 +285,11 @@ function dragCreateDom_Panel(domval,that,editData,status){
         }
     }
 
-
+    //还原单个面板的triggerdom option设置
+    if(editData.name && editData.ui.label)  {
+        cmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
+        $(".cmdFormDom").html(cmdFormDom);
+    }
 
     objData[id] = editData;
     if(status == "add"){  //新增状态下,默认点击，自动拖入的面板； 编辑状态下,因为面板较多，所以无需默认第一个面板
@@ -378,6 +385,11 @@ function dragCreateDom_PanelBody(domval,that,editData){  //（一级和二级）
                 dragCreateDom_Panel_ButtonRegion(domsChildrens[i].ui.displayType,$('#'+id),domsChildrens[i])
             }
         }
+    }
+    //还原单个组件的triggerdom option设置
+    if(editData.name && editData.ui.label)  {
+        cmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
+        $(".cmdFormDom").html(cmdFormDom);
     }
     objData[id] = editData;
 }
@@ -681,6 +693,10 @@ function bindCmds(data) {
                              <label for="">表单模板：</label><br>
                             <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
                         </div>
+                        <div class="form-group">
+                            <label for="触发Dom">触发Dom：</label><br>
+                            <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
+                        </div>
                         <div class="triggerWhereGroup">
                              <label for="">键值对：</label>
                             `+ triggerWhereHtml +`
@@ -698,6 +714,7 @@ function bindCmds(data) {
                     <script>
                         $('.form-inline-${index} select.cmdOptions').val('${el.name}')
                         $('.form-inline-${index} select.cmdFormTemplate').val('${el.formTemplate}');
+                        $('.form-inline-${index} select.cmdFormDom').val('${el.triggerDom}');    //设置命令栏-触发dom;
                     </script>`;
         }
     })
@@ -709,6 +726,10 @@ function bindCmds(data) {
             <div class="form-group">
                  <label for="">表单模板：</label><br>
                 <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
+            </div>
+            <div class="form-group">
+                <label for="触发Dom">触发Dom：</label><br>
+                <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
             </div>
             <div class="triggerWhereGroup">
                 <label for="">键值对：</label>
@@ -1103,6 +1124,10 @@ $(".additional").on("click", ".addnotes", function(){
                                                 <label for="">表单模板：</label><br>
                                                 <select class="form-control input-sm m-b-10 cmdFormTemplate" placeholder="请选择表单模板">${cmdFormTemplateOption}</select>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="触发Dom">触发Dom：</label><br>
+                                                <select class="form-control input-sm m-b-10 cmdFormDom" placeholder="触发Dom">${cmdFormDom}</select>
+                                            </div>
                                             <div class="triggerWhereGroup">
                                                 <label for="">键值对：</label>
                                                 <div class="formTemplate-wrap">
@@ -1218,6 +1243,29 @@ function save(){
             },
             "description": $("#bindDescription").val()
         }
+
+         //命令栏-触发dom
+        //只有在'有标题，有绑定值的情况下'，才能添加'触发dom的选项'
+        if(objData[activeId].name && objData[activeId].ui.label)  
+        {
+            //循环“触发dom”里面，的options。如果和要添加的重复（key和value都有相等），则不用添加。
+            var cmdFormDomOptions = $('#cmdsGroup select.cmdFormDom option');
+            var cmdFormDomOptionsAdd = true;
+            for (var i = 0; i < cmdFormDomOptions.length; i++) {
+                 var option = $("#cmdsGroup select.cmdFormDom option:eq("+i+")")
+                 if(option.text() == objData[activeId].ui.label && option.val() == objData[activeId].name){   
+                    cmdFormDomOptionsAdd = false;
+                    break;
+                 }
+            }
+            // console.log(cmdFormDomOptionsAdd)
+            if(cmdFormDomOptionsAdd){
+                cmdFormDom += `<option value="${objData[activeId].name}">${objData[activeId].ui.label}</option>`;
+                $(".cmdFormDom").html(cmdFormDom);  
+            }
+
+        }
+
         // console.log(objData[activeId])
         if($("#displayType").val() === "HtmlDomDisplayType.Button"){
             $("#" + activeId).find("input").val($("#bindTitle").val());
@@ -1248,6 +1296,7 @@ function saveCmds(){
         var arrChild = {
             name: _self.find(".cmdOptions").val(),
             formTemplate: _self.find(".cmdFormTemplate").val(),
+            triggerDom:_self.find(".cmdFormDom").val(),
             triggerWhere: saveTriggerWhere(_self.find(".triggerWhereGroup")),
             triggerUrl: _self.find(".cdmAddress").val(),
             bindParamFields: _self.find(".cmdFields").data("value") ? _self.find(".cmdFields").data("value").split(",") : []
