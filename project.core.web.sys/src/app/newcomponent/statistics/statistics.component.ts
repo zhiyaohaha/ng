@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { fadeIn } from "./../../common/animations";
+import * as echarts from 'echarts';
+
 
 @Component({
   selector: "app-statistics",
@@ -8,63 +10,87 @@ import { fadeIn } from "./../../common/animations";
   animations: [fadeIn]
 })
 export class StatisticsComponent implements OnInit {
-  options: { elements: { line: { tension: number; }; }; };
+  showTab: number = 1;
+  data: Array<any> = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
-  chartColors: { red: string; orange: string; yellow: string; green: string; blue: string; purple: string; grey: string; };
-  weeks: string[];
-
-  lineData: any;
-
-  constructor() { 
-    this.chartColors = {
-      red: 'rgba(255, 99, 132, .5)',
-      orange: 'rgba(255, 159, 64, .5)',
-      yellow: 'rgba(255, 205, 86, .5)',
-      green: 'rgba(75, 192, 192, .5)',
-      blue: 'rgba(54, 162, 235, .5)',
-      purple: 'rgba(153, 102, 255, .5)',
-      grey: 'rgba(201, 203, 207, .5)'
-    };
-    this.weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    this.lineData = {
-      labels: this.weeks,
-      datasets: [
-
-        {
-          label: 'The First Week',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          backgroundColor: this.chartColors.blue,
-          borderColor: this.chartColors.blue
-        },
-        {
-          label: 'The Second Week',
-          data: [28, 48, 40, 19, 86, 27, 90],
-          fill: false,
-          backgroundColor: this.chartColors.red,
-          borderColor: this.chartColors.red
-        },
-        {
-          label: 'The Third Week',
-          data: [20, 38, 60, 29, 420, 47, 30],
-          fill: false,
-          backgroundColor: this.chartColors.yellow,
-          borderColor: this.chartColors.yellow
-        }
-      ]
-
-    };
-    //默认是曲线，可以设置直线，如数据量大性能不好，可改用直线提升性能
-    this.options = {
-      elements: {
-        line: {
-          tension: 0, // disables bezier curves
-        }
-      }
-    }
-   }
-
-  ngOnInit() {
+  constructor() {
   }
 
+  ngOnInit() {
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          mark: { show: true },
+          dataZoom: { show: true },
+          dataView: { show: true },
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      dataZoom: {
+        type: 'slider',
+        startValue: 1500,
+        endValue: 1487
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: function () {
+            var list = [];
+            var n = 0;
+            while (n++ < 1500) {
+              var string = `2017.12.${n}`
+              list.push(string);
+            }
+            return list;
+          }(),
+
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: 'dz',
+          type: 'line',
+          data: function () {
+            var list = [];
+            for (var i = 1; i <= 1500; i++) {
+              list.push(Math.round(Math.random() * 30));
+            }
+            return list;
+          }()
+        }
+      ],
+      calculable: false
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+  }
+
+  changeTabOne() {
+    this.showTab = 1;
+    //this.data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  }
+  changeTabTwo() {
+    this.showTab = 2;
+    //this.data = [20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1];
+  }
+  changeTabThree() {
+    this.showTab = 3;
+  }
 }

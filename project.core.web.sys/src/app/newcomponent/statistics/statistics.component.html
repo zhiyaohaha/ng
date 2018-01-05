@@ -14,24 +14,15 @@
       <li>今日报单数量：XXXXX</li>
     </ul>
   </div>
-
-  <div class="content">
-    <div class="header">
-      <div class="headerLeft">
-        <span>时间范围：</span>
-        <input type="text">
-      </div>
-      <div class="headerRight">
-        <span>时间粒度：</span>
-        <input type="radio" name="time" id="day">
-        <label for="day">按日</label>
-        <input type="radio" name="time" id="week">
-        <label for="week">按周</label>
-        <input type="radio" name="time" id="month">
-        <label for="month">按月</label>
-      </div>
-    </div>
-    <free-chart type="line" [data]="lineData"></free-chart>
+  <div class="tab">
+    <span class="tabSpan" [class.active]="showTab==1" (click)="changeTabOne()">用户统计</span>
+    <span class="tabSpan" [class.active]="showTab==2" (click)="changeTabTwo()">成交金额统计</span>
+    <span class="tabSpan" [class.active]="showTab==3" (click)="changeTabThree()">佣金统计</span>
+    <div id="main" style="width: 100%;height:700px;"></div>
   </div>
   
 </div>
+
+
+
+
