@@ -300,6 +300,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           this.lodaingService.resolve("fullScreen");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
+            this.currentPage = 0;
             this.getParamsList(this.listparam);
           }
         });

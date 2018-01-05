@@ -1,19 +1,19 @@
 <md-sidenav-container [@fadeInState]="'active'">
-  
+
     <div class="main-container clearfix">
       <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
       <button md-raised-button *ngIf="authorities.indexOf(authorityKey+'.Add') != -1" color="deepblue" class="add-button"
               (click)="newAdd();sidenav.open()">添加
       </button>
     </div>
-  
+
     <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
                [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" (change)="page($event)"
                (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
-  
+
     <ng-template #authorityModal></ng-template>
     <button md-raised-button (click)="createComponent(12)" style="display: none;">弹框</button>
-  
+
     <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
       <div class="row">
         <div class="col-lg-12">
@@ -25,4 +25,4 @@
         </div>
       </div>
     </md-sidenav>
-</md-sidenav-container> 
+</md-sidenav-container>
