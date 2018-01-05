@@ -664,7 +664,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     var id = _self.attr("id");
     activeId = id;
     // console.log($(this))
-    // console.log(id)
+    // console.log(objData[id])
     //绑定值
     $("#bindTitle").val(objData[id].ui.label);
     //根据拖入的标题修改各个组件的label
@@ -767,7 +767,6 @@ function bindAttrAndCss(obj, data) {
 function bindCmds(data) {
     $("#cmdsGroup").find(".form-inline").remove();
     var html = "";
-    console.log(data)
     if(data && data.length){
         data.forEach(function(el,index){
             var triggerWhereHtml = "";
@@ -1634,6 +1633,7 @@ function saveVerifies(){
     var arr = [];
     $("#verifyGroup").find(".form-inline").each(function(){
         var _self = $(this);
+        if(!_self.find(".verifyName").val()){return true; }  //当某一项验证 选择“请选择名称”时，不保存该项。
         var verifiesParams = saveVerifiesParams(_self.find(".verifyParams"));
         var arrChild = {
             id:_self.find(".verifyName").val(),
