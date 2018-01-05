@@ -1634,7 +1634,7 @@ function saveVerifies(){
     $("#verifyGroup").find(".form-inline").each(function(){
         var _self = $(this);
         if(!_self.find(".verifyName").val()){return true; }  //当某一项验证 选择“请选择名称”时，不保存该项。
-        var verifiesParams = saveVerifiesParams(_self.find(".verifyParams"));
+        var verifiesParams = saveVerifiesParams(_self.find(".verifyParams")); 
         var arrChild = {
             id:_self.find(".verifyName").val(),
             name:_self.find(".verifyName").find("option:selected").text(),
