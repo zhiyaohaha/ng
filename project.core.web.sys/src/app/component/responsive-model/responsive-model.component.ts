@@ -124,9 +124,9 @@ export class ResponsiveModelComponent implements OnInit {
         data[key] = $event[key];
       }
     }
-    console.log($event)
+    // console.log($event)
     // console.log(data)
-    // this.ngSubmit.emit(data); 
+    this.ngSubmit.emit(data); 
   }
 
   //通过basic.logo 获取 basic._logo的值
