@@ -107,20 +107,22 @@ export class ResponsiveModelComponent implements OnInit {
 
 
     //没有错误，可以提交
-    let data = {};
-    for (const key in $event) {  //把带点的数据结构处理为，json格式
-      if (key.indexOf(".") > 0) {
-        let arr = key.split(".");
-        if (data[arr[0]]) {
-          data[arr[0]][arr[1]] = $event[key];
-        } else {
-          data[arr[0]] = {};
-        }
-      } else {
-        data[key] = $event[key];
-      }
-    }
-    this.ngSubmit.emit(data);
+    // let data = {};
+    // for (const key in $event) {  //把带点的数据结构处理为，json格式
+    //   if (key.indexOf(".") > 0) {
+    //     let arr = key.split(".");
+    //     if (data[arr[0]]) {
+    //       data[arr[0]][arr[1]] = $event[key];
+    //     } else {
+    //       data[arr[0]] = {};
+    //     }
+    //   } else {
+    //     data[key] = $event[key];
+    //   }
+    // }
+    // console.log($event)
+    // console.log($event)
+     this.ngSubmit.emit($event);
   }
 
   vertifyFun(vertify, data, required, displayMsg, key) {
@@ -225,13 +227,13 @@ export class ResponsiveModelComponent implements OnInit {
 
               } else {                                                       //新增页面
                 this.judgeSetChangeData(r.data, option[i].triggerDom, 'add', function () {
-                  that._modelDOMSData[option[i].triggerDom] = r.data;
+                  // that._modelDOMSData[option[i].triggerDom] = r.data;    //暂时不影响功能使用
                 })
               }
             } else {      //都不勾选以后，发送null
               //新增页面-数据
               this._modelDOMSData[option[i].triggerDom] = null;
-              this.setNullData(this._modelDOMSData);
+              // this.setNullData(this._modelDOMSData);    //方法的使用，清空一级附件组时，清空清空二级附件项的展示数据   //暂时使用手动清空二级附件项的展示数据，
 
               //修改页面-数据
               if (this.modelDOMSData[option[i].triggerDom]) {
