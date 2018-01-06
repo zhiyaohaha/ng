@@ -125,7 +125,6 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
-    // console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -195,10 +194,11 @@ export class ResponsiveModelComponent implements OnInit {
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
 
           let receiveKey = option[i].bindParamFields[j];
-          if(receiveKey.indexOf(".") !== -1){  //key 的形式 可能key是basic.type的形式
+          if(receiveKey.indexOf(".") !== -1){  //key 的形式 可能key是basic.type的形式 
             let postKey;
             postKey = receiveKey.split(".");
-            config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[postKey[0]][postKey[1]];   
+            //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
+            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);   
           }else{          //key 的形式是正常的形式。eg：id
             config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
           }
