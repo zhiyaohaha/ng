@@ -32,7 +32,7 @@
         "hammerjs": "^2.0.8",
         "ng2-file-upload": "^1.2.1",
         "ng2-tree": "^2.0.0-alpha.8",
-        "ngx-ueditor": "^1.0.9",
+        "ngx-ueditor": "1.0.9",
         "rxjs": "^5.1.0",
         "ts-md5": "^1.2.0",
         "zone.js": "^0.8.4"
