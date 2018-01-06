@@ -14,7 +14,7 @@
               <img *ngFor="let file of child.name | ergodicJson : modelDOMSData" src="{{file || imgSrc}}" alt="">
             </ng-template>
             <ng-template [ngIf]="!child.ui.multiple">
-              <img #elseblock src="{{modelDOMSData[child.name] || imgSrc}}" alt="">
+              <img #elseblock src="{{child.name | ergodicJson : modelDOMSData || imgSrc}}" alt="">
             </ng-template>
           </div>
           <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
