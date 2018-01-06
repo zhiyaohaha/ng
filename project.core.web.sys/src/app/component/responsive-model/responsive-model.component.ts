@@ -139,6 +139,9 @@ export class ResponsiveModelComponent implements OnInit {
   //通过basic.logo 获取 basic._logo的值
   displayLogoFun(value, data) {
     let key = value.split(".");
+    if(key.length == 1){
+      return data[key[0]];
+    }
     return data[key[0]]["_" + key[1]];
   }
 
