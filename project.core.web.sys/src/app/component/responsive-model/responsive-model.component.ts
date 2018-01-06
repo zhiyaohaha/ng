@@ -125,7 +125,6 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
-    // console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -140,18 +139,14 @@ export class ResponsiveModelComponent implements OnInit {
   //通过basic.logo 获取 basic._logo的值
   displayLogoFun(value, data) {
     let key = value.split(".");
+    if(key.length == 1){
+      return data[key[0]];
+    }
     return data[key[0]]["_" + key[1]];
   }
 
   vertifyFun(vertify, data, required, displayMsg, key) {
     let msg;
-    // console.log("-----------------")
-    // console.log(vertify)
-    // console.log(data)
-    // console.log(required)
-    // console.log(displayMsg)
-    // console.log(key)
-    // console.log('+++++++++++++++')
     if (data && data.length > 0) {
       if (vertify && vertify.length > 0) { //如果有正则
         let reg;
@@ -173,15 +168,6 @@ export class ResponsiveModelComponent implements OnInit {
     return msg;
   }
 
-  classDisplay(val) {
-
-    // console.log(Boolean(val))
-    setTimeout(function () {
-      return Boolean(val);
-    }, 0);
-    return false;
-    // return Boolean(val);
-  }
 
   /**
    * 上传文件
@@ -209,7 +195,18 @@ export class ResponsiveModelComponent implements OnInit {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
+
+          let receiveKey = option[i].bindParamFields[j];
+          if(receiveKey.indexOf(".") !== -1){  //key 的形式 可能key是basic.type的形式 
+            let postKey;
+            postKey = receiveKey.split(".");
+            //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
+            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);   
+          }else{          //key 的形式是正常的形式。eg：id
+            config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
+          }
+          
+          // config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
         }
         if (!option[i].triggerUrl) {
           return false;
