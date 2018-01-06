@@ -85,7 +85,7 @@ export class ResponsiveModelComponent implements OnInit {
   /**
    * 提交表单
    */
-  onSubmit($event) {
+  onSubmit($event, cmds?: any) {
     //  显示错误提示
     let errs = this.er.nativeElement.getElementsByClassName("ng-valid");
     for (let errItem in errs) {
@@ -112,13 +112,13 @@ export class ResponsiveModelComponent implements OnInit {
       if (key.indexOf(".") > 0) {
         let arr = key.split(".");
         if (data[arr[0]]) {
-            data[arr[0]][arr[1]] = $event[key];
+          data[arr[0]][arr[1]] = $event[key];
         } else {
-            data[arr[0]] = {};
-            if(typeof $event[key] === "number"){
-              $event[key] = $event[key].toString();
-            }
-            data[arr[0]][arr[1]] = $event[key];
+          data[arr[0]] = {};
+          if (typeof $event[key] === "number") {
+            $event[key] = $event[key].toString();
+          }
+          data[arr[0]][arr[1]] = $event[key];
         }
       } else {
         data[key] = $event[key];
@@ -126,13 +126,21 @@ export class ResponsiveModelComponent implements OnInit {
     }
     // console.log($event)
     // console.log(data)
-    this.ngSubmit.emit(data); 
+    if (cmds) {
+      let param = {};
+      param["data"] = data;
+      param["cmds"] = cmds;
+      this.ngSubmit.emit(param);
+    } else {
+      this.ngSubmit.emit(data);
+    }
+
   }
 
   //通过basic.logo 获取 basic._logo的值
-  displayLogoFun(value,data){
+  displayLogoFun(value, data) {
     let key = value.split(".");
-    return data[key[0]]["_"+key[1]];
+    return data[key[0]]["_" + key[1]];
   }
 
   vertifyFun(vertify, data, required, displayMsg, key) {

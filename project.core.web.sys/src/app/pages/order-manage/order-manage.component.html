@@ -1,22 +1,28 @@
 <md-sidenav-container [@fadeInState]="'active'">
 
   <div class="main-container clearfix">
-    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters"
+                 (onSearch)="onSearch($event)"></search-form>
     <button md-raised-button color="deepblue" class="add-button" (click)="sidenav.open()">报单
     </button>
   </div>
 
-  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
+             [activeIndex]="currentPage"
+             [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
   </app-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
         <!--详细模版内容-->
-        <detail-model *ngIf="detail && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
+        <detail-model *ngIf="sidenavKey === 'Detail' && selectRow && detailModel" [modelDOMS]="detailModel"
+                      [modelDOMSData]="selectRow"
                       (onClick)="detailClick($event)"></detail-model>
-         <free-declaration *ngIf="!detail"></free-declaration>
+        <free-declaration *ngIf="sidenavKey === 'Other'"></free-declaration>
+        <!--响应详情模板内容不同按钮点击事件的表单-->
+        <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS"
+                              [modelDOMSData]="selectRow" (ngSubmit)="submitMethod($event)"></timi-responsive-form>
       </div>
     </div>
   </md-sidenav>

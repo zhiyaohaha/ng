@@ -39,49 +39,53 @@
     line-height: 18px;
   }
 
-  //验证error 样式 
-  .form-group{
-    margin-bottom:2px;
+  //验证error 样式
+  .form-group {
+    margin-bottom: 2px;
   }
 
-  .errBorderParent{
-    position:relative;height:48px;
+  .errBorderParent {
+    position: relative;
+    height: 48px;
   }
 
-
-  .errBorderParentFileUpLoad{
-    position:relative;height:170px;
-    margin-bottom:32px;
-    .errBorder{
-      bottom:-50px;left:4px;
+  .errBorderParentFileUpLoad {
+    position: relative;
+    height: 170px;
+    margin-bottom: 32px;
+    .errBorder {
+      bottom: -50px;
+      left: 4px;
     }
   }
-  .errBorderParentTags{
-    margin-bottom:7px;
-    .errBorder{
-      bottom:-5px;
+  .errBorderParentTags {
+    margin-bottom: 7px;
+    .errBorder {
+      bottom: -5px;
     }
   }
-  .errBorderParentTextArea{
-    position:relative;height:108px;
+  .errBorderParentTextArea {
+    position: relative;
+    height: 108px;
   }
-  .errBorderParentSelect{
-    position:relative;height:48px;
+  .errBorderParentSelect {
+    position: relative;
+    height: 48px;
   }
 
-  .errComponent{
-     input,.free-select,.item-textarea,{
+  .errComponent {
+    input, .free-select, .item-textarea {
       border-color: #cf000d !important;
     }
-    .timi-chip-input{
-      border:1px solid  #cf000d !important;
+    .timi-chip-input {
+      border: 1px solid #cf000d !important;
       border-radius: 10px;
     }
-    .preview{
-      border:1px solid  #cf000d;
+    .preview {
+      border: 1px solid #cf000d;
     }
   }
-  .errBorder{
+  .errBorder {
     background-color: #cf000d;
     border-radius: 10px;
     font-size: 12px;
@@ -91,25 +95,26 @@
     height: 16px;
     line-height: 15px;
     display: inline-block;
-    position:absolute;
-    bottom:0px;left:0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
   }
 
-  //初始化未填写状态下，不显示error  
-  .ng-pristine{
-    input,.free-select{
-        border-color: #d9d9d9 !important;
+  //初始化未填写状态下，不显示error
+  .ng-pristine {
+    input, .free-select {
+      border-color: #d9d9d9 !important;
     }
-    .preview{
-      border-width:0px !important;
-    }
-  }
-  .ng-pristine-custom{
-    .item-textarea,.timi-chip-input{
-        border-color: #d9d9d9 !important;
+    .preview {
+      border-width: 0px !important;
     }
   }
-  .ng-pristine + .errBorder,.ng-pristine-custom + .errBorder{
-      display:none;
+  .ng-pristine-custom {
+    .item-textarea, .timi-chip-input {
+      border-color: #d9d9d9 !important;
+    }
+  }
+  .ng-pristine + .errBorder, .ng-pristine-custom + .errBorder {
+    display: none;
   }
 }
