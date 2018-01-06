@@ -293,11 +293,11 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
+        this.successEnd();
       });
     } else if (value.name === "HtmlDomCmd.Form") {
       this.sidenavKey = "Form";
     }
-
   }
 
   /**
@@ -324,6 +324,14 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.selectRow = null;
   }
 
+  /***
+   * 关闭侧滑，更新数据
+   */
+  successEnd() {
+    this.getParamsList(this.listparam);
+    this.sidenav.close();
+  }
+
   /**
    * 提交表单
    */
@@ -335,7 +343,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
           this.lodaingService.resolve("fullScreen");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
-            this.getParamsList(this.listparam);
+            this.successEnd();
           }
         });
     } else if (this.sidenavKey === "Form") {
@@ -349,11 +357,10 @@ export class OrderManageComponent implements OnInit, OnDestroy {
           this.lodaingService.resolve("fullScreen");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
-            this.getParamsList(this.listparam);
+            this.successEnd();
           }
         });
     }
-    this.sidenav.close();
   }
 
   //提交表单的时候需要走多个接口的情况
@@ -363,7 +370,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
         this.lodaingService.resolve("fullScreen");
         this.toastService.creatNewMessage(res.message);
         if (res.code === "0") {
-          this.getParamsList(this.listparam);
+          this.successEnd();
         }
       });
     });
