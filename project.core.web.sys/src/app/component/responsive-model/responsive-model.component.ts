@@ -145,13 +145,6 @@ export class ResponsiveModelComponent implements OnInit {
 
   vertifyFun(vertify, data, required, displayMsg, key) {
     let msg;
-    // console.log("-----------------")
-    // console.log(vertify)
-    // console.log(data)
-    // console.log(required)
-    // console.log(displayMsg)
-    // console.log(key)
-    // console.log('+++++++++++++++')
     if (data && data.length > 0) {
       if (vertify && vertify.length > 0) { //如果有正则
         let reg;
@@ -173,15 +166,6 @@ export class ResponsiveModelComponent implements OnInit {
     return msg;
   }
 
-  classDisplay(val) {
-
-    // console.log(Boolean(val))
-    setTimeout(function () {
-      return Boolean(val);
-    }, 0);
-    return false;
-    // return Boolean(val);
-  }
 
   /**
    * 上传文件
@@ -209,7 +193,17 @@ export class ResponsiveModelComponent implements OnInit {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
+
+          let receiveKey = option[i].bindParamFields[j];
+          if(receiveKey.indexOf(".") !== -1){  //key 的形式 可能key是basic.type的形式
+            let postKey;
+            postKey = receiveKey.split(".");
+            config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[postKey[0]][postKey[1]];   
+          }else{          //key 的形式是正常的形式。eg：id
+            config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
+          }
+          
+          // config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
         }
         if (!option[i].triggerUrl) {
           return false;
