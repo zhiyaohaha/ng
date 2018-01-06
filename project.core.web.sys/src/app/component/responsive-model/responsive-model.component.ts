@@ -160,8 +160,18 @@ export class ResponsiveModelComponent implements OnInit {
         });
       }
     } else {
+      // if (required) {
+      //   msg = displayMsg;
+      // }
       if (required) {
-        msg = displayMsg;
+        if(!data){
+          if(data === 0){   //填0的情况是可以的
+            return "";
+          }else{
+            msg = displayMsg;
+          }
+          
+        }
       }
     }
     this._errData[key] = msg;
