@@ -17,8 +17,8 @@ export class SettingMenuService {
     /**
      * 修改添加页面的模版
      */
-    getMenuModel() {
-        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.MenuFormTemplate"));
+    getMenuModel(param?: any) {
+        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.MenuFormTemplate"), param);
     }
 
     /**
@@ -40,8 +40,8 @@ export class SettingMenuService {
     /**
      * 添加权限的模板
      */
-    getAuthorityModel() {
-        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.FunctionFormTemplate"));
+    getAuthorityModel(param?: any) {
+        return this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MenuSetting.FunctionFormTemplate"), param);
     }
     /**
      * 添加权限

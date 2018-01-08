@@ -1,12 +1,12 @@
-import { fadeIn } from "./../../common/animations";
-import { Component, OnInit, Renderer2 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { TdDialogService } from "@covalent/core";
-import { ToastService } from "./../../component/toast/toast.service";
-import { SettingMenuService } from "app/services/setting-menu/setting-menu.service";
-import { HtmlDomTemplate } from "app/models/HtmlDomTemplate";
-import { ConvertUtil } from "./../../common/convert-util";
-import { FnUtil } from "./../../common/fn-util";
+import {fadeIn} from "./../../common/animations";
+import {Component, OnInit, Renderer2} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {TdDialogService} from "@covalent/core";
+import {ToastService} from "./../../component/toast/toast.service";
+import {SettingMenuService} from "app/services/setting-menu/setting-menu.service";
+import {HtmlDomTemplate} from "app/models/HtmlDomTemplate";
+import {ConvertUtil} from "./../../common/convert-util";
+import {FnUtil} from "./../../common/fn-util";
 
 @Component({
   selector: "app-setting-menu",
@@ -40,21 +40,18 @@ export class SettingMenuComponent implements OnInit {
   addOrUpdate: boolean; //添加false 修改true
   menuOrAuthority; //菜单或权限
 
-  constructor(
-    private settingMenuService: SettingMenuService,
-    private util: ConvertUtil,
-    private toastService: ToastService,
-    private routerInfor: ActivatedRoute,
-    private fnUtil: FnUtil,
-    private renderer2: Renderer2,
-    private dialogService: TdDialogService
-  ) {
+  constructor(private settingMenuService: SettingMenuService,
+              private util: ConvertUtil,
+              private toastService: ToastService,
+              private routerInfor: ActivatedRoute,
+              private fnUtil: FnUtil,
+              private renderer2: Renderer2,
+              private dialogService: TdDialogService) {
     this.authorities = this.fnUtil.getFunctions();
   }
 
   ngOnInit() {
     this.getMenuLists();
-    this.getModel();
   }
 
   /**
@@ -67,6 +64,7 @@ export class SettingMenuComponent implements OnInit {
     this.getTargetModel(target);
     this.modelDOMSData = "";
   }
+
   /**
    * 修改
    */
@@ -75,20 +73,33 @@ export class SettingMenuComponent implements OnInit {
     this.addOrUpdate = true;
     this.updateId = id;
     this.addId = parentId;
-    this.getTargetModel(target);
+    this.getTargetModel(target, id);
     this.modelDOMSData = this.searchItem(id);
   }
+
   /**
    * 当前需要显示的模板
    */
-  getTargetModel(target) {
+  getTargetModel(target, id?: number) {
     this.menuOrAuthority = target;
+    let param = id ? {id: id} : "";
     if (target === "menu") {
-      this.modelDOMS = this.modelMenu;
-      this.modelBindData = this.menuBindData;
+      //菜单模板
+      this.settingMenuService.getMenuModel(param).subscribe(res => {
+        if (res.code === "0") {
+          this.modelDOMS = res.data.doms;
+          this.modelBindData = res.data.bindData;
+        }
+      });
     } else if (target === "authority") {
-      this.modelDOMS = this.modelAuthority;
-      this.modelBindData = this.authorityBindData;
+      //权限模板
+      this.settingMenuService.getAuthorityModel(param).subscribe(res => {
+        if (res.code === "0") {
+          console.log(res);
+          this.modelDOMS = res.data.doms;
+          this.modelBindData = res.data.bindData;
+        }
+      });
     }
   }
 
@@ -101,27 +112,22 @@ export class SettingMenuComponent implements OnInit {
       if (r.data) {
         this.menus = r.data;
       }
-    })
+    });
   }
+
   /**
    * 获取模板
    */
   getModel() {
-    //菜单模板
-    this.settingMenuService.getMenuModel().subscribe(r => {
-      if (r.code === "0") { this.modelMenu = r.data.doms; this.menuBindData = this.util.toJSON(r.data.bindDataJson) };
-    })
-    //权限模板
-    this.settingMenuService.getAuthorityModel().subscribe(r => {
-      if (r.code === "0") { this.modelAuthority = r.data.doms; this.authorityBindData = this.util.toJSON(r.data.bindDataJson) };
-    });
+
+
   }
 
   /**
    * 添加权限
    */
-  addNewAuthority() { }
-
+  addNewAuthority() {
+  }
 
 
   /**
@@ -203,6 +209,7 @@ export class SettingMenuComponent implements OnInit {
       }
     })
   }
+
   deletePage($event, id, index) {
     $event.stopPropagation();
     this.dialogService.openConfirm({
@@ -239,7 +246,7 @@ export class SettingMenuComponent implements OnInit {
       acceptButton: "确定"
     }).afterClosed().subscribe((accept: boolean) => {
       bool = accept;
-    })
+    });
     return bool;
   }
 
@@ -261,7 +268,7 @@ export class SettingMenuComponent implements OnInit {
           });
         }
       });
-    })
+    });
     return data;
   }
 
@@ -271,6 +278,7 @@ export class SettingMenuComponent implements OnInit {
   onSidenavClose() {
     this.sidenavActive = false;
   }
+
   onSidenavOpen() {
     this.sidenavActive = true;
   }
