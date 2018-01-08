@@ -37,7 +37,7 @@ export class DeclarationComponent implements OnInit {
   index: any;
   showCertification: any;
   personRealId: string;
-
+ 
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
