@@ -147,6 +147,7 @@ export class ResponsiveModelComponent implements OnInit {
 
   vertifyFun(vertify, data, required, displayMsg, key) {
     let msg;
+    
     if (data && data.length > 0) {
       if (vertify && vertify.length > 0) { //如果有正则
         let reg;
@@ -165,8 +166,16 @@ export class ResponsiveModelComponent implements OnInit {
       // }
       if (required) {
         if(!data){
-          if(data === 0){   //填0的情况是可以的
-            return "";
+          if(data === 0){   //填0的情况是可以的，同时需要对0进行匹配
+            vertify.forEach(item => {
+              let reg1;
+              reg1 = new RegExp(item.regular);
+              if (!reg1.test(data)) {  //匹配错误，显示error
+                msg = item.message;
+                this._errData[key] = msg;
+                return false;
+              }
+            });
           }else{
             msg = displayMsg;
           }

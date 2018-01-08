@@ -3,7 +3,7 @@
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters"
                  (onSearch)="onSearch($event)"></search-form>
-    <button md-raised-button color="deepblue" class="add-button" (click)="sidenav.open()">报单
+    <button md-raised-button color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">报单
     </button>
   </div>
 
