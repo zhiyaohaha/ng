@@ -238,7 +238,11 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 详情组件点击事件
    */
   detailClick(value) {
-    console.log(this.selectRow);
+    this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
+      if (r.code === "0") {
+        this.modalDOMS = r.data.doms;
+      }
+    });
     if (value.name === "HtmlDomCmd.Redirect") {
       this.detail = false;
       this.edit = true;
