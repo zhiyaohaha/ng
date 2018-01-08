@@ -1,42 +1,5 @@
 <form #form="ngForm">
-  <ul class="search-ul">
-    <li *ngFor="let item of filters">
-      <!--<div [ngSwitch]="item.ui.displayType">-->
-      <!--<md-input-container *ngSwitchCase="'HtmlDomDisplayType.Text'"-->
-      <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
-      <!--<input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"-->
-      <!--[name]="item.name" (input)="searchParam($event)" (keypress)="keyPress($event)"-->
-      <!--[disabled]="item.ui.isDisabled">-->
-      <!--</md-input-container>-->
-      <!--<md-input-container *ngSwitchCase="'HtmlDomDisplayType.Hidden'"-->
-      <!--[ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">-->
-      <!--<input mdInput placeholder="{{item.ui.placeholder || item.ui.label}}" [value]="item.value"-->
-      <!--[name]="item.name" [disabled]="item.ui.isDisabled">-->
-      <!--</md-input-container>-->
-      <!--<div *ngSwitchCase="'HtmlDomDisplayType.DateRange'">-->
-      <!--<md-input-container>-->
-      <!--<input mdInput [mdDatepicker]="picker" placeholder="起始时间" [(ngModel)]="StartTime">-->
-      <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker"></button> &ndash;&gt;-->
-      <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
-      <!--<md-datepicker #picker></md-datepicker>-->
-      <!--</md-input-container>-->
-      <!--&nbsp;&nbsp;&#45;&#45;&nbsp;&nbsp;-->
-      <!--<md-input-container>-->
-      <!--<input mdInput [mdDatepicker]="picker2" placeholder="截至时间" [(ngModel)]="EndTime">-->
-      <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker2"></button> &ndash;&gt;-->
-      <!--<md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>-->
-      <!--<md-datepicker #picker2></md-datepicker>-->
-      <!--</md-input-container>-->
-      <!--</div>-->
-      <!--<div *ngSwitchCase="'HtmlDomDisplayType.Select'">-->
-      <!--<md-select placeholder="{{item.ui.placeholder || item.ui.label}}">-->
-      <!--<md-option *ngFor="let item of item.bindData" [value]="item.value">-->
-      <!--{{ item.text }}-->
-      <!--</md-option>-->
-      <!--</md-select>-->
-      <!--</div>-->
-      <!--</div>-->
-
+    <div class="search-item" *ngFor="let item of filters">
       <ng-container [ngSwitch]="item.ui.displayType">
         <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Text'"
              [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
@@ -64,10 +27,8 @@
           </md-input-container>
         </div>
       </ng-container>
-    </li>
-    <li>
-      <!--<button fButton color="deepblue" (click)="searchParams(form.value)">搜索</button>-->
+    </div>
+    <div class="search-item">
       <button md-raised-button (click)="searchParams(form.value)">搜索</button>
-    </li>
-  </ul>
+    </div>
 </form>
