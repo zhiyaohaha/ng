@@ -43,6 +43,14 @@ export class SharepageService {
   }
 
   /**
+   * 获取修改参数模版的详细数据
+   */
+  public getEditParams(param) {
+    this.key = this.routerInfo.snapshot.queryParams["pageCode"];
+    return this.service.get(this.fnUtil.searchAPI(this.key + ".Detail"), param);
+  }
+
+  /**
    * 保存修改的数据
    */
   public saveEditParams(param) {

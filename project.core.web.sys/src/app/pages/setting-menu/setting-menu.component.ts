@@ -95,7 +95,6 @@ export class SettingMenuComponent implements OnInit {
       //权限模板
       this.settingMenuService.getAuthorityModel(param).subscribe(res => {
         if (res.code === "0") {
-          console.log(res);
           this.modelDOMS = res.data.doms;
           this.modelBindData = res.data.bindData;
         }
@@ -126,17 +125,18 @@ export class SettingMenuComponent implements OnInit {
    * 确定添加页面或者权限
    */
   addNew($event) {
-    let data = this.modelBindData;
+    // let data = this.modelBindData;
+    let data = {};
     for (let key in $event) {
       if ($event[key]) {
         data[key] = $event[key];
       }
     }
     if (this.menuOrAuthority === "menu") {
-      data.parentId = this.addId;
+      data["parentId"] = this.addId;
       this.settingMenuService.addMenuPage(data).subscribe(r => this.cb(r)); //添加页面
     } else if (this.menuOrAuthority === "authority") {
-      data.menu = this.addId;
+      data["menu"] = this.addId;
       this.settingMenuService.addAuthority(data).subscribe(r => this.cb(r)); //添加权限
     }
 
