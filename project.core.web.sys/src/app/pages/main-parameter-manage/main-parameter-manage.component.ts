@@ -100,6 +100,11 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     dataTableService: this._dataTableService
   };
 
+  /**
+   * 修改模版
+   */
+  modalDOMS: HtmlDomTemplate;
+  modalData;
 
   /**
    * 树结构
@@ -155,7 +160,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
           index: localStorage.getItem(this.pagecode + "cp"),
           filters: ""
         });
-        this.loadModal();
+        // this.loadModal();
       });
 
   }
@@ -260,6 +265,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    */
   newAdd() {
     this.isNew = true;
+    this.loadModal();
   }
 
   /**
@@ -267,7 +273,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    */
   onSubmitAddParams($event) {
     let arr = [];
-    let data = this._util.toJSON(this.newModalData);
+    // let data = this._util.toJSON(this.newModalData);
+    let data = {};
     for (let key in $event) {
       if ($event[key]) {
         arr.push(key);
@@ -276,10 +283,10 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
     });
-    data.id = "";
+    data["id"] = "";
     // data.description = $event.description;
-    data.parentId = this.selectNode.JSONdata.id;
-    data.depth = this.selectNode.JSONdata.depth + 1;
+    data["parentId"] = this.selectNode.JSONdata.id;
+    data["depth"] = this.selectNode.JSONdata.depth + 1;
     data = this._util.toJsonStr(data);
     this._paramsManageService.addParams(data).subscribe(res => {
       if (res.code === "0") {
@@ -296,15 +303,17 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    */
   onSubmitNewAdd($event) {
     let arr = [];
-    let data = this._util.toJSON(this.newModalData);
+    // let data = this._util.toJSON(this.newModalData);
+    let data = {};
     for (let key in $event) {
-      arr.push(key);
+      if ($event[key]) {
+        arr.push(key);
+      }
     }
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
     });
-    this.newModalData = this._util.toJsonStr(data);
-    this._paramsManageService.addParams(this.newModalData).subscribe(res => {
+    this._paramsManageService.addParams(this._util.toJsonStr(data)).subscribe(res => {
       if (res.code === "0") {
         this.toastService.creatNewMessage("添加成功");
         this.getParamsList({
@@ -412,20 +421,15 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
   }
 
   /**
-   * 修改模版
+   * 表单模版
    */
-  modalDOMS: HtmlDomTemplate;
-  modalData;
-  newModalData;
-
   loadModal() {
     this._paramsManageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
-        this.modalData = r.data;
-        this.newModalData = r.data.bindDataJson;
+        this.modalData = r.data.bindData;
       }
-    })
+    });
   }
 
   messages: any[] = [];
