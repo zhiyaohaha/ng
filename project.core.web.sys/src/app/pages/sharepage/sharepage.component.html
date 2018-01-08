@@ -20,7 +20,7 @@
           <detail-model *ngIf="detail && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
                         (onClick)="detailClick($event)"></detail-model>
           <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
-          <timi-responsive-form *ngIf="edit" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType"
+          <timi-responsive-form *ngIf="edit && modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType"
                                 (backClick)="backClick()" (ngSubmit)="submitMethod($event)"></timi-responsive-form>
         </div>
       </div>
