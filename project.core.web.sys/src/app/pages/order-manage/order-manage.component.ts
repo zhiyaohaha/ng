@@ -254,6 +254,14 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.sidenavKey = "Other";
   }
 
+  //临时代码3----资料收集 
+  collect(){
+    this.selectRow = "";
+    this.new = true;
+    this.edit = true;
+    this.btnType = "new";
+    this.sidenavKey = "Collection";
+  }
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
