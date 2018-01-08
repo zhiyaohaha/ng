@@ -116,14 +116,6 @@ export class SettingMenuComponent implements OnInit {
   }
 
   /**
-   * 获取模板
-   */
-  getModel() {
-
-
-  }
-
-  /**
    * 添加权限
    */
   addNewAuthority() {
@@ -136,7 +128,9 @@ export class SettingMenuComponent implements OnInit {
   addNew($event) {
     let data = this.modelBindData;
     for (let key in $event) {
-      data[key] = $event[key];
+      if ($event[key]) {
+        data[key] = $event[key];
+      }
     }
     if (this.menuOrAuthority === "menu") {
       data.parentId = this.addId;
@@ -153,9 +147,7 @@ export class SettingMenuComponent implements OnInit {
    * 确定修改菜单或者权限
    */
   updateOld($event) {
-    console.log("xiugai:", $event);
     let data = this.searchItem($event.id);
-    console.log(data);
     for (let key in $event) {
       if ($event[key]) {
         data[key] = $event[key];
@@ -174,7 +166,9 @@ export class SettingMenuComponent implements OnInit {
    */
   cb(data) {
     this.toastService.creatNewMessage(data.message);
-    if (data.code == "0") this.getMenuLists();
+    if (data.code === "0") {
+      this.getMenuLists();
+    }
   }
 
   /**
@@ -207,7 +201,7 @@ export class SettingMenuComponent implements OnInit {
           }
         });
       }
-    })
+    });
   }
 
   deletePage($event, id, index) {
