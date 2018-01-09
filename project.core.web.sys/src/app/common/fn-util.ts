@@ -19,7 +19,7 @@ export class FnUtil {
    * 获取页面页码配置
    */
   public getPaginationInfo(): any {
-    let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
+    let pageCode = this.getPageCode();
     let data = {
       pageSize: 10,
       currentPage: 0
@@ -38,7 +38,7 @@ export class FnUtil {
    * 获取当前页面权限
    */
   public getFunctions() {
-    let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
+    let pageCode = this.getPageCode();
     return this.convertUtil.toJSON(localStorage.getItem("pa"))[pageCode].a;
   }
 
@@ -49,7 +49,7 @@ export class FnUtil {
    */
   public searchAPI(key: string, param: string = "code") {
     let apis;
-    let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
+    let pageCode = this.getPageCode();
     this.menus = this.convertUtil.toJSON(localStorage.getItem("menus")); //用户菜单
     this.menus.filter(r => {
       r.childrens.filter(cc => {
@@ -142,6 +142,12 @@ export class FnUtil {
     return args[value];
   }
 
+  /**
+   * 获取页面代码
+   */
+  public getPageCode(): string {
+    return this.routerInfo.snapshot.queryParams["pageCode"];
+  }
 
 }
 
