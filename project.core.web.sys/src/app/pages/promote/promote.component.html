@@ -18,36 +18,46 @@
           <div class="boxHeader">
             <span>编号</span>
             <span>姓名</span>
-            <span>手机号码归属地</span>
+            <span>手机号</span>
+            <span>手机号归属地</span>
             <span>来源</span>
             <span>用户类型</span>
-        
+            <span>用户状态</span>
+            <span>下级代理个数</span>
+            <span>备注</span>
           </div>
-          <div class="tableContent" *ngFor="let item of level2;let i=index">
+          <div class="tableContent" *ngFor="let item of selectRow;let i=index">
             <div class="level2" (click)="showLevel($event,i)">
-              <span>002</span>
-              <span>刘志杰</span>
-              <span>北京</span>
-              <span>PC网站</span>
-              <span>自然人</span>
-              <span *ngIf="!level2[i].checked">+</span>
-              <span *ngIf="level2[i].checked">-</span>
+              <span>{{i+1}}</span>
+              <span>{{item.name}}</span>
+              <span>{{item.mobilePhone}}</span>
+              <span>{{item.mobilePhoneAddr}}</span>
+              <span>{{item._source}}</span>
+              <span>{{item.org}}</span>
+              <span>{{item._status}}</span>
+              <span>{{item.subordinateNum}}</span>
+              <span>{{item.description}}</span>
+              <span *ngIf="!selectRow[i].checked">+</span>
+              <span *ngIf="selectRow[i].checked">-</span>
             </div>
-            <div *ngFor="let item of level3">
-              <div class="level3" *ngIf="level2[i].checked">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
+            <div *ngIf="selectRow[i].checked && (levels.length>0)">
+              <div class="level3" *ngFor="let item of levels[i];let j=index">
+                <span>{{j+1}}</span>
+                <span>{{item.name}}</span>
+                <span>{{item.mobilePhone}}</span>
+                <span>{{item.mobilePhoneAddr}}</span>
+                <span>{{item._source}}</span>
+                <span>{{item.org}}</span>
+                <span>{{item._status}}</span>
+                <span>{{item.subordinateNum}}</span>
+                <span>{{item.description}}</span>
               </div>
             </div>
-        
           </div>
-        
         </div>
       </div>
     </div>
   </md-sidenav>
 
 </md-sidenav-container>
+

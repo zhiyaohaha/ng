@@ -32,6 +32,7 @@ import { NewComponentModule } from "./newcomponent/newcomponent.module";
 import { PreviewService } from './services/preview/preview.service';
 import { RegionService } from "app/services/region/region.service";
 
+
 @NgModule({
   declarations: [
     AppComponent,

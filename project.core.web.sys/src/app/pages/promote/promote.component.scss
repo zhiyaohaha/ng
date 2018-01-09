@@ -63,7 +63,7 @@ md-sidenav-container {
 }
 
 md-sidenav {
-  width: 60%;
+  width: 90%;
 }
 .header span {
   display: inline-block;
@@ -81,7 +81,10 @@ md-sidenav {
 .level2 span,
 .level3 span {
   display: inline-block;
-  width: 19%;
+  width: 9%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .level2 span:last-child {
