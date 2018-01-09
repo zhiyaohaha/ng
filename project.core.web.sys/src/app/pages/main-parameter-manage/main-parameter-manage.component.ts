@@ -217,6 +217,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    * @param
    */
   treeSelected($event): void {
+    this.loadModal();
     this.selectNode = $event.node.node;
     let _tags = [];
     this.tags = [];
