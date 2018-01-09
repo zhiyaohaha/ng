@@ -10,7 +10,7 @@ export class CommonService {
   }
 
   /**
-   * 获取参数管理的列表
+   * 获取列表
    */
   public getTableList(param, type = ".View") {
     return this.baseService.get(this.fnUtil.searchAPI(this.fnUtil.getPageCode() + type), param);
@@ -29,7 +29,7 @@ export class CommonService {
   }
 
   /**
-   * 获取修改参数模版
+   * 获取修改表单的模版
    */
   public editFormModel(param, type = ".FormTemplate") {
     let key = this.fnUtil.getPageCode();
@@ -41,9 +41,9 @@ export class CommonService {
   }
 
   /**
-   * 获取修改参数模版的详细数据
+   * 获取详细数据
    */
-  public getDetail(param, type = "Detail") {
+  public getDetail(param, type = ".Detail") {
     return this.baseService.get(this.fnUtil.searchAPI(this.fnUtil.getPageCode() + type), param);
   }
 
