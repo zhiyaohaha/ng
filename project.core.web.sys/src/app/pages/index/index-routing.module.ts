@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { IndexComponent } from "./index.component";
 import { StatisticsComponent } from "app/newcomponent/statistics/statistics.component";
-import { PromoteComponent } from "app/newcomponent/promote/promote.component";
+
 
 const childRoutes: Routes = [
   { path: "dashboard", loadChildren: "../main/main.module#MainModule" },
@@ -32,6 +32,7 @@ const childRoutes: Routes = [
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
   },
   { path: "LoanMgr.OrderMgr", loadChildren: "../order-manage/order-manage.module#OrderManageModule" },
+  { path: "SpreadLevelManage", loadChildren: "../promote/promote.module#PromoteModule" },
   // {path: "OrgStructure.FinanceMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.BannerMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.NewsMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
@@ -46,7 +47,6 @@ const childRoutes: Routes = [
   // {path: "ProjectMgr.DBMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "dp", redirectTo: "sharepage", pathMatch: "full"},
   { path: "DataStatistics", component: StatisticsComponent },
-  { path: "SpreadLevelManage", component: PromoteComponent},
   { path: "", redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: "**", redirectTo: "/error" }
 ];

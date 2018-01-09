@@ -36,7 +36,7 @@ import { RegionService } from "app/services/region/region.service";
   declarations: [
     AppComponent,
     FilterValuePipe,
-    SetAuthorityComponent,
+    SetAuthorityComponent
   ],
   imports: [
     BrowserModule,

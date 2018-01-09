@@ -12,7 +12,6 @@ import { ApplicationComponent } from './application/application.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { PromoteComponent } from './promote/promote.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +21,6 @@ import { PromoteComponent } from './promote/promote.component';
         ApplicationComponent,
         ChartComponent,
         StatisticsComponent,
-        PromoteComponent
     ],
     imports: [
         FormsModule,
