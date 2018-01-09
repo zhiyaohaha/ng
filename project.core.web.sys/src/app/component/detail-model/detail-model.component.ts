@@ -9,6 +9,7 @@ import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-galle
 import {NewComponentModule} from "../../newcomponent/newcomponent.module";
 import {PreviewService} from "../../services/preview/preview.service";
 import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
+import {CovalentDataTableModule} from "@covalent/core";
 
 @Component({
   selector: "detail-model",
@@ -99,15 +100,6 @@ export class DetailModelComponent implements OnInit {
 
   clickEvent(obj) {
     this.onClick.emit(obj[0]);
-    // obj = obj[0];
-    // switch (obj.name) {
-    //   case "HtmlDomCmd.Redirect":
-    //     this.onClick.emit("Redirect");
-    //     break;
-    //   case "HtmlDomCmd.API":
-    //     this.onClick.emit(obj);
-    //     break;
-    // }
   }
 
   toShow() {
@@ -167,7 +159,8 @@ export class DetailUnitComponent implements OnInit {
     ButtonModule,
     MdButtonModule,
     NewComponentModule,
-    NgxGalleryModule, SharedPipeModule
+    NgxGalleryModule, SharedPipeModule,
+    CovalentDataTableModule
   ],
   declarations: [DetailModelComponent, DetailUnitComponent],
   exports: [DetailModelComponent, DetailUnitComponent]

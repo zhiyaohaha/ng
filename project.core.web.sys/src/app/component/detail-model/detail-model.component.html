@@ -45,6 +45,13 @@
             <div class="span" [innerHTML]="child.name | ergodicJson : modelDOMSData"></div>
           </ng-template>
         </div>
+        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Table'">
+          <div class="label">{{child.ui.label}}</div>
+          <div class="span" *ngIf="child.bindData.total">
+            <td-data-table [columns]="child.bindData.data.fields" [data]="child.bindData.data.bindData">
+            </td-data-table>
+          </div>
+        </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
              style="text-align: center;">
           <ng-container *ngFor="let btn of child.childrens;">
