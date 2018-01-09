@@ -145,7 +145,7 @@
       <div class="sidenav-new" *ngIf="isNew">
         <md-tab-group>
           <md-tab label="添加">
-            <timi-responsive-form [modelDOMS]="modalDOMS" btnValue="确定新增" btnType="new"
+            <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" btnValue="确定新增" btnType="new"
                                   (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
           </md-tab>
         </md-tab-group>

@@ -49,6 +49,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   detail: boolean; //查看详情时变成true
 
   detailModel; //查询详情的模板
+  modalDOMS: HtmlDomTemplate; //表单模版
 
   /**
    * 表格title
@@ -132,8 +133,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
 
-        this.loadDetailModel();
-        this.loadModal();
+        // this.loadDetailModel();
+        // this.loadModal();
       });
 
     /**
@@ -203,8 +204,6 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.getParamsList(this.listparam);
   }
 
-  // modalData;
-  newModalData;
   /**
    * 点击行
    */
@@ -212,41 +211,25 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.new = false;
     this.detail = true;
     this.btnType = "edit";
-    this.sharepageService.getEditParams({ id: $event.row.id })
-      .subscribe(r => {
-        this.selectRow = r.data;
-      });
-  }
 
-  /**
-   * 获取模版
-   */
-  modalDOMS: HtmlDomTemplate;
+    this.sharepageService.getDetailModel({id: $event.row.id})
+      .subscribe(res => {
+        this.detailModel = res.data.doms;
+        this.selectRow = res.data.bindData;
+    });
+  }
 
   /**
    * 添加
    */
   newAdd() {
-    // this.selectRow = this.converUtil.toJSON(this.modalData);
     this.selectRow = "";
     this.new = true;
     this.edit = true;
     this.btnType = "new";
-  }
-
-  loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
-        // this.modalData = r.data.bindDataJson;
-        this.newModalData = r.data;
-      }
-    });
-  }
-  loadDetailModel() {
-    this.sharepageService.getDetailModel().subscribe( res => {
-      if (res.code === "0") {
-        this.detailModel = res.data.doms;
       }
     });
   }
@@ -255,7 +238,11 @@ export class SharepageComponent implements OnInit, OnDestroy {
    * 详情组件点击事件
    */
   detailClick(value) {
-    console.log(this.selectRow);
+    this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
+      if (r.code === "0") {
+        this.modalDOMS = r.data.doms;
+      }
+    });
     if (value.name === "HtmlDomCmd.Redirect") {
       this.detail = false;
       this.edit = true;

@@ -1,5 +1,5 @@
-<form *ngIf="false">
-
+<!-- <form *ngIf="false"> -->
+<form>
   <div class="declaration">
     <div class="searchBox">
 
@@ -13,13 +13,13 @@
           <label for="type{{i}}" [class.active]="product.checked">{{type.name}}</label>
         </li>
       </ul>
-      
+
     </div>
 
     <ul class="products" [class.productActive]="productsStyle">
 
       <li *ngFor="let product of productDetail;let i = index" (click)="changeStyle($event,liActive,i)" #liActive id="{{i}}" [class.liActive]="liActive.id==index"
-        class="productList">
+          class="productList">
         <img src="../../../assets/iconred.png" alt="logo" class="pic">
         <div class="content" *ngIf='!(liActive.id==index)'>
           <p>产品名称</p>
@@ -54,7 +54,7 @@
         <span class="right red" *ngIf="errorOfPerson==1">{{errorMessage}}</span>
         <span class="right red" *ngIf="errorOfPerson==2">{{errorMessage}}</span>
       </li>
-       <!-- *ngIf="showCertification==2" -->
+      <!-- *ngIf="showCertification==2" -->
       <li *ngIf="showCertification==2">
         <span class="left">银行卡号：</span>
         <input type="text" (keyup)="getbankCard($event,bankNum)" #bankNum class="info-input" placeholder="请输入银行卡号" maxlength="19">
@@ -108,4 +108,4 @@
   </div>
 
 </form>
-<free-application></free-application>
+<!-- <free-application></free-application> -->

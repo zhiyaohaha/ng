@@ -1,6 +1,5 @@
-.search-ul {
-  float: left;
-  li {
+
+  .search-item {
     float: left;
     &:not(:last-child) {
       width: 25%;
@@ -24,4 +23,3 @@
     top: -3px;
     left: 20px;
   }
-}

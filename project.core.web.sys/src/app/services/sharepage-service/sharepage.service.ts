@@ -21,10 +21,10 @@ export class SharepageService {
   /**
    * 获取查看详情的模板
    */
-  public getDetailModel() {
+  public getDetailModel(param) {
     this.key = this.routerInfo.snapshot.queryParams["pageCode"];
     if (this.fnUtil.searchAPI(this.key + ".DetailTemplate")) {
-      return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"));
+      return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"), param);
     } else {
       return this.fnUtil.getSubject();
     }
@@ -33,10 +33,10 @@ export class SharepageService {
   /**
    * 获取修改参数模版
    */
-  public editParamsModal() {
+  public editParamsModal(param?: any) {
     this.key = this.routerInfo.snapshot.queryParams["pageCode"];
     if (this.fnUtil.searchAPI(this.key + ".FormTemplate")) {
-      return this.service.get(this.fnUtil.searchAPI(this.key + ".FormTemplate"));
+      return this.service.get(this.fnUtil.searchAPI(this.key + ".FormTemplate"), param);
     } else {
       return this.fnUtil.getSubject();
     }
