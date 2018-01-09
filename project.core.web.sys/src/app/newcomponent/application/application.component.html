@@ -1,55 +1,39 @@
-<form>
-  
-  <div class="personInfo">
-
+<form  *ngIf="loanInfo">
+  <!-- 个人信息 -->
+  <div class="personInfo m-b-20">
     <p>个人信息</p>
     <div class="personInfoPic">
-      <img src="../../../assets/1.jpg" alt="">
+      <img [src]="loanInfo.portrait" alt="">
     </div>
-
-    <div class="personInfoConent">
+    <div class="personInfoConent clearfix">
       <ul>
-        <li>姓名:</li>
-        <li>性别:</li>
-        <li>年龄:</li>
-        <li>身份证号:4203251994005011131</li>
-        <li>民族:</li>
-        <li>户籍地:</li>
-        <li>银行预留手机号:</li>
+        <li>姓名:{{loanInfo.name}}</li>
+        <li>性别:{{loanInfo._sex}}</li>
+        <li>年龄:{{loanInfo.age}}</li>
+        <li>身份证号:{{loanInfo.idCard}}</li>
+        <li>民族:{{loanInfo.nation}}</li>
+        <li>银行预留手机号:{{loanInfo.mobilePhone}}</li>
+        <li>户籍地:{{loanInfo.domicile}}</li>
       </ul>
     </div>
 
   </div>
-
-  <div class="loan">
-
+  
+  <!-- 贷款信息 -->
+  <div class="loan  m-b-20">
     <p>贷款信息</p>
-    <ul class="loan-info">
+    <ul class="loan-info clearfix">
       <li>
-        <span>贷款产品：产品名称</span>
+        <span>贷款产品：{{loanInfo.productName}}</span>
       </li>
       <li>
         <span>贷款金额：</span>
         <input type="text">
       </li>
       <li>
-        <span>贷款地区：</span>
+        <span>贷款用途：</span>
         <select>
-          <option>请选择省</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-        <select>
-          <option>请选择市</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-        <select>
-          <option>请选择区</option>
+          <option>请选择用途</option>
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -66,8 +50,71 @@
           <option>4</option>
         </select>
       </li>
+      <li>
+          <span>贷款地区：</span>
+          <select>
+            <option>请选择省</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          <select>
+            <option>请选择市</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          <select>
+            <option>请选择区</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </li>
     </ul>
 
   </div>
 
+  <!-- 录入信息 -->
+  <div class="loan  m-b-20">
+    <p>录入信息</p>
+     <timi-responsive-form [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new"></timi-responsive-form>
+  </div>
+
+  <!-- 所需附件 -->
+  <div class="m-b-20">
+    <p>所需附件</p>
+    <ul class="clearfix accessory"> 
+        <li  *ngFor="let attachmentGroup of loanInfo._attachmentGroups;">
+          <div class="accessoryTop"  (click)="attachmentGroup.attachmentsDisplay = displayAttachments(attachmentGroup.attachmentsDisplay,attachmentGroup)">
+              <span>{{attachmentGroup.name}}</span>
+              <span class="status" [ngClass]="{'statusPass':attachmentGroup._status == '通过'}">{{attachmentGroup._status}}</span>
+          </div>
+           <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'">
+              <ul>
+                <li *ngFor="let attachment of attachmentGroup._attachments" (click)="displayAttachmentData(attachment,attachmentGroup)">
+                    <div class="accessoryBottomTop">
+                        <span>{{attachment.name}}</span>
+                        <span class="status" [ngClass]="{'statusPass':attachmentGroup._status == '通过'}">{{attachment._status}}</span>
+                    </div>
+                </li>
+              </ul>
+              <!-- 初始化状态 , 并且有附件项 -->
+              <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">  
+                  <p>描述文案</p>
+                  <p>至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+              </div>
+              <!-- 非初始化状态,已经操作了 -->
+              <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
+                  <p>描述文案</p>
+                  <p>至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+              </div>
+           </div>
+        </li>
+    </ul>
+     <!-- <timi-responsive-form [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new"></timi-responsive-form> -->
+  </div>
 </form>
