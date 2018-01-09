@@ -33,6 +33,7 @@ const childRoutes: Routes = [
   },
   { path: "LoanMgr.OrderMgr", loadChildren: "../order-manage/order-manage.module#OrderManageModule" },
   { path: "SpreadLevelManage", loadChildren: "../promote/promote.module#PromoteModule" },
+  { path: "LoanDemand", loadChildren: "../loandemand/loandemand.module#LoandemandModule" },
   // {path: "OrgStructure.FinanceMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.BannerMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.NewsMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},

@@ -16,13 +16,10 @@ export class PromoteService {
   }
 
   /**
-   * 获取第二层数据
+   * 获取层级数据
    */
   getEditParams(param){
     return this.baseService.get(this.fnUtil.searchAPI("Distribution.SpreadLevelManage.Detail"), param);
   }
 
-  getLevelTwo(param){
-    return this.baseService.post("/Statistics/SubordinateUserList", param)
-  }
 }

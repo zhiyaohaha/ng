@@ -1,0 +1,19 @@
+<md-sidenav-container [@fadeInState]="'active'">
+
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+  </div>
+
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
+    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
+  </app-table>
+
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <div class="row">
+      <div class="col-lg-12">
+        
+      </div>
+    </div>
+  </md-sidenav>
+
+</md-sidenav-container>

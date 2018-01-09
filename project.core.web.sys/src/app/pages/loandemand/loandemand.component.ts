@@ -24,18 +24,17 @@ import { ToastService } from "../../component/toast/toast.service";
 import { ConvertUtil } from "../../common/convert-util";
 import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
-import { PromoteService } from "app/services/promote/promote.service";
 import { CommonService } from "app/services/common/common.service";
 
 
 @Component({
-  selector: "app-promote",
-  templateUrl: "./promote.component.html",
-  styleUrls: ["./promote.component.scss"],
+  selector: "app-loandemand",
+  templateUrl: "./loandemand.component.html",
+  styleUrls: ["./loandemand.component.scss"],
   animations: [fadeIn],
-  providers: [TdLoadingService, PromoteService, CommonService]
+  providers: [TdLoadingService, CommonService]
 })
-export class PromoteComponent implements OnInit {
+export class LoandemandComponent implements OnInit {
   [x: string]: any;
 
   @ViewChild("sidenav")
@@ -88,19 +87,6 @@ export class PromoteComponent implements OnInit {
 
   pagecode: string;
 
-  isShow: boolean = false;
-  level2: Array<any> = [
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-  ];
-  level3: Array<any> = [1];
-  levels: Array<any> = [];
-
-
 
   constructor(
     private fnUtil: FnUtil,
@@ -112,7 +98,6 @@ export class PromoteComponent implements OnInit {
     private el: ElementRef,
     private baseService: BaseService,
     private lodaingService: TdLoadingService,
-    private promoteService: PromoteService,
     private commonService: CommonService
   ) {
     /**
@@ -241,15 +226,4 @@ export class PromoteComponent implements OnInit {
   closeEnd() {
   }
 
-  showLevel(e, i) {
-    this.selectRow[i].checked = !this.selectRow[i].checked;
-    if (this.selectRow[i].checked==true){
-      this.commonService.getDetail({ userId: this.selectRow[i].id, level: "first" })
-        .subscribe(r => {
-          this.levels[i] = r.data;
-          console.log(r.data);
-        });
-    }
-    
-  }
 }
