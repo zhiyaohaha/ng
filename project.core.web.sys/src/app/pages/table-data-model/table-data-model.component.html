@@ -154,7 +154,7 @@
             (click)="newAdd();sidenav.open()">添加
     </button>
   </div>
-  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
+  <app-table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"[activeIndex]="currentPage"
              [clickAuthority]="clickAuthority" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 </md-sidenav-container>

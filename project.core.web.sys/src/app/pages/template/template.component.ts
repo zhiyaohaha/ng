@@ -1,17 +1,18 @@
-import {AfterViewInit, Component, OnInit, ViewChild,ElementRef} from "@angular/core";
+import {AfterViewInit, Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import {ITdDataTableColumn, LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
-import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {MdSidenav} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
+import {CommonService} from "../../services/common/common.service";
+import {FnUtil} from "../../common/fn-util";
 
 @Component({
   selector: "app-template",
   templateUrl: "./template.component.html",
   styleUrls: ["./template.component.scss"],
-  providers: [SharepageService]
+  providers: [CommonService]
 })
 export class TemplateComponent implements OnInit, AfterViewInit {
   pageIndex; //当前页数
@@ -59,24 +60,12 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   @ViewChild("table")
   private table: TableComponent;
 
-  constructor(private sharepageService: SharepageService,
-              private routerInfo: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
+              private commonService: CommonService,
+              private fnUtil: FnUtil,
               private lodaingService: TdLoadingService,
               private sanitizer: DomSanitizer,
-              private el:ElementRef
-  ) {
-    this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-    /**
-     * 每页条数pagesize和当前页码currentPage
-     */
-    if (!localStorage.getItem(this.pagecode + "ps")) {
-      localStorage.setItem(this.pagecode + "ps", this.pageSize.toString());
-      localStorage.setItem(this.pagecode + "cp", this.currentPage.toString());
-    } else {
-      this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-      this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-    }
+              private el: ElementRef) {
 
     /**
      * 路由器结束订阅加载不同的页面
@@ -85,11 +74,17 @@ export class TemplateComponent implements OnInit, AfterViewInit {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-        this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-        this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
+
+        this.pagecode = this.fnUtil.getPageCode();
+        /**
+         * 每页条数pagesize和当前页码currentPage
+         */
+        let paginationInfo = this.fnUtil.getPaginationInfo();
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
         this.getParamsList({
-          size: localStorage.getItem(this.pagecode + "ps"),
-          index: localStorage.getItem(this.pagecode + "cp"),
+          size: this.pageSize,
+          index: this.currentPage,
           filters: ""
         });
         //每次订阅不同的页面，关闭右侧弹出的iframe
@@ -126,7 +121,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    */
 
   getParamsList(params) {
-    this.sharepageService.getParams(params)
+    this.commonService.getTableList(params)
       .subscribe(res => {
         if (res.code === "0") {
           let r = res;
@@ -138,7 +133,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -182,25 +177,32 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 添加
    */
   newAdd() {
-    this.setIframeSrc('');
+    this.setIframeSrc("");
   }
 
   /**
    *根据不同的url，设置不同的iframe src（添加和修改都跳转到iframe）
    */
-  setIframeSrc(id){
+  setIframeSrc(id) {
     //设置src
-    let pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-    switch(pagecode){
-      case "TemplateMgr.TableMgr":this.editUrl="table";break;  //表格
-      case "TemplateMgr.SelectMgr":this.editUrl="mutilple";break;  //多选
-      case "TemplateMgr.FormMgr":this.editUrl="form";break;  //表单
-      case "TemplateMgr.DetailMgr":this.editUrl="detail";break;  //详细
+    switch (this.pagecode) {
+      case "TemplateMgr.TableMgr":
+        this.editUrl = "table";
+        break;  //表格
+      case "TemplateMgr.SelectMgr":
+        this.editUrl = "mutilple";
+        break;  //多选
+      case "TemplateMgr.FormMgr":
+        this.editUrl = "form";
+        break;  //表单
+      case "TemplateMgr.DetailMgr":
+        this.editUrl = "detail";
+        break;  //详细
     }
-    if(id){
-      this.dangerousUrl = '../../../assets/manage-template/pages/'+this.editUrl+'Template.html?id='+id;
-    }else{
-      this.dangerousUrl = '../../../assets/manage-template/pages/'+this.editUrl+'Template.html';
+    if (id) {
+      this.dangerousUrl = "../../../assets/manage-template/pages/" + this.editUrl + "Template.html?id=" + id;
+    } else {
+      this.dangerousUrl = "../../../assets/manage-template/pages/" + this.editUrl + "Template.html";
     }
 
     this.trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.dangerousUrl);
