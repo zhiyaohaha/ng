@@ -8,7 +8,7 @@
     </div>
 
     <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-               [clickAuthority]="authorities.indexOf(authorityKey+'.Detail')" (change)="page($event)"
+               [clickAuthority]="authorities.indexOf(authorityKey+'.DetailTemplate')" (change)="page($event)"
                (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 
     <ng-template #authorityModal></ng-template>

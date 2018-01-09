@@ -14,8 +14,8 @@ import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
 import {TimiSelectModule} from "../timi-select/select.component";
 import {BaseService} from "../../services/base.service";
 import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
-import {NewComponentModule} from "app/newcomponent/newcomponent.module";
-import {RegionComponent} from "app/newcomponent/region/region.component";
+// import {NewComponentModule} from "app/newcomponent/newcomponent.module";
+import {RegionComponent} from "../region/region.component";
 import {UEditorModule} from "ngx-ueditor";
 import {globalUrl} from "../../common/global.config";
 import {Md5} from "ts-md5/dist/md5";
@@ -353,7 +353,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiCheckboxModule,
     TimiSelectModule,
     DynamicDomsModule,
-    NewComponentModule,
+    // NewComponentModule,
     SharedPipeModule,
     UEditorModule.forRoot({
       path: "assets/ueditor/",
@@ -432,7 +432,7 @@ export class ResponsiveModelComponent implements OnInit {
       // }
     })
   ],
-  declarations: [ResponsiveModelComponent],
+  declarations: [ResponsiveModelComponent,RegionComponent],
   providers: [RegionComponent],
   exports: [ResponsiveModelComponent]
 })

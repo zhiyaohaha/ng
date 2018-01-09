@@ -13,6 +13,14 @@ input{
       box-shadow: 0 0 3px 0 #3b99fc;
     }
 }
+.clearfix:after{  //清除浮动
+    content: '';
+    display: block;
+    clear: both;
+}
+.m-b-20{
+    margin-bottom:20px;
+}
 
 .personInfoPic{
     width: 100px;
@@ -29,6 +37,9 @@ input{
     width: 29%;
     float: left;
 }
+.personInfoConent ul li:last-child{  //户籍地，长度比较长
+    width: 50%;
+}
 .loan{
     clear: both;
 }
@@ -40,3 +51,50 @@ select{
     border-radius: 5px;
 }
 
+//附件
+.accessory{
+    border:1px solid #ccc;
+    border-bottom-width:0px;
+}
+.accessory  span.status{
+    position: absolute;
+    top:0;
+    bottom:0;
+    margin:auto;
+    right:10px;
+    border:1px solid #ccc;
+    height:20px;
+    line-height:20px;
+} 
+.accessory  span.statusPass{
+    color:#2B2BFF;
+    border:1px solid #2B2BFF;
+}
+.accessory li{
+    border-bottom:1px solid #ccc;
+}
+
+.accessory .accessoryTop{
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    overflow:hidden;
+    position: relative;
+} 
+
+.accessory  .accessoryBottom ul{
+    display:flex;
+    background-color:#F2F2F2;
+}
+.accessory  .accessoryBottom ul li{
+   flex-grow:1;
+}
+.accessory  .accessoryBottom .accessoryBottomTop{
+    position: relative;
+    padding-left:5px;
+    border:1px solid #797979;
+ }
+ .accessory  .accessoryBottom .accessoryBottomBottom{
+    padding-left:5px;
+    border:1px solid #E4E4E4;
+    background-color:#E4E4E4;
+ }

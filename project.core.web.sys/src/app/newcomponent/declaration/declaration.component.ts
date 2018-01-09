@@ -134,8 +134,10 @@ export class DeclarationComponent implements OnInit {
   onCertification() {
     this.orderService.getInfo(this.phoneCode, this.idCard, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
-      this.personData = res.data;
-      this.personRealId = res.data.id;
+      if(res.data){
+        this.personData = res.data;
+        this.personRealId = res.data.id;
+      }
       this.showPersonData = res.success;
     })
   }

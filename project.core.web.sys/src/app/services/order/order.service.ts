@@ -60,4 +60,11 @@ export class OrderService {
       id: id
     });
   }
+
+  //获取贷款信息
+  getLoanInfo(id){
+    return this.baseService.get("/api/LoanOrder/PullFormDataFromOrderCollection", {
+      id: id
+    });
+  }
 }
