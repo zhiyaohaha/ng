@@ -20,7 +20,6 @@ import {globalVar} from "../../common/global.config";
 import {fadeIn} from "../../common/animations";
 import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
-import {ConvertUtil} from "../../common/convert-util";
 import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
 import {BaseService} from "../../services/base.service";
 import {MdSidenav} from "@angular/material";
@@ -36,7 +35,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
   @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild("sidenav")
-    private sidenav: MdSidenav;
+  private sidenav: MdSidenav;
 
   //权限
   authorities: string[];
@@ -82,19 +81,18 @@ export class SharepageComponent implements OnInit, OnDestroy {
   routerSubscribe; //路由订阅事件
 
   pagecode: string;
+
   //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
-              private converUtil: ConvertUtil,
               private routerInfo: ActivatedRoute,
               private router: Router,
               private toastService: ToastService,
               private resolver: ComponentFactoryResolver,
               private el: ElementRef,
               private baseService: BaseService,
-              private lodaingService: TdLoadingService
-  ) {
+              private lodaingService: TdLoadingService) {
 
     /**
      * 路由器结束订阅加载不同的页面
@@ -144,9 +142,9 @@ export class SharepageComponent implements OnInit, OnDestroy {
   }
 
   /**
- * 获取列表数据
- * @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
- */
+   * 获取列表数据
+   * @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
+   */
 
   getParamsList(params) {
     this.sharepageService.getParams(params)
@@ -161,7 +159,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -205,7 +203,7 @@ export class SharepageComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.detailModel = res.data.doms;
         this.selectRow = res.data.bindData;
-    });
+      });
   }
 
   /**
@@ -254,7 +252,8 @@ export class SharepageComponent implements OnInit, OnDestroy {
   /**
    * 打开
    */
-  sidenavOpen() { }
+  sidenavOpen() {
+  }
 
   /**
    * 关闭
@@ -285,10 +284,10 @@ export class SharepageComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           this.lodaingService.resolve("fullScreen");
           this.toastService.creatNewMessage(res.message);
-        if (res.code === "0") {
-          this.getParamsList(this.listparam);
-        }
-      });
+          if (res.code === "0") {
+            this.getParamsList(this.listparam);
+          }
+        });
     }
     this.sidenav.close();
   }
@@ -315,11 +314,13 @@ export class FormUnitComponent {
 
   @Input() DOMS;
   @Input() DOMSData;
+
   @Input()
   set selectRow(value) {
     console.log(value);
     this._selectRow = value;
   }
+
   get selectRow() {
     return this._selectRow;
   }
@@ -331,7 +332,8 @@ export class FormUnitComponent {
   tags = [];
   _selectRow; //修改数据内容
 
-  constructor(private toastService: ToastService) {}
+  constructor(private toastService: ToastService) {
+  }
 
   submitMethod($event) {
     for (let key in $event) {
