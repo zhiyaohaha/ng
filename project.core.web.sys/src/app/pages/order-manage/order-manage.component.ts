@@ -1,4 +1,4 @@
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -15,40 +15,34 @@ import {
   forwardRef,
   NgModule
 } from "@angular/core";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
-import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
-import {globalVar} from "../../common/global.config";
-import {fadeIn} from "../../common/animations";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {ConvertUtil} from "../../common/convert-util";
-import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
-import {BaseService} from "../../services/base.service";
-import {MdSidenav} from "@angular/material";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
+import { SharepageService } from "../../services/sharepage-service/sharepage.service";
+import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
+import { globalVar } from "../../common/global.config";
+import { fadeIn } from "../../common/animations";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
+import { BaseService } from "../../services/base.service";
+import { MdSidenav } from "@angular/material";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import {OrderService} from "app/services/order/order.service";
-
-
-export const ORDERMANAGE_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => OrderManageComponent),
-  multi: true
-};
+import { OrderService } from "app/services/order/order.service";
+import { CommonService } from "app/services/common/common.service";
 
 @Component({
   selector: "app-order-manage",
   templateUrl: "./order-manage.component.html",
   styleUrls: ["./order-manage.component.scss"],
   animations: [fadeIn],
-  providers: [TdLoadingService, OrderService]
+  providers: [TdLoadingService, OrderService, CommonService]
 })
-export class OrderManageComponent implements OnInit, OnDestroy {
+export class OrderManageComponent implements OnInit {
   [x: string]: any;
 
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -100,16 +94,17 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   pagecode: string;
 
   constructor(private sharepageService: SharepageService,
-              private fnUtil: FnUtil,
-              private converUtil: ConvertUtil,
-              private routerInfo: ActivatedRoute,
-              private router: Router,
-              private toastService: ToastService,
-              private resolver: ComponentFactoryResolver,
-              private el: ElementRef,
-              private baseService: BaseService,
-              private lodaingService: TdLoadingService,
-              private orderService: OrderService) {
+    private fnUtil: FnUtil,
+    private converUtil: ConvertUtil,
+    private routerInfo: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private lodaingService: TdLoadingService,
+    private orderService: OrderService,
+    private commonService: CommonService) {
 
     /**
      * 路由器结束订阅加载不同的页面
@@ -188,7 +183,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -230,11 +225,12 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     this.new = false;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel($event.row.id);
-    this.sharepageService.getEditParams({id: $event.row.id})
-      .subscribe(r => {
-        this.selectRow = r.data;
-      });
+    this.loadDetailModel({ id: $event.row.id });
+    // this.commonService.getDetailModel({id: $event.row.id})
+    //   .subscribe(r => {
+    //     this.selectRow = r.data.bindData;
+    //     this.detailModel = r.data.doms;
+    //   });
   }
 
   /**
@@ -255,7 +251,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   }
 
   //临时代码3----资料收集 
-  collect(){
+  collect() {
     this.selectRow = "";
     this.new = true;
     this.edit = true;
@@ -272,9 +268,10 @@ export class OrderManageComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadDetailModel(id) {
-    this.orderService.getDetailModel(id).subscribe(res => {
+  loadDetailModel(param) {
+    this.commonService.getDetailModel(param).subscribe(res => {
       if (res.code === "0") {
+        this.selectRow = res.data.bindData;
         this.detailModel = res.data.doms;
       }
     });
@@ -300,7 +297,7 @@ export class OrderManageComponent implements OnInit, OnDestroy {
         });
       }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
       });
     } else if (value.name === "HtmlDomCmd.Form") {
@@ -387,17 +384,4 @@ export class OrderManageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routerSubscribe.unsubscribe();
   }
-
-  writeValue(obj: any): void {
-  }
-
-  registerOnChange(fn: any): void {
-    this.valueChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-
-  }
-
-
 }
