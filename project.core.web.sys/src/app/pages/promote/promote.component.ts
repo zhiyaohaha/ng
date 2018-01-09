@@ -207,13 +207,12 @@ export class PromoteComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.commonService.getDetail({ userId: $event.row.id, level: "first" })
+    this.promoteService.getEditParams({ userId: $event.row.id, level: "first" })
       .subscribe(r => {
         this.selectRow = r.data;
         for (let i = 0; i < this.selectRow.length; i++) {
           this.selectRow[i].checked = false;
         }
-        console.log(r.data);
       });
   }
 
@@ -243,13 +242,13 @@ export class PromoteComponent implements OnInit {
 
   showLevel(e, i) {
     this.selectRow[i].checked = !this.selectRow[i].checked;
-    if (this.selectRow[i].checked==true){
-      this.commonService.getDetail({ userId: this.selectRow[i].id, level: "first" })
+    if (this.selectRow[i].checked == true) {
+      this.promoteService.getEditParams({ userId: this.selectRow[i].id, level: "first" })
         .subscribe(r => {
           this.levels[i] = r.data;
           console.log(r.data);
         });
     }
-    
+
   }
 }

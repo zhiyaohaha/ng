@@ -192,7 +192,7 @@ export class LoandemandComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.commonService.getDetail({ userId: $event.row.id, level: "first" })
+    this.commonService.getDetailModel({ userId: $event.row.id, level: "first" })
       .subscribe(r => {
         this.selectRow = r.data;
         for (let i = 0; i < this.selectRow.length; i++) {
