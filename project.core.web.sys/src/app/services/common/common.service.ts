@@ -17,7 +17,7 @@ export class CommonService {
   }
 
   /**
-   * 获取查看详情的模板
+   * 获取查看详情数据及模板
    */
   public getDetailModel(param, type = ".DetailTemplate") {
     let key = this.fnUtil.getPageCode();
@@ -29,22 +29,15 @@ export class CommonService {
   }
 
   /**
-   * 获取修改表单的模版
+   * 获取修改的详情数据及模版
    */
-  public editFormModel(param, type = ".FormTemplate") {
+  public getFormModel(param, type = ".FormTemplate") {
     let key = this.fnUtil.getPageCode();
     if (this.fnUtil.searchAPI(key + type)) {
       return this.baseService.get(this.fnUtil.searchAPI(key + type), param);
     } else {
       return this.fnUtil.getSubject();
     }
-  }
-
-  /**
-   * 获取详细数据
-   */
-  public getDetail(param, type = ".Detail") {
-    return this.baseService.get(this.fnUtil.searchAPI(this.fnUtil.getPageCode() + type), param);
   }
 
   /**

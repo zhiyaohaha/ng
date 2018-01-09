@@ -47,7 +47,7 @@ export class SharepageService {
    */
   public getEditParams(param) {
     this.key = this.routerInfo.snapshot.queryParams["pageCode"];
-    return this.service.get(this.fnUtil.searchAPI(this.key + ".Detail"), param);
+    return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"), param);
   }
 
   /**
