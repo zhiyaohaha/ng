@@ -39,7 +39,7 @@
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal"
-             [clickAuthority]="authorities.indexOf(authorityKey+'.DetailTemplate') || authorities.indexOf(authorityKey+'.Update')"
+             [clickAuthority]="authorities.indexOf(authorityKey+'.Detail') || authorities.indexOf(authorityKey+'.Update')"
              [pageLinkCount]="pageLinkCount" [activeIndex]="currentPage" (change)="page($event)"
              (rowClick)="rowClickEvent($event);sidenav.open()"></app-table>
 

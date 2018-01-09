@@ -19,28 +19,37 @@
 
   <ng-template tdDataTableTemplate="banner" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
-      <div *ngSwitchCase="'HtmlPipe.Image'">
+      <ng-container *ngSwitchCase="'HtmlPipe.Image'">
         <img *ngIf="value" [src]="value" class="table-img">
-      </div>
-      <div *ngSwitchDefault>{{value}}</div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>{{value}}</ng-container>
     </ng-container>
   </ng-template>
 
   <ng-template tdDataTableTemplate="qrcode" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
-      <div *ngSwitchCase="'HtmlPipe.Image'">
+      <ng-container *ngSwitchCase="'HtmlPipe.Image'">
         <img *ngIf="value" [src]="value" class="table-img">
-      </div>
-      <div *ngSwitchDefault>{{value}}</div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>{{value}}</ng-container>
     </ng-container>
   </ng-template>
 
   <ng-template tdDataTableTemplate="_icon" let-value="value" let-column="column">
     <ng-container [ngSwitch]="columnsPipes[column]">
-      <div *ngSwitchCase="'HtmlPipe.Image'">
+      <ng-container *ngSwitchCase="'HtmlPipe.Image'">
         <img *ngIf="value" [src]="value + imgQuality" class="table-img">
-      </div>
-      <div *ngSwitchDefault>{{value}}</div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>{{value}}</ng-container>
+    </ng-container>
+  </ng-template>
+
+  <ng-template tdDataTableTemplate="basic._logo" let-value="value" let-column="column">
+    <ng-container [ngSwitch]="columnsPipes[column]">
+      <ng-container *ngSwitchCase="'HtmlPipe.Image'">
+        <img *ngIf="value" [src]="value + imgQuality" class="table-img">
+      </ng-container>
+      <ng-container *ngSwitchDefault>{{value}}</ng-container>
     </ng-container>
   </ng-template>
 
