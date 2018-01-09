@@ -7,12 +7,31 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class FnUtil {
 
-  private menus ;
+  private menus;
 
   private _subject: Subject<any> = new Subject<any>();
 
   constructor(private convertUtil: ConvertUtil,
               private routerInfo: ActivatedRoute) {
+  }
+
+  /**
+   * 获取页面页码配置
+   */
+  public getPaginationInfo(): any {
+    let pageCode = this.routerInfo.snapshot.queryParams["pageCode"];
+    let data = {
+      pageSize: 10,
+      currentPage: 0
+    };
+    if (!localStorage.getItem(pageCode + "ps")) {
+      localStorage.setItem(pageCode + "ps", "10");
+      localStorage.setItem(pageCode + "cp", "0");
+    } else {
+      data.pageSize = parseInt(localStorage.getItem(pageCode + "ps"), 10);
+      data.currentPage = parseInt(localStorage.getItem(pageCode + "cp"), 10);
+    }
+    return data;
   }
 
   /**
@@ -42,7 +61,7 @@ export class FnUtil {
     let api = apis._functions.filter(r => {
       return r[param] === key;
     })[0];
-    return  api ? "/api" + api.url : "";
+    return api ? "/api" + api.url : "";
   }
 
   /**
@@ -92,6 +111,7 @@ export class FnUtil {
   public setSubject(arg: any): void {
     this._subject.next(arg);
   }
+
   public getSubject(): Observable<any> {
     return this._subject.asObservable();
   }

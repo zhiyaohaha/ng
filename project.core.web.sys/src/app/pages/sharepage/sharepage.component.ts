@@ -103,28 +103,17 @@ export class SharepageComponent implements OnInit, OnDestroy {
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+        let paginationInfo = this.fnUtil.getPaginationInfo();
         /**
          * 每页条数pagesize和当前页码currentPage
          */
-        if (!localStorage.getItem(this.pagecode + "ps")) {
-          localStorage.setItem(this.pagecode + "ps", "10");
-          localStorage.setItem(this.pagecode + "cp", "0");
-          this.getParamsList({
-            size: 10,
-            index: 0,
-            filters: ""
-          });
-        } else {
-          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-          // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
-          this.getParamsList({
-            size: this.pageSize,
-            index: localStorage.getItem(this.pagecode + "cp"),
-            filters: ""
-          });
-        }
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
+        this.getParamsList({
+          size: this.pageSize,
+          index: this.currentPage,
+          filters: ""
+        });
         this.selectRow = null;
         this.new = true;
         this.edit = false;
