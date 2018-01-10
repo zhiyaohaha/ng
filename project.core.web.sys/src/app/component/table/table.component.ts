@@ -115,6 +115,13 @@ export class TableComponent implements OnInit {
   }
 
   /**
+   * 全选
+   */
+  selectAllEvent($event) {
+    this.rowSelect.emit({activeRow: null, totalRow: this.selectedRows});
+  }
+
+  /**
    * 翻页
    */
 
