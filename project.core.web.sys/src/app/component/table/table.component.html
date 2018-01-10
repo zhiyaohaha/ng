@@ -1,5 +1,5 @@
 <td-data-table #dataTable [data]="data" [columns]="columns" [clickable]="clickAuthority != -1" [selectable]="true" (rowClick)="rowClickEvent($event)"
-  (rowSelect)="rowSelectEvent($event)">
+  (rowSelect)="rowSelectEvent($event)" [(ngModel)]="selectedRows">
   <!-- <ng-template tdDataTableTemplate="food.type" let-value="value" let-row="row" let-column="column">
           <div layout="row">
               <span flex>{{value}}</span>

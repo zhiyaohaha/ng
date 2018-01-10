@@ -81,6 +81,7 @@ export class TableComponent implements OnInit {
   }
 
   _columns: TableColumns[];
+  selectedRows: any[] = []; //选中的行
   @Input() totals; // 总条数
   @Input() pageSize = globalVar.pageSize; // 每页显示的条数
   @Input() pageSizes = globalVar.pageSizes; // 可选的每页条数
@@ -98,12 +99,12 @@ export class TableComponent implements OnInit {
   ngOnInit() {
   }
 
- 
+
   /**
    * 点击行
    */
   rowClickEvent($event) {
-    this.rowClick.emit($event);
+    this.rowClick.emit({activeRow: $event, totalRow: this.selectedRows});
   }
 
   /**
