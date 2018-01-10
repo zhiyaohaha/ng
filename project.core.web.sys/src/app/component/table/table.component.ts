@@ -1,7 +1,7 @@
 import {CommonModule} from "@angular/common";
 import {MdSelectModule} from "@angular/material";
 import {CovalentDataTableModule} from "@covalent/core";
-import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild,} from "@angular/core";
+import {Component, EventEmitter, Input, NgModule, OnInit, Output, ViewChild} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {defaultValue, globalVar} from "../../common/global.config";
 import {TableColumns} from "../../common/interface/table-columns";
