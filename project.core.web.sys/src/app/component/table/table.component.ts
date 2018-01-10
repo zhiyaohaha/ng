@@ -104,14 +104,14 @@ export class TableComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.rowClick.emit({activeRow: $event, totalRow: this.selectedRows});
+    this.rowClick.emit($event);
   }
 
   /**
    * 选择行
    */
   rowSelectEvent($event) {
-    this.rowSelect.emit($event);
+    this.rowSelect.emit({activeRow: $event, totalRow: this.selectedRows});
   }
 
   /**
