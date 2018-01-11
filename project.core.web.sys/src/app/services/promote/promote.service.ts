@@ -1,11 +1,12 @@
-import { Injectable } from "@angular/core";
-import { BaseService } from "../base.service";
-import { FnUtil } from "../../common/fn-util";
+import {Injectable} from "@angular/core";
+import {BaseService} from "../base.service";
+import {FnUtil} from "../../common/fn-util";
 
 @Injectable()
 export class PromoteService {
 
-  constructor(private baseService: BaseService, private fnUtil: FnUtil) { }
+  constructor(private baseService: BaseService, private fnUtil: FnUtil) {
+  }
 
   /**
    * 获取列表
@@ -18,8 +19,8 @@ export class PromoteService {
   /**
    * 获取层级数据
    */
-  getEditParams(param){
-    return this.baseService.get(this.fnUtil.searchAPI("Distribution.SpreadLevelManage.Detail"), param);
+  getEditParams(param) {
+    return this.baseService.get(this.fnUtil.searchAPI("Distribution.SpreadLevelManage.DetailTemplate"), param);
   }
 
 }
