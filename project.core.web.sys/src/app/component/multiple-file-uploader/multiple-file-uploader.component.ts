@@ -32,14 +32,12 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   @Input() existingDatas:any; //已有数据
 
   imgQuality = defaultValue.imgQuality;
-  name111;
   uploader: FileUploader = new FileUploader({
     url: environment.apiURL + "/api/file/upload",
     isHTML5: true,
     allowedFileType: ["image"],
     method: "POST",
     autoUpload: true,
-    itemAlias: "123456"
   });
 
   private valueChange = (_: any) => { };
@@ -48,22 +46,9 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
     private http: Http,
     private baseService: BaseService
   ) {
-  //   this.uploader.onBuildItemForm = (item, form) => {
-  //     console.log(item);
-  //  };
-   
-   this.uploader.onAfterAddingFile = (file)=> {
-    // console.log(file.options);
-    // file.options.itemAlia = file.alias;
-    // console.log(this.uploader)
-    // file.options.itemAlias = this.uploader.alias;
-    // console.log(form);
-      // file.data = this.selectedInput.label;  <--- gives error in TS (but works!) because fileItem does not have 'data' in class
-   };
+
   }
-fun(val){
-  // console.log(val)
-}
+
   ngOnInit(): void {
     if(this.uploadUrl){
       this.uploader.options.url = environment.apiURL +  this.uploadUrl;
@@ -102,8 +87,12 @@ fun(val){
         filename = filename.substring(0,filename.indexOf('.'));  //这里只是做一个简单的截取。默认点后面的是文件后缀
         if(item.alias !== filename){
             item.alias = filename;
+            this.itemAliasVal =  filename;
         }
     });
+
+    
+
   }
 
   /**

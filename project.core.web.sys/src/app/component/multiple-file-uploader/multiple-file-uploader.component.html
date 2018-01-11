@@ -49,7 +49,6 @@
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}"
         [ngClass]="{'item-error':ite.isError}">
         <div class="preview-box">
-          <p>12{{item.base}}34</p>
           <img src="{{item.base}}" alt="{{item.alias}}">
         </div>
         <div class="item-name">
@@ -62,7 +61,6 @@
       </li>
     </div>
   </ul>
-  {{fun(uploader.queue)}}
   <a href="javascript:;" class="upload-input-warp">
       <div class="upload-custom-btn ">
           <i class="fa fa-plus"></i>
