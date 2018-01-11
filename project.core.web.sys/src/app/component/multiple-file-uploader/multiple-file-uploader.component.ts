@@ -87,7 +87,6 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
         filename = filename.substring(0,filename.indexOf('.'));  //这里只是做一个简单的截取。默认点后面的是文件后缀
         if(item.alias !== filename){
             item.alias = filename;
-            this.itemAliasVal =  filename;
         }
     });
 
