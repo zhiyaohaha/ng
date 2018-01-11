@@ -32,20 +32,41 @@
 <!--</div>-->
 
 <div class="upload-wrap">
-  <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple>
   <ul class="clearfix">
-    <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}"
+    <div *ngIf="existingDatas">
+        <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;" >
+            <div class="preview-box">
+                <img *ngIf="existingData.contentType == 'image/png' || existingData.contentType ==  'image/jpeg'" [src]="existingData.path + imgQuality" alt="existingData.name">
+            </div>
+            <div  class="item-name">
+              <input  class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false" autocomplete="off" >
+            </div>
+            <i class="fa fa-close" (click)="removeExistingItem(existingDatas,j)"></i>
+        </li>
+      
+    </div>
+    <div *ngIf="uploader.queue">
+      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}"
         [ngClass]="{'item-error':ite.isError}">
-      <div class="preview-box">
-        <img src="{{item.base}}" alt="{{item.file.name}}">
-      </div>
-      <div class="item-name">
-        <input class="item-alias" value="{{item.file.name}}" (blur)="onBlur($event,item)" id="{{item?.id}}">
-      </div>
-      <div class="item-progress" *ngIf="item.isUploading">
-        <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
-      </div>
-      <i class="fa fa-close" (click)="removeItem(item)"></i>
-    </li>
+        <div class="preview-box">
+          <p>12{{item.base}}34</p>
+          <img src="{{item.base}}" alt="{{item.alias}}">
+        </div>
+        <div class="item-name">
+          <input class="item-alias" value="{{item.alias}}" (blur)="onBlur($event,item)" id="{{item.id}}" spellcheck="false" autocomplete="off" >
+        </div>
+        <div class="item-progress" *ngIf="item.isUploading">
+          <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
+        </div>
+        <i class="fa fa-close" (click)="removeItem(item)"></i>
+      </li>
+    </div>
   </ul>
+  {{fun(uploader.queue)}}
+  <a href="javascript:;" class="upload-input-warp">
+      <div class="upload-custom-btn ">
+          <i class="fa fa-plus"></i>
+      </div>
+      <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname($event)">
+  </a>
 </div>

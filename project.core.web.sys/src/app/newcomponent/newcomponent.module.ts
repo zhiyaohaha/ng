@@ -14,7 +14,7 @@ import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import {ResponsiveModelModule} from "app/component/responsive-model/responsive-model.component";
-
+import {MultipleFileUploaderModule} from "../component/multiple-file-uploader/multiple-file-uploader.component";
 @NgModule({
     declarations: [
         PreviewComponent,
@@ -30,7 +30,8 @@ import {ResponsiveModelModule} from "app/component/responsive-model/responsive-m
         TimiFileUploaderModule,
         TimiInputModule,
         TimiSelectModule,
-        ResponsiveModelModule
+        ResponsiveModelModule,
+        MultipleFileUploaderModule
     ],
     exports: [
         PreviewComponent,

@@ -77,28 +77,27 @@
     </ul>
 
   </div>
-
   <!-- 录入信息 -->
   <div class="loan  m-b-20">
     <p>录入信息</p>
      <timi-responsive-form [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new"></timi-responsive-form>
   </div>
 
-  <!-- 所需附件 -->
+  <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->
   <div class="m-b-20">
     <p>所需附件</p>
     <ul class="clearfix accessory"> 
-        <li  *ngFor="let attachmentGroup of loanInfo._attachmentGroups;">
-          <div class="accessoryTop"  (click)="attachmentGroup.attachmentsDisplay = displayAttachments(attachmentGroup.attachmentsDisplay,attachmentGroup)">
+        <li  *ngFor="let attachmentGroup of loanInfo._attachmentGroups;let i = index;">
+          <div class="accessoryTop"  (click)="displayAttachments(attachmentGroup.attachmentsDisplay,attachmentGroup,loanInfo._attachmentGroups,i)">  
               <span>{{attachmentGroup.name}}</span>
-              <span class="status" [ngClass]="{'statusPass':attachmentGroup._status == '通过'}">{{attachmentGroup._status}}</span>
+              <span class="free-badge status" [style.background-color]="statusStyle(attachmentGroup._status)">{{attachmentGroup._status}}</span>
           </div>
            <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'">
               <ul>
                 <li *ngFor="let attachment of attachmentGroup._attachments" (click)="displayAttachmentData(attachment,attachmentGroup)">
                     <div class="accessoryBottomTop">
                         <span>{{attachment.name}}</span>
-                        <span class="status" [ngClass]="{'statusPass':attachmentGroup._status == '通过'}">{{attachment._status}}</span>
+                        <span class="free-badge status" [style.background-color]="statusStyle(attachment._status)">{{attachment._status}}</span>
                     </div>
                 </li>
               </ul>
@@ -106,11 +105,16 @@
               <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">  
                   <p>描述文案</p>
                   <p>至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+                  <!-- <multiple-uploader [url]="uploadUrl"></multiple-uploader> -->
+                  <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
+                  "></multiple-uploader>
               </div>
               <!-- 非初始化状态,已经操作了 -->
               <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
                   <p>描述文案</p>
                   <p>至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+                  <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
+                  "></multiple-uploader>
               </div>
            </div>
         </li>

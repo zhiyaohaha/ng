@@ -234,35 +234,9 @@ export class ResponsiveModelComponent implements OnInit {
           if (r.code === "0") {
             if (r.data && r.data.length > 0) {
               if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
-
-                if (this.modelDOMSData[option[i].triggerDom]) {                                 //修改页面---修改状态(在新增第一个以后)
-                  if (this.modelDOMSData[option[i].triggerDom].length > 0) {
-                    this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', function () {
-                      let empty = false;
-                      let num = 0;
-                      for (let k = r.data.length - 1; k >= 0; k--) {
-                        for (let j = that.modelDOMSData[option[i].triggerDom].length - 1; j >= 0; j--) {
-                          if (r.data[k]['value'] == that.modelDOMSData[option[i].triggerDom][j]) {
-                            num++;
-                          }
-                        }
-                      }
-                      if (num !== that.modelDOMSData[option[i].triggerDom].length) {
-                        // that.modelDOMSData[option[i].triggerDom] = r.data;  //有bug
-                      }
-                    });
-
-                  } else {                                                                    //修改页面---修改状态----修改删除以后再次添加
-                    this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', '');
-                  }
-                } else if (this.modelDOMSData[option[i].triggerDom] === null) {                 //修改页面---新增状态(新增第一个时)
-                  this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit', '');
-                }
-
+                this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit');
               } else {                                                       //新增页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, 'add', function () {
-                  // that._modelDOMSData[option[i].triggerDom] = r.data;    //暂时不影响功能使用
-                })
+                this.judgeSetChangeData(r.data, option[i].triggerDom, 'add')
               }
             } else {      //都不勾选以后，发送null
               //新增页面-数据
@@ -282,28 +256,24 @@ export class ResponsiveModelComponent implements OnInit {
     }
   }
 
-
-  judgeSetChangeData(res, key, status, back) {
+  //附件组联动附件项，附件项传递数据到附件组预览。
+  judgeSetChangeData(res, key, status) {
     if (res[0]['id']) {
-      this.setChangeData(status, key, res);
-    } else {
-      typeof back == 'function' ? back() : "";
-    }
-  }
+      let data = [];
+      //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组 
+     for (let k = res.length - 1; k >= 0; k--) {
+       for (const j in res[k]) {
+         if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
+           data.unshift(res[k]);
+         }
+       }
+     }
 
-  setChangeData(status, key, res) {
-    let data = [];
-    for (let k = res.length - 1; k >= 0; k--) {
-      for (const j in res[k]) {
-        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
-          data.unshift(res[k]);
-        }
-      }
-    }
-    if (status === 'add') {
-      this._modelDOMSData[key] = data;
-    } else if (status === 'edit') {
-      this.modelDOMSData[key] = data;
+     if (status === 'add') {
+       this._modelDOMSData[key] = data;
+     } else if (status === 'edit') {
+       this.modelDOMSData[key] = data;
+     }
     }
   }
 

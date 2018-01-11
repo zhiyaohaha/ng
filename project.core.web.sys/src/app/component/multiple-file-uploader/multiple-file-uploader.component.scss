@@ -51,19 +51,55 @@
 }
 
 .upload-wrap {
-  padding-bottom: 20px;
+  // padding-bottom: 20px;
   min-height: 100px;
   position: relative;
-  border: 1px solid #ccc;
-  .upload-input {
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+  // border: 1px solid #ccc;
+  .upload-input-warp {
+    width:100%;
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+ }
+ .upload-input-warp:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+ }
+  .upload-input-warp input.upload-input {
+      position: absolute;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      width:100%;
+      height: 80px;
   }
+  .upload-input-warp .upload-custom-btn{
+    width:100%;
+    height: 80px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 400;
+}
   .item {
+    background-color: #FFF;
     box-sizing: border-box;
     float: left;
     border: 1px solid #ccc;
@@ -91,8 +127,19 @@
         border-left: none;
         border-right: none;
         border-bottom: 1px solid #eee;
+        background-color: transparent;
+        border-bottom-color: transparent;
+        color: #666;
+        padding: 0px 5px;
+        height:  24px;
+        line-height:  24px;
+        font-size: 12px;
+        width:  100%;
+        text-align:  center;
+        // color: #;
         &:focus {
-          border-bottom-color: purple;
+          border-bottom-color: #cf000d;
+          
         }
       }
     }
@@ -119,4 +166,22 @@
     border-color: #cf000d;
     box-shadow: 0 0 4px 0 #cf000d;
   }
+}
+
+
+/**清浮动**/
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix::before,
+.clearfix::after {
+  display: table;
+  line-height: 0;
+  content: '';
+}
+
+.clearfix::after {
+  clear: both;
 }
