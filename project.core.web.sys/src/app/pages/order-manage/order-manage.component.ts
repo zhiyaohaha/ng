@@ -28,7 +28,6 @@ import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
   
-import { OrderService } from "app/services/order/order.service";
 import { CommonService } from "app/services/common/common.service";
 
 @Component({
@@ -36,7 +35,7 @@ import { CommonService } from "app/services/common/common.service";
   templateUrl: "./order-manage.component.html",
   styleUrls: ["./order-manage.component.scss"],
   animations: [fadeIn],
-  providers: [TdLoadingService, OrderService, CommonService]
+  providers: [TdLoadingService, CommonService]
 })
 export class OrderManageComponent implements OnInit {
   [x: string]: any;
@@ -103,7 +102,6 @@ export class OrderManageComponent implements OnInit {
     private el: ElementRef,
     private baseService: BaseService,
     private lodaingService: TdLoadingService,
-    private orderService: OrderService,
     private commonService: CommonService) {
 
     /**

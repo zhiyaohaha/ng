@@ -88,16 +88,6 @@ export class PromoteComponent implements OnInit {
 
   pagecode: string;
 
-  isShow: boolean = false;
-  level2: Array<any> = [
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-    { 'checked': false },
-  ];
-  level3: Array<any> = [1];
   levels: Array<any> = [];
 
 
@@ -249,6 +239,6 @@ export class PromoteComponent implements OnInit {
           console.log(r.data);
         });
     }
-
   }
+  
 }

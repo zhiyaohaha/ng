@@ -2,17 +2,157 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button md-raised-button color="deepblue" class="add-button" (click)="distribution();sidenav.open()">分发</button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail();sidenav.open()">分发详情</button>
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
+    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()" (rowSelect)="selectedRows($event)">
   </app-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
-    <div class="row">
+    <!-- 1的时候是默认的点击行出现的侧滑 -->
+    <div class="row" *ngIf="sidenavType == 1">
       <div class="col-lg-12">
         <detail-model *ngIf="sidenavKey === 'Detail' && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
           (onClick)="detailClick($event)"></detail-model>
+        <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
+          (ngSubmit)="submitMethod($event)" [btnType]="btnType" [btnValue]="'确定'" (backClick)="backClick()"></timi-responsive-form>
+      </div>
+    </div>
+    <!-- 2的时候是点击分发出现的侧滑 -->
+    <div class="row" *ngIf="sidenavType == 2">
+      <div class="col-lg-12">
+        <div class="header">
+          <p>分发用户</p>
+          <ul>
+            <li *ngFor="let item of selectArray">
+              {{item["_user.name"]}}
+            </li>
+          </ul>
+        </div>
+        <div class="content">
+          <p>分发给</p>
+
+
+
+          <div class="leftBox">
+            <p>组织机构列表</p>
+            <ul>
+              <li *ngFor="let item of orgList;let i=index">
+                <input type="radio" name="orgLists" id=`org${{i}}` (click)="showUserList($event,item,checkedOrg,i)" #checkedOrg>
+                <label for=`org${{i}}`>{{item.name}}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="midBox" *ngIf="isShowUserList">
+            <p>业务员列表</p>
+            <ul>
+              <li *ngFor="let item of userList;let j=index">
+                <input type="checkbox" (click)="showCheckedList($event,item,checkedUser)" id=`user${{j}}` #checkedUser>
+                <label for=`user${{j}}`>{{item.name}}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="rightBox" *ngIf="isShowUserList && isShowCheckedList">
+            <p>已选业务员列表</p>
+            <ul>
+              <li *ngFor="let orgName of orgNames">
+                <p>{{orgName}}</p>
+                <div class="checkedUser">
+                  <p *ngFor="let userName of userNames">{{userName}}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+
+
+        </div>
+      </div>
+      <button md-raised-button color="deepblue" class="add-button">取消</button>
+      <button md-raised-button color="deepblue" class="add-button" (click)="onSubmit()">确定</button>
+    </div>
+    <!-- 3的时候是点击分发详情出现的侧滑 -->
+    <div class="row" *ngIf="sidenavType == 3">
+      <div class="col-lg-12">
+        <div class="header">
+          <p>分发用户</p>
+          <ul>
+            <li>赵二</li>
+            <li>张三</li>
+            <li>李四</li>
+            <li>奎五</li>
+          </ul>
+        </div>
+        <div class="contentDetai">
+          <div class="detailBox">
+            <p><span>渠道商</span><span>业务员1</span></p>
+            <table>
+              <tr>
+                <th>客户姓名</th>
+                <th>产品</th>
+                <th>申请金额（元）</th>
+                <th>批贷金额（元）</th>
+                <th>状态</th>
+                <th>推荐人姓名</th>
+                <th>返佣状态</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="detailBox">
+            <p><span>渠道商</span><span>业务员1</span></p>
+            <table>
+              <tr>
+                <th>客户姓名</th>
+                <th>产品</th>
+                <th>申请金额（元）</th>
+                <th>批贷金额（元）</th>
+                <th>状态</th>
+                <th>推荐人姓名</th>
+                <th>返佣状态</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
       </div>
     </div>
   </md-sidenav>

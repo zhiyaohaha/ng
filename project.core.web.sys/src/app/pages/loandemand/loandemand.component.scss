@@ -65,3 +65,39 @@ md-sidenav-container {
 md-sidenav {
   width: 60%;
 }
+
+.header ul li {
+  float: left;
+  margin-right: 20px;
+}
+
+.content {
+  clear: both;
+}
+
+.leftBox,
+.midBox,
+.rightBox {
+  border: 1px solid #333;
+  width: 30%;
+  min-height: 500px;
+  float: left;
+  margin-right: 4%;
+  padding: 8px;
+}
+
+.rightBox {
+  margin-right: 0;
+}
+
+.contentDetai {
+  clear: both;
+}
+
+.detailBox table{
+  width: 100%;
+}
+
+.detailBox td{
+  text-align: center;
+}

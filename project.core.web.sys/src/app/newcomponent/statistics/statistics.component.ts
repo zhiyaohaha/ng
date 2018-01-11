@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { fadeIn } from "./../../common/animations";
-import * as echarts from 'echarts';
+// import * as echarts from 'echarts';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit() {
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
+    //var myChart = echarts.init(document.getElementById('main'));
 
     // 指定图表的配置项和数据
     var option = {
@@ -79,7 +79,7 @@ export class StatisticsComponent implements OnInit {
     };
 
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    //myChart.setOption(option);
   }
 
   changeTabOne() {

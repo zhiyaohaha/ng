@@ -3,10 +3,12 @@
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters"
                  (onSearch)="onSearch($event)"></search-form>
-    <button md-raised-button color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">报单
+    <button md-raised-button color="deepblue" class="add-button" (click)="newAdd();sidenav.open()">
+      报单
     </button>
     <!--1 临时按钮 -->
-    <button md-raised-button color="deepblue" class="add-button" (click)="collect();sidenav.open()">资料收集
+    <button md-raised-button color="deepblue" class="add-button" (click)="collect();sidenav.open()">
+      资料收集
     </button>
   </div>
 

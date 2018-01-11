@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter,
   Input, Output, NgModule, OnDestroy, ViewChild} from '@angular/core';
-import * as Chart from 'chart.js';
+//import * as Chart from 'chart.js';
 
 @Component({
   selector: 'free-chart',
@@ -44,11 +44,11 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   initChart() {
-    this.chart = new Chart(this.canvas, {
-      type: this.type,
-      data: this.data,
-      options: this.options
-    });
+    // this.chart = new Chart(this.canvas, {
+    //   type: this.type,
+    //   data: this.data,
+    //   options: this.options
+    // });
   }
 
   getCanvas() {
