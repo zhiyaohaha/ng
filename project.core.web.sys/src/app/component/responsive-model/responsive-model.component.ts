@@ -248,7 +248,7 @@ export class ResponsiveModelComponent implements OnInit {
                         }
                       }
                       if (num !== that.modelDOMSData[option[i].triggerDom].length) {
-                        that.modelDOMSData[option[i].triggerDom] = r.data;
+                        // that.modelDOMSData[option[i].triggerDom] = r.data;  //有bug
                       }
                     });
 
