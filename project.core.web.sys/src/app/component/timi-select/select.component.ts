@@ -188,7 +188,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       }
       this.value = arr.join(",");
     } else {
-      this.onChange.emit(value);
+      // this.onChange.emit(value);
     }
 
   }
