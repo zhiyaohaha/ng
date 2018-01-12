@@ -104,8 +104,16 @@ export class LoandemandComponent implements OnInit {
   orgId: Array<any> = [];
   userNames: Array<any> = [];
 
-  objectArray: object = {};
-  checkedRow: any;
+  orgObject: object = {};
+
+  userListNow: any;
+  orgIdNow: any;
+
+  userArray: Array<any> = [];
+  firstId: string = '';
+  secondId: string = '';
+  //allArray: Array<any> = [{},{}];
+  loandemandInfo: Array<any> = [];
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -384,6 +392,8 @@ export class LoandemandComponent implements OnInit {
   //获取业务员列表
   getUserLists(res) {
     this.userList = res;
+    this.userListNow = res;
+    //console.log(this.userListNow);
   }
   //点击分发时的事件
   distribution() {
@@ -394,40 +404,57 @@ export class LoandemandComponent implements OnInit {
   }
   //点击分发详情的事件
   distributionDetail() {
-    this.sidenavType = 3;
-    this.loandemandService.getDetail(111111).subscribe(res => {
-      console.log(res);
-    })
+    if(this.selectArray[0]){
+      this.sidenavType = 3;
+      this.sidenav.open();
+      this.loandemandService.getDetail(this.selectArray[0].id).subscribe(res => {
+        this.getLoandemandInfo(res.data);
+      })
+    }else{
+      alert('请选择用户')
+    }
+    
   }
   //获取选择的用户数据
   selectedRows(e) {
     this.selectArray = e.totalRow;
   }
-
-
+  //获取分发详情信息
+  getLoandemandInfo(res){
+    this.loandemandInfo = res;
+    console.log(this.loandemandInfo);
+  }
 
 
   //点击组织列表的事件
   showUserList(e, item, checkedOrg, i) {
-    let id = item.id;
     let name = item.name;
+    this.orgIdNow = item.id;
+    this.firstId = item.id;
     this.isShowUserList = true;
-    this.loandemandService.getUserList(id).subscribe(res => {
+    this.loandemandService.getUserList(this.orgIdNow).subscribe(res => {
       this.getUserLists(res.data);
-      // item.children = res.data;
-      // console.log(item);
+      item.children = res.data;
     })
-    if(!this.inArray(name,this.orgNames)){
+    if (!this.inArray(name, this.orgNames)) {
       this.orgNames.push(name);
-      console.log(this.orgNames);
+      this.orgId.push(this.orgIdNow);
     }
   }
   //已选业务员列表显示
   showCheckedList(e, item, checkedUser) {
+    let name = item.name;
+    let id = item.id;
     this.isShowCheckedList = true;
-    for(let i=0;i<this.orgNames.length;i++){
-      
+    if (!(this.firstId == this.secondId)) {
+      this.userNames = [];
     }
+    if (!this.inArray(id, this.userNames)) {
+      this.userNames.push(id);
+      this.orgObject[this.orgIdNow] = this.userNames.join(',');
+      console.log(this.orgObject);
+    }
+    this.secondId = this.orgIdNow;
   }
 
 
@@ -444,12 +471,15 @@ export class LoandemandComponent implements OnInit {
     }
     return false;
   }
-  toObject(key, value) {
-    this.objectArray[key] = value;
-  }
   //分发需求
   onSubmit() {
-    this.loandemandService.sendInfo("5a548f17403473283cedf38f", { "59ffee6df212b02194f35113": "5a05b6a35dc0602580ecd7cb" }).subscribe(res => {
+    let str = "";
+    for (let i = 0; i < this.selectArray.length; i++) {
+      let idList = [];
+      idList.push(this.selectArray[i].id);
+      str = idList.join(',');
+    }
+    this.loandemandService.sendInfo(str, this.orgObject).subscribe(res => {
       console.log(res);
     })
   }

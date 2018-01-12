@@ -3,7 +3,7 @@
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
     <button md-raised-button color="deepblue" class="add-button" (click)="distribution();sidenav.open()">分发</button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail();sidenav.open()">分发详情</button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail()">分发详情</button>
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
@@ -57,10 +57,10 @@
           <div class="rightBox" *ngIf="isShowUserList && isShowCheckedList">
             <p>已选业务员列表</p>
             <ul>
-              <li *ngFor="let orgName of orgNames">
+              <li *ngFor="let orgName of orgNames;let i=index">
                 <p>{{orgName}}</p>
                 <div class="checkedUser">
-                  <p *ngFor="let userName of userNames">{{userName}}</p>
+                  <p></p>
                 </div>
               </li>
             </ul>
@@ -76,18 +76,11 @@
     <!-- 3的时候是点击分发详情出现的侧滑 -->
     <div class="row" *ngIf="sidenavType == 3">
       <div class="col-lg-12">
-        <div class="header">
-          <p>分发用户</p>
-          <ul>
-            <li>赵二</li>
-            <li>张三</li>
-            <li>李四</li>
-            <li>奎五</li>
-          </ul>
-        </div>
         <div class="contentDetai">
-          <div class="detailBox">
-            <p><span>渠道商</span><span>业务员1</span></p>
+          <div class="detailBox" *ngFor="let item of loandemandInfo">
+            <p>
+              <span>{{item.distributeRecord._org.name}}</span><span>{{item.distributeRecord._user.name}}</span>
+            </p>
             <table>
               <tr>
                 <th>客户姓名</th>
@@ -98,56 +91,14 @@
                 <th>推荐人姓名</th>
                 <th>返佣状态</th>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-              </tr>
-            </table>
-          </div>
-
-          <div class="detailBox">
-            <p><span>渠道商</span><span>业务员1</span></p>
-            <table>
-              <tr>
-                <th>客户姓名</th>
-                <th>产品</th>
-                <th>申请金额（元）</th>
-                <th>批贷金额（元）</th>
-                <th>状态</th>
-                <th>推荐人姓名</th>
-                <th>返佣状态</th>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
+              <tr *ngFor="let detail of item.listOrder">
+                <td>{{detail.listOrder.loanOrder.name}}</td>
+                <td>{{detail.listOrder.loanOrder._product.basic.name}}</td>
+                <td>{{detail.listOrder.loanOrder.applyAmount}}</td>
+                <td>{{detail.listOrder.loanOrder.loanApprovedAmount}}</td>
+                <td>{{detail.listOrder.loanOrder._status}}</td>
+                <td>{{detail.listOrder.loanOrder.firstLevel.name}}</td>
+                <td>{{detail.listOrder.loanOrder._rakeBack}}</td>
               </tr>
             </table>
           </div>
