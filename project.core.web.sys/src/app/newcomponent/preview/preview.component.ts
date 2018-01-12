@@ -13,7 +13,7 @@ export class PreviewComponent implements OnInit {
   @Input() picArray: string[];
   @Output() outShowPreview = new EventEmitter<any>();
   @ViewChild("prePic") prePic: ElementRef;
-
+  @Input() fileType: string;
 
   closepre: boolean = false; //控制父元素中预览图是否展示
   valueOfScale: number = 1; //控制放大缩小，默认1:1
@@ -38,7 +38,7 @@ export class PreviewComponent implements OnInit {
   closebtn() {
     this.previewService.closePreview(false);
   }
-
+  
   //放大功能按钮
   largen() {
     if (this.valueOfScale <= 4) {

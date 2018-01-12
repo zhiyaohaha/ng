@@ -29,19 +29,23 @@
       <!--<button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>-->
     <!--</div>-->
   <!--</div>-->
-<!--</div>removeExistingItem(existingDatas,j)-->
+<!--</div>removeExistingItem(existingDatas,j) (click)="attachmentPreviewDownLoad(item.type) "-->
 
 <div class="upload-wrap">
   <ul class="clearfix">
     <div *ngIf="existingDatas">
         <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;" >
-            <div class="preview-box">
-                <img *ngIf="existingData.contentType == 'image/png' || existingData.contentType ==  'image/jpeg'" [src]="existingData.path + imgQuality" alt="existingData.name">
+            <div class="preview-box" >
+                <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic" (click)="toShow(existingData)">
+                <video *ngIf="checkContentType(existingData.contentType,'video')"  [src]="existingData.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
+                <a  *ngIf="!checkContentType(existingData.contentType,'video') && !checkContentType(existingData.contentType,'image')" [href]="existingData.path" target='blank' download>
+                    <img [src]="existingData.thumbnail" alt="预览图" class="prePic">
+                </a>
             </div>
             <div  class="item-name">
               <input  class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false" autocomplete="off" >
             </div>
-            <i class="fa fa-close" (click)="removeExistingItem(existingData)"></i>
+            <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
         </li>
       
     </div>
@@ -49,7 +53,11 @@
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}"
         [ngClass]="{'item-error':ite.isError}">
         <div class="preview-box">
-          <img src="{{item.base}}" alt="{{item.alias}}">
+          <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.alias}}" class="prePic"  (click)="toShow(item)">
+          <video *ngIf="checkContentType(item.contentType,'video')"  [src]="item.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
+          <a  *ngIf="!checkContentType(item.contentType,'video') && !checkContentType(item.contentType,'image')" [href]="item.path" target='blank' download>
+              <img [src]="item.base" alt="预览图" class="prePic">
+          </a>
         </div>
         <div class="item-name">
           <input class="item-alias" value="{{item.alias}}" (blur)="onBlur($event,item)" id="{{item.id}}" spellcheck="false" autocomplete="off" >
@@ -61,11 +69,11 @@
       </li>
     </div>
   </ul>
-  <!-- {{fun(uploader)}} -->
+  <!-- {{fun(uploader.queue)}} -->
   <a href="javascript:;" class="upload-input-warp">
       <div class="upload-custom-btn ">
           <i class="fa fa-plus"></i>
       </div>
-      <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname($event)">
+      <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname()">
   </a>
 </div>

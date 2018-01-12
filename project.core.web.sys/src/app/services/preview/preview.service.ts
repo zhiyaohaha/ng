@@ -5,7 +5,7 @@ export class PreviewService {
 
   isShowPreview: boolean;
   imgUrls: string[]
-
+  fileType:string;
   constructor() { }
 
   showPreview(event: boolean) {
@@ -17,5 +17,7 @@ export class PreviewService {
   getUrl(imgUrls: string[]) {
     this.imgUrls = imgUrls;
   }
-  
+  getType(fileType:string) {
+    this.fileType = fileType;
+  }
 }

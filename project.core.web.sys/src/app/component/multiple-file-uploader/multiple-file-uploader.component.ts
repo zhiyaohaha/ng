@@ -11,6 +11,7 @@ import { Http,Headers } from "@angular/http";
 import {defaultValue} from "../../common/global.config";
 import { BaseService } from "app/services/base.service";
 import {globalUrl} from "../../common/global.config";
+import {PreviewService} from "app/services/preview/preview.service";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -37,7 +38,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   uploader: FileUploader = new FileUploader({
     url: environment.apiURL + "/api/file/upload",
     isHTML5: true,
-    allowedFileType: ["image"],
+    // allowedFileType: ["image"],
     method: "POST",
     // autoUpload: true,
   });
@@ -46,9 +47,10 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
 
   constructor(private convertUtil: ConvertUtil,
     private http: Http,
-    private baseService: BaseService
+    private baseService: BaseService,
+    private previewService: PreviewService
   ) {
-
+      console.log(this.existingDatas)
   }
 
   ngOnInit(): void {
@@ -57,6 +59,10 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
       this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign },{name: "id", value: this.uploadId }];
+    
+      // this.uploader.onSuccessItem = function (e) {
+      //     console.log(e._xhr)
+      // };
     }
   }
 
@@ -65,53 +71,89 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeItem(item) {
-    // item.remove();
-    console.log(item.id)
-    console.log(this.uploadId)
-    // this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:attachmentId,fileId:fileId})
-    // .subscribe(res => {
-    //   console.log(res);
-    // })
+
+    this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:item.id})
+    .subscribe(res => {
+      console.log(res);
+      item.remove();
+    })
   }
 
   /**
    * 移除预先加载数据的某一项
    * @param item
    */
-  removeExistingItem(existingData){  //existingDatas,index
-    // existingDatas.splice(index,1);
-    console.log(existingData.id)
-    // console.log(existingData)
-    console.log(this.uploadId)
+  removeExistingItem(existingData,existingDatas,index){  //existingDatas,index
 
     this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:existingData.id})
     .subscribe(res => {
       console.log(res);
+      existingDatas.splice(index,1);
     })
   }
 
 // fun(val){
 //   console.log(val)
 // }
+/**
+ * 检测文件类型
+ * 
+ * @param {any} contentType 
+ * @param {any} type 
+ * @returns 
+ * @memberof MultipleFileUploaderComponent
+ */
+  checkContentType(contentType,type){
+      if(contentType){
+        let contentTypeStr = contentType.substring(0,contentType.indexOf('/'));
+        if(contentTypeStr == type){
+          return true;
+        }else{
+          return false;
+        }
+      }
+  }
 
   /**
    * 手动上传时，修改filename。 显示不带文件后缀的filename
+   * 每次提交需要重新修改时间戳，生成sign
+   * 在执行该代码的时候，已经完成了提交。此处是给下一次的请求设置header
+   * 
+   * @param {any} val 
+   * @memberof MultipleFileUploaderComponent
    */
-  changeNickname(val){
-    if(this.uploadUrl){
+  changeNickname(){
+    let data = this.uploader.queue;
+
+    if(this.uploadUrl){ 
       this.uploader.options.url = environment.apiURL +  this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
       this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign },{name: "id", value: this.uploadId }];
       this.uploader.uploadAll();
+
+      this.uploader.onSuccessItem = function (e) {
+          // console.log(e)
+          let res = JSON.parse(e._xhr.response);
+          console.log(res)
+          if(res.code == "Fail" ||res.code == "UnknownError"){
+              alert(res.message)
+          }else{  
+              alert('上传成功');
+              data.forEach(item => {
+                  item.contentType  = res.data[0].contentType;
+                  item.path  = res.data[0].path ;
+              });
+          }
+      };
     }
 
-    let data = this.uploader.queue;
     data.forEach(item => {
+      
         let filename = item.file.name;
-        //name字段是别名；filename字段是真实名称。
+        //alias字段是别名；filename字段是真实名称。
         // 不需要修改filename字段
-        // name字段 是 去掉文件后缀的 filename字段 
+        // alias字段 是 去掉文件后缀的 filename字段 
         filename = filename.substring(0,filename.indexOf('.'));  //这里只是做一个简单的截取。默认点后面的是文件后缀
         if(item.alias !== filename){
             item.alias = filename;
@@ -120,16 +162,41 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   }
 
   /**
+   * 附件点击：图片类型放大展示，视频类型放大播放，其它类型下载
+   * 
+   * @param {any} type 
+   * @memberof MultipleFileUploaderComponent
+   */
+  attachmentPreviewDownLoad(type){
+    
+    switch (type) {
+      case "image":
+          {
+
+          };
+          break;
+      case "video":
+          // base = "http://data.cpf360.com/file.preview/video.png";
+          break;
+      default:;break;
+    }
+  }
+
+  toShow(item) {
+    console.log(item)
+    this.previewService.showPreview(true);
+    this.previewService.getUrl([item.path]); //item.type
+    this.previewService.getType(item.contentType);
+  }
+
+
+  /**
    * 修改文件名
    */
   onBlur($event, item) {
-    // if(item.alias){  //修改，手动上传的，文件的名字
     if(item.alias == $event.target.value){return false};  //没有修改，则不用请求。  
     item.alias = $event.target.value;
-    // }else{  //修改，事先加载的，文件的名字
-    //   item.name = $event.target.value;
-    // }
-    console.log($event.target.value)
+
     if ($event.target.id) {
       this.renameFile($event.target.id, $event.target.value);
     }
@@ -139,14 +206,6 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * 提交成功过后修改文件名
    */
   renameFile(id, name) {
-    
-    //鉴权
-    // let headers = new Headers();
-    // let timestamp = this.convertUtil.timestamp();
-    // let sign = this.convertUtil.toMd5(timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
-    // headers.append("timestamp",timestamp);
-    // headers.append("sign",sign); headers:headers,
-    
     this.baseService.post("/api/file/rename", {key: id, value: name })
     .subscribe(res => {
       console.log(res);
