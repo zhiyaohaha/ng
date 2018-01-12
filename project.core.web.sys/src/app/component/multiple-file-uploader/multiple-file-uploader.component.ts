@@ -50,7 +50,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
     private baseService: BaseService,
     private previewService: PreviewService
   ) {
-      console.log(this.existingDatas)
+ 
   }
 
   ngOnInit(): void {
@@ -143,6 +143,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
               data.forEach(item => {
                   item.contentType  = res.data[0].contentType;
                   item.path  = res.data[0].path ;
+                  item.thumbnail  = res.data[0].thumbnail;
               });
           }
       };

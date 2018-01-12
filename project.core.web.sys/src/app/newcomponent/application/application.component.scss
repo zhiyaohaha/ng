@@ -75,6 +75,10 @@ select{
     border-bottom:1px solid #ccc;
     overflow:hidden;
     position: relative;
+    &:hover{
+        cursor: pointer;
+        background-color:#1ccacc;
+    }
 } 
 
 .accessory  .accessoryBottom ul{
@@ -88,9 +92,23 @@ select{
     position: relative;
     padding-left:5px;
     border:1px solid #797979;
+    &:hover{
+        cursor: pointer;
+        background-color:#21BDE3;
+    }
  }
  .accessory  .accessoryBottom .accessoryBottomBottom{
     padding-left:5px;
     border:1px solid #E4E4E4;
     background-color:#E4E4E4;
  }
+
+//高亮当前附件组 和 附件项
+.attachmentGroupActive{
+    border-width:0px;
+    background-color:#1ccacc;
+}
+.attachmentActive{
+    background-color:#21BDE3;
+    border-color:#21BDE3 !important;
+}

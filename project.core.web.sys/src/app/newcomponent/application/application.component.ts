@@ -24,6 +24,8 @@ export class ApplicationComponent implements OnInit {
   attachmentsDisplay:false; //展现附件组下面的附件项
   uploadUrl:string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
   master:string = "/api/LoanOrder/UploadAttachmentFile";
+  firstAttachmentActive:boolean = true;  //第一次附件组默认选中样式
+
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
@@ -43,11 +45,13 @@ export class ApplicationComponent implements OnInit {
 
   //点击单个附件项的时候，传递当前附件项数据
   displayAttachmentData(attachment,attachmentGroup){
+    console.log(attachment)
     attachmentGroup.temporaryData = attachment;  //临时存储数据
+    this.firstAttachmentActive = false;
   }
 
   //展示一个附件组下的所有附件项
-  displayAttachments(val,attachmentGroup,attachmentGroups,index){
+  displayAttachmentGroup(val,attachmentGroup,attachmentGroups,index){
       attachmentGroup.temporaryData = "";  //每次切换附件组，下面的附件项都要回到初始状态
 
       //每次切换，展示当前附件组下面的附件项 
