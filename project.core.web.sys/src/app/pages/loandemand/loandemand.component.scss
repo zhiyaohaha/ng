@@ -63,7 +63,7 @@ md-sidenav-container {
 }
 
 md-sidenav {
-  width: 60%;
+  width: 80%;
 }
 
 .header ul li {
@@ -79,11 +79,13 @@ md-sidenav {
 .midBox,
 .rightBox {
   border: 1px solid #333;
+  border-radius: 5px;
   width: 30%;
-  min-height: 500px;
+  height: 600px;
   float: left;
   margin-right: 4%;
   padding: 8px;
+  overflow: auto;
 }
 
 .rightBox {
@@ -100,4 +102,7 @@ md-sidenav {
 
 .detailBox td{
   text-align: center;
+}
+.special{
+  left: calc(50% - 44px);
 }

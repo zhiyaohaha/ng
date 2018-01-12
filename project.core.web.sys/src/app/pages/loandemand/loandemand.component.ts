@@ -397,10 +397,16 @@ export class LoandemandComponent implements OnInit {
   }
   //点击分发时的事件
   distribution() {
-    this.sidenavType = 2;
-    this.loandemandService.getOrg().subscribe(res => {
-      this.getUserListOrg(res.data);
-    })
+    if (this.selectArray[0]){
+      this.sidenavType = 2;
+      this.sidenav.open();
+      this.loandemandService.getOrg().subscribe(res => {
+        this.getUserListOrg(res.data);
+      })
+    }else{
+      alert('请选择用户');
+    }
+    
   }
   //点击分发详情的事件
   distributionDetail() {
@@ -411,7 +417,7 @@ export class LoandemandComponent implements OnInit {
         this.getLoandemandInfo(res.data);
       })
     }else{
-      alert('请选择用户')
+      alert('请选择用户');
     }
     
   }
