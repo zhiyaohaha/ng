@@ -67,7 +67,7 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('form') formDiv: ElementRef;
+  @ViewChild("form") formDiv: ElementRef;
 
   constructor(private baseService: BaseService, private er: ElementRef) {
   }
@@ -139,15 +139,15 @@ export class ResponsiveModelComponent implements OnInit {
   //通过basic.logo 获取 basic._logo的值
   displayLogoFun(value, data) {
     let key = value.split(".");
-    if(key.length == 1){
-      return data[key[0]];
+    if (key.length === 1) {
+      return data["_" + key[0]];
     }
     return data[key[0]]["_" + key[1]];
   }
 
   vertifyFun(vertify, data, required, displayMsg, key) {
     let msg;
-    
+
     if (data && data.length > 0) {
       if (vertify && vertify.length > 0) { //如果有正则
         let reg;
@@ -165,8 +165,8 @@ export class ResponsiveModelComponent implements OnInit {
       //   msg = displayMsg;
       // }
       if (required) {
-        if(!data){
-          if(data === 0){   //填0的情况是可以的，同时需要对0进行匹配
+        if (!data) {
+          if (data === 0) {   //填0的情况是可以的，同时需要对0进行匹配
             vertify.forEach(item => {
               let reg1;
               reg1 = new RegExp(item.regular);
@@ -176,10 +176,10 @@ export class ResponsiveModelComponent implements OnInit {
                 return false;
               }
             });
-          }else{
+          } else {
             msg = displayMsg;
           }
-          
+
         }
       }
     }
@@ -216,15 +216,15 @@ export class ResponsiveModelComponent implements OnInit {
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
 
           let receiveKey = option[i].bindParamFields[j];
-          if(receiveKey.indexOf(".") !== -1){  //key 的形式 可能key是basic.type的形式 
+          if (receiveKey.indexOf(".") !== -1) {  //key 的形式 可能key是basic.type的形式
             let postKey;
             postKey = receiveKey.split(".");
             //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
-            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);   
-          }else{          //key 的形式是正常的形式。eg：id
+            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
+          } else {          //key 的形式是正常的形式。eg：id
             config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
           }
-          
+
           // config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
         }
         if (!option[i].triggerUrl) {
@@ -234,9 +234,9 @@ export class ResponsiveModelComponent implements OnInit {
           if (r.code === "0") {
             if (r.data && r.data.length > 0) {
               if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, 'edit');
+                this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
               } else {                                                       //新增页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, 'add')
+                this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
               }
             } else {      //都不勾选以后，发送null
               //新增页面-数据
@@ -258,22 +258,22 @@ export class ResponsiveModelComponent implements OnInit {
 
   //附件组联动附件项，附件项传递数据到附件组预览。
   judgeSetChangeData(res, key, status) {
-    if (res[0]['id']) {
+    if (res[0]["id"]) {
       let data = [];
-      //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组 
-     for (let k = res.length - 1; k >= 0; k--) {
-       for (const j in res[k]) {
-         if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
-           data.unshift(res[k]);
-         }
-       }
-     }
+      //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
+      for (let k = res.length - 1; k >= 0; k--) {
+        for (const j in res[k]) {
+          if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
+            data.unshift(res[k]);
+          }
+        }
+      }
 
-     if (status === 'add') {
-       this._modelDOMSData[key] = data;
-     } else if (status === 'edit') {
-       this.modelDOMSData[key] = data;
-     }
+      if (status === "add") {
+        this._modelDOMSData[key] = data;
+      } else if (status === "edit") {
+        this.modelDOMSData[key] = data;
+      }
     }
   }
 
@@ -402,7 +402,7 @@ export class ResponsiveModelComponent implements OnInit {
       // }
     })
   ],
-  declarations: [ResponsiveModelComponent,RegionComponent],
+  declarations: [ResponsiveModelComponent, RegionComponent],
   providers: [RegionComponent],
   exports: [ResponsiveModelComponent]
 })

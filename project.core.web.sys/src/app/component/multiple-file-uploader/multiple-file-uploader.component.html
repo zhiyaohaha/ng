@@ -29,7 +29,7 @@
       <!--<button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>-->
     <!--</div>-->
   <!--</div>-->
-<!--</div>-->
+<!--</div>removeExistingItem(existingDatas,j)-->
 
 <div class="upload-wrap">
   <ul class="clearfix">
@@ -41,7 +41,7 @@
             <div  class="item-name">
               <input  class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false" autocomplete="off" >
             </div>
-            <i class="fa fa-close" (click)="removeExistingItem(existingDatas,j)"></i>
+            <i class="fa fa-close" (click)="removeExistingItem(existingData)"></i>
         </li>
       
     </div>
@@ -61,6 +61,7 @@
       </li>
     </div>
   </ul>
+  <!-- {{fun(uploader)}} -->
   <a href="javascript:;" class="upload-input-warp">
       <div class="upload-custom-btn ">
           <i class="fa fa-plus"></i>

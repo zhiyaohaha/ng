@@ -10,6 +10,8 @@ import { MdProgressBarModule } from "@angular/material";
 import { Http,Headers } from "@angular/http";
 import {defaultValue} from "../../common/global.config";
 import { BaseService } from "app/services/base.service";
+import {globalUrl} from "../../common/global.config";
+
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => MultipleFileUploaderComponent),
@@ -28,7 +30,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   outputData: string[]; //输出数据
 
   @Input("url") uploadUrl: string;
-  @Input("id") uploadId: string;
+  @Input("id") uploadId: string;  //附件项id
   @Input() existingDatas:any; //已有数据
 
   imgQuality = defaultValue.imgQuality;
@@ -37,7 +39,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
     isHTML5: true,
     allowedFileType: ["image"],
     method: "POST",
-    autoUpload: true,
+    // autoUpload: true,
   });
 
   private valueChange = (_: any) => { };
@@ -53,7 +55,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
     if(this.uploadUrl){
       this.uploader.options.url = environment.apiURL +  this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
-      let sign = this.convertUtil.toMd5(timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
+      let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
       this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign },{name: "id", value: this.uploadId }];
     }
   }
@@ -63,21 +65,47 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeItem(item) {
-    item.remove();
+    // item.remove();
+    console.log(item.id)
+    console.log(this.uploadId)
+    // this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:attachmentId,fileId:fileId})
+    // .subscribe(res => {
+    //   console.log(res);
+    // })
   }
 
   /**
    * 移除预先加载数据的某一项
    * @param item
    */
-  removeExistingItem(existingDatas,index){
-    existingDatas.splice(index,1);
+  removeExistingItem(existingData){  //existingDatas,index
+    // existingDatas.splice(index,1);
+    console.log(existingData.id)
+    // console.log(existingData)
+    console.log(this.uploadId)
+
+    this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:existingData.id})
+    .subscribe(res => {
+      console.log(res);
+    })
   }
 
+// fun(val){
+//   console.log(val)
+// }
+
   /**
-   * 在上传之前,修改文件昵称（name）。file.name是真实name.  （只有手动上传的时候file.name才有效）（对之前上传的文件，使用name就可以）
+   * 手动上传时，修改filename。 显示不带文件后缀的filename
    */
   changeNickname(val){
+    if(this.uploadUrl){
+      this.uploader.options.url = environment.apiURL +  this.uploadUrl;
+      let timestamp = this.convertUtil.timestamp();
+      let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
+      this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign },{name: "id", value: this.uploadId }];
+      this.uploader.uploadAll();
+    }
+
     let data = this.uploader.queue;
     data.forEach(item => {
         let filename = item.file.name;
@@ -89,9 +117,6 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
             item.alias = filename;
         }
     });
-
-    
-
   }
 
   /**
