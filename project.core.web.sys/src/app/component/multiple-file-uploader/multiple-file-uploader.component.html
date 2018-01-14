@@ -33,6 +33,7 @@
 
 <div class="upload-wrap">
   <ul class="clearfix">
+    <!-- 之前有数据 -->
     <div *ngIf="existingDatas">
         <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;" >
             <div class="preview-box" >
@@ -47,9 +48,13 @@
             </div>
             <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
         </li>
-      
+        <li class="item uploading" *ngIf="uploading">
+            <img src="../../../assets/Images/uploading.gif" alt="" width="100" height="91">
+            <p style="text-align:center">上传中.........</p>
+        </li>
     </div>
-    <div *ngIf="uploader.queue">
+    <!-- 手动上传 -->
+    <!-- <div *ngIf="uploader.queue">
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess,'item-error':item.isError}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.alias}}" class="prePic"  (click)="toShow(item)">
@@ -66,7 +71,7 @@
         </div>
         <i class="fa fa-close" (click)="removeItem(item)"></i>
       </li>
-    </div>
+    </div> -->
   </ul>
   <a href="javascript:;" class="upload-input-warp">
       <div class="upload-custom-btn ">

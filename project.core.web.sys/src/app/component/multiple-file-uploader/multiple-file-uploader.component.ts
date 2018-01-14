@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, forwardRef, HostListener, NgModule, OnInit, Input } from "@angular/core";
+import { Component, forwardRef, HostListener, NgModule, OnInit, Input,EventEmitter,Output} from "@angular/core";
 import { DomRenderer } from "../../common/dom";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { FileUploader, FileUploadModule } from "ng2-file-upload";
@@ -33,7 +33,9 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   @Input("url") uploadUrl: string;
   @Input("id") uploadId: string;  //附件项id
   @Input() existingDatas:any; //已有数据
+  @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
 
+  uploading:boolean = false; //上传中
   imgQuality = defaultValue.imgQuality;
   uploader: FileUploader = new FileUploader({
     url: environment.apiURL + "/api/file/upload",
@@ -141,8 +143,9 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @memberof MultipleFileUploaderComponent
    */
   changeNickname(){
+    this.uploading = true;
     let data = this.uploader.queue;
-
+    let that = this;
     if(this.uploadUrl){ 
       this.uploader.options.url = environment.apiURL +  this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
@@ -161,6 +164,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
                   item.isSuccess = false;
                   item.isError = true;
                 }
+                that.uploading = false;
             });
           }else{  
               alert('上传成功');
@@ -171,6 +175,8 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
                     item.thumbnail  = res.data[0].thumbnail;  //文件图标
                   }
               });
+              that.onPostFileData.emit(res.data);
+              that.uploading = false;
           }
       };
     }

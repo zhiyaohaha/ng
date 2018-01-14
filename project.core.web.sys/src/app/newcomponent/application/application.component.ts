@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   selector: 'free-application',
   templateUrl: './application.component.html',
@@ -29,7 +30,7 @@ export class ApplicationComponent implements OnInit {
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
-    this.orderService.getLoanInfo('5a5485759569d40f74699d72').subscribe(res => {
+    this.orderService.getLoanInfo('5a5afe9b3d407a208455134f').subscribe(res => {
         if(res.data){
           console.log(res)
           // console.log(res.data._applyFormTemplate.doms)
@@ -81,5 +82,22 @@ export class ApplicationComponent implements OnInit {
       let color;
       color = (status == '通过'?'#1aae88':(status == '待审核'?'#177bbb':(status == '待填写'?'#fbb23e':'#e33244')));
       return color;
+  } 
+
+  //接收来自 上传组件 上传的最新文件数据。  然后更新当前组件的数据
+  onPostFileData($event,i,k){
+      let data = this.loanInfo._attachmentGroups;
+      data.forEach((item1,index1)=>{
+          if(index1 == i){
+            item1._attachments.forEach((item2,index2)=>{
+              // console.log(item2)
+              if(item2 == k){
+                  let res = item2._files;
+                  item2._files = res.concat($event);
+                  console.log(item2._files)
+              }
+            })
+          }
+      })
   } 
 }
