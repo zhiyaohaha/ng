@@ -43,16 +43,22 @@ export class ApplicationComponent implements OnInit {
     this.loanInfo = res;
   }
 
-  //点击单个附件项的时候，传递当前附件项数据
-  displayAttachmentData(attachment,attachmentGroup){
+  //点击单个附件项的时候，传递当前附件项数据  （切换附件项）
+  displayAttachmentData(attachment,attachmentGroup,index){
     console.log(attachment)
     attachmentGroup.temporaryData = attachment;  //临时存储数据
-    this.firstAttachmentActive = false;
+    if(index == 0){
+      this.firstAttachmentActive = !this.firstAttachmentActive;
+    }else{
+      this.firstAttachmentActive = false;
+    }
   }
 
-  //展示一个附件组下的所有附件项
+  //展示一个附件组下的所有附件项   （切换附件组件）
   displayAttachmentGroup(val,attachmentGroup,attachmentGroups,index){
-      attachmentGroup.temporaryData = "";  //每次切换附件组，下面的附件项都要回到初始状态
+      //每次切换附件组，下面的附件项都要回到初始状态
+      attachmentGroup.temporaryData = "";  
+      this.firstAttachmentActive = true;
 
       //每次切换，展示当前附件组下面的附件项 
       if( attachmentGroup.attachmentsDisplay === undefined){
@@ -67,6 +73,7 @@ export class ApplicationComponent implements OnInit {
             item.attachmentsDisplay = false;
           }
       });
+      
   }
 
   //附件组和附件项的 状态样式

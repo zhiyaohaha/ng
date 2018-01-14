@@ -71,12 +71,16 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeItem(item) {
-
-    this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:item.id})
-    .subscribe(res => {
-      console.log(res);
-      item.remove();
-    })
+    let confirmRes = this.removeConfirm();
+    if(confirmRes){
+      this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:item.id})
+      .subscribe(res => {
+        if(res.success == true){
+           item.remove();
+           alert('删除成功');
+        }
+      })
+    }
   }
 
   /**
@@ -84,16 +88,30 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeExistingItem(existingData,existingDatas,index){  //existingDatas,index
-
-    this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:existingData.id})
-    .subscribe(res => {
-      console.log(res);
-      existingDatas.splice(index,1);
-    })
+    let confirmRes = this.removeConfirm();
+    if(confirmRes){
+      this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:existingData.id})
+      .subscribe(res => {
+        if(res.success == true){
+          existingDatas.splice(index,1);
+          alert('删除成功');
+        }
+      })
+    }
   }
 
+  /**
+   * 移除前确认
+   * 
+   * @memberof MultipleFileUploaderComponent
+   */
+  removeConfirm(){
+      let confirmRes = confirm("确认要删除该文件吗?");
+      return confirmRes;
+  } 
 // fun(val){
 //   console.log(val)
+//   return false;
 // }
 /**
  * 检测文件类型
@@ -135,15 +153,23 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       this.uploader.onSuccessItem = function (e) {
           // console.log(e)
           let res = JSON.parse(e._xhr.response);
-          console.log(res)
+          // console.log(res)
           if(res.code == "Fail" ||res.code == "UnknownError"){
-              alert(res.message)
+              alert(res.message);
+              data.forEach(item => {
+                if(!item.id){  //上传失败以后，组件返回的数据里面没有id
+                  item.isSuccess = false;
+                  item.isError = true;
+                }
+            });
           }else{  
               alert('上传成功');
-              data.forEach(item => {
-                  item.contentType  = res.data[0].contentType;
-                  item.path  = res.data[0].path ;
-                  item.thumbnail  = res.data[0].thumbnail;
+              data.forEach(item => {  //res.data[0]  每次都是单个上传
+                  if(item.id ==  res.data[0].id){
+                    item.contentType  = res.data[0].contentType;
+                    item.path  = res.data[0].path ;  //文件路径
+                    item.thumbnail  = res.data[0].thumbnail;  //文件图标
+                  }
               });
           }
       };

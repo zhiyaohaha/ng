@@ -34,20 +34,14 @@
         <span>贷款用途：</span>
         <select>
           <option>请选择用途</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+          <option *ngFor="let loanUse of loanInfo.loanUseBindData" [value]="loanUse.value">{{loanUse.text}}</option>
         </select>
       </li>
       <li>
         <span>贷款期限：</span>
         <select>
           <option>请选择期限</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+          <option *ngFor="let term of loanInfo.termBindData" [value]="term.value">{{term.text}}</option>
         </select>
       </li>
       <li>
@@ -94,7 +88,7 @@
           </div>
            <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'" >
               <ul>
-                <li *ngFor="let attachment of attachmentGroup._attachments;let k = index;" (click)="displayAttachmentData(attachment,attachmentGroup)" >
+                <li *ngFor="let attachment of attachmentGroup._attachments;let k = index;" (click)="displayAttachmentData(attachment,attachmentGroup,k)" >
                     <div class="accessoryBottomTop" [ngClass]="{'attachmentActive':k == 0 ? firstAttachmentActive : attachment.id == attachmentGroup.temporaryData.id}">
                         <span>{{attachment.name}}</span>
                         <span class="free-badge status" [style.background-color]="statusStyle(attachment._status)">{{attachment._status}}</span>
