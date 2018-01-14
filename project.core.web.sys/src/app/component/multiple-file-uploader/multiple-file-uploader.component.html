@@ -40,7 +40,7 @@
                 <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic" (click)="toShow(existingData)">
                 <video *ngIf="checkContentType(existingData.contentType,'video')"  [src]="existingData.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
                 <a  *ngIf="!checkContentType(existingData.contentType,'video') && !checkContentType(existingData.contentType,'image')" [href]="existingData.path" target='blank' download>
-                    <img [src]="existingData.thumbnail" alt="预览图" class="prePic">
+                    <img [src]="existingData.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
                 </a>
             </div>
             <div  class="item-name">
@@ -48,19 +48,18 @@
             </div>
             <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
         </li>
-        <li class="item uploading" *ngIf="uploading">
-            <img src="../../../assets/Images/uploading.gif" alt="" width="100" height="91">
-            <p style="text-align:center">上传中.........</p>
-        </li>
     </div>
     <!-- 手动上传 -->
-    <!-- <div *ngIf="uploader.queue">
-      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess,'item-error':item.isError}">
+    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传（ok uploader.queue && uploading） existingDatas ? uploader.queue && uploading : uploader.queue-->
+    <!-- {{fun(existingDatas)}} -->
+    <div *ngIf="uploader.queue && uploading">
+        <!-- {{fun(uploader.queue)}} -->
+      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.alias}}" class="prePic"  (click)="toShow(item)">
           <video *ngIf="checkContentType(item.contentType,'video')"  [src]="item.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
           <a  *ngIf="!checkContentType(item.contentType,'video') && !checkContentType(item.contentType,'image')" [href]="item.path" target='blank' download>
-              <img [src]="item.thumbnail" alt="预览图" class="prePic">
+              <img [src]="item.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
           </a>
         </div>
         <div class="item-name">
@@ -71,7 +70,7 @@
         </div>
         <i class="fa fa-close" (click)="removeItem(item)"></i>
       </li>
-    </div> -->
+    </div>
   </ul>
   <a href="javascript:;" class="upload-input-warp">
       <div class="upload-custom-btn ">

@@ -53,7 +53,7 @@ select{
 
 //附件
 .accessory{
-    border:1px solid #ccc;
+    // border:1px solid #ccc;
     border-bottom-width:0px;
 }
 .accessory  span.status{
@@ -67,17 +67,25 @@ select{
     line-height:15px;
 } 
 .accessory li{
-    border-bottom:1px solid #ccc;
+    border-bottom:1px dashed #cf000d;
 }
 
 .accessory .accessoryTop{
     text-align:center;
-    border-bottom:1px solid #ccc;
+    // border-bottom:1px solid #ccc;
     overflow:hidden;
     position: relative;
+    height: 36px;
+    line-height: 36px;
     &:hover{
         cursor: pointer;
-        background-color:#1ccacc;
+        // background-color:#1ccacc;
+        background-color: #cf000d;
+        color: #FFF;
+        font-size: 18px;
+        height: 36px;
+        line-height:  36px;
+        font-weight: bold;
     }
 } 
 
@@ -91,24 +99,53 @@ select{
 .accessory  .accessoryBottom .accessoryBottomTop{
     position: relative;
     padding-left:5px;
-    border:1px solid #797979;
+    // border:1px solid #797979;
+    background-color:#fff;
+    font-size:12px;
     &:hover{
         cursor: pointer;
-        background-color:#21BDE3;
+        // background-color:#21BDE3;
+        // border: 1px solid #cf000d;
+        /* color: #FFF; */
+        background-color: #FFF;
+        font-size:  12px;
+        box-shadow: 2px 3px 8px #cf000d;
     }
  }
  .accessory  .accessoryBottom .accessoryBottomBottom{
     padding-left:5px;
-    border:1px solid #E4E4E4;
-    background-color:#E4E4E4;
+    // border:1px solid #E4E4E4;
+    background-color:#fff;
+ }
+ .accessoryBottomBottom pre{
+    font-size:12px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    line-height:16px;
+    white-space: pre-wrap;
  }
 
 //高亮当前附件组 和 附件项
 .attachmentGroupActive{
-    border-width:0px;
-    background-color:#1ccacc;
+    // border-width:0px;
+    // background-color:#1ccacc;
+    
+    background-color: #cf000d;
+    color: #FFF;
+    font-size: 18px;
+    height: 36px;
+    line-height:  36px;
+    font-weight: bold;
+
 }
 .attachmentActive{
-    background-color:#21BDE3;
-    border-color:#21BDE3 !important;
+    // background-color:#21BDE3;
+    // border-color:#21BDE3 !important;
+    
+    // border: 1px solid #cf000d;
+    /* color: #FFF; */
+    background-color: #FFF;
+    font-size:  12px;
+    box-shadow: 2px 3px 8px #cf000d;
+
 }

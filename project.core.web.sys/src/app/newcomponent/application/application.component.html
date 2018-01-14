@@ -97,18 +97,18 @@
               </ul>
               <!-- 初始化状态 , 并且有附件项 -->
               <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">  
-                  <p>描述文案</p>
-                  <p>至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+                  <pre>{{attachmentGroup._attachments[0].description}}</pre>
+                  <p *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
                   <!-- <multiple-uploader [url]="uploadUrl"></multiple-uploader> -->
                   <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
-                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])"></multiple-uploader>
+                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"></multiple-uploader>
               </div>
               <!-- 非初始化状态,已经操作了 -->
               <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
-                  <p>描述文案</p>
-                  <p>至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+                  <pre>{{attachmentGroup.temporaryData.description}}</pre>
+                  <p *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
                   <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)"></multiple-uploader>
+                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"></multiple-uploader>
               </div>
            </div>
         </li>

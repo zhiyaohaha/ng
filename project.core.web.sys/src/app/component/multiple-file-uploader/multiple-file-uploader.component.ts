@@ -12,6 +12,7 @@ import {defaultValue} from "../../common/global.config";
 import { BaseService } from "app/services/base.service";
 import {globalUrl} from "../../common/global.config";
 import {PreviewService} from "app/services/preview/preview.service";
+import {ToastService} from "../toast/toast.service";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -33,9 +34,11 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   @Input("url") uploadUrl: string;
   @Input("id") uploadId: string;  //附件项id
   @Input() existingDatas:any; //已有数据
+  @Input() uploaderQueueHidden:boolean;   //隐藏手动上传的样式(否则在切换其它附件项的时候，会出现同样的上传样式)
   @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
 
   uploading:boolean = false; //上传中
+  defaultImgSrc:string = '../../../assets/Images/uploading.gif'; //默认上传图片
   imgQuality = defaultValue.imgQuality;
   uploader: FileUploader = new FileUploader({
     url: environment.apiURL + "/api/file/upload",
@@ -50,7 +53,8 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   constructor(private convertUtil: ConvertUtil,
     private http: Http,
     private baseService: BaseService,
-    private previewService: PreviewService
+    private previewService: PreviewService,
+    private toastService: ToastService
   ) {
  
   }
@@ -67,19 +71,20 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       // };
     }
   }
-
+  
   /**
    * 移除手动添加数据的某一项
    * @param item
    */
   removeItem(item) {
     let confirmRes = this.removeConfirm();
+    let _self = this;
     if(confirmRes){
       this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:item.id})
       .subscribe(res => {
         if(res.success == true){
            item.remove();
-           alert('删除成功');
+           _self.toastService.creatNewMessage("删除成功");
         }
       })
     }
@@ -91,12 +96,13 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    */
   removeExistingItem(existingData,existingDatas,index){  //existingDatas,index
     let confirmRes = this.removeConfirm();
+    let _self = this;
     if(confirmRes){
       this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId:this.uploadId,fileId:existingData.id})
       .subscribe(res => {
         if(res.success == true){
           existingDatas.splice(index,1);
-          alert('删除成功');
+          _self.toastService.creatNewMessage("删除成功");
         }
       })
     }
@@ -111,10 +117,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       let confirmRes = confirm("确认要删除该文件吗?");
       return confirmRes;
   } 
-// fun(val){
-//   console.log(val)
-//   return false;
-// }
+
 /**
  * 检测文件类型
  * 
@@ -154,20 +157,23 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
-          // console.log(e)
           let res = JSON.parse(e._xhr.response);
-          // console.log(res)
           if(res.code == "Fail" ||res.code == "UnknownError"){
-              alert(res.message);
-              data.forEach(item => {
+              that.toastService.creatNewMessage(res.message);
+              data.forEach((item,index) => {
                 if(!item.id){  //上传失败以后，组件返回的数据里面没有id
                   item.isSuccess = false;
                   item.isError = true;
                 }
+                let queueRes = JSON.parse(item._xhr.response);
+                //清除有重复文件的提交记录
+                if(queueRes.code == "Fail" || queueRes.code == "UnknownError" ){
+                    data.splice(index,1);
+                }
                 that.uploading = false;
             });
           }else{  
-              alert('上传成功');
+              that.toastService.creatNewMessage("上传成功");
               data.forEach(item => {  //res.data[0]  每次都是单个上传
                   if(item.id ==  res.data[0].id){
                     item.contentType  = res.data[0].contentType;
@@ -233,6 +239,10 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
     if ($event.target.id) {
       this.renameFile($event.target.id, $event.target.value);
     }
+  }
+
+  fun(val){
+    console.log(val)
   }
 
   /**

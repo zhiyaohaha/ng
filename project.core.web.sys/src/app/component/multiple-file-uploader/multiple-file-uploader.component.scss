@@ -68,11 +68,16 @@
     text-decoration: none;
     text-indent: 0;
     line-height: 20px;
+
+    
+    background-color: #FFF;
+    border: 1px solid #CF000d;
+    
  }
  .upload-input-warp:hover {
-    background: #AADFFD;
-    border-color: #78C3F3;
-    color: #004974;
+    // background: #AADFFD;
+    // border-color: #78C3F3;
+    // color: #004974;
     text-decoration: none;
  }
   .upload-input-warp input.upload-input {
@@ -97,6 +102,7 @@
     justify-content: center;
     font-size: 30px;
     font-weight: 400;
+    color: #cf000d;
 }
   .item {
     background-color: #FFF;
@@ -165,6 +171,9 @@
   .item-error {
     border-color: #cf000d;
     box-shadow: 0 0 4px 0 #cf000d;
+  }
+  .item-hidden{
+    display:none;
   }
 }
 

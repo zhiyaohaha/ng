@@ -30,7 +30,7 @@ export class ApplicationComponent implements OnInit {
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
-    this.orderService.getLoanInfo('5a5afe9b3d407a208455134f').subscribe(res => {
+    this.orderService.getLoanInfo('5a5b4292f9df522308ec193b').subscribe(res => {
         if(res.data){
           console.log(res)
           // console.log(res.data._applyFormTemplate.doms)
@@ -84,7 +84,8 @@ export class ApplicationComponent implements OnInit {
       return color;
   } 
 
-  //接收来自 上传组件 上传的最新文件数据。  然后更新当前组件的数据
+
+  //接收来自 上传组件 上传的最新文件数据。  更新当前组件的数据
   onPostFileData($event,i,k){
       let data = this.loanInfo._attachmentGroups;
       data.forEach((item1,index1)=>{
@@ -93,8 +94,11 @@ export class ApplicationComponent implements OnInit {
               // console.log(item2)
               if(item2 == k){
                   let res = item2._files;
-                  item2._files = res.concat($event);
-                  console.log(item2._files)
+                  if(res){
+                    item2._files = res.concat($event);
+                  }else{
+                    item2._files = $event;
+                  }
               }
             })
           }
