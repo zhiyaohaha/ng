@@ -29,7 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _componentFactoryResolver: ComponentFactoryResolver,
     private app: App,
     private wsService: WebSocketService,
-    private previewService: PreviewService
+    previewService: PreviewService
     ) {
     this.app.intance = this;
     this.isShowPreview = previewService.isShowPreview;
