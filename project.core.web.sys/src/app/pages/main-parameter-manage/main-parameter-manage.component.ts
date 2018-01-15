@@ -217,17 +217,27 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
    * @param
    */
   treeSelected($event): void {
-    this.loadModal();
+    // this.loadModal();
+    // this.selectNode = $event.node.node;
+    // let _tags = [];
+    // this.tags = [];
+    // if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
+    //   for (let i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
+    //     _tags.push({"value": this.selectNode.JSONdata.tags[i], "delete": true});
+    //     this.tags.push(this.selectNode.JSONdata.tags[i]);
+    //   }
+    // }
+    // this.treeNode.label = _tags;
+
+    // 2018年1月15日 tcl
+    console.log($event);
     this.selectNode = $event.node.node;
-    let _tags = [];
-    this.tags = [];
-    if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
-      for (let i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
-        _tags.push({"value": this.selectNode.JSONdata.tags[i], "delete": true});
-        this.tags.push(this.selectNode.JSONdata.tags[i]);
-      }
-    }
-    this.treeNode.label = _tags;
+    this._paramsManageService.getDetailById({id: this.selectNode.JSONdata.id})
+      .subscribe(res => {
+        if (res.code === "0") {
+
+        }
+      });
   }
 
   addChild(e) {
