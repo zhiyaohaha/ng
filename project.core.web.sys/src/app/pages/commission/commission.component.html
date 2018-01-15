@@ -1,0 +1,85 @@
+<md-sidenav-container [@fadeInState]="'active'">
+
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="distribution()">分发</button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail()">分发详情</button> -->
+  </div>
+
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
+    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()" (rowSelect)="selectedRows($event)">
+  </app-table>
+
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="distributionDetail" *ngIf="detailInfo">
+          <p>
+            <span>产品名称：</span>
+            <span>{{detailInfo.loanOrder._product.basic.name}}</span>
+          </p>
+          <p>
+            <span>所属机构：</span>
+            <span>{{detailInfo.loanOrder._product._org}}</span>
+          </p>
+          <p>
+            <span>产品类型：</span>
+            <span>{{detailInfo.loanOrder._product.basic._type}}</span>
+          </p>
+          <p>
+            <span>介绍人姓名：</span>
+            <span>{{detailInfo.loanOrder.firstLevel.name}}</span>
+          </p>
+          <p>
+            <span>客户姓名：</span>
+            <span>{{detailInfo.loanOrder.name}}</span>
+          </p>
+          <p>
+            <span>业务员姓名：</span>
+            <span>{{detailInfo.loanOrder._creater.name}}</span>
+          </p>
+          <!-- <p> 暂不展示
+            <span>渠道商姓名：</span>
+            <span>{{detailInfo}}</span>
+          </p> -->
+          <p>
+            <span>返佣总金额：</span>
+            <span>{{detailInfo.loanOrder.rakeBackValue}}</span>
+          </p>
+          <p>
+            <span>备注：</span>
+            <span>{{detailInfo.loanOrder.description}}</span>
+          </p>
+        </div>
+        <!-- 返佣明细部分 -->
+        <div class="detail" *ngIf="detailInfo">
+          <table>
+            <tr>
+              <th>姓名</th>
+              <!-- <th>用户类型</th> -->
+              <th>用户状态</th>
+              <th>返佣金额（元）</th>
+              <th>返佣状态</th>
+              <th>操作</th>
+            </tr>
+            <tr *ngFor="let item of detailInfo.userInfo;let i = index">
+              <td>{{item.trade.userName}}</td>
+              <!-- <td>1</td> -->
+              <td>{{item._state}}</td>
+              <td>{{item.trade.value}}</td>
+              <td>{{item.trade._tradeType}}</td>
+              <td>
+                <input type="radio" id="pass1" name="btn" (click)="toPass(item,i,pass,nopass)" #pass>
+                <label for="pass1">通过</label>
+                <input type="radio" id="noPass1" name="btn" (click)="toNoPass(item,i,nopass,pass)" #nopass>
+                <label for="noPass1">未通过</label>
+              </td>
+            </tr>
+          </table>
+          <button md-raised-button color="deepblue" class="add-button" (click)="sendMassage()">确定</button>
+        </div>
+      </div>
+    </div>
+  </md-sidenav>
+
+</md-sidenav-container>

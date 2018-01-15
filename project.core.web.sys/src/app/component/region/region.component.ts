@@ -193,6 +193,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       this.result[i].c[j].c[l].checked = false;
       this.removeByValue(this.countyArr, countyId);
       this.removeByValue(this.duplicatesCountyArr, countyId);
+      this.duplicatesCityArr.push(cityId);
     }
     this.onSubmit(this.allCheckedState);
   }
@@ -227,11 +228,14 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   onSubmit(checkedAll) {
     this.lastChecked = this.duplicatesProvinceArr.concat(this.duplicatesCityArr, this.duplicatesCountyArr);
-    if (checkedAll) {
-      this.valueChange("all");
-    } else {
-      this.valueChange(this.lastChecked);
-    }
+    console.log(this.lastChecked);
+    // if (checkedAll) {
+      
+    //   this.valueChange("all");
+    // } else {
+    //   this.valueChange(this.lastChecked);
+    // }
+
   }
 
 }
