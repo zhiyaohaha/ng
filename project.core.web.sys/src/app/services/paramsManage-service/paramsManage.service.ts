@@ -54,7 +54,7 @@ export class ParamsManageService {
    * @returns {Observable<any>}
    */
   public getDetailById(param) {
-    return this.service.get(this.fnUtil.searchAPI("FunctionType.DetailTemplate", "type"), param);
+    return this.service.get(this.fnUtil.searchAPI("FunctionType.FormTemplate", "type"), param);
   }
 
 }
