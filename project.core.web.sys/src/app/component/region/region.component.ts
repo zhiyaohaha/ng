@@ -1,7 +1,7 @@
-import {Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef} from "@angular/core";
+import {Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef,Input} from "@angular/core";
 import {RegionService} from "../../services/region/region.service";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-
+import {TimiSelectModule} from "../timi-select/select.component";
 export const REGION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RegionComponent),
@@ -38,6 +38,15 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   duplicatesCountyArr: Array<any> = [];
   lastChecked: Array<any> = []; //最后的选中传值数组
 
+  @Input() multiple:boolean; //是否多选
+  multipleFalseData:any = [];
+  multipleFalseCityData:any = [];
+  multipleFalseCountyData:any = [];
+
+  fun(val){
+    console.log(val)
+  }
+
   private valueChange = (_: any) => {
   };
 
@@ -47,6 +56,9 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   ngOnInit() {
     this.regionService.getData().subscribe(result => {
       this.setData(result);
+      if(!this.multiple){ //非多选的情况下
+        this.multipleFalseFun(result);
+      }
     })
   }
 
@@ -238,4 +250,44 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   }
 
+  ///三级地区联动，不多选的情况下 
+
+  //将返回结果，修改为timi-select 可以直接使用的格式
+  multipleFalseFun(res){
+      // console.log(res)
+      let _self = this;
+      if(res){
+         res.forEach((item1,index1) =>{
+            _self.multipleFalseData[index1] = {'text': item1.b,'value': item1.a,'childrens': item1.c};
+
+            _self.multipleFalseData[index1]['childrens'].forEach((item2,index2) =>{
+              _self.multipleFalseData[index1]['childrens'][index2] = {'text': item2.b,'value': item2.a,'childrens': item2.c};
+                
+                _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3,index3) =>{
+                  _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = {'text': item3.b,'value': item3.a};
+                })
+            })
+ 
+         })
+        //  console.log(_self.multipleFalseData)
+      }
+  }
+
+  //通过这一级的val。设置下一级的数据源
+  changeMultipleFalseData(provinceCode,data){
+    let _self = this;
+    let res = data ? data : _self.multipleFalseData ;
+    
+    res.forEach((item1,index1) =>{
+        if(item1.value == provinceCode){
+          if(!data){
+            _self.multipleFalseCityData = item1.childrens;
+          }else{
+            
+            _self.multipleFalseCountyData = item1.childrens;
+          }
+          return false;
+        }
+    })
+  }
 }

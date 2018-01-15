@@ -1,4 +1,4 @@
-<div class="regionBox">
+<div class="regionBox" *ngIf="multiple">
 
   <!-- <p>
     <span>选择省份：</span>
@@ -33,5 +33,25 @@
     </div>
     
   </div>
+
+</div>
+<div *ngIf="!multiple">
+    <timi-select name=""  [(ngModel)]="multipleFalseProvinceVal"
+    [options]="multipleFalseData"
+    *ngIf="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData(multipleFalseProvinceVal,'')"></timi-select>    
+  
+    <p>{{multipleFalseProvinceVal}}</p>
+
+    <timi-select name=""  [(ngModel)]="multipleFalseCityVal"
+    [options]="multipleFalseCityData"
+     pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData(multipleFalseCityVal,multipleFalseCityData)"></timi-select>    
+
+    <p>{{multipleFalseCityVal}}</p>
+
+    <timi-select name=""  [(ngModel)]="multipleFalseCountyVal"
+    [options]="multipleFalseCountyData"
+     pholder="{{'请选择区县'}}" ></timi-select>  
+     
+     <p>{{multipleFalseCountyVal}}</p>
 
 </div>

@@ -34,20 +34,14 @@
         <span>贷款用途：</span>
         <select>
           <option>请选择用途</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+          <option *ngFor="let loanUse of loanInfo.loanUseBindData" [value]="loanUse.value">{{loanUse.text}}</option>
         </select>
       </li>
       <li>
         <span>贷款期限：</span>
         <select>
           <option>请选择期限</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+          <option *ngFor="let term of loanInfo.termBindData" [value]="term.value">{{term.text}}</option>
         </select>
       </li>
       <li>
@@ -88,14 +82,14 @@
     <p>所需附件</p>
     <ul class="clearfix accessory"> 
         <li  *ngFor="let attachmentGroup of loanInfo._attachmentGroups;let i = index;">
-          <div class="accessoryTop"  (click)="displayAttachments(attachmentGroup.attachmentsDisplay,attachmentGroup,loanInfo._attachmentGroups,i)">  
+          <div class="accessoryTop"  (click)="displayAttachmentGroup(attachmentGroup.attachmentsDisplay,attachmentGroup,loanInfo._attachmentGroups,i)" [ngClass]="{'attachmentGroupActive':attachmentGroup.attachmentsDisplay}">  
               <span>{{attachmentGroup.name}}</span>
               <span class="free-badge status" [style.background-color]="statusStyle(attachmentGroup._status)">{{attachmentGroup._status}}</span>
           </div>
-           <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'">
+           <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'" >
               <ul>
-                <li *ngFor="let attachment of attachmentGroup._attachments" (click)="displayAttachmentData(attachment,attachmentGroup)">
-                    <div class="accessoryBottomTop">
+                <li *ngFor="let attachment of attachmentGroup._attachments;let k = index;" (click)="displayAttachmentData(attachment,attachmentGroup,k)" >
+                    <div class="accessoryBottomTop" [ngClass]="{'attachmentActive':k == 0 ? firstAttachmentActive : attachment.id == attachmentGroup.temporaryData.id}">
                         <span>{{attachment.name}}</span>
                         <span class="free-badge status" [style.background-color]="statusStyle(attachment._status)">{{attachment._status}}</span>
                     </div>
@@ -103,18 +97,18 @@
               </ul>
               <!-- 初始化状态 , 并且有附件项 -->
               <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">  
-                  <p>描述文案</p>
-                  <p>至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+                  <pre>{{attachmentGroup._attachments[0].description}}</pre>
+                  <p *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
                   <!-- <multiple-uploader [url]="uploadUrl"></multiple-uploader> -->
                   <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
-                  "></multiple-uploader>
+                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"></multiple-uploader>
               </div>
               <!-- 非初始化状态,已经操作了 -->
               <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
-                  <p>描述文案</p>
-                  <p>至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+                  <pre>{{attachmentGroup.temporaryData.description}}</pre>
+                  <p *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
                   <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                  "></multiple-uploader>
+                  " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"></multiple-uploader>
               </div>
            </div>
         </li>

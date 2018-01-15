@@ -85,7 +85,7 @@
                 <label>{{child.ui.label}}</label>
               </div>
               <div class="box-item item-control-wrapper">
-                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"></free-region>
+                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple"></free-region>
               </div>
             </div>
           </ng-container>
