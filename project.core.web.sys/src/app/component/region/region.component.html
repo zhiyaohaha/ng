@@ -8,50 +8,47 @@
   <div class="all">
     <input type="checkbox" (click)="allChecked($event,checkedAll)" #checkedAll id="all" class="hidden">
     <label for="all" class="pad" [class.active]="checkedAll.checked">全国</label>
-    
+
     <div class="showbox" *ngIf="isShowBox">
-      <div class="province" *ngFor="let province of result;let i = index">
-        <input type="checkbox" (click)="getProvince($event,province,i)" #province id=`province${{i}}` class="hidden">
+
+      <div class="province" *ngFor="let provinces of result;let i = index">
+        <input type="checkbox" (click)="getProvince($event,province,i)" #province id=`province${{i}}` class="hidden" [(ngModel)]="provinces.checked">
         <label for=`province${{i}}` [class.active]="province.checked" class="pad">{{result[i].b}}</label>
-      
+
         <ul *ngIf='province.checked && !checkedAll.checked'>
-          <li *ngFor="let city of result[i].c;let j = index" class="city">
-            <input type="checkbox" (click)="getCity($event,province,city,i,j)" #city id="city${{result[i].c[j].a}}" class="hidden">
+          <li *ngFor="let cities of result[i].c;let j = index" class="city">
+            <input type="checkbox" (click)="getCity($event,province,city,i,j)" #city id="city${{result[i].c[j].a}}" class="hidden" [(ngModel)]="cities.checked">
             <label for="city${{result[i].c[j].a}}" [class.active]="city.checked" class="pad">{{result[i].c[j].b}}</label>
-      
+
             <ul *ngIf="city.checked" class="county">
-              <li *ngFor="let county of result[i].c[j].c;let l = index" class="county">
-                <input type="checkbox" (click)="getCounty($event,county,i,j,l)" #county id=`county${{result[i].c[j].c[l].a}}` class="hidden">
+              <li *ngFor="let counties of result[i].c[j].c;let l = index" class="county">
+                <input type="checkbox" (click)="getCounty($event,county,i,j,l)" #county id=`county${{result[i].c[j].c[l].a}}` class="hidden"
+                  [(ngModel)]="counties.checked">
                 <label for=`county${{result[i].c[j].c[l].a}}` [class.active]="county.checked" class="pad">{{result[i].c[j].c[l].b}}</label>
               </li>
             </ul>
-      
+
           </li>
         </ul>
-      
+
       </div>
     </div>
-    
+
   </div>
 
 </div>
 <div *ngIf="!multiple">
-    <timi-select name=""  [(ngModel)]="multipleFalseProvinceVal"
-    [options]="multipleFalseData"
-    *ngIf="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData(multipleFalseProvinceVal,'')"></timi-select>    
-  
-    <p>{{multipleFalseProvinceVal}}</p>
+  <timi-select name="" [(ngModel)]="multipleFalseProvinceVal" [options]="multipleFalseData" *ngIf="multipleFalseData" pholder="{{'请选择省份'}}"
+    (onChange)="changeMultipleFalseData(multipleFalseProvinceVal,'')"></timi-select>
 
-    <timi-select name=""  [(ngModel)]="multipleFalseCityVal"
-    [options]="multipleFalseCityData"
-     pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData(multipleFalseCityVal,multipleFalseCityData)"></timi-select>    
+  <p>{{multipleFalseProvinceVal}}</p>
 
-    <p>{{multipleFalseCityVal}}</p>
+  <timi-select name="" [(ngModel)]="multipleFalseCityVal" [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData(multipleFalseCityVal,multipleFalseCityData)"></timi-select>
 
-    <timi-select name=""  [(ngModel)]="multipleFalseCountyVal"
-    [options]="multipleFalseCountyData"
-     pholder="{{'请选择区县'}}" ></timi-select>  
-     
-     <p>{{multipleFalseCountyVal}}</p>
+  <p>{{multipleFalseCityVal}}</p>
+
+  <timi-select name="" [(ngModel)]="multipleFalseCountyVal" [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}"></timi-select>
+
+  <p>{{multipleFalseCountyVal}}</p>
 
 </div>
