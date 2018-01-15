@@ -235,7 +235,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     this._paramsManageService.getDetailById({id: this.selectNode.JSONdata.id})
       .subscribe(res => {
         if (res.code === "0") {
-
+          this.modalDOMS = res.data.doms;
+          this.selectNode = res.data.bindData;
         }
       });
   }

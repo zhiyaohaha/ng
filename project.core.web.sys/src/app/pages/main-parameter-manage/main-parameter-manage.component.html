@@ -11,7 +11,7 @@
       <div class="sidenav-right" *ngIf="selectNode">
         <md-tab-group>
           <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
-            <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectNode.JSONdata" btnValue="确定修改"
+            <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectNode" btnValue="确定修改"
                                   (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
           </md-tab>
           <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
