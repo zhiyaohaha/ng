@@ -290,7 +290,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       }
       this.allCheckedState = "";
     }
-
+    this.onSubmit(this.allCheckedState);
   }
 
   writeValue(obj: any): void {
@@ -336,9 +336,9 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   onSubmit(checkedAll) {
     this.lastChecked = this.duplicatesProvinceArr.concat(this.duplicatesCityArr, this.duplicatesCountyArr);
-    console.log(this.lastChecked);
+    // console.log(this.lastChecked);
     if (checkedAll) {
-      this.valueChange("all");
+      this.valueChange(["All"]);
     } else {
       this.valueChange(this.lastChecked);
     }
