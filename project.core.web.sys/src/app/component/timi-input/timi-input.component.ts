@@ -1,4 +1,4 @@
-import {CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
   AfterViewInit,
   Component,
@@ -12,8 +12,8 @@ import {
   Renderer2,
   ViewChild
 } from "@angular/core";
-import {DomRenderer} from "../../common/dom";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { DomRenderer } from "../../common/dom";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -47,6 +47,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   set value(value) {
     this._value = value;
+    this.valueChange(this._value);
   }
 
   _value;
@@ -151,7 +152,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   }
 
   writeValue(obj: any): void {
-    this.value = obj;
+    this.value = obj || '';
   }
 
   registerOnChange(fn: any): void {
