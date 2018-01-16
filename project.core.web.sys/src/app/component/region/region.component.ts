@@ -289,18 +289,19 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
       //选择全国时,取消之前选择的单个省/市/区信息
       let result = this.result;
-      for (let i = 0; i < result.length; i++) {
-        result[i].checked = false;
+      if (result) {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
 
-        for (let j = 0; j < result[i].c.length; j++) {
-          result[i].c[j].checked = false;
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
 
-          for (let l = 0; l < result[i].c[j].c.length; l++) {
-            result[i].c[j].c[l].checked = false;
+            for (let l = 0; l < result[i].c[j].c.length; l++) {
+              result[i].c[j].c[l].checked = false;
+            }
           }
         }
       }
-
       this.allCheckedState = "all";
     } else {
       this.isShowBox = true;
