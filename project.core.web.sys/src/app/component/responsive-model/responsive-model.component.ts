@@ -125,6 +125,7 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
+   //  console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -232,23 +233,16 @@ export class ResponsiveModelComponent implements OnInit {
         }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
-            if (r.data && r.data.length > 0) {
+
+            //附件组和附件项执行此处代码，其它联动select组件，不执行此代码
+            if (r.data[0] && r.data[0]['_attachments']) {
               if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
                 this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
               } else {                                                       //新增页面
                 this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
               }
-            } else {      //都不勾选以后，发送null
-              //新增页面-数据
-              this._modelDOMSData[option[i].triggerDom] = null;
-              // this.setNullData(this._modelDOMSData);    //方法的使用，清空一级附件组时，清空清空二级附件项的展示数据   //暂时使用手动清空二级附件项的展示数据，
-
-              //修改页面-数据
-              if (this.modelDOMSData[option[i].triggerDom]) {
-                this.modelDOMSData[option[i].triggerDom] = null;
-                this.setNullData(this.modelDOMSData);
-              }
             }
+
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });
@@ -262,12 +256,13 @@ export class ResponsiveModelComponent implements OnInit {
     let data = [];
     //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
     for (let k = res.length - 1; k >= 0; k--) {
-      // for (const j in res[k]) {  //依据于数据结构的写法
-      // console.log( res[k]);
-      // if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则删除父项。
-      data.unshift(res[k]);
-      // }
-      // }
+      for (const j in res[k]) {  //依据于数据结构的写法
+        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则不保存父项。  
+          if (!this.inArray(res[k], data)) {
+            data.unshift(res[k]);
+          }
+        }
+      }
     }
     // console.log(data)
     if (status === "add") {
@@ -276,6 +271,15 @@ export class ResponsiveModelComponent implements OnInit {
       this.modelDOMSData[key] = data;
     }
     // }
+  }
+
+  inArray(search: string, array: Array<string>) {
+    for (let i in array) {
+      if (array[i] === search) {
+        return true;
+      }
+    }
+    return false;
   }
 
   setNullData(data) {

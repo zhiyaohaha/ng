@@ -152,7 +152,12 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   }
 
   writeValue(obj: any): void {
-    this.value = obj || '';
+    // this.value = obj || '';
+    if(obj == null || obj == undefined){
+      this.value =  '';
+    }else{
+      this.value = obj 
+    }
   }
 
   registerOnChange(fn: any): void {
