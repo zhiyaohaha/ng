@@ -6,7 +6,7 @@
   </p> -->
 
   <div class="all">
-    <input type="checkbox" (click)="allChecked($event,checkedAll)" #checkedAll id="all" class="hidden">
+    <input type="checkbox" (click)="allChecked($event,checkedAll)" #checkedAll id="all" class="hidden" [(ngModel)]="resCheckedAll">
     <label for="all" class="pad" [class.active]="checkedAll.checked">全国</label>
 
     <div class="showbox" *ngIf="isShowBox">

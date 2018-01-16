@@ -42,8 +42,9 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   multipleFalseData: any = [];  //非多选情况下，使用的三级联动地区数据
   multipleFalseCityData: any = [];
   multipleFalseCountyData: any = [];
-  modifiedData: any = [];  //用于修改状态下的数据；
-  @Input() inputData: any;  //展示用的修改数据
+  modifiedData: any = [];  //修改状态下，用于修改的数据；
+  @Input() inputData: any;  //修改状态下，用于展示的数据
+  resCheckedAll: boolean; //根据返回结果判断是否进行全选。
 
   fun(val) {
     // console.log(val)
@@ -280,11 +281,29 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   //实现全选
   allChecked(e, checkedAll) {
     if (checkedAll.checked) {
-      for (let i = 0; i < this.provinceList.length; i++) {
-        this.provinceList[i].checked = true;
+      //选择全国时,隐藏省市区
+      this.isShowBox = false;
+      // for (let i = 0; i < this.provinceList.length; i++) {
+      //   this.provinceList[i].checked = true;
+      // }
+
+      //选择全国时,取消之前选择的单个省/市/区信息
+      let result = this.result;
+      for (let i = 0; i < result.length; i++) {
+        result[i].checked = false;
+
+        for (let j = 0; j < result[i].c.length; j++) {
+          result[i].c[j].checked = false;
+
+          for (let l = 0; l < result[i].c[j].c.length; l++) {
+            result[i].c[j].c[l].checked = false;
+          }
+        }
       }
+
       this.allCheckedState = "all";
     } else {
+      this.isShowBox = true;
       for (let i = 0; i < this.provinceList.length; i++) {
         this.provinceList[i].checked = false;
       }
@@ -297,9 +316,14 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     if (obj) {
       this.modifiedData = obj;
       let inputData = this.inputData;
-
+      // console.log(inputData)
       //将inputdata 的值，经过  obj 的筛选。push到三级数组里面。
       for (let key in inputData) {
+        if (key == 'All') {  //选择的是全国的
+          this.resCheckedAll = true;
+          this.allChecked({}, { 'checked': true });
+          return;
+        }
         this.objFilterInputDataPushArr(key, obj, this.duplicatesProvinceArr, this.provinceArr)
 
         for (let key2 in inputData[key]) {
@@ -337,6 +361,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   onSubmit(checkedAll) {
     this.lastChecked = this.duplicatesProvinceArr.concat(this.duplicatesCityArr, this.duplicatesCountyArr);
     // console.log(this.lastChecked);
+    // console.log(checkedAll)
     if (checkedAll) {
       this.valueChange(["All"]);
     } else {
