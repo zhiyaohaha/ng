@@ -457,7 +457,7 @@ export class LoandemandComponent implements OnInit {
     }
     if (!this.inArray(id, this.userNames)) {
       this.userNames.push(id);
-      this.orgObject[this.orgIdNow] = this.userNames.join(',');
+      this.orgObject[this.orgIdNow] = this.userNames
       console.log(this.orgObject);
     }
     this.secondId = this.orgIdNow;

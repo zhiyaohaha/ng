@@ -67,12 +67,12 @@
               <!-- <td>1</td> -->
               <td>{{item._state}}</td>
               <td>{{item.trade.value}}</td>
-              <td>{{item.trade._tradeType}}</td>
+              <td>{{item.trade._tradeState}}</td>
               <td>
-                <input type="radio" id="pass1" name="btn" (click)="toPass(item,i,pass,nopass)" #pass>
-                <label for="pass1">通过</label>
-                <input type="radio" id="noPass1" name="btn" (click)="toNoPass(item,i,nopass,pass)" #nopass>
-                <label for="noPass1">未通过</label>
+                <input type="radio" id="pass{{i}}" name="btn{{i}}" (click)="toPass(item,i,pass,nopass)" #pass>
+                <label for="pass{{i}}">通过</label>
+                <input type="radio" id="noPass{{i}}" name="btn{{i}}" (click)="toNoPass(item,i,nopass,pass)" #nopass>
+                <label for="noPass{{i}}">未通过</label>
               </td>
             </tr>
           </table>

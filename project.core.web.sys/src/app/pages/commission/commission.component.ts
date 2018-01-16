@@ -98,6 +98,8 @@ export class CommissionComponent implements OnInit {
   passChecked: boolean = false;
   noPassChecked: boolean = false;
 
+  temp: object = {};
+
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -230,7 +232,8 @@ export class CommissionComponent implements OnInit {
   rowClickEvent($event) {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({ id: $event.row.id });
+    this.loadDetailModel($event.row.id);
+    //console.log($event.row.id)
   }
 
   /**
@@ -256,7 +259,7 @@ export class CommissionComponent implements OnInit {
   }
 
   loadDetailModel(param) {
-    this.commissionService.getDetail("5a5c0e6945a1ee3014bd39e7").subscribe(res => {
+    this.commissionService.getDetail(param).subscribe(res => {
       this.getDetail(res.data);
     })
   }
@@ -264,12 +267,12 @@ export class CommissionComponent implements OnInit {
   getDetail(res) {
     this.detailInfo = res;
     for (let i = 0; i < this.detailInfo.userInfo.length; i++) {
-      let temp = {};
-      temp[this.detailInfo.userInfo[i].trade.id] = null;
-      this.sendArray.push(temp);
+      this.temp[this.detailInfo.userInfo[i].trade.id] = null;
+      //this.sendArray.push(temp);
     }
-    console.log(this.detailInfo);
-    console.log(this.sendArray);
+    console.log(this.temp);
+    // console.log(this.detailInfo);
+    // console.log(this.sendArray);
   }
 
   /**
@@ -378,7 +381,7 @@ export class CommissionComponent implements OnInit {
     let r = confirm("确定要把选中订单的返佣转入相关的用户账户吗？");
     let id = item.trade.id;
     if (r == true) {
-      this.sendArray[i][id] = true;
+      this.temp[id] = true;
     } else {
       pass.checked = false;
       nopass.checked = true;
@@ -388,16 +391,16 @@ export class CommissionComponent implements OnInit {
     let r = confirm("确定要拒绝选中订单的返佣吗？");
     let id = item.trade.id;
     if (r == true) {
-      this.sendArray[i][id] = false;
+      this.temp[id] = false;
     } else {
       nopass.checked = false;
       pass.checked = true;
     }
   }
   sendMassage() {
-    console.log(this.sendArray);
-    // this.commissionService.sendMessage('').subscribe(res=>{
-    //   console.log(res);
-    // })
+    console.log(this.temp);
+    this.commissionService.sendMessage(this.temp).subscribe(res => {
+      console.log(res);
+    })
   }
 }
