@@ -297,8 +297,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     });
     data["id"] = "";
     // data.description = $event.description;
-    data["parentId"] = this.selectNode.JSONdata.id;
-    data["depth"] = this.selectNode.JSONdata.depth + 1;
+    data["parentId"] = this.selectNode.id;
+    data["depth"] = this.selectNode.depth + 1;
     data = this._util.toJsonStr(data);
     this._paramsManageService.addParams(data).subscribe(res => {
       if (res.code === "0") {
@@ -412,7 +412,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     this.tree = null;
     this.isNew = false;
     this.tree = null;
-    console.log("关闭sildenav", this.treeNode)
   }
 
 

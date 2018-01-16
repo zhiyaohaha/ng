@@ -1,7 +1,7 @@
-import {Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef,Input} from "@angular/core";
-import {RegionService} from "../../services/region/region.service";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {TimiSelectModule} from "../timi-select/select.component";
+import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef, Input } from "@angular/core";
+import { RegionService } from "../../services/region/region.service";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { TimiSelectModule } from "../timi-select/select.component";
 export const REGION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RegionComponent),
@@ -38,13 +38,16 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   duplicatesCountyArr: Array<any> = [];
   lastChecked: Array<any> = []; //最后的选中传值数组
 
-  @Input() multiple:boolean; //是否多选
-  multipleFalseData:any = [];
-  multipleFalseCityData:any = [];
-  multipleFalseCountyData:any = [];
+  @Input() multiple: boolean; //是否多选
+  multipleFalseData: any = [];  //非多选情况下，使用的三级联动地区数据
+  multipleFalseCityData: any = [];
+  multipleFalseCountyData: any = [];
+  modifiedData: any = [];  //修改状态下，用于修改的数据；
+  @Input() inputData: any;  //修改状态下，用于展示的数据
+  resCheckedAll: boolean; //根据返回结果判断是否进行全选。
 
-  fun(val){
-    console.log(val)
+  fun(val) {
+    // console.log(val)
   }
 
   private valueChange = (_: any) => {
@@ -54,9 +57,11 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   }
 
   ngOnInit() {
+    // console.log(2222)
     this.regionService.getData().subscribe(result => {
+      // console.log(this.modifiedData)
       this.setData(result);
-      if(!this.multiple){ //非多选的情况下
+      if (!this.multiple) { //非多选的情况下
         this.multipleFalseFun(result);
       }
     })
@@ -68,18 +73,75 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   //获取数据并处理
   setData(result) {
-    for (let i = 0; i < result.length; i++) {
-      result[i].checked = false;
-      for (let j = 0; j < result[i].c.length; j++) {
-        result[i].c[j].checked = false;
-        for (let l = 0; l < result[i].c[j].c.length; l++) {
-          result[i].c[j].c[l].checked = false;
+    if (!this.modifiedData) {  //新增状态下
+      for (let i = 0; i < result.length; i++) {
+        result[i].checked = false;
+        for (let j = 0; j < result[i].c.length; j++) {
+          result[i].c[j].checked = false;
+          for (let l = 0; l < result[i].c[j].c.length; l++) {
+            result[i].c[j].c[l].checked = false;
+          }
         }
       }
+    } else {  //修改状态下
+
+      for (let i = 0; i < result.length; i++) {
+        // result[i].checked = false;
+        this.setInputChecked(result[i], '1');
+
+        for (let j = 0; j < result[i].c.length; j++) {
+          // result[i].c[j].checked = false;
+          this.setInputChecked(result[i].c[j], '2');
+
+          for (let l = 0; l < result[i].c[j].c.length; l++) {
+            // result[i].c[j].c[l].checked= false;
+            this.setInputChecked(result[i].c[j].c[l], '3');
+          }
+        }
+      }
+      // console.log(result)
     }
+
     this.result = result;
-    console.log(this.result, "获取的data数据");
+    // console.log(this.result, "获取的data数据");
   }
+
+  //根据 输入的值，修改view 每个input的checked状态   (同时循环json数据源result和输入数据inputData)
+  setInputChecked(data, level) {
+    data.checked = false;   //每一项的checked字段
+    let inputData = this.inputData;  //输入，用于展示的字段
+
+    switch (level) {
+      case '1':
+        for (let key in inputData) {
+          if (key == data.a) {
+            data.checked = true;
+          }
+        };
+        break;
+      case '2':
+        for (let key in inputData) {
+          for (let key2 in inputData[key]) {
+            if (key2 == data.a) {
+              data.checked = true;
+            }
+          }
+        };
+        break;
+      case '3':
+        for (let key in inputData) {
+          for (let key2 in inputData[key]) {
+            for (let key3 in inputData[key][key2]) {
+              if (inputData[key][key2][key3] == data.a) {
+                data.checked = true;
+              }
+            }
+          }
+        };
+        break;
+    }
+  }
+
 
   //判断元素是否在数组中
   inArray(search: string, array: Array<string>) {
@@ -109,7 +171,6 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     let countyAllArray = [];
     let duplicatesCityArray = this.cityArr.concat();
     let duplicatesCountyArray = this.countyArr.concat();
-
     if (province.checked && !isInArray) {
       this.result[i].checked = true;
       this.provinceArr.push(provinceId);
@@ -167,7 +228,10 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       this.removeByValue(this.duplicatesProvinceArr, provinceId);
     } else if (!city.checked && isInArray) {
       this.result[i].c[j].checked = false;
-      this.duplicatesProvinceArr.push(provinceId);
+      if (!this.inArray(provinceId, this.duplicatesProvinceArr)) { //避免添加重复的id
+        this.duplicatesProvinceArr.push(provinceId);
+      }
+
 
       for (let n = 0; n < this.result[i].c[j].c.length; n++) {
         this.result[i].c[j].c[n].checked = false;
@@ -195,6 +259,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     let cityId = this.result[i].c[j].a;
     let countyId = this.result[i].c[j].c[l].a;
     let isInArray = this.inArray(countyId, this.countyArr);
+    let duplicatesCountyArray = this.countyArr.concat();
 
     if (county.checked && !isInArray) {
       this.result[i].c[j].c[l].checked = true;
@@ -205,7 +270,10 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       this.result[i].c[j].c[l].checked = false;
       this.removeByValue(this.countyArr, countyId);
       this.removeByValue(this.duplicatesCountyArr, countyId);
-      this.duplicatesCityArr.push(cityId);
+      if (!this.inArray(cityId, this.duplicatesCityArr)) {  //避免添加重复的id
+        this.duplicatesCityArr.push(cityId);
+      }
+
     }
     this.onSubmit(this.allCheckedState);
   }
@@ -213,20 +281,73 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   //实现全选
   allChecked(e, checkedAll) {
     if (checkedAll.checked) {
-      for (let i = 0; i < this.provinceList.length; i++) {
-        this.provinceList[i].checked = true;
+      //选择全国时,隐藏省市区
+      this.isShowBox = false;
+      // for (let i = 0; i < this.provinceList.length; i++) {
+      //   this.provinceList[i].checked = true;
+      // }
+
+      //选择全国时,取消之前选择的单个省/市/区信息
+      let result = this.result;
+      if (result) {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
+
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
+
+            for (let l = 0; l < result[i].c[j].c.length; l++) {
+              result[i].c[j].c[l].checked = false;
+            }
+          }
+        }
       }
       this.allCheckedState = "all";
     } else {
+      this.isShowBox = true;
       for (let i = 0; i < this.provinceList.length; i++) {
         this.provinceList[i].checked = false;
       }
       this.allCheckedState = "";
     }
-
+    this.onSubmit(this.allCheckedState);
   }
 
   writeValue(obj: any): void {
+    if (obj) {
+      this.modifiedData = obj;
+      let inputData = this.inputData;
+      // console.log(inputData)
+      //将inputdata 的值，经过  obj 的筛选。push到三级数组里面。
+      for (let key in inputData) {
+        if (key == 'All') {  //选择的是全国的
+          this.resCheckedAll = true;
+          this.allChecked({}, { 'checked': true });
+          return;
+        }
+        this.objFilterInputDataPushArr(key, obj, this.duplicatesProvinceArr, this.provinceArr)
+
+        for (let key2 in inputData[key]) {
+          this.objFilterInputDataPushArr(key2, obj, this.duplicatesCityArr, this.cityArr)
+
+          for (let key3 in inputData[key][key2]) {
+            this.objFilterInputDataPushArr(inputData[key][key2][key3], obj, this.duplicatesCountyArr, this.countyArr)
+          }
+        }
+      }
+
+    }
+
+  }
+
+  //将inputdata 的值，经过  obj 的筛选。push到三级数组里面。
+  objFilterInputDataPushArr(key, obj, arr, arr2) {
+    arr2.push(key);   //用于跨级删除。
+    for (let key11 in obj) {
+      if (key == obj[key11]) {
+        arr.push(key);
+      }
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -240,54 +361,53 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   onSubmit(checkedAll) {
     this.lastChecked = this.duplicatesProvinceArr.concat(this.duplicatesCityArr, this.duplicatesCountyArr);
-    console.log(this.lastChecked);
-    // if (checkedAll) {
-      
-    //   this.valueChange("all");
-    // } else {
-    //   this.valueChange(this.lastChecked);
-    // }
-
+    // console.log(this.lastChecked);
+    // console.log(checkedAll)
+    if (checkedAll) {
+      this.valueChange(["All"]);
+    } else {
+      this.valueChange(this.lastChecked);
+    }
   }
 
-  ///三级地区联动，不多选的情况下 
+  ///三级地区联动，不多选的情况下 :
 
   //将返回结果，修改为timi-select 可以直接使用的格式
-  multipleFalseFun(res){
-      // console.log(res)
-      let _self = this;
-      if(res){
-         res.forEach((item1,index1) =>{
-            _self.multipleFalseData[index1] = {'text': item1.b,'value': item1.a,'childrens': item1.c};
+  multipleFalseFun(res) {
+    // console.log(res)
+    let _self = this;
+    if (res) {
+      res.forEach((item1, index1) => {
+        _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
 
-            _self.multipleFalseData[index1]['childrens'].forEach((item2,index2) =>{
-              _self.multipleFalseData[index1]['childrens'][index2] = {'text': item2.b,'value': item2.a,'childrens': item2.c};
-                
-                _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3,index3) =>{
-                  _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = {'text': item3.b,'value': item3.a};
-                })
-            })
- 
-         })
-        //  console.log(_self.multipleFalseData)
-      }
+        _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
+          _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
+
+          _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3, index3) => {
+            _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = { 'text': item3.b, 'value': item3.a };
+          })
+        })
+
+      })
+      //  console.log(_self.multipleFalseData)
+    }
   }
 
   //通过这一级的val。设置下一级的数据源
-  changeMultipleFalseData(provinceCode,data){
+  changeMultipleFalseData(provinceCode, data) {
     let _self = this;
-    let res = data ? data : _self.multipleFalseData ;
-    
-    res.forEach((item1,index1) =>{
-        if(item1.value == provinceCode){
-          if(!data){
-            _self.multipleFalseCityData = item1.childrens;
-          }else{
-            
-            _self.multipleFalseCountyData = item1.childrens;
-          }
-          return false;
+    let res = data ? data : _self.multipleFalseData;
+
+    res.forEach((item1, index1) => {
+      if (item1.value == provinceCode) {
+        if (!data) {
+          _self.multipleFalseCityData = item1.childrens;
+        } else {
+
+          _self.multipleFalseCountyData = item1.childrens;
         }
+        return false;
+      }
     })
   }
 }
