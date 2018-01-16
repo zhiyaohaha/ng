@@ -1,26 +1,26 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {ChipModule} from "../chip/chip.component";
-import {RadioModule} from "../radio/radio.component";
-import {CheckboxModule} from "../checkbox/checkbox.component";
-import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {TimiInputModule} from "../timi-input/timi-input.component";
-import {TimiChipModule} from "../timi-chip/chip.component";
-import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
-import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
-import {TimiSelectModule} from "../timi-select/select.component";
-import {BaseService} from "../../services/base.service";
-import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ChipModule } from "../chip/chip.component";
+import { RadioModule } from "../radio/radio.component";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { TimiFileUploaderModule } from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import { TimiInputModule } from "../timi-input/timi-input.component";
+import { TimiChipModule } from "../timi-chip/chip.component";
+import { TimiTextareaModule } from "../timi-textarea/timi-textarea.component";
+import { TimiCheckboxModule } from "../timi-checkbox/timi-checkbox.component";
+import { TimiSelectModule } from "../timi-select/select.component";
+import { BaseService } from "../../services/base.service";
+import { DynamicDomsModule } from "../dynamic-doms/dynamic-doms.component";
 // import {NewComponentModule} from "app/newcomponent/newcomponent.module";
-import {RegionComponent} from "../region/region.component";
-import {UEditorModule} from "ngx-ueditor";
-import {globalUrl} from "../../common/global.config";
-import {Md5} from "ts-md5/dist/md5";
-import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
-import {forEach} from "@angular/router/src/utils/collection";
+import { RegionComponent } from "../region/region.component";
+import { UEditorModule } from "ngx-ueditor";
+import { globalUrl } from "../../common/global.config";
+import { Md5 } from "ts-md5/dist/md5";
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import { forEach } from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "timi-responsive-form",
@@ -258,23 +258,23 @@ export class ResponsiveModelComponent implements OnInit {
 
   //附件组联动附件项，附件项传递数据到附件组预览。
   judgeSetChangeData(res, key, status) {
-    if (res[0]["id"]) {
-      let data = [];
-      //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
-      for (let k = res.length - 1; k >= 0; k--) {
-        for (const j in res[k]) {
-          if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
-            data.unshift(res[k]);
-          }
+    // if (res[0]["id"]) {  数据结构改变了，不应该是固定的key
+    let data = [];
+    //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
+    for (let k = res.length - 1; k >= 0; k--) {
+      for (const j in res[k]) {
+        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
+          data.unshift(res[k]);
         }
       }
-
-      if (status === "add") {
-        this._modelDOMSData[key] = data;
-      } else if (status === "edit") {
-        this.modelDOMSData[key] = data;
-      }
     }
+
+    if (status === "add") {
+      this._modelDOMSData[key] = data;
+    } else if (status === "edit") {
+      this.modelDOMSData[key] = data;
+    }
+    // }
   }
 
   setNullData(data) {
