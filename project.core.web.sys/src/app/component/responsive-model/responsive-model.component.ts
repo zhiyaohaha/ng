@@ -264,11 +264,12 @@ export class ResponsiveModelComponent implements OnInit {
     for (let k = res.length - 1; k >= 0; k--) {
       // for (const j in res[k]) {  //依据于数据结构的写法
       // console.log( res[k]);
-      // if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。
+      // if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则删除父项。
       data.unshift(res[k]);
       // }
       // }
     }
+    // console.log(data)
     if (status === "add") {
       this._modelDOMSData[key] = data;
     } else if (status === "edit") {
