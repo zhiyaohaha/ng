@@ -258,17 +258,17 @@ export class ResponsiveModelComponent implements OnInit {
 
   //附件组联动附件项，附件项传递数据到附件组预览。
   judgeSetChangeData(res, key, status) {
-    // if (res[0]["id"]) {  数据结构改变了，不应该是固定的key
+    // if (res[0]["id"]) {   // 是附件项的时候才执行（但是不应该写成固定的 key。因为后天随时会改变）
     let data = [];
     //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
     for (let k = res.length - 1; k >= 0; k--) {
-      for (const j in res[k]) {
-        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
-          data.unshift(res[k]);
-        }
-      }
+      // for (const j in res[k]) {  //依据于数据结构的写法
+      // console.log( res[k]);
+      // if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。
+      data.unshift(res[k]);
+      // }
+      // }
     }
-
     if (status === "add") {
       this._modelDOMSData[key] = data;
     } else if (status === "edit") {
