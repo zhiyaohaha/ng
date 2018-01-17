@@ -160,14 +160,6 @@ export class ParticleDirective implements OnInit, AfterViewInit {
 
 }
 
-
-@NgModule({
-  declarations: [ParticleDirective],
-  exports: [ParticleDirective]
-})
-
-export class ParticleModule { }
-
 export class Particle {
   x: number;
   y: number;
