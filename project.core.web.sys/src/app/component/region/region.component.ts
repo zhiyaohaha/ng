@@ -364,7 +364,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   onSubmit(checkedAll) {
     this.lastChecked = this.duplicatesProvinceArr.concat(this.duplicatesCityArr, this.duplicatesCountyArr);
-    console.log(this.lastChecked);
+    // console.log(this.lastChecked);
     // console.log(checkedAll);
     if (checkedAll) {
       this.valueChange(["All"]);
