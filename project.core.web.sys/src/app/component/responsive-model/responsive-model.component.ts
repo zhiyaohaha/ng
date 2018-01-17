@@ -59,7 +59,7 @@ export class ResponsiveModelComponent implements OnInit {
     return this._modelDOMS;
   }
 
-
+  @Input() submitBtnNeed: boolean = true;  //是否需要提交按钮（默认是需要的，该字段传入空字符串，则不需要提交按钮）
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = {}; //需要修改的原数据
@@ -125,7 +125,7 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
-   //  console.log(data)
+    //  console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;

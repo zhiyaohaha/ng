@@ -117,4 +117,9 @@
   .ng-pristine + .errBorder, .ng-pristine-custom + .errBorder {
     display: none;
   }
+
+  // 静态二级面板
+  .staticPanelTwoLabel{
+     font-size:16px;
+  }
 }
