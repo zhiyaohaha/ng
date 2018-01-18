@@ -10,7 +10,8 @@
 
             <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
-                [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-input>
+                [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"
+                (blur)="commitData()"></timi-input>
               <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
             </div>
             <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
@@ -74,7 +75,7 @@
                 <label>{{child.ui.label}}</label>
               </div>
               <div class="box-item item-control-wrapper">
-                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple"></free-region>
+                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"></free-region>
               </div>
             </div>
 

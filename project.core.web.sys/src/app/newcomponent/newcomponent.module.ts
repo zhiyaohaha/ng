@@ -1,6 +1,6 @@
 
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -12,8 +12,9 @@ import { ApplicationComponent } from './application/application.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
 
-import {ResponsiveModelModule} from "app/component/responsive-model/responsive-model.component";
-import {MultipleFileUploaderModule} from "../component/multiple-file-uploader/multiple-file-uploader.component";
+import { ResponsiveModelModule } from "app/component/responsive-model/responsive-model.component";
+import { MultipleFileUploaderModule } from "../component/multiple-file-uploader/multiple-file-uploader.component";
+import { RegionModule } from "app/component/region/region.component";
 
 @NgModule({
     declarations: [
@@ -21,23 +22,25 @@ import {MultipleFileUploaderModule} from "../component/multiple-file-uploader/mu
         DeclarationComponent,
         ApplicationComponent,
         ChartComponent,
-        
+
     ],
     imports: [
         FormsModule,
+        ReactiveFormsModule,
         CommonModule,
         TimiFileUploaderModule,
         TimiInputModule,
         TimiSelectModule,
         ResponsiveModelModule,
-        MultipleFileUploaderModule
+        MultipleFileUploaderModule,
+        RegionModule
     ],
     exports: [
         PreviewComponent,
         DeclarationComponent,
         ApplicationComponent,
         ChartComponent,
-       
+
     ],
     providers: [],
 })

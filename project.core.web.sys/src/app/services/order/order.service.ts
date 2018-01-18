@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {FnUtil} from "../../common/fn-util";
-import {BaseService} from "../base.service";
-import {ActivatedRoute} from "@angular/router";
+import { Injectable } from "@angular/core";
+import { FnUtil } from "../../common/fn-util";
+import { BaseService } from "../base.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Injectable()
 export class OrderService {
@@ -11,7 +11,7 @@ export class OrderService {
 
   //获取产品类型数据
   getType() {
-    return this.baseService.get("/api/Values/GetSelectDataSource", {"codes": "LoanProductType"});
+    return this.baseService.get("/api/Values/GetSelectDataSource", { "codes": "LoanProductType" });
   }
 
   //获取产品的详细信息
@@ -21,7 +21,7 @@ export class OrderService {
 
   //获取身份证信息
   getPersonInfo(idCard, product) {
-    return this.baseService.post("/api/LoanOrder/CheckIdCardReal", {"idCard": idCard, "product": product})
+    return this.baseService.post("/api/LoanOrder/CheckIdCardReal", { "idCard": idCard, "product": product })
   }
 
   //获取验证码
@@ -61,10 +61,16 @@ export class OrderService {
     });
   }
 
-  //获取贷款信息
-  getLoanInfo(id){
+  //获取贷款信息（补充资料）
+  getLoanInfo(id) {
     return this.baseService.get("/api/LoanOrder/PullFormDataFromOrderCollection", {
       id: id
     });
   }
+
+  //提交补充资料信息
+  onSubmitComplementaryData(data) {
+    return this.baseService.post("/api/LoanOrder/Save", data);
+  }
+
 }
