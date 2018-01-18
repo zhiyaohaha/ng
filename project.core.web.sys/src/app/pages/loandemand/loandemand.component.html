@@ -27,7 +27,7 @@
           <p>分发用户</p>
           <ul>
             <li *ngFor="let item of selectArray">
-              {{item["_user.name"]}}
+              <p>{{item["_user.name"]}}</p>
             </li>
           </ul>
         </div>
@@ -38,8 +38,8 @@
             <p>组织机构列表</p>
             <ul>
               <li *ngFor="let item of orgList;let i=index">
-                <input type="radio" name="orgLists" id=`org${{i}}` (click)="showUserList($event,item,checkedOrg,i)" #checkedOrg>
-                <label for=`org${{i}}`>{{item.name}}</label>
+                <input type="radio" name="orgLists" id=`org{{i}}` (click)="showUserList($event,i)">
+                <label for=`org{{i}}`>{{item.name}}</label>
               </li>
             </ul>
           </div>
@@ -47,18 +47,19 @@
             <p>业务员列表</p>
             <ul>
               <li *ngFor="let item of userList;let j=index">
-                <input type="checkbox" (click)="showCheckedList($event,item,checkedUser)" id=`user${{j}}` #checkedUser>
-                <label for=`user${{j}}`>{{item.name}}</label>
+                <!-- <input type="checkbox" (click)="showCheckedList($event,item,checkedUser,j)" id=`user{{j}}` #checkedUser [checked]="item.checked">
+                <label for=`user{{j}}`>{{item.name}}</label> -->
+                <span (click)="showCheckedList($event,item,j)">{{item.name}}</span>
               </li>
             </ul>
           </div>
           <div class="rightBox" *ngIf="isShowUserList && isShowCheckedList">
             <p>已选业务员列表</p>
             <ul>
-              <li *ngFor="let orgName of orgNames;let i=index">
-                <p>{{orgName}}</p>
+              <li *ngFor="let item of lastShow;let i=index">
+                <p>{{item.name}}</p>
                 <div class="checkedUser">
-                  <p></p>
+                  <p *ngFor="let item of item.children">{{item.name}}<i class="fa fa-window-close" (click)="removeRow($event,item)"></i></p>
                 </div>
               </li>
             </ul>

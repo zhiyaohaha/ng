@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { fadeIn } from "./../../common/animations";
-// import * as echarts from 'echarts';
+import * as echarts from 'echarts';
 
 
 @Component({
@@ -11,14 +11,14 @@ import { fadeIn } from "./../../common/animations";
 })
 export class StatisticsComponent implements OnInit {
   showTab: number = 1;
-  data: Array<any> = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+  data: Array<any> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
   constructor() {
   }
 
   ngOnInit() {
     // 基于准备好的dom，初始化echarts实例
-    //var myChart = echarts.init(document.getElementById('main'));
+    var myChart = echarts.init(document.getElementById('main'));
 
     // 指定图表的配置项和数据
     var option = {
@@ -79,16 +79,14 @@ export class StatisticsComponent implements OnInit {
     };
 
     // 使用刚指定的配置项和数据显示图表。
-    //myChart.setOption(option);
+    myChart.setOption(option);
   }
 
   changeTabOne() {
     this.showTab = 1;
-    //this.data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   }
   changeTabTwo() {
     this.showTab = 2;
-    //this.data = [20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1];
   }
   changeTabThree() {
     this.showTab = 3;

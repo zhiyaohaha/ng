@@ -19,7 +19,6 @@ import { ListModule } from '../../component/list/list.component';
 import { PanelModule } from '../../component/panel/panel.component';
 import { BadgeModule } from '../../component/badge/badge.component';
 import { ShareModule } from '../../common/share';
-import { NewComponentModule } from 'app/newcomponent/newcomponent.module';
 
 @NgModule({
   imports: [
@@ -40,8 +39,7 @@ import { NewComponentModule } from 'app/newcomponent/newcomponent.module';
     ShrinkModule,
     SidebarModule,
     ListModule,
-    PanelModule,
-    NewComponentModule
+    PanelModule
   ],
   declarations: [
     IndexComponent

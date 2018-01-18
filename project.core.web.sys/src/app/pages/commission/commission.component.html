@@ -52,7 +52,7 @@
           </p>
         </div>
         <!-- 返佣明细部分 -->
-        <div class="detail" *ngIf="detailInfo">
+        <div class="detail" *ngIf="detailInfo && (isShowDetail==false)">
           <table>
             <tr>
               <th>姓名</th>
@@ -77,6 +77,22 @@
             </tr>
           </table>
           <button md-raised-button color="deepblue" class="add-button" (click)="sendMassage()">确定</button>
+        </div>
+        <div class="detail" *ngIf="detailInfo && (isShowDetail==true)">
+          <table>
+            <tr>
+              <th>姓名</th>
+              <th>操作人</th>
+              <th>操作时间</th>
+              <th>操作内容</th>
+            </tr>
+            <tr *ngFor="let item of detailInfo.userInfo;let i = index">
+              <td>{{item.trade.userName}}</td>
+              <td>{{item.trade._dealuser}}</td>
+              <td>{{item.time}}</td>
+              <td>{{item.trade.description}}</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>

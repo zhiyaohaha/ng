@@ -94,12 +94,11 @@ export class CommissionComponent implements OnInit {
 
   detailInfo: any;//侧滑数据
 
-  sendArray: Array<any> = [];
-  passChecked: boolean = false;
-  noPassChecked: boolean = false;
+  passChecked: boolean = false;//控制按钮的
+  noPassChecked: boolean = false;//控制按钮的
 
-  temp: object = {};
-
+  temp: object = {};//用来传数据的
+  isShowDetail:boolean;//用来控制展示切换的
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -114,61 +113,33 @@ export class CommissionComponent implements OnInit {
     private commonService: CommonService,
     private commissionService: CommissionService) {
 
-    /**
-     * 路由器结束订阅加载不同的页面
-     * @type {Subscription}
-     */
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-        /**
-         * 每页条数pagesize和当前页码currentPage
-         */
-        if (!localStorage.getItem(this.pagecode + "ps")) {
-          localStorage.setItem(this.pagecode + "ps", "10");
-          localStorage.setItem(this.pagecode + "cp", "0");
-          this.getParamsList({
-            size: 10,
-            index: 0,
-            filters: ""
-          });
-        } else {
-          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-          // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
-          this.getParamsList({
-            size: this.pageSize,
-            index: localStorage.getItem(this.pagecode + "cp"),
-            filters: ""
-          });
-        }
-        this.selectRow = null;
-        this.sidenavKey = "";
-        this.btnType = "new";
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-        this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+ 
+  }
 
-        // this.loadDetailModel();
-        this.loadModal();
-      });
+  ngOnInit() {
+    let pageConfig = this.fnUtil.getPaginationInfo();
+    this.pageSize = pageConfig.pageSize;
+    this.currentPage = pageConfig.currentPage;
 
-    /**
-     * 加载动画
-     */
+    this.getParamsList({
+      size: this.pageSize,
+      index: this.currentPage,
+      filters: ""
+    });
+    if (this.el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+      this.el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+    }
+    this.authorities = this.fnUtil.getFunctions();
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+
+    this.loadModal();
+
     this.lodaingService.create({
-      // name: "fullScreen",
-      // type: "circular",
-      // mode: "indeterminate"
       name: "fullScreen",
       mode: LoadingMode.Indeterminate,
       type: LoadingType.Circular,
       color: "warn"
     });
-  }
-
-  ngOnInit() {
 
   }
 
@@ -233,6 +204,12 @@ export class CommissionComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.row.id);
+    console.log($event.row._rakeBack);
+    if($event.row._rakeBack=="已返佣"){
+      this.isShowDetail = true;
+    }else if($event.row._rakeBack=="未返佣"){
+      this.isShowDetail = false;
+    }
     //console.log($event.row.id)
   }
 
@@ -268,11 +245,7 @@ export class CommissionComponent implements OnInit {
     this.detailInfo = res;
     for (let i = 0; i < this.detailInfo.userInfo.length; i++) {
       this.temp[this.detailInfo.userInfo[i].trade.id] = null;
-      //this.sendArray.push(temp);
     }
-    console.log(this.temp);
-    // console.log(this.detailInfo);
-    // console.log(this.sendArray);
   }
 
   /**
@@ -401,6 +374,9 @@ export class CommissionComponent implements OnInit {
     console.log(this.temp);
     this.commissionService.sendMessage(this.temp).subscribe(res => {
       console.log(res);
+      if(res.code=="Fail"){
+        alert(res.message);
+      }
     })
   }
 }

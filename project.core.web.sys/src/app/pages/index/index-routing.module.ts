@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { IndexComponent } from "./index.component";
-import { StatisticsComponent } from "app/newcomponent/statistics/statistics.component";
+
 
 
 const childRoutes: Routes = [
@@ -35,6 +35,7 @@ const childRoutes: Routes = [
   { path: "SpreadLevelManage", loadChildren: "../promote/promote.module#PromoteModule" },
   { path: "LoanDemand", loadChildren: "../loandemand/loandemand.module#LoandemandModule" },
   { path: "CapitalRakeBackManage", loadChildren: "../commission/commission.module#CommissionModule" },
+  { path: "DataStatistics", loadChildren: "../statistics/statistics.module#StatisticsModule" },
   // {path: "OrgStructure.FinanceMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.BannerMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "SiteMgr.NewsMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
@@ -48,7 +49,6 @@ const childRoutes: Routes = [
   // {path: "ProjectMgr.VersionMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "ProjectMgr.DBMgr", loadChildren: "../sharepage/sharepage.module#SharepageModule"},
   // {path: "dp", redirectTo: "sharepage", pathMatch: "full"},
-  { path: "DataStatistics", component: StatisticsComponent },
   { path: "", redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: "**", redirectTo: "/error" }
 ];

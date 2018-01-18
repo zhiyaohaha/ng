@@ -101,19 +101,28 @@ export class LoandemandComponent implements OnInit {
   isShowUserList: boolean = false;//显示第二条
   isShowCheckedList: boolean = false;//显示第三条
   orgNames: Array<string> = [];
-  orgId: Array<any> = [];
+  //orgId: Array<any> = [];
   userNames: Array<any> = [];
 
   orgObject: object = {};
 
   userListNow: any;
   orgIdNow: any;
+  orgNameNow: any;
 
   userArray: Array<any> = [];
   firstId: string = '';
   secondId: string = '';
-  //allArray: Array<any> = [{},{}];
+
   loandemandInfo: Array<any> = [];
+
+  showArray: Array<any> = [];
+
+  //第二次
+  orgIndex: number;
+  lastShow: Array<any> = [];
+  judgeArray: Array<any> = [];
+
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -128,62 +137,36 @@ export class LoandemandComponent implements OnInit {
     private commonService: CommonService,
     private loandemandService: LoandemandService) {
 
-    /**
-     * 路由器结束订阅加载不同的页面
-     * @type {Subscription}
-     */
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-        /**
-         * 每页条数pagesize和当前页码currentPage
-         */
-        if (!localStorage.getItem(this.pagecode + "ps")) {
-          localStorage.setItem(this.pagecode + "ps", "10");
-          localStorage.setItem(this.pagecode + "cp", "0");
-          this.getParamsList({
-            size: 10,
-            index: 0,
-            filters: ""
-          });
-        } else {
-          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-          // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
-          this.getParamsList({
-            size: this.pageSize,
-            index: localStorage.getItem(this.pagecode + "cp"),
-            filters: ""
-          });
-        }
-        this.selectRow = null;
-        this.sidenavKey = "";
-        this.btnType = "new";
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-        this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+  }
 
-        // this.loadDetailModel();
-        this.loadModal();
-      });
+  ngOnInit() {
+    let pageConfig = this.fnUtil.getPaginationInfo();
+    this.pageSize = pageConfig.pageSize;
+    this.currentPage = pageConfig.currentPage;
+
+    this.getParamsList({
+      size: this.pageSize,
+      index: this.currentPage,
+      filters: ""
+    });
+    if (this.el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+      this.el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+
+    }
+    this.authorities = this.fnUtil.getFunctions();
+    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+
+    this.loadModal();
 
     /**
      * 加载动画
      */
     this.lodaingService.create({
-      // name: "fullScreen",
-      // type: "circular",
-      // mode: "indeterminate"
       name: "fullScreen",
       mode: LoadingMode.Indeterminate,
       type: LoadingType.Circular,
       color: "warn"
     });
-  }
-
-  ngOnInit() {
-
   }
 
   /**
@@ -392,84 +375,152 @@ export class LoandemandComponent implements OnInit {
   //获取业务员列表
   getUserLists(res) {
     this.userList = res;
-    this.userListNow = res;
-    //console.log(this.userListNow);
+    //this.userListNow = res;
+  }
+  //获取选择的用户数据
+  selectedRows(e) {
+    this.selectArray = e.totalRow;
+    console.log(this.selectArray);
+  }
+  //获取分发详情信息
+  getLoandemandInfo(res) {
+    this.loandemandInfo = res;
   }
   //点击分发时的事件
   distribution() {
-    if (this.selectArray[0]){
+    if (this.selectArray[0]) {
       this.sidenavType = 2;
       this.sidenav.open();
-      this.loandemandService.getOrg().subscribe(res => {
-        this.getUserListOrg(res.data);
-      })
-    }else{
+      this.loandemandService.getOrg()
+        .map(res => {
+          let obj = [];
+          let data = res.data;
+          if (data.length > 0) {
+            data.forEach(item => {
+              obj.push({
+                id: item.id,
+                name: item.name,
+                checked: false,
+                children: []
+              })
+            })
+            return obj;
+          }
+        })
+        .subscribe(item => {
+          this.getUserListOrg(item);
+        })
+    } else {
       alert('请选择用户');
     }
-    
   }
   //点击分发详情的事件
   distributionDetail() {
-    if(this.selectArray[0]){
+    if (this.selectArray[0]) {
       this.sidenavType = 3;
       this.sidenav.open();
       this.loandemandService.getDetail(this.selectArray[0].id).subscribe(res => {
         this.getLoandemandInfo(res.data);
       })
-    }else{
+    } else {
       alert('请选择用户');
     }
-    
   }
-  //获取选择的用户数据
-  selectedRows(e) {
-    this.selectArray = e.totalRow;
-  }
-  //获取分发详情信息
-  getLoandemandInfo(res){
-    this.loandemandInfo = res;
-    console.log(this.loandemandInfo);
-  }
+
 
 
   //点击组织列表的事件
-  showUserList(e, item, checkedOrg, i) {
-    let name = item.name;
-    this.orgIdNow = item.id;
-    this.firstId = item.id;
+  showUserList(e, i) {
+    this.orgIdNow = this.orgList[i].id;
     this.isShowUserList = true;
-    this.loandemandService.getUserList(this.orgIdNow).subscribe(res => {
-      this.getUserLists(res.data);
-      item.children = res.data;
-    })
-    if (!this.inArray(name, this.orgNames)) {
-      this.orgNames.push(name);
-      this.orgId.push(this.orgIdNow);
-    }
+    this.orgIndex = i;
+    this.orgList[i].checked = true;
+    this.loandemandService.getUserList(this.orgIdNow)
+      .map(res => {
+        let obj = [];
+        let data = res.data;
+        if (data.length > 0) {
+          data.forEach(item => {
+            obj.push({
+              id: item.id,
+              name: item.name,
+              checked: false
+            })
+          })
+        }
+        // for (let i = 0; i < this.orgList[this.orgIndex].children.length; i++) {
+        //   if (this.orgList[this.orgIndex].children[i].checked) {
+        //     obj[i].checked = true;
+        //   }
+        // }
+        // console.log(obj);
+        return obj
+      })
+      .subscribe(item => {
+        this.getUserLists(item);
+      })
   }
   //已选业务员列表显示
-  showCheckedList(e, item, checkedUser) {
-    let name = item.name;
-    let id = item.id;
+  showCheckedList(e, item, j) {
+    let isInarray = this.inArray(this.orgList[this.orgIndex], this.lastShow);
+    let inJudgeArray = this.inArray(this.userList[j].name, this.judgeArray);
     this.isShowCheckedList = true;
-    if (!(this.firstId == this.secondId)) {
-      this.userNames = [];
+    // if (!inJudgeArray) {
+    //   this.userList[j].checked = true;
+    //   this.orgList[this.orgIndex].children.push(this.userList[j]);
+    //   this.judgeArray.push(this.userList[j].name);
+    // } else if (inJudgeArray){
+    //   this.userList[j].checked = false;
+    //   this.removeByValue(this.orgList[this.orgIndex].children, this.userList[j]);
+    //   this.removeByValue(this.judgeArray, this.userList[j].name);
+    //   if (this.orgList[this.orgIndex].children.length == 0){
+    //     this.removeByValue(this.lastShow, this.orgList[this.orgIndex]);
+    //   }
+    // }
+    // if (this.orgList[this.orgIndex].checked && !isInarray) {
+    //   this.lastShow.push(this.orgList[this.orgIndex]);
+    // }
+    if (!inJudgeArray) {
+      this.userList[j].checked = true;
+      this.orgList[this.orgIndex].children.push(this.userList[j]);
+      this.judgeArray.push(this.userList[j].name);
     }
-    if (!this.inArray(id, this.userNames)) {
-      this.userNames.push(id);
-      this.orgObject[this.orgIdNow] = this.userNames
-      console.log(this.orgObject);
+    if (this.orgList[this.orgIndex].checked && !isInarray) {
+      this.lastShow.push(this.orgList[this.orgIndex]);
     }
-    this.secondId = this.orgIdNow;
+  }
+  //删除已选业务员
+  removeRow(e, item) {
+    let id = item.id;
+    for (let i = 0; i < this.lastShow.length; i++) {
+
+        for (let j = 0; j < this.lastShow[i].children.length; j++) {
+          if (id == this.lastShow[i].children[j].id) {
+            this.removeByValue(this.lastShow[i].children, item);
+            this.removeByValue(this.judgeArray,item.name);
+            if (this.lastShow[i].children.length == 0) {
+              this.removeByValue(this.lastShow, this.lastShow[i]);
+            }
+          }
+        }
+      
+    }
+
   }
 
 
-
-
-
+  //删除数组中的特定元素
+  removeByValue(arr, value) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+        break;
+      }
+    }
+  }
 
   //判断元素是否在数组中
-  inArray(search: string, array: Array<string>) {
+  inArray(search, array) {
     for (let i in array) {
       if (array[i] === search) {
         return true;
@@ -480,12 +531,20 @@ export class LoandemandComponent implements OnInit {
   //分发需求
   onSubmit() {
     let str = "";
+    let obj = {};
     for (let i = 0; i < this.selectArray.length; i++) {
       let idList = [];
       idList.push(this.selectArray[i].id);
       str = idList.join(',');
     }
-    this.loandemandService.sendInfo(str, this.orgObject).subscribe(res => {
+    for(let i=0;i<this.lastShow.length;i++){
+      let arr = [];
+      for (let j = 0; j < this.lastShow[i].children.length; j++) {
+        arr.push(this.lastShow[i].children[j].id);
+      }
+      obj[this.lastShow[i].id] = arr.join(',');
+    }
+    this.loandemandService.sendInfo(str, obj).subscribe(res => {
       console.log(res);
     })
   }
