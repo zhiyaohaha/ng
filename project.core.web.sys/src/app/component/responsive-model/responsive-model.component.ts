@@ -1,26 +1,26 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {ChipModule} from "../chip/chip.component";
-import {RadioModule} from "../radio/radio.component";
-import {CheckboxModule} from "../checkbox/checkbox.component";
-import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {TimiInputModule} from "../timi-input/timi-input.component";
-import {TimiChipModule} from "../timi-chip/chip.component";
-import {TimiTextareaModule} from "../timi-textarea/timi-textarea.component";
-import {TimiCheckboxModule} from "../timi-checkbox/timi-checkbox.component";
-import {TimiSelectModule} from "../timi-select/select.component";
-import {BaseService} from "../../services/base.service";
-import {DynamicDomsModule} from "../dynamic-doms/dynamic-doms.component";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { ChipModule } from "../chip/chip.component";
+import { RadioModule } from "../radio/radio.component";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { TimiFileUploaderModule } from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
+import { TimiInputModule } from "../timi-input/timi-input.component";
+import { TimiChipModule } from "../timi-chip/chip.component";
+import { TimiTextareaModule } from "../timi-textarea/timi-textarea.component";
+import { TimiCheckboxModule } from "../timi-checkbox/timi-checkbox.component";
+import { TimiSelectModule } from "../timi-select/select.component";
+import { BaseService } from "../../services/base.service";
+import { DynamicDomsModule } from "../dynamic-doms/dynamic-doms.component";
 // import {NewComponentModule} from "app/newcomponent/newcomponent.module";
-import {RegionComponent} from "../region/region.component";
-import {UEditorModule} from "ngx-ueditor";
-import {globalUrl} from "../../common/global.config";
-import {Md5} from "ts-md5/dist/md5";
-import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
-import {forEach} from "@angular/router/src/utils/collection";
+import { RegionComponent } from "../region/region.component";
+import { UEditorModule } from "ngx-ueditor";
+import { globalUrl } from "../../common/global.config";
+import { Md5 } from "ts-md5/dist/md5";
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import { forEach } from "@angular/router/src/utils/collection";
 
 @Component({
   selector: "timi-responsive-form",
@@ -59,7 +59,7 @@ export class ResponsiveModelComponent implements OnInit {
     return this._modelDOMS;
   }
 
-
+  @Input() submitBtnNeed: boolean = true;  //是否需要提交按钮（默认是需要的，该字段传入空字符串，则不需要提交按钮）
   @Input() btnType; //按钮类型
   @Input() btnValue; //确定按钮显示的文字
   @Input() modelDOMSData = {}; //需要修改的原数据
@@ -125,6 +125,7 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
+    //  console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -214,41 +215,24 @@ export class ResponsiveModelComponent implements OnInit {
       for (let i = option.length - 1; i >= 0; i--) {
         let config = {};
         for (let j = option[i].bindParamFields.length - 1; j >= 0; j--) {
-
           let receiveKey = option[i].bindParamFields[j];
-          if (receiveKey.indexOf(".") !== -1) {  //key 的形式 可能key是basic.type的形式
-            let postKey;
-            postKey = receiveKey.split(".");
-            //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
-            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
-          } else {          //key 的形式是正常的形式。eg：id
-            config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
-          }
-
-          // config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
+          config[option[i].bindParamFields[j]] = this._modelDOMSData[option[i].bindParamFields[j]] || this.modelDOMSData[option[i].bindParamFields[j]];
         }
         if (!option[i].triggerUrl) {
           return false;
         }
         this.baseService.get("/api/" + option[i].triggerUrl, config).subscribe(r => {
           if (r.code === "0") {
-            if (r.data && r.data.length > 0) {
+
+            //附件组和附件项执行此处代码，其它联动select组件，不执行此代码
+            if (r.data[0] && r.data[0]['_attachments']) {
               if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
                 this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
               } else {                                                       //新增页面
                 this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
               }
-            } else {      //都不勾选以后，发送null
-              //新增页面-数据
-              this._modelDOMSData[option[i].triggerDom] = null;
-              // this.setNullData(this._modelDOMSData);    //方法的使用，清空一级附件组时，清空清空二级附件项的展示数据   //暂时使用手动清空二级附件项的展示数据，
-
-              //修改页面-数据
-              if (this.modelDOMSData[option[i].triggerDom]) {
-                this.modelDOMSData[option[i].triggerDom] = null;
-                this.setNullData(this.modelDOMSData);
-              }
             }
+
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });
@@ -258,23 +242,34 @@ export class ResponsiveModelComponent implements OnInit {
 
   //附件组联动附件项，附件项传递数据到附件组预览。
   judgeSetChangeData(res, key, status) {
-    if (res[0]["id"]) {
-      let data = [];
-      //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
-      for (let k = res.length - 1; k >= 0; k--) {
-        for (const j in res[k]) {
-          if (Array.isArray(res[k][j]) && res[k][j].length > 0) {
+    // if (res[0]["id"]) {   // 是附件项的时候才执行（但是不应该写成固定的 key。因为后天随时会改变）
+    let data = [];
+    //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
+    for (let k = res.length - 1; k >= 0; k--) {
+      for (const j in res[k]) {  //依据于数据结构的写法
+        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则不保存父项。  
+          if (!this.inArray(res[k], data)) {
             data.unshift(res[k]);
           }
         }
       }
+    }
+    // console.log(data)
+    if (status === "add") {
+      this._modelDOMSData[key] = data;
+    } else if (status === "edit") {
+      this.modelDOMSData[key] = data;
+    }
+    // }
+  }
 
-      if (status === "add") {
-        this._modelDOMSData[key] = data;
-      } else if (status === "edit") {
-        this.modelDOMSData[key] = data;
+  inArray(search: string, array: Array<string>) {
+    for (let i in array) {
+      if (array[i] === search) {
+        return true;
       }
     }
+    return false;
   }
 
   setNullData(data) {

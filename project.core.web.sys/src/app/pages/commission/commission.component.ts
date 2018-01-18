@@ -57,6 +57,7 @@ export class CommissionComponent implements OnInit {
 
   detailModel; //查询详情的模板
   sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  Other ：其他不明情况:）
+  selectedRows;
 
   /**
    * 表格title
