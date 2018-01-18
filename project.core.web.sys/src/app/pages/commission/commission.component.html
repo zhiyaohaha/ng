@@ -2,8 +2,6 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="distribution()">分发</button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail()">分发详情</button> -->
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
@@ -76,7 +74,7 @@
               </td>
             </tr>
           </table>
-          <button md-raised-button color="deepblue" class="add-button" (click)="sendMassage()">确定</button>
+          <button md-raised-button class="add-button" (click)="sendMassage()">确定</button>
         </div>
         <div class="detail" *ngIf="detailInfo && (isShowDetail==true)">
           <table>

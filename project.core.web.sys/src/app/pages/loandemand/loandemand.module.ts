@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { MdSidenavModule } from "@angular/material";
+import { MdSidenavModule, MdButtonModule } from "@angular/material";
 import { SearchFormModule } from "app/component/search-form/searchform.component";
 import { TableModule } from "app/component/table/table.component";
 import { ResponsiveModelModule } from "app/component/responsive-model/responsive-model.component";
@@ -20,6 +20,7 @@ import { LoandemandRoutingModule } from "app/pages/loandemand/loandemand-routing
         CommonModule,
         LoandemandRoutingModule,
         MdSidenavModule,
+        MdButtonModule,
         SearchFormModule,
         TableModule,
         ResponsiveModelModule,

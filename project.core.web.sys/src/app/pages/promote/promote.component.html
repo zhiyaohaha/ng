@@ -23,6 +23,7 @@
             <span>下级代理个数</span>
             <span>备注</span>
           </div>
+          
           <div class="tableContent" *ngFor="let item of selectRow;let i=index">
             <div class="level2" (click)="showLevel($event,i)">
               <span>{{i+1}}</span>
@@ -51,6 +52,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

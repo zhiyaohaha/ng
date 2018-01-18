@@ -203,6 +203,7 @@ export class PromoteComponent implements OnInit {
         for (let i = 0; i < this.selectRow.length; i++) {
           this.selectRow[i].checked = false;
         }
+        console.log(this.selectRow);
       });
   }
 
@@ -229,7 +230,7 @@ export class PromoteComponent implements OnInit {
    */
   closeEnd() {
   }
-
+  //点击二级行的时候展示的内容
   showLevel(e, i) {
     this.selectRow[i].checked = !this.selectRow[i].checked;
     if (this.selectRow[i].checked == true) {

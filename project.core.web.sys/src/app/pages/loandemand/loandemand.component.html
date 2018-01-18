@@ -2,8 +2,8 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-    <button md-raised-button color="deepblue" class="add-button" (click)="distribution()">分发</button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="distributionDetail()">分发详情</button>
+    <button md-raised-button class="add-button" (click)="distribution()">分发</button>
+    <button md-raised-button class="add-button" (click)="distributionDetail()">分发详情</button>
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
@@ -38,7 +38,7 @@
             <p>组织机构列表</p>
             <ul>
               <li *ngFor="let item of orgList;let i=index">
-                <input type="radio" name="orgLists" id=`org{{i}}` (click)="showUserList($event,i)">
+                <input type="radio" name="orgLists" id=`org{{i}}` (click)="showUserList($event,i)" class="hidden">
                 <label for=`org{{i}}`>{{item.name}}</label>
               </li>
             </ul>
@@ -67,8 +67,8 @@
 
         </div>
       </div>
-      <!-- <button md-raised-button color="deepblue" class="add-button">取消</button> -->
-      <button md-raised-button color="deepblue" class="add-button special" (click)="onSubmit()">确定</button>
+      
+      <button md-raised-button class="add-button special" (click)="onSubmit()">确定</button>
     </div>
     <!-- 3的时候是点击分发详情出现的侧滑 -->
     <div class="row" *ngIf="sidenavType == 3">
