@@ -39,13 +39,13 @@
 </div>
 <div *ngIf="!multiple" class="multipleAddress">
 
-  <div *ngIf="!loginerBindAreas && multipleFalseModifiedData">
+  <div *ngIf="!loginerBindAreas">
     <timi-select [ngModel]="multipleFalseModifiedData[0]" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"></timi-select>
     <timi-select [ngModel]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData($event,2)"></timi-select>
     <timi-select [ngModel]="multipleFalseModifiedData[2]" [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)"></timi-select>
   </div>
 
-  <div *ngIf="loginerBindAreas && multipleFalseModifiedData">
+  <div *ngIf="loginerBindAreas">
     <timi-select [ngModel]="multipleFalseModifiedData[0]" [options]="loginerBindAreas" pholder="{{'请选择省'}}" (onChange)="getThridAreaSelect($event,1)"></timi-select>
     <timi-select [ngModel]="multipleFalseModifiedData[1]" [options]="areaCities" pholder="{{'请选择市'}}" (onChange)="getThridAreaSelect($event,2)"></timi-select>
     <timi-select [ngModel]="multipleFalseModifiedData[2]" [options]="areaCounties" pholder="{{'请选择区'}}" (onChange)="getThridAreaSelect($event,3)"></timi-select>

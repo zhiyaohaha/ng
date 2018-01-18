@@ -111,10 +111,12 @@
   <!-- 录入信息[(ngModel)]="loanInfo.applyFormData" -->
   <div class="loan">
     <h4>录入信息</h4>
-    <!-- <timi-responsive-form  [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="loanInfo.applyFormData ? edit : new"
-      submitBtnNeed="" [modelDOMSData]="loanInfo.applyFormData" (ngSubmit)="onSubmitParams($event)"></timi-responsive-form> -->
-    <timi-responsive-form [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="loanInfo.applyFormData ? edit : new" [modelDOMSData]="loanInfo.applyFormData"
-      submitBtnNeed="" (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+    <!-- 新增 -->
+    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
+      (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+    <!-- 修改 -->
+    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="edit" submitBtnNeed=""
+      (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
   </div>
 
   <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->

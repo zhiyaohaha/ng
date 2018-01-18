@@ -49,10 +49,10 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   @Input() inputData: any;  //修改状态下，用于展示的数据
   resCheckedAll: boolean; //根据返回结果判断是否进行全选。
 
-  @Input() loginerBindAreas: any; //非多选情况下，地区数据使用父组件传递的数据(省份)。
+  @Input() loginerBindAreas: any; //非多选情况下，地区数据使用父组件传递的text和value数据(省份)。
   areaCities: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(市区)。
   areaCounties: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(区县)。
-  multipleFalseModifiedData: any;//非多选情况下，修改状态下，用于展示的数据
+  multipleFalseModifiedData: any = [];  //非多选情况下，修改状态下，用于展示的数据
 
   private valueChange = (_: any) => {
   };
@@ -349,8 +349,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       } else {  //非多选 
         this.regionService.getFullThridArea(obj).subscribe(res => {
           if (res.code == 0) {
-            console.log(res.data)
-            this.multipleFalseModifiedData = res.data;
+            this.multipleFalseModifiedData = res.data
           }
         })
       }
