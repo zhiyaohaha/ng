@@ -15,7 +15,7 @@ import { TimiSelectModule } from "../timi-select/select.component";
 import { BaseService } from "../../services/base.service";
 import { DynamicDomsModule } from "../dynamic-doms/dynamic-doms.component";
 // import {NewComponentModule} from "app/newcomponent/newcomponent.module";
-import { RegionComponent } from "../region/region.component";
+import { RegionModule } from "../region/region.component";
 import { UEditorModule } from "ngx-ueditor";
 import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
@@ -125,7 +125,7 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
-    //  console.log(data)
+    // console.log(data)A
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -238,6 +238,8 @@ export class ResponsiveModelComponent implements OnInit {
         });
       }
     }
+
+    this.commitData();
   }
 
   //附件组联动附件项，附件项传递数据到附件组预览。
@@ -282,6 +284,17 @@ export class ResponsiveModelComponent implements OnInit {
     }
   }
 
+  //不使用 提交按钮，提交表单数据
+  commitData() {
+    if (!this.submitBtnNeed) {  //不需要提交按钮
+      if (this.btnType == 'new') {
+        this.onSubmit(this._modelDOMSData);
+      } else {
+        this.onSubmit(this.modelDOMSData);
+      }
+
+    }
+  }
 
   /**
    * 筛选出对应的name 赋值bindData
@@ -295,6 +308,10 @@ export class ResponsiveModelComponent implements OnInit {
         }
       }
     }
+  }
+
+  fun(val) {
+    console.log(val)
   }
 
 }
@@ -318,6 +335,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiCheckboxModule,
     TimiSelectModule,
     DynamicDomsModule,
+    RegionModule,
     // NewComponentModule,
     SharedPipeModule,
     UEditorModule.forRoot({
@@ -397,8 +415,8 @@ export class ResponsiveModelComponent implements OnInit {
       // }
     })
   ],
-  declarations: [ResponsiveModelComponent, RegionComponent],
-  providers: [RegionComponent],
+  declarations: [ResponsiveModelComponent],
+  providers: [],
   exports: [ResponsiveModelComponent]
 })
 

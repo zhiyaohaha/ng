@@ -1,7 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef, Input } from "@angular/core";
+import { CommonModule } from '@angular/common';
+import { NgModule, Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef, Input } from "@angular/core";
 import { RegionService } from "../../services/region/region.service";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { TimiSelectModule } from "../timi-select/select.component";
+import { FormsModule } from '@angular/forms';
+
 export const REGION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => RegionComponent),
@@ -46,9 +49,10 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   @Input() inputData: any;  //修改状态下，用于展示的数据
   resCheckedAll: boolean; //根据返回结果判断是否进行全选。
 
-  fun(val) {
-    // console.log(val)
-  }
+  @Input() loginerBindAreas: any; //非多选情况下，地区数据使用父组件传递的数据(省份)。
+  areaCities: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(市区)。
+  areaCounties: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(区县)。
+  multipleFalseModifiedData: any;//非多选情况下，修改状态下，用于展示的数据
 
   private valueChange = (_: any) => {
   };
@@ -317,26 +321,38 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   }
 
   writeValue(obj: any): void {
+
+    //修改状态 
     if (obj) {
-      this.modifiedData = obj;
-      let inputData = this.inputData;
-      // console.log(inputData)
-      //将inputdata 的值，经过  obj 的筛选。push到三级数组里面。
-      for (let key in inputData) {
-        if (key == 'All') {  //选择的是全国的
-          this.resCheckedAll = true;
-          this.allChecked({}, { 'checked': true });
-          return;
-        }
-        this.objFilterInputDataPushArr(key, obj, this.duplicatesProvinceArr, this.provinceArr)
+      //多选
+      if (this.multiple) {
+        this.modifiedData = obj;
+        let inputData = this.inputData;
+        // console.log(inputData)
+        //将inputdata 的值，经过  obj 的筛选。push到三级数组里面。
+        for (let key in inputData) {
+          if (key == 'All') {  //选择的是全国的
+            this.resCheckedAll = true;
+            this.allChecked({}, { 'checked': true });
+            return;
+          }
+          this.objFilterInputDataPushArr(key, obj, this.duplicatesProvinceArr, this.provinceArr)
 
-        for (let key2 in inputData[key]) {
-          this.objFilterInputDataPushArr(key2, obj, this.duplicatesCityArr, this.cityArr)
+          for (let key2 in inputData[key]) {
+            this.objFilterInputDataPushArr(key2, obj, this.duplicatesCityArr, this.cityArr)
 
-          for (let key3 in inputData[key][key2]) {
-            this.objFilterInputDataPushArr(inputData[key][key2][key3], obj, this.duplicatesCountyArr, this.countyArr)
+            for (let key3 in inputData[key][key2]) {
+              this.objFilterInputDataPushArr(inputData[key][key2][key3], obj, this.duplicatesCountyArr, this.countyArr)
+            }
           }
         }
+      } else {  //非多选 
+        this.regionService.getFullThridArea(obj).subscribe(res => {
+          if (res.code == 0) {
+            console.log(res.data)
+            this.multipleFalseModifiedData = res.data;
+          }
+        })
       }
 
     }
@@ -396,21 +412,59 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     }
   }
 
-  //通过这一级的val。设置下一级的数据源
-  changeMultipleFalseData(provinceCode, data) {
-    let _self = this;
-    let res = data ? data : _self.multipleFalseData;
+  //非多选，不使用父组件数据的情况下：     通过这一级的val。设置下一级的数据源
+  changeMultipleFalseData(code, level) {
+    //每次修改发送当前id到父组件
+    this.valueChange(code);
 
-    res.forEach((item1, index1) => {
-      if (item1.value == provinceCode) {
-        if (!data) {
-          _self.multipleFalseCityData = item1.childrens;
-        } else {
+    //请求下一级地区数据（区县没有下一级数据）
+    if (level !== '3') {
 
-          _self.multipleFalseCountyData = item1.childrens;
+      let _self = this;
+      //如果是省份则使用省市区所有数据multipleFalseData  ,市则使用所有的市数据 multipleFalseCityData
+      let res = (level == '2' ? _self.multipleFalseCityData : _self.multipleFalseData);
+
+      res.forEach((item1, index1) => {
+        if (item1.value == code) {
+          if (level == '1') {
+            _self.multipleFalseCityData = item1.childrens;
+            _self.multipleFalseCountyData = [];
+          } else if (level == '2') {
+            _self.multipleFalseCountyData = item1.childrens;
+          }
+          return false;
         }
-        return false;
-      }
-    })
+      })
+    }
   }
+
+  //非多选，使用父组件数据的情况下：     通过父组件传递的数据，获取第二级和第三级地区数据
+  getThridAreaSelect($event, level) {
+    //每次修改发送当前id到父组件
+    this.valueChange($event);
+
+    //请求下一级地区数据（区县没有下一级数据）
+    if (level !== '3') {
+      this.regionService.getThridAreaSelect($event).subscribe(res => {
+        if (res.data) {
+          if (level == '1') {
+            this.areaCities = res.data;
+            this.areaCounties = [];
+          } else if (level == '2') {
+            this.areaCounties = res.data;
+          }
+        }
+      })
+    }
+  }
+
+
 }
+
+@NgModule({
+  imports: [CommonModule, FormsModule, TimiSelectModule],
+  declarations: [RegionComponent],
+  exports: [RegionComponent]
+})
+
+export class RegionModule { }
