@@ -40,6 +40,7 @@ export class TimiTableComponent implements OnInit {
   }
 
   @Input() selectable: boolean = false; // 是否显示checkbox
+  @Input() clickRowable: boolean = false; // 是否可以点击行
 
   @Input() totals: number; // 总页数
   @Input() pageSize: number; // 每页条数
@@ -128,7 +129,9 @@ export class TimiTableComponent implements OnInit {
    * @param index
    */
   rowClick($event, index) {
-    this.clickRowEvent.emit(this.outData[index]);
+    if (this.clickRowable) {
+      this.clickRowEvent.emit(this.outData[index]);
+    }
   }
 
   /**
