@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
+import {AfterContentInit, AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
 import {MdSelectModule} from "@angular/material";
 import {globalVar} from "../../common/global.config";
 import {FormsModule} from "@angular/forms";
@@ -38,7 +38,7 @@ import {FnUtil} from "../../common/fn-util";
   `,
   styleUrls: ["./pagination.component.scss"]
 })
-export class TimiPaginationComponent implements OnInit {
+export class TimiPaginationComponent implements OnInit, AfterContentInit {
 
   _total = [];
   _activeIndex = 0; //当前页码
@@ -96,7 +96,6 @@ export class TimiPaginationComponent implements OnInit {
       }
       this.countPage(this.end, this.start);
     }
-    this.checkStartOrEnd();
   }
 
   get total(): number {
@@ -109,6 +108,10 @@ export class TimiPaginationComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterContentInit() {
+    this.checkStartOrEnd();
   }
 
   /**
@@ -144,10 +147,6 @@ export class TimiPaginationComponent implements OnInit {
    * @param {number} page 页码
    */
   changePage(page: number) {
-    // 如果点击的是当前页就不触发事件
-    if (page === this.activeIndex) {
-      return false;
-    }
 
     const middle = Math.floor(this.maxPage / 2);
     this.start = page - middle;
@@ -236,6 +235,7 @@ export class TimiPaginationComponent implements OnInit {
   setPagination(ps: string, cp: string) {
     localStorage.setItem(this.fnUtil.getPageCode() + "ps", ps);
     localStorage.setItem(this.fnUtil.getPageCode() + "cp", cp);
+    this.checkStartOrEnd();
   }
 }
 
