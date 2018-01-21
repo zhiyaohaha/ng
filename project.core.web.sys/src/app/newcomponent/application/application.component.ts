@@ -130,6 +130,7 @@ export class ApplicationComponent implements OnInit {
 
   //动态表单数据
   onSubmitParams($event) {
+    // console.log($event);
     this.applyFormPostData = $event;
   }
 
