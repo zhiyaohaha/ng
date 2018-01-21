@@ -1,9 +1,10 @@
 import {CommonModule} from "@angular/common";
 import {
   NgModule, Component, AfterViewInit, Input, Output, Renderer2,
-  EventEmitter, ElementRef, ViewChild, forwardRef
+  EventEmitter, ElementRef, ViewChild, forwardRef, HostListener
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {DirectiveModule} from "../../directives/directive.module";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -37,11 +38,13 @@ export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @ViewChild("container") container: ElementRef;
   checkedValue: any[];
-  onModelChange: Function = () => {
-  };
-  onTouchedChange: Function = () => {
-  };
+  onModelChange: Function = () => { };
+  onTouchedChange: Function = () => { };
 
+  @HostListener("click", ["$event"])
+  onClick($event, number) {
+    $event.stopPropagation();
+  }
   constructor(public renderer2: Renderer2) {
     this.checkedValue = [];
     this.theme = "default";
@@ -91,10 +94,11 @@ export class CheckboxComponent implements ControlValueAccessor, AfterViewInit {
       this.onModelChange(this.checkedValue);
     }
   }
+
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, DirectiveModule],
   declarations: [CheckboxComponent],
   exports: [CheckboxComponent]
 })
