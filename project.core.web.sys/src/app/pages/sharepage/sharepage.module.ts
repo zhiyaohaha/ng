@@ -20,6 +20,7 @@ import {TimiTextareaModule} from "../../component/timi-textarea/timi-textarea.co
 import {ResponsiveModelModule} from "../../component/responsive-model/responsive-model.component";
 import {TimiCheckboxModule} from "../../component/timi-checkbox/timi-checkbox.component";
 import {DetailModelModule} from "../../component/detail-model/detail-model.component";
+import {TimiTableModule} from "../../component/timi-table/timi-table.component";
 
 @NgModule({
   imports: [
@@ -27,7 +28,7 @@ import {DetailModelModule} from "../../component/detail-model/detail-model.compo
     SharepageRoutingModule, FormsModule, CommonShareModule,
     MdSidenavModule, MdInputModule, MdSelectModule, MdDatepickerModule, ChipModule,
     SearchFormModule, TableModule, TimiInputModule, ButtonModule, TimiFileUploaderModule, TimiChipModule, SelectModule,
-    TimiTextareaModule, TimiCheckboxModule, DetailModelModule, ResponsiveModelModule
+    TimiTextareaModule, TimiCheckboxModule, DetailModelModule, ResponsiveModelModule, TimiTableModule
   ],
   declarations: [SharepageComponent, FormUnitComponent],
   providers: [SharepageService, ParamsManageService]
