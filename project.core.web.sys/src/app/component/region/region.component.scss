@@ -43,5 +43,14 @@ ul{
   padding-bottom:18px;
 }
 
+.multipleAddress ul.regionUL{
+  margin-left:0px;
+}
 
+.multipleAddress .selectThree>timi-select,.multipleAddress .selectThreeJson>div,.multipleAddress ul.regionUL li{
+    float: left;width:20%;
+    &:nth-child(2){
+      margin:auto 10px;
+    }
+}
 

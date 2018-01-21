@@ -95,13 +95,13 @@
           <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"></timi-select>
         </div>
       </li>
-      <li>
+      <li class="areasComponent">
         <div class="form-group columns1">
           <div class="box-item item-label">
             <label>贷款地区：</label>
           </div>
           <div class="box-item item-control-wrapper">
-            <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.loginerBindAreas"></free-region>
+            <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"></free-region>
           </div>
         </div>
       </li>
@@ -113,7 +113,7 @@
     <h4>录入信息</h4>
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+      (ngSubmit)="onSubmitParams($event)"></timi-responsive-form> 
     <!-- 修改 -->
     <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="edit" submitBtnNeed=""
       (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>

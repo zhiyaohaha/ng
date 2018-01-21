@@ -23,9 +23,9 @@ export class RegionService {
   }
 
   //根据最后一级id，获取相关联的上下级id 
-  getFullThridArea(id) {
-    return this.baseService.get("/api/Area/GetFullThridArea", {
-      code: id
-    });
+  getFullThridArea() {
+    return this.http.get('../../assets/threeAreas.json')
+      .map(rsp => rsp.json())
   }
+
 }

@@ -1,5 +1,5 @@
-import {CommonModule} from "@angular/common";
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 import {
   AfterContentInit,
   Component,
@@ -14,9 +14,9 @@ import {
   Renderer2,
   ViewChild,
 } from "@angular/core";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {CheckboxModule} from "../checkbox/checkbox.component";
-import {ObjectUtils} from "../../common/util";
+import { animate, state, style, transition, trigger } from "@angular/animations";
+import { CheckboxModule } from "../checkbox/checkbox.component";
+import { ObjectUtils } from "../../common/util";
 
 const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,8 +29,8 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   template: `
     <div class="select-wrap">
       <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
-      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive}"
-           (click)="onClick()">
+      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive,'multipleForUse':multipleForUse}"
+           (click)="onClick()">  
         <div class="free-select-input">
           <label>{{value || pholder}}</label>
         </div>
@@ -107,6 +107,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   selfClick: boolean;
   freeClickActive: boolean;
   bindDocumentClickListener: Function;
+  @Input() multipleForUse: boolean; //多个select一起使用,公用一个label（例如三级地区联动，放在一行使用）
 
   _options: any;
   @Input()
@@ -119,7 +120,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       return;
     }
     if (!this.multiple && value.length > 0 && value[0].text !== "请选择") {
-      value.unshift({text: "请选择", value: null, childrens: null});
+      value.unshift({ text: "请选择", value: null, childrens: null });
     } else if (this.multiple && this._selected) {
       let arr = [];
       this.selected = [];

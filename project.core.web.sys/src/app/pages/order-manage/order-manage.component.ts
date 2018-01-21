@@ -27,7 +27,7 @@ import { SetAuthorityComponent } from "../../component/set-authority/set-authori
 import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-  
+
 import { CommonService } from "app/services/common/common.service";
 
 @Component({
@@ -91,6 +91,7 @@ export class OrderManageComponent implements OnInit {
   routerSubscribe; //路由订阅事件
 
   pagecode: string;
+
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -248,14 +249,15 @@ export class OrderManageComponent implements OnInit {
     this.sidenavKey = "Other";
   }
 
-  //临时代码3----资料收集 
-  collect() {
+  //-资料收集 
+  collect(sidenavKey) {
     this.selectRow = "";
     this.new = true;
     this.edit = true;
-    this.btnType = "new";
-    this.sidenavKey = "Collection";
+    this.btnType = "edit";
+    this.sidenavKey = sidenavKey;
   }
+
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -287,12 +289,22 @@ export class OrderManageComponent implements OnInit {
         value.bindParamFields.forEach((item) => {
           param[item] = this.selectRow[item];
         });
-        this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
-          if (res.code === "0") {
-            this.modelDOMS = res.data.doms;
-            this.selectRow = res.data.bindData;
-          }
-        });
+
+        if (value.triggerUrl.indexOf('#') !== -1) {  //url里面有#
+
+          this.FillInfoId = this.selectRow.id;
+
+          this.collect(value.triggerUrl.substr(1, value.triggerUrl.length));
+
+        } else {
+          this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
+            if (res.code === "0") {
+              this.modelDOMS = res.data.doms;
+              this.selectRow = res.data.bindData;
+            }
+          });
+        }
+
       }
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {

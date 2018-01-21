@@ -49,10 +49,13 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   @Input() inputData: any;  //修改状态下，用于展示的数据
   resCheckedAll: boolean; //根据返回结果判断是否进行全选。
 
-  @Input() loginerBindAreas: any; //非多选情况下，地区数据使用父组件传递的text和value数据(省份)。
+  @Input() loginerBindAreas: any; //非多选情况下，地区数据使用    父组件传递的text和value数据(省份)  还是使用  本地json数据。
   areaCities: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(市区)。
   areaCounties: any;   //非多选情况下，地区数据使用,根据父组件传递的数据，请求的数据(区县)。
-  multipleFalseModifiedData: any = [];  //非多选情况下，修改状态下，用于展示的数据
+
+  multipleFalseModifiedData: any;    //非多选情况下，修改状态下，用于展示的数据 (用于还原父组件传递的地区code数据)
+  multipleFalseModifiedState: any;    //非多选情况下，是否是修改状态
+  multipleFalseModifiedWait: boolean = true;  //非多选情况下，修改状态下，还原时，需要等text和value数据加载完成以后，再绑定。再次手动修改的时候就不需要了。
 
   private valueChange = (_: any) => {
   };
@@ -323,6 +326,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   writeValue(obj: any): void {
 
     //修改状态 
+
     if (obj) {
       //多选
       if (this.multiple) {
@@ -347,11 +351,17 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
           }
         }
       } else {  //非多选 
-        this.regionService.getFullThridArea(obj).subscribe(res => {
-          if (res.code == 0) {
-            this.multipleFalseModifiedData = res.data
-          }
-        })
+
+        this.multipleFalseModifiedState = true;
+        // console.log(obj);
+
+        //使用本地json数据；
+        // 通过返回的某一级地区code，获取其它三级的code 
+        if (!this.loginerBindAreas) {
+          this.regionService.getFullThridArea().subscribe(result => {
+            this.multipleFalseModifiedData = result[obj];
+          })
+        }
       }
 
     }
@@ -415,6 +425,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   changeMultipleFalseData(code, level) {
     //每次修改发送当前id到父组件
     this.valueChange(code);
+    this.multipleFalseModifiedWait = false;
 
     //请求下一级地区数据（区县没有下一级数据）
     if (level !== '3') {
@@ -442,22 +453,60 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     //每次修改发送当前id到父组件
     this.valueChange($event);
 
+    let _self = this;
     //请求下一级地区数据（区县没有下一级数据）
     if (level !== '3') {
       this.regionService.getThridAreaSelect($event).subscribe(res => {
         if (res.data) {
           if (level == '1') {
-            this.areaCities = res.data;
-            this.areaCounties = [];
+            let num = 0;
+
+            if (_self.multipleFalseModifiedState) {  //修改状态下
+              for (let key in _self.loginerBindAreas) {
+                num++;
+                if (num !== 1) {
+                  if (num == 2) {
+                    _self.loginerBindAreas[key] = res.data;
+                  } else {   //需要省的时候，清空县级地区
+                    _self.loginerBindAreas[key] = [];
+                  }
+
+                }
+              }
+            } else {  //新增状态下
+              this.areaCities = res.data;
+              this.areaCounties = [];
+            }
+
           } else if (level == '2') {
-            this.areaCounties = res.data;
+            let num = 0;
+
+            if (_self.multipleFalseModifiedState) {  //修改状态下
+              for (let key in _self.loginerBindAreas) {
+                num++;
+                if (num == 3) {
+                  _self.loginerBindAreas[key] = res.data;
+                }
+              }
+            } else { //新增状态下
+              this.areaCounties = res.data;
+            }
+
           }
         }
       })
     }
   }
 
+  //返回对象的key
+  getKeys(item) {
+    return Object.keys(item);
+  }
 
+  //显示不同的pholder
+  setPholder(level) {
+    return (level == '1' ? '省' : (level == '2' ? '市' : '区'));
+  }
 }
 
 @NgModule({
