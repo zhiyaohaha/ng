@@ -1,0 +1,31 @@
+table {
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #ccc;
+    &:hover {
+      td {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  th, td {
+    text-align: left;
+    max-width: 20vw;
+    min-width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    padding: 2px 6px;
+    transition: background-color .4s;
+  }
+  .checkbox {
+    width: 50px;
+  }
+  .table-img {
+    width: 20px;
+    height: 20px;
+    margin: 0 1px;
+    vertical-align: text-bottom;
+  }
+}
