@@ -96,6 +96,7 @@ export class TimiPaginationComponent implements OnInit {
       }
       this.countPage(this.end, this.start);
     }
+    this.checkStartOrEnd();
   }
 
   get total(): number {
@@ -108,7 +109,6 @@ export class TimiPaginationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkStartOrEnd();
   }
 
   /**
@@ -144,6 +144,10 @@ export class TimiPaginationComponent implements OnInit {
    * @param {number} page 页码
    */
   changePage(page: number) {
+    // 如果点击的是当前页就不触发事件
+    if (page === this.activeIndex) {
+      return false;
+    }
 
     const middle = Math.floor(this.maxPage / 2);
     this.start = page - middle;
