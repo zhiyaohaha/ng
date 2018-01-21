@@ -3,6 +3,7 @@ import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular
 import {MdSelectModule} from "@angular/material";
 import {globalVar} from "../../common/global.config";
 import {FormsModule} from "@angular/forms";
+import {FnUtil} from "../../common/fn-util";
 
 @Component({
   selector: "timi-pagination",
@@ -44,20 +45,25 @@ export class TimiPaginationComponent implements OnInit {
   _pageSize = 10; //当前每页条数
   pageSizes = globalVar.pageSizes; //可选页码
   @Input() maxPage = 5;
+
   @Input()
   set activeIndex(value: number) {
     this._activeIndex = value;
   }
+
   get activeIndex() {
     return this._activeIndex;
   }
+
   @Input()
   set pageSize(value) {
     this._pageSize = value;
   }
+
   get pageSize() {
     return this._pageSize;
   }
+
   isFirst: boolean;
   isLast: boolean;
   first = 0;
@@ -98,7 +104,7 @@ export class TimiPaginationComponent implements OnInit {
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
+  constructor(private fnUtil: FnUtil) {
   }
 
   ngOnInit() {
@@ -163,6 +169,7 @@ export class TimiPaginationComponent implements OnInit {
       activeIndex: page
     });
     this.checkStartOrEnd();
+    this.setPagination(this.pageSize.toString(), page.toString());
   }
 
   /**
@@ -212,8 +219,19 @@ export class TimiPaginationComponent implements OnInit {
     this.countPage(end);
     this.onChange.emit({
       pageSize: this.pageSize,
-      activeIndex: this.activeIndex
+      activeIndex: 0
     });
+    this.setPagination(this.pageSize.toString(), "0");
+  }
+
+  /**
+   * 设置当前页面的页码
+   * @param {string} ps 每页条数
+   * @param {string} cp 当前页码
+   */
+  setPagination(ps: string, cp: string) {
+    localStorage.setItem(this.fnUtil.getPageCode() + "ps", ps);
+    localStorage.setItem(this.fnUtil.getPageCode() + "cp", cp);
   }
 }
 
