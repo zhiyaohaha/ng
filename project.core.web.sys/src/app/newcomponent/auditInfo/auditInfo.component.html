@@ -1,9 +1,8 @@
 <form *ngIf="loanInfo">
-
   <!-- 个人信息和贷款信息 -->
-  <free-personalLoanInfo [loanInfo]="loanInfo"></free-personalLoanInfo>
+  <free-personalLoanInfo [loanInfo]="loanInfo" [readyOnly]="readyOnly"></free-personalLoanInfo>
 
-  <!-- 录入信息 -->
+  <!-- 录入信息[(ngModel)]="loanInfo.applyFormData" -->
   <div class="loan">
     <h4>录入信息</h4>
     <!-- 新增 -->
@@ -14,7 +13,7 @@
       (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
   </div>
 
-  <!-- 所需附件 -->
+  <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->
   <div class="m-b-20">
     <h4>所需附件</h4>
     <ul class="clearfix accessory">

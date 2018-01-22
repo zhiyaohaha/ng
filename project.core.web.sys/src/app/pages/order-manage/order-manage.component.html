@@ -6,9 +6,9 @@
       报单
     </button>
     <!--1 临时按钮 -->
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="collect();sidenav.open()">
-      资料收集
-    </button> -->
+    <button md-raised-button color="deepblue" class="add-button" (click)="audit();sidenav.open()">
+      审核资料
+    </button>
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
@@ -23,8 +23,11 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'"></free-declaration>
 
-        <!--2详情 -->
+        <!-- 资料补充 -->
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
+
+        <!-- 资料审核 -->
+        <free-auditInfo *ngIf="sidenavKey === 'audit'" id="5a5e1f3eff776332740bf282"></free-auditInfo>
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"

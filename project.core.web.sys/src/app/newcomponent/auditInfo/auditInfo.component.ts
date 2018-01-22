@@ -9,22 +9,22 @@ import { TimiInputModule } from "../../component/timi-input/timi-input.component
 import { ToastService } from "../../component/toast/toast.service";
 
 @Component({
-  selector: 'free-application',
-  templateUrl: './application.component.html',
-  styleUrls: ['./application.component.scss'],
+  selector: 'free-auditInfo',
+  templateUrl: './auditInfo.component.html',
+  styleUrls: ['./auditInfo.component.scss'],
   providers: [OrderService],
   animations: [
     trigger('selectState', [
       state('attachmentsDisplay', style({})),
       transition(':enter', [
         style({
-          transform: 'translate(80px, 80px)'  //从下面进入
+          transform: 'translate(0, 80px)'  //从下面进入
         }), animate('.4s cubic-bezier(.25,.8,.25,1)')
       ])
     ])
   ],
 })
-export class ApplicationComponent implements OnInit {
+export class AuditInfoComponent implements OnInit {
 
   loanInfo: any; //贷款信息
   attachmentsDisplay: false; //展现附件组下面的附件项
@@ -36,7 +36,9 @@ export class ApplicationComponent implements OnInit {
   applyFormData: any;           //动态表单数据
   areaCities: any; //市级数据
   areaCounties: any; //区县级数据
-  applyFormPostData: any = null; //用于提交的动态表单数据
+  applyFormPostData: any; //用于提交的动态表单数据
+
+  readyOnly: boolean = true;  //贷款信息是否是只读
 
   @Input() id: string;
 

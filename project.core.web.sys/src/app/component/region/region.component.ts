@@ -57,6 +57,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   multipleFalseModifiedState: any;    //非多选情况下，是否是修改状态
   multipleFalseModifiedWait: boolean = true;  //非多选情况下，修改状态下，还原时，需要等text和value数据加载完成以后，再绑定。再次手动修改的时候就不需要了。
 
+  @Input() readyOnly: boolean;  //是否是只读
   private valueChange = (_: any) => {
   };
 

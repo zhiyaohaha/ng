@@ -9,6 +9,8 @@ import { DeclarationComponent } from './declaration/declaration.component';
 import { TimiFileUploaderModule } from 'app/component/timi-ng2-file-uploader/timi-ng2-file-uploader.component';
 import { TimiInputModule } from 'app/component/timi-input/timi-input.component';
 import { ApplicationComponent } from './application/application.component';
+import { AuditInfoComponent } from './auditInfo/auditInfo.component';
+import { PersonalLoanInfoComponent } from './personalLoanInfo/personalLoanInfo.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
 
@@ -21,7 +23,9 @@ import { MdButtonModule } from '@angular/material';
     declarations: [
         PreviewComponent,
         DeclarationComponent,
+        PersonalLoanInfoComponent,
         ApplicationComponent,
+        AuditInfoComponent,
         ChartComponent,
 
     ],
@@ -40,7 +44,9 @@ import { MdButtonModule } from '@angular/material';
     exports: [
         PreviewComponent,
         DeclarationComponent,
+        PersonalLoanInfoComponent,
         ApplicationComponent,
+        AuditInfoComponent,
         ChartComponent,
 
     ],

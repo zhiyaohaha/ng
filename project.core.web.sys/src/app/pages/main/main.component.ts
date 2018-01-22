@@ -1,6 +1,5 @@
-import {ToastService} from "./../../component/toast/toast.service";
-import {Component, OnInit} from "@angular/core";
-import {fadeIn} from "./../../common/animations";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {fadeIn} from "../../common/animations";
 import {LoginOutService} from "../../services/loginOut-service/loginOut.service";
 
 import {FileUploader} from "ng2-file-upload";
@@ -10,15 +9,18 @@ import {WebSocketService} from "../../services/share/web-socket.service";
 import {globalUrl} from "../../common/global.config";
 import {environment} from "environments/environment";
 import {UEditorConfig} from "ngx-ueditor";
+import {BaseUIComponent} from "../baseUI.component";
+import {ToastService} from "../../component/toast/toast.service";
+import {TdDataTableService, TdDialogService, TdLoadingService} from "@covalent/core";
 
 @Component({
   selector: "app-root",
   templateUrl: "./main.component.html",
   styleUrls: ["./main.component.scss"],
   animations: [fadeIn],
-  providers: [LoginOutService, UEditorConfig]
+  providers: [LoginOutService, UEditorConfig, TdLoadingService]
 })
-export class MainComponent implements OnInit {
+export class MainComponent extends BaseUIComponent implements OnInit {
 
   foods = [
     {value: "steak-0", viewValue: "Steak"},
@@ -31,9 +33,19 @@ export class MainComponent implements OnInit {
     autoClearinitialContent: true,
     wordCount: false
   };
+  loader;
 
-
-  constructor(private _loginoutservice: LoginOutService, private util: ConvertUtil, private http: BaseService, private wsService: WebSocketService, private toastService: ToastService) {
+  constructor(private _loginoutservice: LoginOutService,
+              private util: ConvertUtil,
+              private http: BaseService,
+              private wsService: WebSocketService,
+              private toastService: ToastService,
+              private loadingService: TdLoadingService,
+              private dialogService: TdDialogService,
+              private viewContainerRef: ViewContainerRef,
+              ) {
+    super(loadingService);
+    // this.loader = BaseUIComponent.registerLoading(this.loadingService, "loading");
   }
 
   ngOnInit() {
@@ -131,7 +143,14 @@ export class MainComponent implements OnInit {
   }
 
   sendMsg() {
-    this.toastService.creatNewMessage("123123123");
+    super.showToast(this.toastService, "123");
+    this.loadingService.register("loading");
+    setTimeout(() => {
+      this.loadingService.resolve("loading");
+    }, 2000);
+    super.openConfirm({message: "xxxx", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef}, function (accept: boolean) {
+      console.log(accept);
+    });
   }
 
 }

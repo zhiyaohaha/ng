@@ -148,11 +148,13 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
          */
         this.pageSize = paginationInfo.pageSize;
         this.currentPage = paginationInfo.currentPage;
-        this.getParamsList({
-          size: this.pageSize,
-          index: this.currentPage,
-          filters: ""
-        });
+        if (this.pagecode) {
+          this.getParamsList({
+            size: this.pageSize,
+            index: this.currentPage,
+            filters: ""
+          });
+        }
         el.nativeElement.querySelector(".mat-drawer-backdrop").click();
       });
 

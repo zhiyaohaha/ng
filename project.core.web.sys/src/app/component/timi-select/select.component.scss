@@ -140,3 +140,10 @@
   }
 
 }
+
+.disabledClass{
+  background-color:#d9d9d9 !important;
+  label {
+    cursor: default !important;
+  }
+}

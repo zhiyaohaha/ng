@@ -103,24 +103,26 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
         let paginationInfo = this.fnUtil.getPaginationInfo();
         /**
          * 每页条数pagesize和当前页码currentPage
          */
         this.pageSize = paginationInfo.pageSize;
         this.currentPage = paginationInfo.currentPage;
-        this.getParamsList({
-          size: this.pageSize,
-          index: this.currentPage,
-          filters: ""
-        });
+        if (this.authorityKey) {
+          this.getParamsList({
+            size: this.pageSize,
+            index: this.currentPage,
+            filters: ""
+          });
+        }
         this.selectRow = null;
         this.new = true;
         this.edit = false;
         this.btnType = "new";
         el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-        this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
 
         // this.loadDetailModel();
         // this.loadModal();

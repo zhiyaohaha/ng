@@ -29,7 +29,7 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
   template: `
     <div class="select-wrap">
       <span class="free-select-name" *ngIf="freeSelectName">{{freeSelectName}}</span>
-      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive,'multipleForUse':multipleForUse}"
+      <div class="free-select" [ngClass]="{'free-select-click-active':freeClickActive,'multipleForUse':multipleForUse,' disabledClass':disabledVal}"
            (click)="onClick()">  
         <div class="free-select-input">
           <label>{{value || pholder}}</label>
@@ -46,7 +46,7 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
             </div>
           </div>
 
-          <div class="free-select-wrapper free-iscroll">
+          <div class="free-select-wrapper free-iscroll"  *ngIf="!disabledVal">
             <ul *ngIf="!multiple">
               <free-select-item
                 *ngFor="let option of filterValue(options, 'text'); index as i"
@@ -108,6 +108,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   freeClickActive: boolean;
   bindDocumentClickListener: Function;
   @Input() multipleForUse: boolean; //多个select一起使用,公用一个label（例如三级地区联动，放在一行使用）
+  @Input() disabledVal: boolean = false;
 
   _options: any;
   @Input()

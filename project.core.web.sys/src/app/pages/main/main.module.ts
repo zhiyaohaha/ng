@@ -1,5 +1,4 @@
 import {FormsModule} from "@angular/forms";
-import {ToastModule} from "../../component/toast/toast.component";
 import {RouterModule} from "@angular/router";
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
@@ -14,10 +13,8 @@ import {ShareModule} from "../../common/share";
 
 import {FileUploadModule} from "ng2-file-upload";
 import {MdButtonModule, MdInputModule, MdProgressBarModule, MdSelectModule, MdSnackBarModule} from "@angular/material";
-import {strLength} from "../../common/pipe/strLength";
 import {TimiSelectModule} from "../../component/timi-select/select.component";
 import {MultipleFileUploaderModule} from "../../component/multiple-file-uploader/multiple-file-uploader.component";
-import {UEditorModule} from "ngx-ueditor";
 
 @NgModule({
   imports: [
@@ -36,7 +33,6 @@ import {UEditorModule} from "ngx-ueditor";
     MdSnackBarModule,
     MdInputModule,
     MdSelectModule,
-    ToastModule,
     TimiSelectModule,
     MultipleFileUploaderModule,
     // UEditorModule.forRoot({

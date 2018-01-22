@@ -24,7 +24,7 @@ export class FnUtil {
       pageSize: 10,
       currentPage: 0
     };
-    if (!localStorage.getItem(pageCode + "ps")) {
+    if (!localStorage.getItem(pageCode + "ps") && pageCode) {
       localStorage.setItem(pageCode + "ps", "10");
       localStorage.setItem(pageCode + "cp", "0");
     } else {
@@ -51,16 +51,18 @@ export class FnUtil {
     let apis;
     let pageCode = this.getPageCode();
     this.menus = this.convertUtil.toJSON(localStorage.getItem("menus")); //用户菜单
-    this.menus.filter(r => {
-      r.childrens.filter(cc => {
-        if (cc.code === pageCode) {
-          apis = cc;
-        }
-      })[0];
+
+    this.menus.forEach((item) => {
+      if (item.childrens && item.childrens.length) {
+        item.childrens.forEach(value => {
+          if (value.code === pageCode) {
+            apis = value._functions;
+          }
+        });
+      }
     });
-    let api = apis._functions.filter(r => {
-      return r[param] === key;
-    })[0];
+
+    let api = apis && apis.find(r => r[param] === key);
     return api ? "/api" + api.url : "";
   }
 
