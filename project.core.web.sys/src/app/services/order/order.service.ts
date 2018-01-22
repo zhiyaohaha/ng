@@ -15,8 +15,8 @@ export class OrderService {
   }
 
   //获取产品的详细信息
-  getProductDetail() {
-    return this.baseService.get("/api/LoanProduct/Choose");
+  getProductDetail(keywords='', type='') {
+    return this.baseService.get("/api/LoanProduct/Choose", { "keywords": keywords, "type": type });
   }
 
   //获取身份证信息

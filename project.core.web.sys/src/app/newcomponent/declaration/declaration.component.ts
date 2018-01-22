@@ -33,11 +33,16 @@ export class DeclarationComponent implements OnInit {
   personData: object;
   showPersonData: boolean = false;//是否展示人物详细信息
   btnDisabled: boolean = true;//验证码按钮是否打开
-  productsStyle: boolean = false;
-  index: any;
-  showCertification: any;
+  productsStyle: boolean = false;//点击产品展示产品详情
+  index: number;//用于展示，当前方法略low，有时间的话重写
+  showCertification: number; //用于切换展示
   personRealId: string;
- 
+
+  searchValue: any;
+  chooseValue: any;
+
+  addPadding: boolean = false;
+
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
@@ -49,13 +54,17 @@ export class DeclarationComponent implements OnInit {
     })
   }
 
-  //产品数据
+  //产品类型数据
   getProductType(res) {
     this.productType = res;
   }
   //产品详情数据
   getProductDetail(res) {
+    for (let i = 0; i < res.length; i++) {
+      res[i].checked = false;
+    }
     this.productDetail = res;
+    console.log(this.productDetail);
   }
   //获取电话验证码
   getPhoneNum($event, phoneNum) {
@@ -63,7 +72,6 @@ export class DeclarationComponent implements OnInit {
     this.phoneNum = phoneNum.value;
     if (phoneReg.test(this.phoneNum)) {
       this.btnDisabled = false;
-      console.log(this.phoneNum);
     }
     this.orderService.getCodeInfo(this.phoneNum).subscribe(res => {
       console.log(res);
@@ -81,11 +89,19 @@ export class DeclarationComponent implements OnInit {
     }
   }
   //点击展示产品详情
-  changeStyle(e, liActive, i) {
-    this.productsStyle = true;
-    this.index = i;
-    this.productId = this.productDetail[i].id;
+  changeStyle(product, i) {
+    product.checked = !product.checked;
     this.showAuthentication = true;
+    for (let j = 0; j < this.productDetail.length; j++) {
+      if (i != j) {
+        this.productDetail[j].checked = false;
+      }
+    }
+    if(product.checked){
+      this.addPadding = true;
+    }else{
+      this.addPadding = false;
+    }
   }
   //银行卡号
   getbankCard(e, bankNum) {
@@ -134,7 +150,7 @@ export class DeclarationComponent implements OnInit {
   onCertification() {
     this.orderService.getInfo(this.phoneCode, this.idCard, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
-      if(res.data){
+      if (res.data) {
         this.personData = res.data;
         this.personRealId = res.data.id;
       }
@@ -143,10 +159,48 @@ export class DeclarationComponent implements OnInit {
   }
   //申请贷款
   onSubmit() {
-    this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res=>{
+    this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {
       console.log(res);
-      //res.data.id
     })
   }
-
+  //搜索产品
+  searchProduct(e, name) {
+    this.searchValue = name;
+    this.addPadding = false;
+    if (this.chooseValue && name) {
+      this.orderService.getProductDetail(name, this.chooseValue).subscribe(res => {
+        this.getProductDetail(res.data);
+      })
+      console.log(1)
+    } else if (!(this.chooseValue) && name) {
+      this.orderService.getProductDetail(name).subscribe(res => {
+        this.getProductDetail(res.data);
+      })
+      console.log(2)
+    } else if (this.chooseValue && !name) {
+      this.orderService.getProductDetail('', this.chooseValue).subscribe(res => {
+        this.getProductDetail(res.data);
+      });
+      console.log(3)
+    } else {
+      this.orderService.getProductDetail().subscribe(res => {
+        this.getProductDetail(res.data);
+      });
+    }
+    console.log(4)
+  }
+  //匹配产品类型
+  choseType(e, code) {
+    this.chooseValue = code;
+    this.addPadding = false;
+    if (this.searchValue && code) {
+      this.orderService.getProductDetail(this.searchValue, code).subscribe(res => {
+        this.getProductDetail(res.data);
+      })
+    } else if (!(this.searchValue) && code) {
+      this.orderService.getProductDetail('', code).subscribe(res => {
+        this.getProductDetail(res.data);
+      })
+    }
+  }
 }

@@ -15,6 +15,7 @@ import { ChartComponent } from './chart/chart.component';
 import { ResponsiveModelModule } from "app/component/responsive-model/responsive-model.component";
 import { MultipleFileUploaderModule } from "../component/multiple-file-uploader/multiple-file-uploader.component";
 import { RegionModule } from "app/component/region/region.component";
+import { MdButtonModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { RegionModule } from "app/component/region/region.component";
         TimiSelectModule,
         ResponsiveModelModule,
         MultipleFileUploaderModule,
-        RegionModule
+        RegionModule,
+        MdButtonModule
     ],
     exports: [
         PreviewComponent,
