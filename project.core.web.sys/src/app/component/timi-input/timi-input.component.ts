@@ -28,7 +28,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
       <div class="box-item item-label"><label>{{labelName}}</label></div>
       <div class="box-item item-control-wrapper">
         <div #wrap class="item-control">
-          <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" disabled="{{disabled}}"
+          <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" [disabled]="disabledVal"
                  name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
                  required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)">
           <span class="item-error-tip">{{errorTips}}</span>
@@ -58,7 +58,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @Input() inputWidth: string;
   @Input() placeholder: string;
   @Input() columns: number;
-  @Input() disabled: boolean;
+  @Input() disabledVal: boolean;
   @Input() require: boolean;
   @Input() pattern: string;
   @Input() errorTips: string;
@@ -153,10 +153,10 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   writeValue(obj: any): void {
     // this.value = obj || '';
-    if(obj == null || obj == undefined){
-      this.value =  '';
-    }else{
-      this.value = obj 
+    if (obj == null || obj == undefined) {
+      this.value = '';
+    } else {
+      this.value = obj
     }
   }
 

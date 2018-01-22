@@ -1,0 +1,111 @@
+<!-- 个人信息 -->
+<div class="personInfo m-b-20">
+  <h4>个人信息</h4>
+  <div class="personInfoPic">
+    <img [src]="loanInfo.portrait" alt="">
+  </div>
+  <div class="personInfoConent clearfix">
+    <ul>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">姓名：</div>
+          <div class="span">
+            <p>{{loanInfo.name}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">性别：</div>
+          <div class="span">
+            <p>{{loanInfo._sex}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">年龄：</div>
+          <div class="span">
+            <p>{{loanInfo.age}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">身份证号：</div>
+          <div class="span">
+            <p>{{loanInfo.idCard}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">民族：</div>
+          <div class="span">
+            <p>{{loanInfo.nation}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">银行预留手机号：</div>
+          <div class="span">
+            <p>{{loanInfo.mobilePhone}}</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="form-group columns1">
+          <div class="label">户籍地：</div>
+          <div class="span">
+            <p>{{loanInfo.domicile}}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- 贷款信息 -->
+<div class="loan  m-b-20">
+  <h4>贷款信息</h4>
+  <ul class="loan-info clearfix">
+    <li>
+      <div class="form-group columns1">
+        <div class="label">贷款产品：</div>
+        <div class="span">
+          <p>{{loanInfo.productName}}</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [disabledVal]="readyOnly"></timi-input>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <timi-select freeSelectName="贷款用途" name="purpose" [(ngModel)]="loanInfo.purpose" [options]="loanInfo.loanUseBindData" pholder="{{'请选择用途'}}"
+          [disabledVal]="readyOnly"></timi-select>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"
+          [disabledVal]="readyOnly"></timi-select>
+      </div>
+    </li>
+    <li class="areasComponent">
+      <div class="form-group columns1">
+        <div class="box-item item-label">
+          <label>贷款地区：</label>
+        </div>
+        <div class="box-item item-control-wrapper">
+          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
+            [readyOnly]="readyOnly"></free-region>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

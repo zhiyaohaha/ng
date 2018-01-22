@@ -258,6 +258,13 @@ export class OrderManageComponent implements OnInit {
     this.sidenavKey = sidenavKey;
   }
 
+  //资料审核
+  audit() {
+    this.selectRow = "";
+    this.sidenavKey = "audit";
+  }
+
+
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {

@@ -80,7 +80,7 @@
       <ul class="regionUL">
         <li *ngFor='let key of getKeys(loginerBindAreas);let i = index;'>
           <timi-select [ngModel]="key" [options]="loginerBindAreas[key]" pholder="请选择{{setPholder(i+1)}}" (click)="changeTrue = true"
-            (onChange)="changeTrue?getThridAreaSelect($event,i+1):''" multipleForUse="true"></timi-select>
+            (onChange)="changeTrue?getThridAreaSelect($event,i+1):''" multipleForUse="true" [disabledVal]="readyOnly"></timi-select>
         </li>
       </ul>
     </div>

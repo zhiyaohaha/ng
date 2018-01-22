@@ -9,6 +9,8 @@ import { DeclarationComponent } from './declaration/declaration.component';
 import { TimiFileUploaderModule } from 'app/component/timi-ng2-file-uploader/timi-ng2-file-uploader.component';
 import { TimiInputModule } from 'app/component/timi-input/timi-input.component';
 import { ApplicationComponent } from './application/application.component';
+import { AuditInfoComponent } from './auditInfo/auditInfo.component';
+import { PersonalLoanInfoComponent } from './personalLoanInfo/personalLoanInfo.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
 
@@ -20,7 +22,9 @@ import { RegionModule } from "app/component/region/region.component";
     declarations: [
         PreviewComponent,
         DeclarationComponent,
+        PersonalLoanInfoComponent,
         ApplicationComponent,
+        AuditInfoComponent,
         ChartComponent,
 
     ],
@@ -38,7 +42,9 @@ import { RegionModule } from "app/component/region/region.component";
     exports: [
         PreviewComponent,
         DeclarationComponent,
+        PersonalLoanInfoComponent,
         ApplicationComponent,
+        AuditInfoComponent,
         ChartComponent,
 
     ],
