@@ -82,11 +82,13 @@ export class TemplateComponent implements OnInit, AfterViewInit {
         let paginationInfo = this.fnUtil.getPaginationInfo();
         this.pageSize = paginationInfo.pageSize;
         this.currentPage = paginationInfo.currentPage;
-        this.getParamsList({
-          size: this.pageSize,
-          index: this.currentPage,
-          filters: ""
-        });
+        if (this.pagecode) {
+          this.getParamsList({
+            size: this.pageSize,
+            index: this.currentPage,
+            filters: ""
+          });
+        }
         //每次订阅不同的页面，关闭右侧弹出的iframe
         this.sidenav.close();
       });
@@ -109,9 +111,6 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.sidenavHeight = this.el.nativeElement.querySelector("#sidenav").clientHeight;
-      if (localStorage.getItem(this.pagecode + "cp")) {
-        this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10) + 1);
-      }
     }, 0);
   }
 
@@ -156,8 +155,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   page($event) {
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
-    localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
-    localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
+    // localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
+    // localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
     this.getParamsList(this.listparam);
   }
 
@@ -165,7 +164,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.setIframeSrc($event.row.id);
+    this.setIframeSrc($event.id);
     // this.sharepageService.getEditParams({ id: $event.row.id })
     //   .subscribe(r => {
     //     this.selectRow = r.data;
