@@ -18,7 +18,7 @@ import { ToastService } from "../../component/toast/toast.service";
       state('attachmentsDisplay', style({})),
       transition(':enter', [
         style({
-          transform: 'translate(0, 80px)'  //从下面进入
+          transform: 'translate(80px, 80px)'  //从下面进入
         }), animate('.4s cubic-bezier(.25,.8,.25,1)')
       ])
     ])

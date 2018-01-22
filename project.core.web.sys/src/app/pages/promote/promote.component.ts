@@ -26,13 +26,23 @@ import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { PromoteService } from "app/services/promote/promote.service";
 import { CommonService } from "app/services/common/common.service";
+import { animate, state, style, transition, trigger } from "@angular/animations";
 
 
 @Component({
   selector: "app-promote",
   templateUrl: "./promote.component.html",
   styleUrls: ["./promote.component.scss"],
-  animations: [fadeIn],
+  animations: [
+    trigger('selectState', [
+      state('attachmentsDisplay', style({})),
+      transition(':enter', [
+        style({
+          transform: 'translate(0, 80px)'  //从下面进入
+        }), animate('.4s cubic-bezier(.25,.8,.25,1)')
+      ])
+    ])
+  ],
   providers: [TdLoadingService, PromoteService, CommonService]
 })
 export class PromoteComponent implements OnInit {

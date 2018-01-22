@@ -26,7 +26,7 @@
           </p>
           <p>
             <span>介绍人姓名：</span>
-            <span>{{detailInfo.loanOrder.firstLevel.name}}</span>
+            <span>{{detailInfo.loanOrder.firstLevel?detailInfo.loanOrder.firstLevel.name:''}}</span>
           </p>
           <p>
             <span>客户姓名：</span>
@@ -50,7 +50,7 @@
           </p>
         </div>
         <!-- 返佣明细部分 -->
-        <div class="detail" *ngIf="detailInfo && (isShowDetail==false)">
+        <div class="detail" *ngIf="detailInfo && (isShowDetail==1)">
           <table>
             <tr>
               <th>姓名</th>
@@ -76,7 +76,7 @@
           </table>
           <button md-raised-button class="add-button" (click)="sendMassage()">确定</button>
         </div>
-        <div class="detail" *ngIf="detailInfo && (isShowDetail==true)">
+        <div class="detail" *ngIf="detailInfo && (isShowDetail==2)">
           <table>
             <tr>
               <th>姓名</th>

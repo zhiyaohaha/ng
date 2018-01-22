@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { ConvertUtil } from './../../common/convert-util';
 import { Component, OnInit } from '@angular/core';
-import { fadeInUp, fadeIn, flyInOut } from './../../common/animations';
+import { fadeIn } from './../../common/animations';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { passwordValidator, equalValidator } from '../../validators/validator';
 import { BaseService } from '../../services/base.service';

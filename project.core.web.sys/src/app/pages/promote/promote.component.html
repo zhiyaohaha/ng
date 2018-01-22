@@ -1,4 +1,4 @@
-<md-sidenav-container [@fadeInState]="'active'">
+<md-sidenav-container>
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
@@ -38,7 +38,7 @@
               <span *ngIf="!selectRow[i].checked">+</span>
               <span *ngIf="selectRow[i].checked">-</span>
             </div>
-            <div *ngIf="selectRow[i].checked && (levels.length>0)">
+            <div *ngIf="selectRow[i].checked && (levels.length>0)" [@selectState]="'attachmentsDisplay'">
               <div class="level3" *ngFor="let item of levels[i];let j=index">
                 <span>{{j+1}}</span>
                 <span>{{item.name}}</span>

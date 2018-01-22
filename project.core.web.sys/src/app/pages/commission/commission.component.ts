@@ -99,7 +99,7 @@ export class CommissionComponent implements OnInit {
   noPassChecked: boolean = false;//控制按钮的
 
   temp: object = {};//用来传数据的
-  isShowDetail:boolean;//用来控制展示切换的
+  isShowDetail: number;//用来控制展示切换的 1审批中 2已返佣 3未返佣
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -114,7 +114,7 @@ export class CommissionComponent implements OnInit {
     private commonService: CommonService,
     private commissionService: CommissionService) {
 
- 
+
   }
 
   ngOnInit() {
@@ -205,13 +205,13 @@ export class CommissionComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.row.id);
-    console.log($event.row._rakeBack);
-    if($event.row._rakeBack=="已返佣"){
-      this.isShowDetail = true;
-    }else if($event.row._rakeBack=="未返佣"){
-      this.isShowDetail = false;
+    if ($event.row._rakeBack == "审批中") {
+      this.isShowDetail = 1;
+    } else if ($event.row._rakeBack == "未返佣") {
+      this.isShowDetail = 3;
+    } else if ($event.row._rakeBack =="已返佣") {
+      this.isShowDetail = 2;
     }
-    //console.log($event.row.id)
   }
 
   /**
@@ -351,6 +351,7 @@ export class CommissionComponent implements OnInit {
     this.setAuthorityComponent = this.container.createComponent(factory);
   }
 
+  //通过提示
   toPass(item, i, pass, nopass) {
     let r = confirm("确定要把选中订单的返佣转入相关的用户账户吗？");
     let id = item.trade.id;
@@ -361,6 +362,7 @@ export class CommissionComponent implements OnInit {
       nopass.checked = true;
     }
   }
+  //不通过提示
   toNoPass(item, i, nopass, pass) {
     let r = confirm("确定要拒绝选中订单的返佣吗？");
     let id = item.trade.id;
@@ -371,11 +373,12 @@ export class CommissionComponent implements OnInit {
       pass.checked = true;
     }
   }
+  //提交表单
   sendMassage() {
     console.log(this.temp);
     this.commissionService.sendMessage(this.temp).subscribe(res => {
       console.log(res);
-      if(res.code=="Fail"){
+      if (res.code == "Fail") {
         alert(res.message);
       }
     })
