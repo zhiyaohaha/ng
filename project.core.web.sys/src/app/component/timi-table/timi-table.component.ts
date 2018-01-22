@@ -167,7 +167,7 @@ export class TimiTableComponent implements OnInit {
    * @param data
    */
   slowAppendData(data) {
-    let count = 0;
+    let count = data.length > 10 ? 10 : data.length;
     let timer = setInterval(() => {
       this._data = data.slice(0, ++count);
       if (count >= data.length) {
