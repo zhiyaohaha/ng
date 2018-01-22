@@ -70,7 +70,7 @@
                 <ueditor name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
               </div>
             </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
               <div class="box-item item-label">
                 <label>{{child.ui.label}}</label>
               </div>
@@ -150,7 +150,7 @@
                       <label>{{grandson.ui.label}}</label>
                     </div>
                     <div class="box-item item-control-wrapper">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple"></free-region>
+                      <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"></free-region>
                     </div>
                   </div>
                 </ng-container>
@@ -249,12 +249,13 @@
                 <ueditor name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
               </div>
             </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
               <div class="box-item item-label">
                 <label>{{child.ui.label}}</label>
               </div>
               <div class="box-item item-control-wrapper">
-                <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"></free-region>
+                <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
+                  (click)="commitData()"></free-region>
               </div>
             </div>
             <div class="form-group tac columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
@@ -349,7 +350,8 @@
                       <label>{{grandson.ui.label}}</label>
                     </div>
                     <div class="box-item item-control-wrapper">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"></free-region>
+                      <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
+                        (click)="commitData()"></free-region>
                     </div>
                   </div>
                   <div class="form-group tac columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">

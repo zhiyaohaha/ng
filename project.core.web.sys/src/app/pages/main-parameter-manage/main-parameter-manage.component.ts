@@ -26,7 +26,7 @@ import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
   animations: [fadeIn],
   providers: [TdDataTableService, TableSearch, ParamsManageService]
 })
-export class MainParameterManageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MainParameterManageComponent implements OnInit, OnDestroy {
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
 
@@ -135,50 +135,30 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
               private toastService: ToastService,
               private fnUtil: FnUtil,
               private el: ElementRef) {
-    this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
 
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(event => {
-        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+        this.pagecode = this.authorityKey;
+        let paginationInfo = this.fnUtil.getPaginationInfo();
         /**
          * 每页条数pagesize和当前页码currentPage
          */
-        if (!localStorage.getItem(this.pagecode + "ps")) {
-          localStorage.setItem(this.pagecode + "ps", "10");
-          localStorage.setItem(this.pagecode + "cp", "0");
-        } else {
-          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-          console.log(this.currentPage);
-        }
-
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
         this.getParamsList({
-          size: localStorage.getItem(this.pagecode + "ps"),
-          index: localStorage.getItem(this.pagecode + "cp"),
+          size: this.pageSize,
+          index: this.currentPage,
           filters: ""
         });
-        // this.loadModal();
+        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
       });
 
   }
 
   ngOnInit() {
-
-    //this.loadData();
-    //this.getParamsList(this.listparam);
-
-    //this.loadModal();
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (localStorage.getItem(this.pagecode + "cp")) {
-        this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10) + 1);
-      }
-    }, 0);
   }
 
   getParamsList(params) {
@@ -230,7 +210,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     // this.treeNode.label = _tags;
 
     // 2018年1月15日 tcl
-    console.log($event);
     this.selectNode = $event.node.node;
     this._paramsManageService.getDetailById({id: this.selectNode.JSONdata.id})
       .subscribe(res => {
@@ -242,7 +221,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
   }
 
   addChild(e) {
-    console.log(e);
   }
 
   chipsChange($event) {
@@ -250,11 +228,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
     let arr = [];
     this.treeNode.label.map(r => arr.push(r.value));
     this.tags = $event;
-  }
-
-
-  changed($event) {
-    console.log($event);
   }
 
   /**
@@ -340,19 +313,11 @@ export class MainParameterManageComponent implements OnInit, OnDestroy, AfterVie
   }
 
   /**
-   * 选择表格的行
-   * @param
-   */
-  rowSelectEvent($event) {
-    console.log("选择表格的行", $event);
-  }
-
-  /**
    * 点击表格的行
    * @param
    */
   rowClickEvent($event) {
-    this.clickNode = $event.row.id;
+    this.clickNode = $event.id;
     this.getDetailParams();
   }
 

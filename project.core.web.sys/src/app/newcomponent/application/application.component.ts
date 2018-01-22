@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { forEach } from '@angular/router/src/utils/collection';
@@ -36,6 +36,9 @@ export class ApplicationComponent implements OnInit {
   applyFormData: any;           //动态表单数据
   areaCities: any; //市级数据
   areaCounties: any; //区县级数据
+  applyFormPostData: any; //用于提交的动态表单数据
+
+  @Input() id: string;
 
   constructor(private orderService: OrderService, private fb: FormBuilder, private toastService: ToastService) { }
 
@@ -49,7 +52,7 @@ export class ApplicationComponent implements OnInit {
     //   applyFormData: '',   //申请表（表单模版数据）
     // })
 
-    this.orderService.getLoanInfo('5a5e1f3eff776332740bf282').subscribe(res => {
+    this.orderService.getLoanInfo(this.id).subscribe(res => {
       if (res.data) {
         // console.log(res)
         this.getLoanInfo(res.data);
@@ -127,7 +130,8 @@ export class ApplicationComponent implements OnInit {
 
   //动态表单数据
   onSubmitParams($event) {
-    this.loanInfo.applyFormData = $event;
+    // console.log($event);
+    this.applyFormPostData = $event;
   }
 
   //提交申请
@@ -139,16 +143,16 @@ export class ApplicationComponent implements OnInit {
       applyTerm: this.loanInfo.applyTerm,       //申请期限
       applyAdCode: this.loanInfo.applyAdCode,     //申请地区
       purpose: this.loanInfo.purpose,         //贷款用途
-      applyFormData: this.loanInfo.applyFormData,   //申请表（表单模版数据）
+      applyFormData: this.applyFormPostData,   //申请表（表单模版数据）
     }
-    console.log(this.applicationForm)
-    this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res=>{
-        if(res.code === "0") {
-          // console.log(res)
-          _self.toastService.creatNewMessage("申请成功");
-        }else{
-          _self.toastService.creatNewMessage(res.message);
-        }
+    // console.log(this.applicationForm)
+    this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res => {
+      if (res.code === "0") {
+        // console.log(res)
+        _self.toastService.creatNewMessage("申请成功");
+      } else {
+        _self.toastService.creatNewMessage(res.message);
+      }
     })
   }
 

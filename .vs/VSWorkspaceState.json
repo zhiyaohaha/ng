@@ -5,12 +5,12 @@
     "\\project.core.web.sys\\src",
     "\\project.core.web.sys\\src\\app",
     "\\project.core.web.sys\\src\\app\\component",
+    "\\project.core.web.sys\\src\\app\\component\\region",
     "\\project.core.web.sys\\src\\app\\component\\responsive-model",
-    "\\project.core.web.sys\\src\\assets",
-    "\\project.core.web.sys\\src\\assets\\manage-template",
-    "\\project.core.web.sys\\src\\assets\\manage-template\\js",
-    "\\project.core.web.sys\\src\\assets\\manage-template\\pages"
+    "\\project.core.web.sys\\src\\app\\newcomponent",
+    "\\project.core.web.sys\\src\\app\\newcomponent\\application",
+    "\\project.core.web.sys\\src\\app\\pages"
   ],
-  "SelectedNode": "\\project.core.web.sys\\src\\assets\\manage-template\\js\\pages\\formTemplate.js",
+  "SelectedNode": "\\project.core.web.sys\\src\\app\\newcomponent\\application\\application.component.html",
   "PreviewInSolutionExplorer": false
 }
