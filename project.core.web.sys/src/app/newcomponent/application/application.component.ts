@@ -36,7 +36,7 @@ export class ApplicationComponent implements OnInit {
   applyFormData: any;           //动态表单数据
   areaCities: any; //市级数据
   areaCounties: any; //区县级数据
-  applyFormPostData: any; //用于提交的动态表单数据
+  applyFormPostData: any = null; //用于提交的动态表单数据
 
   @Input() id: string;
 
@@ -138,7 +138,7 @@ export class ApplicationComponent implements OnInit {
   onSubmit($event) {
     let _self = this;
     this.applicationForm = {
-      id: '5a5e1f3eff776332740bf282',              //订单唯一标识
+      id: this.id,              //订单唯一标识
       applyAmount: this.loanInfo.applyAmount,     //申请金额
       applyTerm: this.loanInfo.applyTerm,       //申请期限
       applyAdCode: this.loanInfo.applyAdCode,     //申请地区

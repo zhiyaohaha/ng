@@ -178,7 +178,7 @@
             <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-input [labelName]="child.ui.label" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                 [value]="modelDOMSData[child.name]" [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"
-                [placeholder]="child.ui.placeholder"></timi-input>
+                [placeholder]="child.ui.placeholder" (blur)="commitData()"></timi-input>
               <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
