@@ -1,19 +1,21 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import {Injectable, Output, EventEmitter} from "@angular/core";
 
 @Injectable()
 export class ToastService {
 
-    messages: any[] = [];
-    @Output()
-    onChanges: EventEmitter<any> = new EventEmitter();
+  messages: any[] = [];
+  @Output()
+  onChanges: EventEmitter<any> = new EventEmitter();
 
-    constructor() { }
+  constructor() {
+  }
 
-    creatNewMessage(msg) {
-        this.messages.push({
-            content: msg
-        })
-        this.onChanges.emit(this.messages);
-    }
+  creatNewMessage(data) {
+    this.messages.push({
+      content: data.message
+    });
+    data.message = this.messages;
+    this.onChanges.emit(data);
+  }
 
 }
