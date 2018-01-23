@@ -13,7 +13,7 @@
     </ng-container>
   </tr>
   </thead>
-  <tbody>
+  <tbody [hidden]="!totals">
   <tr *ngFor="let item of data; index as i" (click)="rowClick($event, i)">
     <td [hidden]="!selectable" class="checkbox">
       <free-checkbox (onChange)="itemCheckbox($event, i)" [checked]="checkIndex.indexOf(i) !== -1"></free-checkbox>
@@ -48,6 +48,7 @@
 
 
 <timi-pagination
+  [hidden] = "!totals"
   [total]="totals"
   [pageSize]="pageSize"
   [activeIndex]="activeIndex"
