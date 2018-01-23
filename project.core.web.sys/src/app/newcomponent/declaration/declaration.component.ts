@@ -90,6 +90,7 @@ export class DeclarationComponent implements OnInit {
   }
   //点击展示产品详情
   changeStyle(product, i) {
+    this.productId = product.id;
     product.checked = !product.checked;
     this.showAuthentication = true;
     for (let j = 0; j < this.productDetail.length; j++) {
@@ -171,23 +172,19 @@ export class DeclarationComponent implements OnInit {
       this.orderService.getProductDetail(name, this.chooseValue).subscribe(res => {
         this.getProductDetail(res.data);
       })
-      console.log(1)
     } else if (!(this.chooseValue) && name) {
       this.orderService.getProductDetail(name).subscribe(res => {
         this.getProductDetail(res.data);
       })
-      console.log(2)
     } else if (this.chooseValue && !name) {
       this.orderService.getProductDetail('', this.chooseValue).subscribe(res => {
         this.getProductDetail(res.data);
       });
-      console.log(3)
     } else {
       this.orderService.getProductDetail().subscribe(res => {
         this.getProductDetail(res.data);
       });
     }
-    console.log(4)
   }
   //匹配产品类型
   choseType(e, code) {
