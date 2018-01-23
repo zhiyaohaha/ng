@@ -224,7 +224,7 @@ export class OrderManageComponent implements OnInit {
     this.new = false;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({ id: $event.row.id });
+    this.loadDetailModel({ id: $event.id });
     // this.commonService.getDetailModel({id: $event.row.id})
     //   .subscribe(r => {
     //     this.selectRow = r.data.bindData;
@@ -249,7 +249,7 @@ export class OrderManageComponent implements OnInit {
     this.sidenavKey = "Other";
   }
 
-  //-资料收集 
+  //-资料收集
   collect(sidenavKey) {
     this.selectRow = "";
     this.new = true;

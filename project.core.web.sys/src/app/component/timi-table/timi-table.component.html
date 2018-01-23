@@ -4,7 +4,7 @@
     <th [hidden]="!selectable" class="checkbox">
       <free-checkbox (onChange)="allCheckbox($event)" [checked]="data.length === checkIndex.length"></free-checkbox>
     </th>
-    <ng-container *ngFor="let title of filter">
+    <ng-container *ngFor="let title of headers">
       <ng-container ngSwitch="title.pipe">
         <th [hidden]="title.hidden">
           {{title.label}}

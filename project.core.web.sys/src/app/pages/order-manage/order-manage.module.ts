@@ -14,6 +14,7 @@ import {TimiFileUploaderModule} from "app/component/timi-ng2-file-uploader/timi-
 import {TimiInputModule} from "app/component/timi-input/timi-input.component";
 import {NewComponentModule} from "../../newcomponent/newcomponent.module";
 import {DetailModelModule} from "../../component/detail-model/detail-model.component";
+import {TimiTableModule} from "../../component/timi-table/timi-table.component";
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import {DetailModelModule} from "../../component/detail-model/detail-model.compo
     OrderManageRoutingModule,
     MdSidenavModule,
     SearchFormModule,
-    TableModule,
+    TableModule, TimiTableModule,
     ResponsiveModelModule,
     ButtonModule,
     TimiFileUploaderModule,

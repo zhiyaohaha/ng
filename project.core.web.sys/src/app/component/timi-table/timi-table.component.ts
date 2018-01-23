@@ -15,14 +15,14 @@ export class TimiTableComponent implements OnInit {
 
   // 表头
   @Input()
-  set filter(value: any[]) {
+  set headers(value: any[]) {
     if (value && value.length > 0) {
-      this._filter = value;
+      this._headers = value;
     }
   }
 
-  get filter() {
-    return this._filter;
+  get headers() {
+    return this._headers;
   }
 
   // 表格数据
@@ -30,7 +30,7 @@ export class TimiTableComponent implements OnInit {
   set data(value: object[]) {
     if (value && value.length > 0) {
       this.outData = value;
-      let arr = this.getTableCell(this.filter, value);
+      let arr = this.getTableCell(this.headers, value);
       this.slowAppendData(arr);
     }
   }
@@ -52,7 +52,7 @@ export class TimiTableComponent implements OnInit {
   @Output() pageEvent: EventEmitter<any> = new EventEmitter<any>(); //页码事件
 
   _cellTemp; // 空元素
-  _filter; // 表头
+  _headers; // 表头
   _data = []; // 表格数据
   outData; // 需要传出的表格数据
   checkIndex = []; // 选中的数据索引
@@ -136,18 +136,18 @@ export class TimiTableComponent implements OnInit {
 
   /**
    * 处理表格数据
-   * @param filter 表头信息
+   * @param headers 表头信息
    * @param data 表格数据
    * @returns {any[]}
    */
-  getTableCell(filter, data) {
+  getTableCell(headers, data) {
     let arr = [];
     data.forEach(item => {
-      let filterCopy = this.columnsCopy(filter);
-      filterCopy.map(key => {
+      let headersCopy = this.columnsCopy(headers);
+      headersCopy.map(key => {
         key["label"] = item[key["name"]];
       });
-      arr.push(filterCopy);
+      arr.push(headersCopy);
     });
 
     return arr;

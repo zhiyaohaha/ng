@@ -11,9 +11,21 @@
     </button>
   </div>
 
-  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
-  </app-table>
+  <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
+    <!--[clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">-->
+  <!--</app-table>-->
+
+  <timi-table
+    [headers]="columns"
+    [data]="filteredData"
+    [selectable]="true"
+    [clickRowable]="true"
+    [totals]="filteredTotal"
+    [pageSize]="pageSize"
+    [activeIndex]="currentPage"
+    (pageEvent)="page($event)"
+    (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+  </timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">

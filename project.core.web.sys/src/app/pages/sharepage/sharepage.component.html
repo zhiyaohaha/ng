@@ -11,7 +11,7 @@
                <!--[clickAuthority]="authorities.indexOf(authorityKey+'.DetailTemplate')" (change)="page($event)"-->
                <!--(rowClick)="rowClickEvent($event);sidenav.open()"></app-table>-->
   <timi-table
-    [filter]="columns"
+    [headers]="columns"
     [data]="filteredData"
     [selectable]="true"
     [clickRowable]="authorities.indexOf(authorityKey+'.DetailTemplate') !== -1"
