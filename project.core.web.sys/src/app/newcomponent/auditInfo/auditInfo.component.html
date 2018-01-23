@@ -6,10 +6,10 @@
   <div class="loan">
     <h4>录入信息</h4>
     <!-- 新增 -->
-    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
+    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""
       (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
     <!-- 修改 -->
-    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="edit" submitBtnNeed=""
+    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""
       (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
   </div>
 
@@ -52,7 +52,7 @@
     </ul>
 
     <div class="resultBtn">
-      <button type="button" class="mat-raised-button" (click)="onSubmit($event)">提交申请</button>
+      <button type="button" class="mat-raised-button" (click)="onSubmit($event)">提交审核</button>
     </div>
 
   </div>

@@ -38,7 +38,7 @@ import {FnUtil} from "../../common/fn-util";
   `,
   styleUrls: ["./pagination.component.scss"]
 })
-export class TimiPaginationComponent implements OnInit, AfterContentInit {
+export class TimiPaginationComponent {
 
   _total = [];
   _activeIndex = 0; //当前页码
@@ -105,13 +105,9 @@ export class TimiPaginationComponent implements OnInit, AfterContentInit {
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private fnUtil: FnUtil) {
-  }
-
-  ngOnInit() {
-  }
-
-  ngAfterContentInit() {
-    this.checkStartOrEnd();
+    setTimeout(() => {
+      this.checkStartOrEnd();
+    }, 0);
   }
 
   /**

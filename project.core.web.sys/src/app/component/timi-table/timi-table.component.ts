@@ -48,7 +48,6 @@ export class TimiTableComponent implements OnInit {
 
   @Output() checkeRowEvent: EventEmitter<any> = new EventEmitter(); //勾选事件
   @Output() clickRowEvent: EventEmitter<any> = new EventEmitter(); //点击行的事件
-  @Output() rowClickEvent: EventEmitter<any> = new EventEmitter<any>(); //点击每一行的事件
   @Output() pageEvent: EventEmitter<any> = new EventEmitter<any>(); //页码事件
 
   _cellTemp; // 空元素
