@@ -15,7 +15,7 @@ export class OrderService {
   }
 
   //获取产品的详细信息
-  getProductDetail(keywords='', type='') {
+  getProductDetail(keywords = '', type = '') {
     return this.baseService.get("/api/LoanProduct/Choose", { "keywords": keywords, "type": type });
   }
 
@@ -71,6 +71,13 @@ export class OrderService {
   //提交补充资料信息
   onSubmitComplementaryData(data) {
     return this.baseService.post("/api/LoanOrder/Save", data);
+  }
+
+  //获取审核资料信息
+  getLoanOrderDetail(id) {
+    return this.baseService.get("/api/LoanOrder/Detail", {
+      id: id
+    });
   }
 
 }

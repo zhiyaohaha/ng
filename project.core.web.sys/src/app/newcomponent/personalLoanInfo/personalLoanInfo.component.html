@@ -70,7 +70,8 @@
 <!-- 贷款信息 -->
 <div class="loan  m-b-20">
   <h4>贷款信息</h4>
-  <ul class="loan-info clearfix">
+  <!-- 可修改 -->
+  <ul class="loan-info clearfix" *ngIf="!readyOnly">
     <li>
       <div class="form-group columns1">
         <div class="label">贷款产品：</div>
@@ -81,19 +82,17 @@
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [disabledVal]="readyOnly"></timi-input>
+        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount"></timi-input>
       </div>
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-select freeSelectName="贷款用途" name="purpose" [(ngModel)]="loanInfo.purpose" [options]="loanInfo.loanUseBindData" pholder="{{'请选择用途'}}"
-          [disabledVal]="readyOnly"></timi-select>
+        <timi-select freeSelectName="贷款用途" name="purpose" [(ngModel)]="loanInfo.purpose" [options]="loanInfo.loanUseBindData" pholder="{{'请选择用途'}}"></timi-select>
       </div>
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"
-          [disabledVal]="readyOnly"></timi-select>
+        <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"></timi-select>
       </div>
     </li>
     <li class="areasComponent">
@@ -102,8 +101,50 @@
           <label>贷款地区：</label>
         </div>
         <div class="box-item item-control-wrapper">
-          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
-            [readyOnly]="readyOnly"></free-region>
+          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"></free-region>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!-- 只读 -->
+  <ul class="loan-info clearfix" *ngIf="readyOnly">
+    <li>
+      <div class="form-group columns1">
+        <div class="label">贷款产品：</div>
+        <div class="span">
+          <p>{{loanInfo.productName}}</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <div class="label">贷款金额：</div>
+        <div class="span">
+          <p>{{loanInfo.applyAmount}}</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <div class="label">贷款用途：</div>
+        <div class="span">
+          <p>{{loanInfo._purpose}}</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="form-group columns1">
+        <div class="label">贷款期限：</div>
+        <div class="span">
+          <p>{{loanInfo.applyTerm}}</p>
+        </div>
+      </div>
+    </li>
+    <li class="areasComponent">
+      <div class="form-group columns1">
+        <div class="label">贷款地区：</div>
+        <div class="span">
+          <p>{{loanInfo.applyAddr}}</p>
         </div>
       </div>
     </li>

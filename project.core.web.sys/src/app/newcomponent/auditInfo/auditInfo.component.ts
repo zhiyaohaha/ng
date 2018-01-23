@@ -54,9 +54,9 @@ export class AuditInfoComponent implements OnInit {
     //   applyFormData: '',   //申请表（表单模版数据）
     // })
 
-    this.orderService.getLoanInfo(this.id).subscribe(res => {
+    this.orderService.getLoanOrderDetail(this.id).subscribe(res => {
       if (res.data) {
-        // console.log(res)
+        console.log(res)
         this.getLoanInfo(res.data);
       }
     })
