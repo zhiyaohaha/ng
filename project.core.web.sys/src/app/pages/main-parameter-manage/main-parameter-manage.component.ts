@@ -1,10 +1,12 @@
-import {fadeIn} from "./../../common/animations";
-import {FnUtil} from "./../../common/fn-util";
-import {ToastService} from "./../../component/toast/toast.service";
+import {fadeIn} from "../../common/animations";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
-import {FormBuilder} from "@angular/forms";
-import {ITdDataTableColumn, TdDataTableService, TdDataTableSortingOrder, TdDialogService} from "@covalent/core";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
+import {
+  ITdDataTableColumn, TdDataTableService, TdDialogService,
+  TdLoadingService
+} from "@covalent/core";
 
 import "rxjs/add/operator/startWith";
 import "rxjs/add/observable/merge";
@@ -12,21 +14,20 @@ import "rxjs/add/operator/map";
 
 import {TreeModel} from "../../../../node_modules/ng2-tree";
 import {globalVar} from "../../common/global.config";
-import {TableSearch} from "../../common/search/table.search";
 
-import {ParamsManageService} from "./../../services/paramsManage-service/paramsManage.service";
+import {ParamsManageService} from "../../services/paramsManage-service/paramsManage.service";
 import {ConvertUtil} from "../../common/convert-util";
-import {BaseService} from "../../services/base.service";
 import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {BaseUIComponent} from "../baseUI.component";
 
 @Component({
   selector: "app-main-parameter-manage",
   templateUrl: "./main-parameter-manage.component.html",
   styleUrls: ["./main-parameter-manage.component.scss"],
   animations: [fadeIn],
-  providers: [TdDataTableService, TableSearch, ParamsManageService]
+  providers: [TdDataTableService, ParamsManageService]
 })
-export class MainParameterManageComponent implements OnInit, OnDestroy {
+export class MainParameterManageComponent extends BaseUIComponent implements OnInit, OnDestroy {
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
 
@@ -56,13 +57,11 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
 
   searchFilters; //页面显示的搜索条件
 
-  fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
   pageSize: number = globalVar.pageSize; //每页显示条数
   pageLinkCount = globalVar.pageLinkCount; //显示多少页码
   searchTerm: string = ""; //搜索关键字
   sortBy: string = "";
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   filteredTotal = 0; //总共条数
   filteredData; //过滤后的数据
 
@@ -87,20 +86,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   clickNode;
 
   /**
-   * 翻页选项
-   */
-  pageOptions = {
-    data: this.basicData,
-    columns: this.columns,
-    fromRow: this.fromRow,
-    currentPage: this.currentPage,
-    pageSize: this.pageSize,
-    sortBy: this.sortBy,
-    sortOrder: this.sortOrder,
-    dataTableService: this._dataTableService
-  };
-
-  /**
    * 修改模版
    */
   modalDOMS: HtmlDomTemplate;
@@ -122,19 +107,18 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   @ViewChild("table") table;
 
 
-  constructor(private fb: FormBuilder,
-              private _dialogService: TdDialogService,
+  constructor(private _dialogService: TdDialogService,
               private _dataTableService: TdDataTableService,
               private _viewContainerRef: ViewContainerRef,
-              private _tableSearch: TableSearch,
               private _paramsManageService: ParamsManageService,
               private _util: ConvertUtil,
-              private http: BaseService,
               private router: Router,
               private routerInfo: ActivatedRoute,
               private toastService: ToastService,
               private fnUtil: FnUtil,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private loading: TdLoadingService) {
+    super(loading);
 
     this.routerSubscribe = this.router.events
       .filter(event => event instanceof NavigationEnd)
@@ -164,8 +148,10 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
   }
 
   getParamsList(params) {
+    this.loading.register("loading");
     this._paramsManageService.getParams(params)
       .subscribe(res => {
+        this.loading.resolve("loading");
         if (res.code === "0") {
           let r = res;
           if (r.data.data && r.data.data.fields) {
@@ -175,6 +161,7 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
             this.filteredData = this.basicData = r.data.data.bindData;
           }
           if (r.data.data && r.data.data.filters.length > 0) {
+            this.filters = [];
             r.data.data.filters.forEach(i => {
               this.filters.push({"key": i.name, "value": i.value || ""});
             });
@@ -191,6 +178,8 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    */
   onSearch($event) {
     this.listparam.filters = $event;
+    this.listparam.index = 0;
+    this.currentPage = 0;
     this.getParamsList(this.listparam);
   }
 
@@ -199,18 +188,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * @param
    */
   treeSelected($event): void {
-    // this.loadModal();
-    // this.selectNode = $event.node.node;
-    // let _tags = [];
-    // this.tags = [];
-    // if (this.selectNode.JSONdata.tags && this.selectNode.JSONdata.tags.length > 0) {
-    //   for (let i = 0; i < this.selectNode.JSONdata.tags.length; i++) {
-    //     _tags.push({"value": this.selectNode.JSONdata.tags[i], "delete": true});
-    //     this.tags.push(this.selectNode.JSONdata.tags[i]);
-    //   }
-    // }
-    // this.treeNode.label = _tags;
-
     // 2018年1月15日 tcl
     this.selectNode = $event.node.node;
     this._paramsManageService.getDetailById({id: this.selectNode.JSONdata.id})
@@ -236,14 +213,13 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
    * 提交树表单修改内容
    */
   onSubmitParams($event) {
+    this.loading.register("loading");
     this._paramsManageService.saveParams($event).subscribe(res => {
+      this.loading.resolve("loading");
+      super.showToast(this.toastService, res.message);
       if (res.code === "0") {
-        this.toastService.creatNewMessage(res.message);
         this.getParamsList(this.listparam);
-      } else {
-        this.toastService.creatNewMessage(res.message);
       }
-
     });
   }
 
@@ -275,12 +251,12 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     data["parentId"] = this.selectNode.id;
     data["depth"] = this.selectNode.depth + 1;
     data = this._util.toJsonStr(data);
+    this.loading.register("loading");
     this._paramsManageService.addParams(data).subscribe(res => {
+      this.loading.resolve("loading");
+      super.showToast(this.toastService, res.message);
       if (res.code === "0") {
-        this.toastService.creatNewMessage("添加成功");
         this.getDetailParams();
-      } else {
-        this.toastService.creatNewMessage("添加失败");
       }
     });
   }
@@ -300,16 +276,16 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     arr.forEach((value, index, arry) => {
       data[value] = $event[value];
     });
+    this.loading.register("loading");
     this._paramsManageService.addParams(this._util.toJsonStr(data)).subscribe(res => {
+      this.loading.resolve("loading");
+      super.showToast(this.toastService, res.message);
       if (res.code === "0") {
-        this.toastService.creatNewMessage("添加成功");
         this.getParamsList({
           size: this.pageSize,
           index: 0,
           filters: ""
         });
-      } else {
-        this.toastService.creatNewMessage("添加失败");
       }
     });
   }
@@ -323,33 +299,15 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
     this.getDetailParams();
   }
 
-
   /**
    * 翻页
    * @param pagingEvent
    */
   page(pagingEvent): void {
-    console.log(pagingEvent);
-    this.pageOptions.currentPage = pagingEvent.activeIndex;
-    this.pageOptions.pageSize = pagingEvent.pageSize;
-    //this.loadData();
-    this.listparam = {
-      size: pagingEvent.pageSize,
-      index: pagingEvent.activeIndex,
-      filters: ""
-    };
-    localStorage.setItem(this.pagecode + "ps", pagingEvent.pageSize.toString());
-    localStorage.setItem(this.pagecode + "cp", (pagingEvent.activeIndex).toString());
+    this.listparam.size = pagingEvent.pageSize;
+    this.listparam.index = pagingEvent.activeIndex;
+    this.currentPage = pagingEvent.activeIndex;
     this.getParamsList(this.listparam);
-  }
-
-  /**
-   * 表格过滤 排序
-   */
-  loadData() {
-    let result = this._tableSearch.tableFilter(this.pageOptions);
-    this.filteredData = result[0];
-    this.filteredTotal = result[1] as number;
   }
 
   /**
@@ -407,17 +365,6 @@ export class MainParameterManageComponent implements OnInit, OnDestroy {
         this.modalDOMS = r.data.doms;
         this.modalData = r.data.bindData;
       }
-    });
-  }
-
-  messages: any[] = [];
-
-  openAlert(msg): void {
-    this._dialogService.openAlert({
-      message: msg,
-      disableClose: false,
-      viewContainerRef: this._viewContainerRef,
-      closeButton: "确定"
     });
   }
 
