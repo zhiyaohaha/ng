@@ -101,7 +101,8 @@
           <label>贷款地区：</label>
         </div>
         <div class="box-item item-control-wrapper">
-          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"></free-region>
+          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
+            [applyBindDataSwitch]="applyBindDataSwitch"></free-region>
         </div>
       </div>
     </li>
