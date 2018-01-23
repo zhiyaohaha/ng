@@ -14,6 +14,7 @@ import { DetailModelModule } from "../../component/detail-model/detail-model.com
 import { ParamsManageService } from "app/services/paramsManage-service/paramsManage.service";
 import { LoandemandComponent } from "app/pages/loandemand/loandemand.component";
 import { LoandemandRoutingModule } from "app/pages/loandemand/loandemand-routing.module";
+import { TimiTableModule } from "app/component/timi-table/timi-table.component";
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import { LoandemandRoutingModule } from "app/pages/loandemand/loandemand-routing
         MdSidenavModule,
         MdButtonModule,
         SearchFormModule,
-        TableModule,
+        TableModule, TimiTableModule,
         ResponsiveModelModule,
         ButtonModule,
         TimiFileUploaderModule,

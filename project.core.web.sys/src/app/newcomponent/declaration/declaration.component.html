@@ -61,27 +61,31 @@
       <li *ngIf="true">
         <span class="left">银行预留手机号：</span>
         <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码" maxlength="11">
-        <span class="right">
+        <!-- <span class="right">
           <button type="button" (click)="getPhoneNum($event,phoneNum)">发送验证码</button>
-        </span>
+        </span> -->
       </li>
+      <div class="authenticationPic" *ngIf="true">
+        <timi-file-uploader [btnName]="'身份证人相面'" name="portrait" (success)="uploaded1($event)"></timi-file-uploader>
+        <timi-file-uploader [btnName]="'身份证国徽面'" name="NationalEmblem" (success)="uploaded2($event)"></timi-file-uploader>
+        <timi-file-uploader [btnName]="'单人生活照片'" name="life" (success)="uploaded3($event)"></timi-file-uploader>
+      </div>
+      <div class="authenticationBtn" *ngIf="true">
+        <button (click)="onCertification($event)" type="button">发送验证码</button>
+      </div>
+      
       <li *ngIf="true">
         <span class="left">短信验证码：</span>
         <input type="text" (keyup)="getCode($event,code)" #code class="info-input" placeholder="请输入长度为4的数字验证码" maxlength="4">
         <span class="right red" *ngIf="showCodeError">{{errorCode}}</span>
       </li>
+      <div class="authenticationBtn" *ngIf="true">
+        <button (click)="onCertification($event)" type="button">开始认证</button>
+      </div>
     </ul>
 
-    <div class="authenticationPic" *ngIf="true">
 
-      <timi-file-uploader [btnName]="'身份证人相面'" name="portrait" (success)="uploaded1($event)"></timi-file-uploader>
-      <timi-file-uploader [btnName]="'身份证国徽面'" name="NationalEmblem" (success)="uploaded2($event)"></timi-file-uploader>
-      <timi-file-uploader [btnName]="'单人生活照片'" name="life" (success)="uploaded3($event)"></timi-file-uploader>
 
-    </div>
-    <div class="authenticationBtn" *ngIf="true">
-      <button (click)="onCertification($event)" type="button">开始认证</button>
-    </div>
   </div>
 
   <div class="result" *ngIf="showPersonData || (showCertification==1)">

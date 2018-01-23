@@ -10,6 +10,11 @@
     [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()" (rowSelect)="selectedRows($event)">
   </app-table>
 
+  <!-- <timi-table [headers]="columns" [data]="filteredData" [selectable]="true" [clickRowable]="true" [totals]="filteredTotal"
+    [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()"
+    (checkeRowEvent)="selectedRows($event)">
+  </timi-table> -->
+
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <!-- 1的时候是默认的点击行出现的侧滑 -->
     <div class="row" *ngIf="sidenavType == 1">
@@ -59,7 +64,9 @@
               <li *ngFor="let item of lastShow;let i=index">
                 <p>{{item.name}}</p>
                 <div class="checkedUser">
-                  <p *ngFor="let item of item.children">{{item.name}}<i class="fa fa-window-close" (click)="removeRow($event,item)"></i></p>
+                  <p *ngFor="let item of item.children">{{item.name}}
+                    <i class="fa fa-window-close" (click)="removeRow($event,item)"></i>
+                  </p>
                 </div>
               </li>
             </ul>
@@ -67,7 +74,7 @@
 
         </div>
       </div>
-      
+
       <button md-raised-button class="add-button special" (click)="onSubmit()">确定</button>
     </div>
     <!-- 3的时候是点击分发详情出现的侧滑 -->
@@ -76,7 +83,8 @@
         <div class="contentDetai">
           <div class="detailBox" *ngFor="let item of loandemandInfo">
             <p>
-              <span>{{item.distributeRecord._org.name}}</span><span>{{item.distributeRecord._user.name}}</span>
+              <span>{{item.distributeRecord._org.name}}</span>
+              <span>{{item.distributeRecord._user.name}}</span>
             </p>
             <table>
               <tr>

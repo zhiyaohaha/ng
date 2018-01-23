@@ -93,6 +93,7 @@ export class LoandemandComponent implements OnInit {
 
   sidenavType: number = 1; //1默认情况，点击行的时候展示的侧滑  2点击分发的时候展示的侧滑内容  3点击分发详情展示的内容
 
+  //三级分销部分内容
   selectArray: Array<any> = []; //选中的数组
 
   orgList: Array<any> = [];//组织机构列表
@@ -100,23 +101,10 @@ export class LoandemandComponent implements OnInit {
 
   isShowUserList: boolean = false;//显示第二条
   isShowCheckedList: boolean = false;//显示第三条
-  orgNames: Array<string> = [];
-  //orgId: Array<any> = [];
-  userNames: Array<any> = [];
 
-  orgObject: object = {};
-
-  userListNow: any;
-  orgIdNow: any;
-  orgNameNow: any;
-
-  userArray: Array<any> = [];
-  firstId: string = '';
-  secondId: string = '';
+  orgIdNow: string = '';
 
   loandemandInfo: Array<any> = [];
-
-  showArray: Array<any> = [];
 
   //第二次
   orgIndex: number;
@@ -151,7 +139,6 @@ export class LoandemandComponent implements OnInit {
     });
     if (this.el.nativeElement.querySelector(".mat-drawer-backdrop")) {
       this.el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-
     }
     this.authorities = this.fnUtil.getFunctions();
     this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
@@ -249,7 +236,6 @@ export class LoandemandComponent implements OnInit {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
-        // this.modalData = r.data.bindDataJson;
         this.newModalData = r.data;
       }
     });
@@ -375,12 +361,11 @@ export class LoandemandComponent implements OnInit {
   //获取业务员列表
   getUserLists(res) {
     this.userList = res;
-    //this.userListNow = res;
   }
   //获取选择的用户数据
   selectedRows(e) {
+    console.log(e); 
     this.selectArray = e.totalRow;
-    console.log(this.selectArray);
   }
   //获取分发详情信息
   getLoandemandInfo(res) {
@@ -427,8 +412,6 @@ export class LoandemandComponent implements OnInit {
     }
   }
 
-
-
   //点击组织列表的事件
   showUserList(e, i) {
     this.orgIdNow = this.orgList[i].id;
@@ -448,12 +431,6 @@ export class LoandemandComponent implements OnInit {
             })
           })
         }
-        // for (let i = 0; i < this.orgList[this.orgIndex].children.length; i++) {
-        //   if (this.orgList[this.orgIndex].children[i].checked) {
-        //     obj[i].checked = true;
-        //   }
-        // }
-        // console.log(obj);
         return obj
       })
       .subscribe(item => {
@@ -465,21 +442,6 @@ export class LoandemandComponent implements OnInit {
     let isInarray = this.inArray(this.orgList[this.orgIndex], this.lastShow);
     let inJudgeArray = this.inArray(this.userList[j].name, this.judgeArray);
     this.isShowCheckedList = true;
-    // if (!inJudgeArray) {
-    //   this.userList[j].checked = true;
-    //   this.orgList[this.orgIndex].children.push(this.userList[j]);
-    //   this.judgeArray.push(this.userList[j].name);
-    // } else if (inJudgeArray){
-    //   this.userList[j].checked = false;
-    //   this.removeByValue(this.orgList[this.orgIndex].children, this.userList[j]);
-    //   this.removeByValue(this.judgeArray, this.userList[j].name);
-    //   if (this.orgList[this.orgIndex].children.length == 0){
-    //     this.removeByValue(this.lastShow, this.orgList[this.orgIndex]);
-    //   }
-    // }
-    // if (this.orgList[this.orgIndex].checked && !isInarray) {
-    //   this.lastShow.push(this.orgList[this.orgIndex]);
-    // }
     if (!inJudgeArray) {
       this.userList[j].checked = true;
       this.orgList[this.orgIndex].children.push(this.userList[j]);
@@ -493,7 +455,6 @@ export class LoandemandComponent implements OnInit {
   removeRow(e, item) {
     let id = item.id;
     for (let i = 0; i < this.lastShow.length; i++) {
-
         for (let j = 0; j < this.lastShow[i].children.length; j++) {
           if (id == this.lastShow[i].children[j].id) {
             this.removeByValue(this.lastShow[i].children, item);
@@ -503,11 +464,8 @@ export class LoandemandComponent implements OnInit {
             }
           }
         }
-      
     }
-
   }
-
 
   //删除数组中的特定元素
   removeByValue(arr, value) {
@@ -535,7 +493,6 @@ export class LoandemandComponent implements OnInit {
     let idList = [];
     for (let i = 0; i < this.selectArray.length; i++) {
       idList.push(this.selectArray[i].id);
-      console.log(idList);
       str = idList.join(',');
     }
     for(let i=0;i<this.lastShow.length;i++){
@@ -546,7 +503,18 @@ export class LoandemandComponent implements OnInit {
       obj[this.lastShow[i].id] = arr.join(',');
     }
     this.loandemandService.sendInfo(str, obj).subscribe(res => {
+      if(res.code==="0"){
+        this.getParamsList(this.listparam);
+      }
       console.log(res);
     })
+    this.sidenav.close();
+    this.isShowUserList = false;
+    this.isShowCheckedList = false;
+    this.lastShow = [];
+    this.orgIdNow = '';
+    this.judgeArray = [];
+    this.orgList = [];
+    this.userList = [];
   }
 }
