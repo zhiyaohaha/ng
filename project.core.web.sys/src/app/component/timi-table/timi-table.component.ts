@@ -173,6 +173,7 @@ export class TimiTableComponent implements OnInit {
         clearInterval(timer);
       }
     }, 10);
+    console.log(this._data);
   }
 
 }

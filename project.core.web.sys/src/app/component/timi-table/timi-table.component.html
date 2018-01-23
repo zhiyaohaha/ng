@@ -1,4 +1,4 @@
-<table *ngIf="data.length > 1">
+<table [hidden]="!totals">
   <thead>
   <tr>
     <th [hidden]="!selectable" class="checkbox">
@@ -13,7 +13,7 @@
     </ng-container>
   </tr>
   </thead>
-  <tbody [hidden]="!totals">
+  <tbody>
   <tr *ngFor="let item of data; index as i" (click)="rowClick($event, i)">
     <td [hidden]="!selectable" class="checkbox">
       <free-checkbox (onChange)="itemCheckbox($event, i)" [checked]="checkIndex.indexOf(i) !== -1"></free-checkbox>
@@ -42,7 +42,7 @@
   </tbody>
 </table>
 
-<div *ngIf="data?.length < 0" class="md-padding" layout="row" layout-align="center center">
+<div *ngIf="!totals" class="md-padding" layout="row" layout-align="center center">
   <h3>没有数据哟！</h3>
 </div>
 
