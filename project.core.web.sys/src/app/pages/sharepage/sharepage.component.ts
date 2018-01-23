@@ -151,6 +151,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
             this.filteredData = this.basicData = r.data.data.bindData;
           }
           if (r.data.data && r.data.data.filters.length > 0) {
+            this.filters = [];
             r.data.data.filters.forEach(i => {
               this.filters.push({ "key": i.name, "value": i.value || "" });
             });
@@ -169,15 +170,18 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
    */
   onSearch($event) {
     this.listparam.filters = $event;
+    this.listparam.index = 0;
+    this.currentPage = 0;
     this.getParamsList(this.listparam);
   }
 
   /**
    * 翻页
    */
-  page($event) {
+  page($event): void {
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
+    this.currentPage = $event.activeIndex;
     this.getParamsList(this.listparam);
   }
 
@@ -263,7 +267,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");
-          // this.toastService.creatNewMessage(res.message);
           super.showToast(this.toastService, res.message);
           if (res.code === "0") {
             this.currentPage = 0;
@@ -274,7 +277,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
       this.sharepageService.saveEditParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");
-          // this.toastService.creatNewMessage(res.message);
           super.showToast(this.toastService, res.message);
           if (res.code === "0") {
             this.getParamsList(this.listparam);
@@ -355,7 +357,6 @@ export class FormUnitComponent extends BaseUIComponent {
    */
   uploaded($event) {
     if ($event.isUploaded) {
-      // this.toastService.creatNewMessage("上传成功");
       super.showToast(this.toastService, "上传成功");
     }
   }
@@ -364,7 +365,6 @@ export class FormUnitComponent extends BaseUIComponent {
    * 添加标签
    */
   chipsChange($event) {
-    console.log($event);
     this.tags = $event;
   }
 
