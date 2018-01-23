@@ -218,7 +218,6 @@ export class LoandemandComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel({ id: $event.row.id });
-    console.log($event);
   }
 
   /**
@@ -237,7 +236,6 @@ export class LoandemandComponent implements OnInit {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
-        // this.modalData = r.data.bindDataJson;
         this.newModalData = r.data;
       }
     });
@@ -495,7 +493,6 @@ export class LoandemandComponent implements OnInit {
     let idList = [];
     for (let i = 0; i < this.selectArray.length; i++) {
       idList.push(this.selectArray[i].id);
-      console.log(idList);
       str = idList.join(',');
     }
     for(let i=0;i<this.lastShow.length;i++){
