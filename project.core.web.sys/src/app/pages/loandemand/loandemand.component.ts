@@ -532,9 +532,10 @@ export class LoandemandComponent implements OnInit {
   onSubmit() {
     let str = "";
     let obj = {};
+    let idList = [];
     for (let i = 0; i < this.selectArray.length; i++) {
-      let idList = [];
       idList.push(this.selectArray[i].id);
+      console.log(idList);
       str = idList.join(',');
     }
     for(let i=0;i<this.lastShow.length;i++){
