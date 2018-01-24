@@ -29,10 +29,9 @@ export class DeclarationComponent implements OnInit {
   idCardPositiveImage: string;//身份证正面
   idCardOppositeImage: string;//身份证背面
   photo: string;//个人生活照片
-  //personData: object = { "id": "5a435c273aa0a708ac67c1d6", "portrait": "http://data.cpf360.com/development/2017/12/27/5a4308b23bc243c0280778b6.jpg?x-oss-process=image/crop,x_868,y_411,w_188,h_228", "face": "http://data.cpf360.com/development/2017/12/27/5a4308a43bc243c0280778b4.png?x-oss-process=image/crop,x_787,y_960,w_977,h_1402", "confidence": 78, "similarity": "高", "name": "李萌", "_sex": "男", "age": 23, "nation": "汉", "domicile": "湖北省房县白鹤乡石堰河村3组131号" };//人物详细信息
-  personData: object;
+  personData: object; //个人信息数据
   showPersonData: boolean = false;//是否展示人物详细信息
-  btnDisabled: boolean = true;//验证码按钮是否打开
+
   productsStyle: boolean = false;//点击产品展示产品详情
   index: number;//用于展示，当前方法略low，有时间的话重写
   showCertification: number; //用于切换展示
@@ -43,6 +42,12 @@ export class DeclarationComponent implements OnInit {
 
   addPadding: boolean = false;
 
+  bankData: any;//开户行数据
+
+  selectedProduct; // 选择的产品
+
+  bank: string;//开户行
+
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
@@ -52,6 +57,13 @@ export class DeclarationComponent implements OnInit {
     this.orderService.getProductDetail().subscribe(res => {
       this.getProductDetail(res.data);
     })
+    this.orderService.getBank().subscribe(res => {
+      this.getBankType(res.data);
+    })
+  }
+  //获取开户行数据
+  getBankType(res) {
+    this.bankData = res;
   }
 
   //产品类型数据
@@ -64,28 +76,21 @@ export class DeclarationComponent implements OnInit {
       res[i].checked = false;
     }
     this.productDetail = res;
-    console.log(this.productDetail);
   }
-  //获取电话验证码
-  getPhoneNum($event, phoneNum) {
+  //获取电话号码
+  getPhoneNum(phoneNum) {
     let phoneReg = /(13\d|14[579]|15\d|17[01235678]|18\d)\d{8}/i;
     this.phoneNum = phoneNum.value;
-    if (phoneReg.test(this.phoneNum)) {
-      this.btnDisabled = false;
-    }
-    this.orderService.getCodeInfo(this.phoneNum).subscribe(res => {
-      console.log(res);
-    })
   }
   //输入的验证码
-  getCode(e, code) {
-    let regexp = /^[0-9]{4}$/;
+  getCode(code) {
+    let regexp = /^[0-9]{6}$/;
     this.phoneCode = code.value;
     if (regexp.test(this.phoneCode)) {
       this.showCodeError = false;
     } else {
       this.showCodeError = true;
-      this.errorCode = '验证码格式不正确，请输入长度为4的数字'
+      this.errorCode = '验证码格式不正确，请输入长度为6的数字';
     }
   }
   //点击展示产品详情
@@ -98,11 +103,15 @@ export class DeclarationComponent implements OnInit {
         this.productDetail[j].checked = false;
       }
     }
-    if(product.checked){
+    if (product.checked) {
       this.addPadding = true;
-    }else{
+    } else {
       this.addPadding = false;
     }
+  }
+  //开户行
+  getBank(e) {
+    this.bank = e;
   }
   //银行卡号
   getbankCard(e, bankNum) {
@@ -147,17 +156,26 @@ export class DeclarationComponent implements OnInit {
   uploaded3(e) {
     this.photo = e.id;
   }
-  //认证数据
+  //发送验证码
   onCertification() {
-    this.orderService.getInfo(this.phoneCode, this.idCard, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
+    this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
       if (res.data) {
-        this.personData = res.data;
         this.personRealId = res.data.id;
       }
-      this.showPersonData = res.success;
+      //this.showPersonData = res.success;
     })
   }
+  
+  //开始认证
+  startVerify(){
+    this.orderService.sendCode(this.personRealId,this.phoneCode).subscribe(res=>{
+      this.showPersonData = res.success;
+      this.personData = res.data;
+      console.log(res);
+    })
+  }
+
   //申请贷款
   onSubmit() {
     this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {

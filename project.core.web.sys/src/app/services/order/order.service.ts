@@ -25,24 +25,45 @@ export class OrderService {
   }
 
   //获取验证码
-  getCodeInfo(mobilePhone) {
-    return this.baseService.post("/api/SMS/SendVerifyCode", {
-      "code": "LoanOrderFourRealVerifyCode",
-      "mobilePhone": mobilePhone
-    });
-  }
+  // getCodeInfo(mobilePhone) {
+  //   return this.baseService.post("/api/SMS/SendVerifyCode", {
+  //     "code": "LoanOrderFourRealVerifyCode",
+  //     "mobilePhone": mobilePhone
+  //   });
+  // }
 
   //四要素认证
-  getInfo(verifyCode, idCard, bankCard, mobilePhone, idCardPositiveImage, idCardOppositeImage, photo) {
-    return this.baseService.post("/api/LoanOrder/FourReal", {
-      "verifyCode": verifyCode,
+  // getInfo(verifyCode, idCard, bankCard, mobilePhone, idCardPositiveImage, idCardOppositeImage, photo) {
+  //   return this.baseService.post("/api/LoanOrder/FourReal", {
+  //     "verifyCode": verifyCode,
+  //     "idCard": idCard,
+  //     "bankCard": bankCard,
+  //     "mobilePhone": mobilePhone,
+  //     "idCardPositiveImage": idCardPositiveImage,
+  //     "idCardOppositeImage": idCardOppositeImage,
+  //     "photo": photo
+  //   });
+  // }
+
+  //五要素认证,返回实名认证ID
+  getInfo(idCard, bank, bankCard, mobilePhone, idCardPositiveImage, idCardOppositeImage, photo) {
+    return this.baseService.post("/api/LoanOrder/FiveReal", {
       "idCard": idCard,
+      "bank": bank,
       "bankCard": bankCard,
       "mobilePhone": mobilePhone,
       "idCardPositiveImage": idCardPositiveImage,
       "idCardOppositeImage": idCardOppositeImage,
       "photo": photo
-    });
+    })
+  }
+
+  //实名短信验证接口
+  sendCode(id, verifyCode) {
+    return this.baseService.post("/api/LoanOrder/RealVerifyCode", {
+      "id": id,
+      "verifyCode": verifyCode
+    })
   }
 
   //申请贷款
@@ -79,5 +100,8 @@ export class OrderService {
       id: id
     });
   }
-
+  //获取开户行数据
+  getBank() {
+    return this.baseService.get("/api/ThirdAPI/Fuiou/GetBanks");
+  }
 }
