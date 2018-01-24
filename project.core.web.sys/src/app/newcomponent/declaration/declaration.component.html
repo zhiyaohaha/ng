@@ -53,39 +53,41 @@
         <span class="right red" *ngIf="errorOfPerson==2">{{errorMessage}}</span>
       </li>
 <!-- showCertification==2 -->
-      <li *ngIf="true">
+      <li *ngIf="showCertification==2">
+        <span class="left">开户行：</span>
+        <timi-select pholder="{{'请选择开户行'}}" [options]="bankData" multipleForUse="showCertification==2" class="right" (onChange)="getBank($event)" [filter]="showCertification==2"></timi-select>
+      </li>
+      <li *ngIf="showCertification==2">
         <span class="left">银行卡号：</span>
         <input type="text" (keyup)="getbankCard($event,bankNum)" #bankNum class="info-input" placeholder="请输入银行卡号" maxlength="19">
         <span class="right red" *ngIf="showBankError">{{errorBank}}</span>
       </li>
-      <li *ngIf="true">
+      <li *ngIf="showCertification==2">
         <span class="left">银行预留手机号：</span>
-        <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码" maxlength="11">
+        <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码" maxlength="11" (keyup)="getPhoneNum(phoneNum)">
         <!-- <span class="right">
           <button type="button" (click)="getPhoneNum($event,phoneNum)">发送验证码</button>
         </span> -->
       </li>
-      <div class="authenticationPic" *ngIf="true">
+      <div class="authenticationPic" *ngIf="showCertification==2">
         <timi-file-uploader [btnName]="'身份证人相面'" name="portrait" (success)="uploaded1($event)"></timi-file-uploader>
         <timi-file-uploader [btnName]="'身份证国徽面'" name="NationalEmblem" (success)="uploaded2($event)"></timi-file-uploader>
         <timi-file-uploader [btnName]="'单人生活照片'" name="life" (success)="uploaded3($event)"></timi-file-uploader>
       </div>
-      <div class="authenticationBtn" *ngIf="true">
-        <button (click)="onCertification($event)" type="button">发送验证码</button>
+      <div class="authenticationBtn" *ngIf="showCertification==2">
+        <!-- 需补充禁用设置 -->
+        <button (click)="onCertification()" type="button">发送验证码</button>
       </div>
       
-      <li *ngIf="true">
+      <li *ngIf="showCertification==2">
         <span class="left">短信验证码：</span>
-        <input type="text" (keyup)="getCode($event,code)" #code class="info-input" placeholder="请输入长度为4的数字验证码" maxlength="4">
+        <input type="text" (keyup)="getCode(code)" #code class="info-input" placeholder="请输入长度为6的数字验证码" maxlength="6">
         <span class="right red" *ngIf="showCodeError">{{errorCode}}</span>
       </li>
-      <div class="authenticationBtn" *ngIf="true">
-        <button (click)="onCertification($event)" type="button">开始认证</button>
+      <div class="authenticationBtn" *ngIf="showCertification==2">
+        <button type="button" (click)="startVerify()">开始认证</button>
       </div>
     </ul>
-
-
-
   </div>
 
   <div class="result" *ngIf="showPersonData || (showCertification==1)">
@@ -110,4 +112,3 @@
   </div>
 
 </form>
-<!-- <free-application></free-application> -->

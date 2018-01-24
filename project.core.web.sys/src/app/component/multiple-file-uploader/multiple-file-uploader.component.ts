@@ -1,18 +1,20 @@
-import {CommonModule} from "@angular/common";
-import {Component, forwardRef, HostListener, NgModule, OnInit, Input, EventEmitter, Output} from "@angular/core";
-import {DomRenderer} from "../../common/dom";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {FileUploader, FileUploadModule} from "ng2-file-upload";
-import {environment} from "../../../environments/environment";
-import {ConvertUtil} from "../../common/convert-util";
-import {strLength} from "../../common/pipe/strLength";
-import {MdProgressBarModule} from "@angular/material";
-import {Http, Headers} from "@angular/http";
-import {defaultValue} from "../../common/global.config";
-import {BaseService} from "app/services/base.service";
-import {globalUrl} from "../../common/global.config";
-import {PreviewService} from "app/services/preview/preview.service";
-import {ToastService} from "../toast/toast.service";
+import { CommonModule } from "@angular/common";
+import { Component, forwardRef, HostListener, NgModule, OnInit, Input, EventEmitter, Output, ViewContainerRef } from "@angular/core";
+import { DomRenderer } from "../../common/dom";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { FileUploader, FileUploadModule } from "ng2-file-upload";
+import { environment } from "../../../environments/environment";
+import { ConvertUtil } from "../../common/convert-util";
+import { strLength } from "../../common/pipe/strLength";
+import { MdProgressBarModule } from "@angular/material";
+import { Http, Headers } from "@angular/http";
+import { defaultValue } from "../../common/global.config";
+import { BaseService } from "app/services/base.service";
+import { globalUrl } from "../../common/global.config";
+import { PreviewService } from "app/services/preview/preview.service";
+import { ToastService } from "../toast/toast.service";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -26,7 +28,7 @@ export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   styleUrls: ["./multiple-file-uploader.component.scss"],
   providers: [DomRenderer, MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR]
 })
-export class MultipleFileUploaderComponent implements OnInit, ControlValueAccessor {
+export class MultipleFileUploaderComponent extends BaseUIComponent implements OnInit, ControlValueAccessor {
 
   inputData; //输入数据
   outputData: string[]; //输出数据
@@ -36,6 +38,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   @Input() existingDatas: any; //已有数据
   @Input() uploaderQueueHidden: boolean;   //隐藏手动上传的样式(否则在切换其它附件项的时候，会出现同样的上传样式)
   @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
+  @Input() readyOnly: boolean = false;  //该组件是否为只读状态
 
   uploading: boolean = false; //上传中
   defaultImgSrc: string = "../../../assets/Images/uploading.gif"; //默认上传图片
@@ -52,11 +55,14 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   };
 
   constructor(private convertUtil: ConvertUtil,
-              private http: Http,
-              private baseService: BaseService,
-              private previewService: PreviewService,
-              private toastService: ToastService) {
-
+    private http: Http,
+    private baseService: BaseService,
+    private previewService: PreviewService,
+    private toastService: ToastService,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef) {
+    super(loadingService);
   }
 
   ngOnInit(): void {
@@ -64,7 +70,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       this.uploader.options.url = environment.apiURL + this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
-      this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {
+      this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, {
         name: "id",
         value: this.uploadId
       }];
@@ -80,17 +86,17 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeItem(item) {
-    let confirmRes = this.removeConfirm();
     let _self = this;
-    if (confirmRes) {
-      this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId: this.uploadId, fileId: item.id})
+    this.removeConfirm(function () {
+      _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", { attachmentId: _self.uploadId, fileId: item.id })
         .subscribe(res => {
           if (res.success === true) {
             item.remove();
-            _self.toastService.creatNewMessage("删除成功");
+            // _self.toastService.creatNewMessage("删除成功");
+            _self.toastService.creatNewMessage({ message: "删除成功" });
           }
         });
-    }
+    })
   }
 
   /**
@@ -98,20 +104,21 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * @param item
    */
   removeExistingItem(existingData, existingDatas, index) {  //existingDatas,index
-    let confirmRes = this.removeConfirm();
     let _self = this;
-    if (confirmRes) {
-      this.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {
-        attachmentId: this.uploadId,
+    this.removeConfirm(function () {
+      _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {
+        attachmentId: _self.uploadId,
         fileId: existingData.id
       })
         .subscribe(res => {
           if (res.success === true) {
             existingDatas.splice(index, 1);
-            _self.toastService.creatNewMessage("删除成功");
+            _self.onPostFileData.emit(res.data);
+            // _self.toastService.creatNewMessage("删除成功");
+            _self.toastService.creatNewMessage({ message: "删除成功" });
           }
         });
-    }
+    });
   }
 
   /**
@@ -119,9 +126,13 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    *
    * @memberof MultipleFileUploaderComponent
    */
-  removeConfirm() {
-    let confirmRes = confirm("确认要删除该文件吗?");
-    return confirmRes;
+  removeConfirm(back) {
+    // let confirmRes = confirm("确认要删除该文件吗?");   
+    super.openConfirm({ message: "确认要删除该文件吗?", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (accept: boolean) {
+      if (accept) {
+        back();
+      }
+    })
   }
 
   /**
@@ -155,7 +166,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       this.uploader.options.url = environment.apiURL + this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
-      this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {
+      this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, {
         name: "id",
         value: this.uploadId
       }];
@@ -164,7 +175,9 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
       this.uploader.onSuccessItem = function (e) {
         let res = JSON.parse(e._xhr.response);
         if (res.code === "Fail" || res.code === "UnknownError") {
-          that.toastService.creatNewMessage(res.message);
+          // that.toastService.creatNewMessage(res.message);
+          that.toastService.creatNewMessage({ message: res.message });
+
           data.forEach((item, index) => {
             if (!item.id) {  //上传失败以后，组件返回的数据里面没有id
               item.isSuccess = false;
@@ -178,26 +191,29 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
             that.uploading = false;
           });
         } else {
-          that.toastService.creatNewMessage("上传成功");
-          data.forEach(item => {  //res.data[0]  每次都是单个上传
-            if (item.id === res.data[0].id) {
-              item["contentType"] = res.data[0].contentType;
-              item["path"] = res.data[0].path;  //文件路径
-              item["thumbnail"] = res.data[0].thumbnail;  //文件图标
+          that.toastService.creatNewMessage({ message: "上传成功" });
+          let resData = res.data._files[0];
+          data.forEach(item => {  // 每次都是单个上传
+            if (item.id === resData.id) {
+              item["contentType"] = resData.contentType;
+              item["path"] = resData.path;  //文件路径
+              item["thumbnail"] = resData.thumbnail;  //文件图标
             }
           });
+          // console.log(res);
+          // console.log(res.data);
           that.onPostFileData.emit(res.data);
           that.uploading = false;
         }
       };
     }
 
+    //上传时，临时用于显示的别名 
     data.forEach(item => {
-
       let filename = item.file.name;
       //alias字段是别名；filename字段是真实名称。
-      // 不需要修改filename字段
       // alias字段 是 去掉文件后缀的 filename字段
+
       filename = filename.substring(0, filename.indexOf("."));  //这里只是做一个简单的截取。默认点后面的是文件后缀
       if (item.alias !== filename) {
         item.alias = filename;
@@ -218,11 +234,10 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * 修改文件名
    */
   onBlur($event, item) {
-    if (item.alias === $event.target.value) {
+    if (item.name === $event.target.value) {
       return false;
     }  //没有修改，则不用请求。
-    item.alias = $event.target.value;
-
+    item.name = $event.target.value;
     if ($event.target.id) {
       this.renameFile($event.target.id, $event.target.value);
     }
@@ -232,7 +247,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
    * 提交成功过后修改文件名
    */
   renameFile(id, name) {
-    this.baseService.post("/api/file/rename", {key: id, value: name})
+    this.baseService.post("/api/file/rename", { key: id, value: name })
       .subscribe(res => {
         console.log(res);
       });
@@ -241,7 +256,7 @@ export class MultipleFileUploaderComponent implements OnInit, ControlValueAccess
   uploadAllFiles() {
     let timestamp = this.convertUtil.timestamp();
     let sign = this.convertUtil.toMd5(timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
-    this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}];
+    this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }];
     this.uploader.uploadAll();
     let _self = this;
 

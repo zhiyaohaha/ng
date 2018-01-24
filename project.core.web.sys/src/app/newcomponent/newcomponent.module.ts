@@ -39,7 +39,7 @@ import { MdButtonModule } from '@angular/material';
         ResponsiveModelModule,
         MultipleFileUploaderModule,
         RegionModule,
-        MdButtonModule
+        MdButtonModule,
     ],
     exports: [
         PreviewComponent,
@@ -48,7 +48,6 @@ import { MdButtonModule } from '@angular/material';
         ApplicationComponent,
         AuditInfoComponent,
         ChartComponent,
-
     ],
     providers: [],
 })
