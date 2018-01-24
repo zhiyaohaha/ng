@@ -17,3 +17,7 @@ export interface BaseUIConfirmConfig extends BaseUIDialogConfig {
   acceptButton?: string;
   cancelButton?: string;
 }
+
+export interface BaseUIPromptConfig extends BaseUIConfirmConfig {
+  value?: string;
+}

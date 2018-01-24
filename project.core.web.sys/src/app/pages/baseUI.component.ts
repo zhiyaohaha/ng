@@ -1,6 +1,6 @@
 import {ToastService} from "../component/toast/toast.service";
 import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
-import {BaseUIAlertConfig, BaseUIConfirmConfig} from "./baseUI.service";
+import {BaseUIAlertConfig, BaseUIConfirmConfig, BaseUIPromptConfig} from "./baseUI.service";
 
 export abstract class BaseUIComponent {
 
@@ -56,6 +56,17 @@ export abstract class BaseUIComponent {
       disableClose: true,
       viewContainerRef: config.viewContainerRef,
       title: config.title || "警告",
+      cancelButton: config.cancelButton || "取消",
+      acceptButton: config.acceptButton || "确定"
+    }).afterClosed().subscribe(cb);
+  }
+
+  protected openPrompt(config: BaseUIPromptConfig, cb): void {
+    config.dialogService.openPrompt({
+      message: config.message,
+      disableClose: true,
+      viewContainerRef: config.viewContainerRef,
+      title: config.title || "",
       cancelButton: config.cancelButton || "取消",
       acceptButton: config.acceptButton || "确定"
     }).afterClosed().subscribe(cb);
