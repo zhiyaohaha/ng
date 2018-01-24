@@ -56,8 +56,18 @@ export class SearchFormComponent implements OnInit {
         i.value = $event[i.key];
       }
     });
-    let str = JSON.stringify(this.condition);
-    this.onSearch.emit(str);
+    let filter = false;
+    this.condition.forEach(item => {
+      if (item.value && item.value !== 0) {
+        filter = true;
+      }
+    });
+    if (filter) {
+      let str = JSON.stringify(this.condition);
+      this.onSearch.emit(str);
+    } else {
+      this.onSearch.emit("");
+    }
   }
 }
 

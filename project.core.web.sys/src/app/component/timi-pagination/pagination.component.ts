@@ -1,5 +1,8 @@
 import {CommonModule} from "@angular/common";
-import {AfterContentInit, AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
+import {
+  AfterContentInit, AfterViewInit, Component, EventEmitter, Input, NgModule, OnChanges, OnInit,
+  Output
+} from "@angular/core";
 import {MdSelectModule} from "@angular/material";
 import {globalVar} from "../../common/global.config";
 import {FormsModule} from "@angular/forms";
@@ -38,7 +41,7 @@ import {FnUtil} from "../../common/fn-util";
   `,
   styleUrls: ["./pagination.component.scss"]
 })
-export class TimiPaginationComponent {
+export class TimiPaginationComponent implements OnChanges{
 
   _total = [];
   _activeIndex = 0; //当前页码
@@ -105,9 +108,10 @@ export class TimiPaginationComponent {
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private fnUtil: FnUtil) {
-    setTimeout(() => {
-      this.checkStartOrEnd();
-    }, 0);
+  }
+
+  ngOnChanges() {
+    this.checkStartOrEnd();
   }
 
   /**

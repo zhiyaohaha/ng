@@ -57,7 +57,11 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   multipleFalseModifiedState: any;    //非多选情况下，是否是修改状态
   multipleFalseModifiedWait: boolean = true;  //非多选情况下，修改状态下，还原时，需要等text和value数据加载完成以后，再绑定。再次手动修改的时候就不需要了。
 
-  @Input() readyOnly: boolean;  //是否是只读
+  // @Input() readyOnly: boolean;  //是否是只读
+
+  // 之前是根据传入的数据是否为空，来判断是否父组件传递的数据的。（如果传递的数据不为空，就使用父组件传递的数据）
+  @Input() applyBindDataSwitch: boolean = false;   //是否使用父组件传递的text和value数据(即使传递的数据是null)
+
   private valueChange = (_: any) => {
   };
 

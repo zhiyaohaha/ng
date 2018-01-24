@@ -18,8 +18,9 @@ export class PersonalLoanInfoComponent implements OnInit {
 
 
   @Input() loanInfo: any;    //个人信息和贷款信息 数据
-  @Input() readyOnly: boolean = false;   //贷款信息是否只读  
+  @Input() readyOnly: boolean = false;   //贷款信息是否只读 
 
+  applyBindDataSwitch: boolean = true; //使用附件组传递的text和value数据，即使传递的数据是null
   constructor(private orderService: OrderService, private fb: FormBuilder) { }
 
   ngOnInit() {

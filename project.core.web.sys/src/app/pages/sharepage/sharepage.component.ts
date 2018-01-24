@@ -1,4 +1,4 @@
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -13,17 +13,17 @@ import {
   ViewChild,
   ViewContainerRef
 } from "@angular/core";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
-import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
-import {globalVar} from "../../common/global.config";
-import {fadeIn} from "../../common/animations";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
-import {BaseService} from "../../services/base.service";
-import {MdSidenav} from "@angular/material";
-import {BaseUIComponent} from "../baseUI.component";
+import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
+import { SharepageService } from "../../services/sharepage-service/sharepage.service";
+import { ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
+import { globalVar } from "../../common/global.config";
+import { fadeIn } from "../../common/animations";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
+import { BaseService } from "../../services/base.service";
+import { MdSidenav } from "@angular/material";
+import { BaseUIComponent } from "../baseUI.component";
 
 @Component({
   selector: "app-sharepage",
@@ -34,7 +34,7 @@ import {BaseUIComponent} from "../baseUI.component";
 })
 export class SharepageComponent extends BaseUIComponent implements OnInit, OnDestroy {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -86,14 +86,14 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
   //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
-              private fnUtil: FnUtil,
-              private routerInfo: ActivatedRoute,
-              private router: Router,
-              private toastService: ToastService,
-              private resolver: ComponentFactoryResolver,
-              private el: ElementRef,
-              private baseService: BaseService,
-              private loadingService: TdLoadingService) {
+    private fnUtil: FnUtil,
+    private routerInfo: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private loadingService: TdLoadingService) {
     super(loadingService);
 
     /**
@@ -151,8 +151,9 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
             this.filteredData = this.basicData = r.data.data.bindData;
           }
           if (r.data.data && r.data.data.filters.length > 0) {
+            this.filters = [];
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -169,15 +170,18 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
    */
   onSearch($event) {
     this.listparam.filters = $event;
+    this.listparam.index = 0;
+    this.currentPage = 0;
     this.getParamsList(this.listparam);
   }
 
   /**
    * 翻页
    */
-  page($event) {
+  page($event): void {
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
+    this.currentPage = $event.activeIndex;
     this.getParamsList(this.listparam);
   }
 
@@ -189,7 +193,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
     this.detail = true;
     this.btnType = "edit";
 
-    this.sharepageService.getDetailModel({id: $event.id})
+    this.sharepageService.getDetailModel({ id: $event.id })
       .subscribe(res => {
         this.detailModel = res.data.doms;
         this.selectRow = res.data.bindData;
@@ -215,7 +219,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
    * 详情组件点击事件
    */
   detailClick(value) {
-    this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
+    this.sharepageService.editParamsModal({ id: this.selectRow.id }).subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
       }
@@ -224,8 +228,8 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
       this.detail = false;
       this.edit = true;
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
-        this.toastService.creatNewMessage(res.message);
+      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
+        super.showToast(this.toastService, res.message);
       });
     }
 
@@ -263,7 +267,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");
-          this.toastService.creatNewMessage(res.message);
+          super.showToast(this.toastService, res.message);
           if (res.code === "0") {
             this.currentPage = 0;
             this.getParamsList(this.listparam);
@@ -273,7 +277,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
       this.sharepageService.saveEditParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");
-          this.toastService.creatNewMessage(res.message);
+          super.showToast(this.toastService, res.message);
           if (res.code === "0") {
             this.getParamsList(this.listparam);
           }
@@ -300,7 +304,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
   styleUrls: ["./formunit.component.scss"]
 })
 
-export class FormUnitComponent {
+export class FormUnitComponent extends BaseUIComponent {
 
   @Input() DOMS;
   @Input() DOMSData;
@@ -322,7 +326,10 @@ export class FormUnitComponent {
   tags = [];
   _selectRow; //修改数据内容
 
-  constructor(private toastService: ToastService) {
+  constructor(private toastService: ToastService,
+    private loadingService: TdLoadingService
+  ) {
+    super(loadingService);
   }
 
   submitMethod($event) {
@@ -350,7 +357,7 @@ export class FormUnitComponent {
    */
   uploaded($event) {
     if ($event.isUploaded) {
-      this.toastService.creatNewMessage("上传成功");
+      super.showToast(this.toastService, "上传成功");
     }
   }
 
@@ -358,7 +365,6 @@ export class FormUnitComponent {
    * 添加标签
    */
   chipsChange($event) {
-    console.log($event);
     this.tags = $event;
   }
 

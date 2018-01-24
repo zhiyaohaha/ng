@@ -1,4 +1,4 @@
-<table *ngIf="data.length > 1">
+<table [hidden]="!totals">
   <thead>
   <tr>
     <th [hidden]="!selectable" class="checkbox">
@@ -42,12 +42,13 @@
   </tbody>
 </table>
 
-<div *ngIf="data?.length < 0" class="md-padding" layout="row" layout-align="center center">
+<div *ngIf="!totals" class="md-padding" layout="row" layout-align="center center">
   <h3>没有数据哟！</h3>
 </div>
 
 
 <timi-pagination
+  [hidden] = "!totals"
   [total]="totals"
   [pageSize]="pageSize"
   [activeIndex]="activeIndex"
