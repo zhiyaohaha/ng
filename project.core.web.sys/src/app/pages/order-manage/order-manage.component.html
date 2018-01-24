@@ -12,19 +12,11 @@
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
-    <!--[clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">-->
+  <!--[clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">-->
   <!--</app-table>-->
 
-  <timi-table
-    [headers]="columns"
-    [data]="filteredData"
-    [selectable]="true"
-    [clickRowable]="true"
-    [totals]="filteredTotal"
-    [pageSize]="pageSize"
-    [activeIndex]="currentPage"
-    (pageEvent)="page($event)"
-    (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+  <timi-table [headers]="columns" [data]="filteredData" [selectable]="true" [clickRowable]="true" [totals]="filteredTotal"
+    [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()">
   </timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
@@ -35,14 +27,14 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'"></free-declaration>
 
-        <!-- 资料补充(临时注销)  -->
-        <!-- <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application> -->
-        
-        <!-- 临时测试 -->
-        <free-application *ngIf="sidenavKey === 'audit'" id="5a66da982714e20d54ba39cc"></free-application>
+        <!-- 资料补充  -->
+        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
 
-        <!-- 资料审核(临时注销) -->
-        <!-- <free-auditInfo *ngIf="sidenavKey === 'audit'" id="5a66da982714e20d54ba39cc"></free-auditInfo> -->
+        <!-- 临时测试 -->
+        <!-- <free-application *ngIf="sidenavKey === 'audit'" id="5a681d1e9dcbf5309c3de513"></free-application> -->
+
+        <!-- 资料审核 -->
+        <free-auditInfo *ngIf="sidenavKey === 'audit'" id="5a681d1e9dcbf5309c3de513"></free-auditInfo>
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"

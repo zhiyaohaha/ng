@@ -1,69 +1,45 @@
-<!--<div class="upload-file-wrap">-->
-  <!--<ul>-->
-    <!--<li *ngFor="let item of uploader.queue;let i = index;" class="file-item">-->
-      <!--<div class="row">-->
-        <!--<div class="col-sm-2">-->
-          <!--<img src="{{item.base}}" alt="" class="thumbnail">-->
-        <!--</div>-->
-        <!--<div class="col-sm-8">-->
-          <!--<span>{{item.file.name | strlength}}</span>-->
-          <!--<div class="item-progress">-->
-            <!--<md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-sm-2">-->
-          <!--<i class="fa fa-trash" (click)="removeItem(item)"></i>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</li>-->
-  <!--</ul>-->
-  <!--<div class="row">-->
-    <!--<div class="col-sm-2">-->
-      <!--<i class="fa fa-cloud-upload deepblue">-->
-        <!--<input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;">-->
-      <!--</i>-->
-    <!--</div>-->
-    <!--<div class="col-sm-10 upload-btn">-->
-      <!--<button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>-->
-      <!--<button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>-->
-      <!--<button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>removeExistingItem(existingDatas,j) (click)="attachmentPreviewDownLoad(item.type) "-->
-
 <div class="upload-wrap">
+
   <ul class="clearfix">
-    <!-- 之前有数据 -->
+    <!-- 之前有数据/上传完成以后 -->
     <div *ngIf="existingDatas">
-        <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;" >
-            <div class="preview-box" >
-                <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic" (click)="toShow(existingData)">
-                <video *ngIf="checkContentType(existingData.contentType,'video')"  [src]="existingData.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
-                <a  *ngIf="!checkContentType(existingData.contentType,'video') && !checkContentType(existingData.contentType,'image')" [href]="existingData.path" target='blank' download>
-                    <img [src]="existingData.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
-                </a>
-            </div>
-            <div  class="item-name">
-              <input  class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false" autocomplete="off" >
-            </div>
-            <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
-        </li>
-    </div>
-    <!-- 手动上传 -->
-    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传（ok uploader.queue && uploading） existingDatas ? uploader.queue && uploading : uploader.queue-->
-    <!-- {{fun(existingDatas)}} -->
-    <div *ngIf="uploader.queue && uploading">
-        <!-- {{fun(uploader.queue)}} -->
-      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
+      {{fun(existingDatas)}}
+      <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;">
         <div class="preview-box">
-          <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.alias}}" class="prePic"  (click)="toShow(item)">
-          <video *ngIf="checkContentType(item.contentType,'video')"  [src]="item.path" controls="controls" width="100" height="91"> 您的浏览器不支持视频预览。</video>
-          <a  *ngIf="!checkContentType(item.contentType,'video') && !checkContentType(item.contentType,'image')" [href]="item.path" target='blank' download>
-              <img [src]="item.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
+          <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic"
+            (click)="toShow(existingData)">
+          <video *ngIf="checkContentType(existingData.contentType,'video')" [src]="existingData.path" controls="controls" width="100"
+            height="91"> 您的浏览器不支持视频预览。</video>
+          <a *ngIf="!checkContentType(existingData.contentType,'video') && !checkContentType(existingData.contentType,'image')" [href]="existingData.path"
+            target='blank' download>
+            <img [src]="existingData.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
           </a>
         </div>
         <div class="item-name">
-          <input class="item-alias" value="{{item.alias}}" (blur)="onBlur($event,item)" id="{{item.id}}" spellcheck="false" autocomplete="off" >
+          <input class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false"
+            autocomplete="off">
+        </div>
+        <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
+      </li>
+    </div>
+
+    <!-- 手动上传过程中 -->
+    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传（ok uploader.queue && uploading） existingDatas ? uploader.queue && uploading : uploader.queue-->
+    <!-- {{fun(existingDatas)}} -->
+    <div *ngIf="uploader.queue && uploading">
+      <!-- {{fun(uploader.queue)}} -->
+      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
+        <div class="preview-box">
+          <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(item)">
+          <video *ngIf="checkContentType(item.contentType,'video')" [src]="item.path" controls="controls" width="100" height="91">
+            您的浏览器不支持视频预览。</video>
+          <a *ngIf="!checkContentType(item.contentType,'video') && !checkContentType(item.contentType,'image')" [href]="item.path"
+            target='blank' download>
+            <img [src]="item.thumbnail || defaultImgSrc" alt="预览图" class="prePic">
+          </a>
+        </div>
+        <div class="item-name">
+          <input class="item-alias" value="{{item.alias}}" (blur)="onBlur($event,item)" id="{{item.id}}" spellcheck="false" autocomplete="off">
         </div>
         <div class="item-progress" *ngIf="item.isUploading">
           <md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>
@@ -71,11 +47,14 @@
         <i class="fa fa-close" (click)="removeItem(item)"></i>
       </li>
     </div>
+
   </ul>
+
   <a href="javascript:;" class="upload-input-warp">
-      <div class="upload-custom-btn ">
-          <i class="fa fa-plus"></i>
-      </div>
-      <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname()">
+    <div class="upload-custom-btn ">
+      <i class="fa fa-plus"></i>
+    </div>
+    <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname()">
   </a>
+
 </div>
