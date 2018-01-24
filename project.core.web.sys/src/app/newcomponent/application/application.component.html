@@ -4,7 +4,7 @@
   <free-personalLoanInfo [loanInfo]="loanInfo"></free-personalLoanInfo>
 
   <!-- 录入信息 -->
-  <div class="loan">
+  <div class="loan" *ngIf="loanInfo._applyFormTemplate">
     <h4>录入信息</h4>
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
@@ -33,7 +33,7 @@
               </div>
             </li>
           </ul>
-          <!-- 初始化状态 , 并且有附件项 -->
+          <!-- 附件组初始化状态  -->
           <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">
             <pre>{{attachmentGroup._attachments[0].description}}</pre>
             <p *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
@@ -41,7 +41,7 @@
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"></multiple-uploader>
           </div>
-          <!-- 非初始化状态,已经操作了 -->
+          <!-- 附件组非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
             <pre>{{attachmentGroup.temporaryData.description}}</pre>
             <p *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>

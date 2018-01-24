@@ -35,11 +35,14 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'"></free-declaration>
 
-        <!-- 资料补充 -->
-        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
+        <!-- 资料补充(临时注销)  -->
+        <!-- <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application> -->
+        
+        <!-- 临时测试 -->
+        <free-application *ngIf="sidenavKey === 'audit'" id="5a66da982714e20d54ba39cc"></free-application>
 
-        <!-- 资料审核 -->
-        <free-auditInfo *ngIf="sidenavKey === 'audit'" id="5a66da982714e20d54ba39cc"></free-auditInfo>
+        <!-- 资料审核(临时注销) -->
+        <!-- <free-auditInfo *ngIf="sidenavKey === 'audit'" id="5a66da982714e20d54ba39cc"></free-auditInfo> -->
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
