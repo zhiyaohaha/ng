@@ -91,6 +91,25 @@ select{
     line-height:16px;
     white-space: pre-wrap;
  }
+ .accessoryBottomBottom .auditBtnParent{
+    .auditNeedCount{
+        float: left;
+    }
+    .auditBtn{
+        float: right;
+        cursor: pointer;
+        span{
+            height: 20px;
+            line-height: 15px;
+        }
+        .auditBtnPass{
+            background-color:#177bbb;
+        }
+        .auditBtnNotPass{
+            background-color:#666666;
+        }
+    }
+ }
 
 //高亮当前附件组 和 附件项
 .attachmentGroupActive{

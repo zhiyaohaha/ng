@@ -104,4 +104,20 @@ export class OrderService {
   getBank() {
     return this.baseService.get("/api/ThirdAPI/Fuiou/GetBanks");
   }
+
+  //审核附件组和附件项
+  //通过 
+  postLoanOrderAdoptAttachment(id) {
+    return this.baseService.post("/api/LoanOrder/AdoptAttachment", {
+      id: id
+    });
+  }
+  //不通过 
+  postLoanOrderNotPassAttachment(id, statusRemark) {
+    return this.baseService.post("/api/LoanOrder/NotPassAttachment", {
+      id: id,
+      statusRemark: statusRemark
+    });
+  }
+
 }

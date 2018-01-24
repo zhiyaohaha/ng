@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TimiSelectModule } from "../../component/timi-select/select.component";
 import { TimiInputModule } from "../../component/timi-input/timi-input.component";
 import { ToastService } from "../../component/toast/toast.service";
+import { TdLoadingService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
 
 @Component({
   selector: 'free-auditInfo',
@@ -24,7 +26,7 @@ import { ToastService } from "../../component/toast/toast.service";
     ])
   ],
 })
-export class AuditInfoComponent implements OnInit {
+export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   loanInfo: any; //贷款信息
   attachmentsDisplay: false; //展现附件组下面的附件项
@@ -42,7 +44,9 @@ export class AuditInfoComponent implements OnInit {
 
   @Input() id: string;
 
-  constructor(private orderService: OrderService, private fb: FormBuilder, private toastService: ToastService) { }
+  constructor(private orderService: OrderService, private fb: FormBuilder, private toastService: ToastService, private loadingService: TdLoadingService) {
+    super(loadingService);
+  }
 
   ngOnInit() {
     // this.applicationForm = this.fb.group({
@@ -151,12 +155,35 @@ export class AuditInfoComponent implements OnInit {
     this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res => {
       if (res.code === "0") {
         // console.log(res)
-        _self.toastService.creatNewMessage("申请成功");
+        // _self.toastService.creatNewMessage("申请成功");
+        super.showToast(_self.toastService, "申请成功");
       } else {
-        _self.toastService.creatNewMessage(res.message);
+        // _self.toastService.creatNewMessage(res.message);
+        super.showToast(_self.toastService, res.message);
       }
     })
   }
 
+  //审核附件组和附件项
+  //通过 
+  postLoanOrderAdoptAttachment(id) {
+    let _self = this;
+    this.orderService.postLoanOrderAdoptAttachment(id).subscribe(res => {
+      if (res.code === "0") {
+        console.log(res)
+        super.showToast(_self.toastService, "已通过");
+        // _self.toastService.creatNewMessage("申请成功");
+      } else {
+        super.showToast(_self.toastService, res.message);
+      }
+    })
+  }
 
+  // //不通过 
+  // postLoanOrderNotPassAttachment(id, statusRemark) {
+  //   return this.baseService.post("/api/LoanOrder/NotPassAttachment", {
+  //     id: id,
+  //     statusRemark: statusRemark
+  //   });
+  // }
 }
