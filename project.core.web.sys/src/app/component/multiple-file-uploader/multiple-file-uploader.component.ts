@@ -113,6 +113,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         .subscribe(res => {
           if (res.success === true) {
             existingDatas.splice(index, 1);
+            _self.onPostFileData.emit(res.data);
             // _self.toastService.creatNewMessage("删除成功");
             _self.toastService.creatNewMessage({ message: "删除成功" });
           }
