@@ -38,6 +38,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   @Input() existingDatas: any; //已有数据
   @Input() uploaderQueueHidden: boolean;   //隐藏手动上传的样式(否则在切换其它附件项的时候，会出现同样的上传样式)
   @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
+  @Input() readyOnly: boolean = false;  //该组件是否为只读状态
 
   uploading: boolean = false; //上传中
   defaultImgSrc: string = "../../../assets/Images/uploading.gif"; //默认上传图片
@@ -219,9 +220,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     });
   }
 
-  fun(val) {
-    // console.log(val)
-  }
+
   toShow(item) {
     console.log(item);
     this.previewService.showPreview(true);

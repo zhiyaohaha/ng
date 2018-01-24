@@ -1,9 +1,7 @@
 <div class="upload-wrap">
-
   <ul class="clearfix">
     <!-- 之前有数据/上传完成以后 -->
     <div *ngIf="existingDatas">
-      {{fun(existingDatas)}}
       <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;">
         <div class="preview-box">
           <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic"
@@ -19,15 +17,13 @@
           <input class="item-alias" id="{{existingData.id}}" [value]="existingData.name" (blur)="onBlur($event,existingData)" spellcheck="false"
             autocomplete="off">
         </div>
-        <i class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
+        <i *ngIf="!readyOnly" class="fa fa-close" (click)="removeExistingItem(existingData,existingDatas,j)"></i>
       </li>
     </div>
 
     <!-- 手动上传过程中 -->
     <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传（ok uploader.queue && uploading） existingDatas ? uploader.queue && uploading : uploader.queue-->
-    <!-- {{fun(existingDatas)}} -->
     <div *ngIf="uploader.queue && uploading">
-      <!-- {{fun(uploader.queue)}} -->
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(item)">
@@ -50,7 +46,7 @@
 
   </ul>
 
-  <a href="javascript:;" class="upload-input-warp">
+  <a href="javascript:;" class="upload-input-warp" *ngIf="!readyOnly">
     <div class="upload-custom-btn ">
       <i class="fa fa-plus"></i>
     </div>
