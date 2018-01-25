@@ -172,11 +172,12 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //审核附件组和附件项
   //通过 
-  postLoanOrderAdoptAttachment(id) {
+  postLoanOrderAdoptAttachment(id, i, k) {
     let _self = this;
     this.orderService.postLoanOrderAdoptAttachment(id).subscribe(res => {
       if (res.code === "0") {
         console.log(res)
+        _self.setStatus(i, k, res.data, '');
         super.showToast(_self.toastService, "已通过");
         // _self.toastService.creatNewMessage("申请成功");
       } else {
@@ -186,19 +187,53 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   // //不通过 
-  postLoanOrderNotPassAttachment(id) {
+  postLoanOrderNotPassAttachment(id, i, k) {
     let _self = this;
     super.openPrompt({ message: "请输入不通过原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
-      console.log(val)
-      _self.orderService.postLoanOrderNotPassAttachment(id, val).subscribe(res => {
-        if (res.code === "0") {
-          // super.showToast(_self.toastService, "已通过");
-          _self.toastService.creatNewMessage({ message: "已拒绝" });
-        } else {
-          _self.toastService.creatNewMessage({ message: res.message });
-        }
-      })
+      if (val) {
+        _self.orderService.postLoanOrderNotPassAttachment(id, val).subscribe(res => {
+          if (res.code === "0") {
+            // super.showToast(_self.toastService, "已通过");
+            _self.setStatus(i, k, res.data, val);
+            _self.toastService.creatNewMessage({ message: "已拒绝" });
+          } else {
+            _self.toastService.creatNewMessage({ message: res.message });
+          }
+        })
+      }
     })
-
   }
+
+  //根据审核结果修改 当前附件项/组状态。
+  setStatus(i, k, resData, NotPassReason) {
+    let data = this.loanInfo._attachmentGroups;
+    data.forEach((item1, index1) => {
+      if (index1 == i) {
+        item1._attachments.forEach((item2, index2) => {
+          if (item2 == k) {
+            item2._status = this.stausCodeLabel(resData._status);
+            if (NotPassReason) {  //不通过状态
+              console.log(NotPassReason)
+              item2.statusRemark = NotPassReason;
+            }
+          }
+        })
+        item1._status = this.stausCodeLabel(resData.groupStatus);
+      }
+    })
+  }
+
+  //根据状态码，修改状态label
+  stausCodeLabel(code) {
+    let label;
+    switch (code) {
+      case "LoanOrderAttachmentStatus.Audit": label = "待审核"; break;
+      case "LoanOrderAttachmentStatus.Uncommitted": label = "待填写"; break;
+      case "LoanOrderAttachmentStatus.NotPass": label = "不通过"; break;
+      case "LoanOrderAttachmentStatus.Adopt": label = "通过"; break;
+    }
+    return label;
+  }
+
 }
+

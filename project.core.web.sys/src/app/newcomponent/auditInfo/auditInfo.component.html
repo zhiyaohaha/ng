@@ -36,13 +36,13 @@
           <!-- 所需附件(审核资料时，为只读) -->
           <!-- 初始化状态 , 并且有附件项 -->
           <div class="accessoryBottomBottom" *ngIf="!attachmentGroup.temporaryData && attachmentGroup._attachments">
-            <pre>{{attachmentGroup._attachments[0].description}}</pre>
+            <pre *ngIf="attachmentGroup._attachments[0].description">{{attachmentGroup._attachments[0].description}}</pre>
+            <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
-
               <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
-                <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id)">通过</span>
-                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id)">不通过</span>
+                <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
+                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">不通过</span>
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
@@ -51,12 +51,13 @@
           </div>
           <!-- 非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
-            <pre>{{attachmentGroup.temporaryData.description}}</pre>
+            <pre *ngIf="attachmentGroup.temporaryData.description">{{attachmentGroup.temporaryData.description}}</pre>
+            <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
               <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
-                <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id)">通过</span>
-                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id)">不通过</span>
+                <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
+                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">不通过</span>
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
@@ -69,7 +70,7 @@
     </ul>
 
     <div class="resultBtn">
-      <button type="button" class="mat-raised-button" (click)="onSubmit($event)">提交审核</button>
+      <!-- <button type="button" class="mat-raised-button" (click)="onSubmit($event)">提交审核</button> -->
     </div>
 
   </div>
