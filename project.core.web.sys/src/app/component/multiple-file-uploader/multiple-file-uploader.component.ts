@@ -230,11 +230,16 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   }
 
 
-  toShow(item) {
-    console.log(item);
+  toShow(items) {
+    // console.log(items);
+    let imgSrcArr = [];
+    items.forEach(item => {
+      if (item.contentType.substring(0, 5) == 'image') {  //只有图片才能预览
+        imgSrcArr.push(item.path);
+      }
+    });
     this.previewService.showPreview(true);
-    this.previewService.getUrl([item.path]); //item.type
-    this.previewService.getType(item.contentType);
+    this.previewService.getUrl(imgSrcArr);
   }
 
 

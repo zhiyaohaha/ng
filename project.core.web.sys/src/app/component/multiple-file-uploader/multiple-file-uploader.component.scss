@@ -68,11 +68,12 @@
     text-decoration: none;
     text-indent: 0;
     line-height: 20px;
-
-    
     background-color: #FFF;
     border: 1px solid #CF000d;
-    
+    input{
+      font-size:0;
+      cursor: pointer !important;
+    }
  }
  .upload-input-warp:hover {
     // background: #AADFFD;

@@ -5,7 +5,7 @@
       <li class="item item-success" *ngFor="let existingData of existingDatas;let j=index;">
         <div class="preview-box">
           <img *ngIf="checkContentType(existingData.contentType,'image')" [src]="existingData.path + imgQuality" alt="预览图" class="prePic"
-            (click)="toShow(existingData)">
+            (click)="toShow(existingDatas)">
           <video *ngIf="checkContentType(existingData.contentType,'video')" [src]="existingData.path" controls="controls" width="100"
             height="91"> 您的浏览器不支持视频预览。</video>
           <a *ngIf="!checkContentType(existingData.contentType,'video') && !checkContentType(existingData.contentType,'image')" [href]="existingData.path"
@@ -26,7 +26,7 @@
     <div *ngIf="uploader.queue && uploading">
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
         <div class="preview-box">
-          <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(item)">
+          <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(uploader.queue)">
           <video *ngIf="checkContentType(item.contentType,'video')" [src]="item.path" controls="controls" width="100" height="91">
             您的浏览器不支持视频预览。</video>
           <a *ngIf="!checkContentType(item.contentType,'video') && !checkContentType(item.contentType,'image')" [href]="item.path"
