@@ -87,13 +87,17 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    */
   removeItem(item) {
     let _self = this;
+    this.loadingService.register("loading");
     this.removeConfirm(function () {
       _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", { attachmentId: _self.uploadId, fileId: item.id })
         .subscribe(res => {
+          _self.loadingService.resolve("loading");
           if (res.success === true) {
             item.remove();
             // _self.toastService.creatNewMessage("删除成功");
             _self.toastService.creatNewMessage({ message: "删除成功" });
+          } else {
+            _self.toastService.creatNewMessage({ message: res.message });
           }
         });
     })
@@ -105,17 +109,21 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    */
   removeExistingItem(existingData, existingDatas, index) {  //existingDatas,index
     let _self = this;
+    this.loadingService.register("loading");
     this.removeConfirm(function () {
       _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {
         attachmentId: _self.uploadId,
         fileId: existingData.id
       })
         .subscribe(res => {
+          _self.loadingService.resolve("loading");
           if (res.success === true) {
             existingDatas.splice(index, 1);
             _self.onPostFileData.emit(res.data);
             // _self.toastService.creatNewMessage("删除成功");
             _self.toastService.creatNewMessage({ message: "删除成功" });
+          } else {
+            _self.toastService.creatNewMessage({ message: res.message });
           }
         });
     });
@@ -247,9 +255,17 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    * 提交成功过后修改文件名
    */
   renameFile(id, name) {
+    let _self = this;
+    this.loadingService.register("loading");
     this.baseService.post("/api/file/rename", { key: id, value: name })
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
+        _self.loadingService.resolve("loading");
+        if (res.code === "0") {
+          super.showToast(_self.toastService, "重命名成功");
+        } else {
+          super.showToast(_self.toastService, res.message);
+        }
       });
   }
 
