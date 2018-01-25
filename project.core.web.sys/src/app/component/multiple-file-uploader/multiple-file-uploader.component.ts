@@ -86,21 +86,25 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    * @param item
    */
   removeItem(item) {
-    let _self = this;
-    this.loadingService.register("loading");
-    this.removeConfirm(function () {
-      _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", { attachmentId: _self.uploadId, fileId: item.id })
-        .subscribe(res => {
-          _self.loadingService.resolve("loading");
-          if (res.success === true) {
-            item.remove();
-            // _self.toastService.creatNewMessage("删除成功");
-            _self.toastService.creatNewMessage({ message: "删除成功" });
-          } else {
-            _self.toastService.creatNewMessage({ message: res.message });
-          }
-        });
-    })
+    if (this.uploadUrl) {
+      let _self = this;
+      this.loadingService.register("loading");
+      this.removeConfirm(function () {
+        _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", { attachmentId: _self.uploadId, fileId: item.id })
+          .subscribe(res => {
+            _self.loadingService.resolve("loading");
+            if (res.success === true) {
+              item.remove();
+              // _self.toastService.creatNewMessage("删除成功");
+              _self.toastService.creatNewMessage({ message: "删除成功" });
+            } else {
+              _self.toastService.creatNewMessage({ message: res.message });
+            }
+          });
+      })
+    } else {  //首页专用-2
+      item.remove();
+    }
   }
 
   /**
@@ -215,6 +219,15 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           // that.uploading = false;
         }
       };
+    } else {  //首页专用-1
+      this.uploader.uploadAll();
+      this.uploader.onSuccessItem = function (e) {
+        let data = that.uploader.queue;
+        data.forEach(item => {  // 每次都是单个上传
+          item["contentType"] = "image/jpeg";
+          item["isSuccess"] = false;
+        });
+      }
     }
 
     //上传时，临时用于显示的别名 
@@ -233,14 +246,18 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
 
   toShow(items) {
     // console.log(items);
-    let imgSrcArr = [];
-    items.forEach(item => {
-      if (item.contentType.substring(0, 5) == 'image') {  //只有图片才能预览
-        imgSrcArr.push(item.path);
-      }
-    });
-    this.previewService.showPreview(true);
-    this.previewService.getUrl(imgSrcArr);
+    if (this.uploadUrl) { //首页专用-4
+      let imgSrcArr = [];
+      items.forEach(item => {
+        if (item.contentType.substring(0, 5) == 'image') {  //只有图片才能预览
+          imgSrcArr.push(item.path);
+        }
+      });
+      this.previewService.showPreview(true);
+      this.previewService.getUrl(imgSrcArr);
+    } else {
+      alert('首页这个不支持预览')
+    }
   }
 
 

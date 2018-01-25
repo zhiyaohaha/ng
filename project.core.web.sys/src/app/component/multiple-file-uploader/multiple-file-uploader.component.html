@@ -22,9 +22,9 @@
     </div>
 
     <!-- 手动上传过程中 -->
-    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传-->
+    <!-- 'item-success':!uploadUrl 首页专用-3 -->
     <div *ngIf="uploader.queue">
-      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
+      <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(uploader.queue)">
           <video *ngIf="checkContentType(item.contentType,'video')" [src]="item.path" controls="controls" width="100" height="91">
