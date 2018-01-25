@@ -114,7 +114,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   //接收来自 上传组件 上传的最新文件数据。  更新当前组件的数据
   onPostFileData($event, i, k) {
     let data = this.loanInfo._attachmentGroups;
-    console.log($event)
+    // console.log($event)
     data.forEach((item1, index1) => {
       if (index1 == i) {
         item1._attachments.forEach((item2, index2) => {

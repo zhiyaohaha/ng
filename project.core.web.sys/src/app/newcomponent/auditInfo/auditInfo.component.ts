@@ -158,7 +158,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
           if (item2 == k) {
             item2._status = this.stausCodeLabel(resData._status);
             if (NotPassReason) {  //不通过状态
-              console.log(NotPassReason)
+              // console.log(NotPassReason)
               item2.statusRemark = NotPassReason;
             }
           }
