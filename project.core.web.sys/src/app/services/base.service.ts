@@ -94,7 +94,7 @@ export class BaseService {
         str = params[key];
       }
     }
-    str = this.util.toJsonStr(str);
+    str = typeof str === "string" ? str : str instanceof Array ? str : this.util.toJsonStr(str);
     str = str.replace(/\+/g, "%2B");
     let sign = this.util.toMd5(str + timestamp + this.private_key);
     let _params = new URLSearchParams();
