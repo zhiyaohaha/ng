@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { forEach } from '@angular/router/src/utils/collection';
@@ -7,8 +7,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TimiSelectModule } from "../../component/timi-select/select.component";
 import { TimiInputModule } from "../../component/timi-input/timi-input.component";
 import { ToastService } from "../../component/toast/toast.service";
-import { TdLoadingService } from "@covalent/core";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
+
 
 @Component({
   selector: 'free-auditInfo',
@@ -44,7 +45,12 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   @Input() id: string;
 
-  constructor(private orderService: OrderService, private fb: FormBuilder, private toastService: ToastService, private loadingService: TdLoadingService) {
+  constructor(private orderService: OrderService,
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef) {
     super(loadingService);
   }
 
@@ -180,10 +186,19 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   // //不通过 
-  // postLoanOrderNotPassAttachment(id, statusRemark) {
-  //   return this.baseService.post("/api/LoanOrder/NotPassAttachment", {
-  //     id: id,
-  //     statusRemark: statusRemark
-  //   });
-  // }
+  postLoanOrderNotPassAttachment(id) {
+    let _self = this;
+    super.openPrompt({ message: "请输入不通过原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
+      console.log(val)
+      _self.orderService.postLoanOrderNotPassAttachment(id, val).subscribe(res => {
+        if (res.code === "0") {
+          // super.showToast(_self.toastService, "已通过");
+          _self.toastService.creatNewMessage({ message: "已拒绝" });
+        } else {
+          _self.toastService.creatNewMessage({ message: res.message });
+        }
+      })
+    })
+
+  }
 }

@@ -108,6 +108,10 @@ export class OrderService {
   //审核附件组和附件项
   //通过 
   postLoanOrderAdoptAttachment(id) {
+    // console.log({
+    //   id: id
+    // })
+     //id = id.replace(/\"/g, "");
     return this.baseService.post("/api/LoanOrder/AdoptAttachment", {
       id: id
     });

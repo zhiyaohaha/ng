@@ -39,9 +39,10 @@
             <pre>{{attachmentGroup._attachments[0].description}}</pre>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
-              <p class="auditBtn">
+
+              <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
                 <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id)">通过</span>
-                <span class="free-badge auditBtnNotPass">不通过</span>
+                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id)">不通过</span>
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
@@ -53,9 +54,9 @@
             <pre>{{attachmentGroup.temporaryData.description}}</pre>
             <div class="clearfix auditBtnParent">
               <p *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
-              <p class="auditBtn">
+              <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
                 <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id)">通过</span>
-                <span class="free-badge auditBtnNotPass">不通过</span>
+                <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id)">不通过</span>
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
