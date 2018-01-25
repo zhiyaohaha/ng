@@ -6,11 +6,10 @@
   <div class="loan">
     <h4>录入信息</h4>
     <!-- 新增 -->
-    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""></timi-responsive-form>
     <!-- 修改 -->
     <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
+      [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
   </div>
 
   <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->
@@ -46,8 +45,7 @@
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
-                    " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"
-              [readyOnly]="readyOnly"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly"></multiple-uploader>
           </div>
           <!-- 非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
@@ -61,8 +59,7 @@
               </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                    " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"
-              [readyOnly]="readyOnly"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly"></multiple-uploader>
           </div>
 
         </div>

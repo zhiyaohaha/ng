@@ -55,8 +55,9 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     //   purpose: ['', Validators.required],         //贷款用途
     //   applyFormData: '',   //申请表（表单模版数据）
     // })
-
+    this.loadingService.register("loading");
     this.orderService.getLoanInfo(this.id).subscribe(res => {
+      this.loadingService.resolve("loading");
       if (res.data) {
         // console.log(res)
         this.getLoanInfo(res.data);
@@ -166,7 +167,9 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
       applyFormData: this.applyFormPostData,   //申请表（表单模版数据）
     }
     // console.log(this.applicationForm)
+    this.loadingService.register("loading");
     this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res => {
+      _self.loadingService.resolve("loading");
       if (res.code === "0") {
         // console.log(res)
         // _self.toastService.creatNewMessage("申请成功");

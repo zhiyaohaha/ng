@@ -55,18 +55,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.applicationForm = this.fb.group({
-    //   id:'5a5e1f3eff776332740bf282',              //订单唯一标识
-    //   applyAmount: ['', Validators.required],     //申请金额
-    //   applyTerm: ['', Validators.required],       //申请期限
-    //   applyAdCode: ['', Validators.required],     //申请地区
-    //   purpose: ['', Validators.required],         //贷款用途
-    //   applyFormData: '',   //申请表（表单模版数据）
-    // })
-
+    this.loadingService.register("loading");
     this.orderService.getLoanOrderDetail(this.id).subscribe(res => {
+      this.loadingService.resolve("loading");
       if (res.data) {
-        console.log(res)
+        // console.log(res)
         this.getLoanInfo(res.data);
       }
     })
@@ -118,63 +111,13 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
 
-  //接收来自 上传组件 上传的最新文件数据。  更新当前组件的数据
-  onPostFileData($event, i, k) {
-    let data = this.loanInfo._attachmentGroups;
-    data.forEach((item1, index1) => {
-      if (index1 == i) {
-        item1._attachments.forEach((item2, index2) => {
-          // console.log(item2)
-          if (item2 == k) {
-            let res = item2._files;
-            if (res) {
-              item2._files = res.concat($event);
-            } else {
-              item2._files = $event;
-            }
-          }
-        })
-      }
-    })
-  }
-
-
-
-  //动态表单数据
-  onSubmitParams($event) {
-    // console.log($event);
-    this.applyFormPostData = $event;
-  }
-
-  //提交申请
-  onSubmit($event) {
-    let _self = this;
-    this.applicationForm = {
-      id: this.id,              //订单唯一标识
-      applyAmount: this.loanInfo.applyAmount,     //申请金额
-      applyTerm: this.loanInfo.applyTerm,       //申请期限
-      applyAdCode: this.loanInfo.applyAdCode,     //申请地区
-      purpose: this.loanInfo.purpose,         //贷款用途
-      applyFormData: this.applyFormPostData,   //申请表（表单模版数据）
-    }
-    // console.log(this.applicationForm)
-    this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res => {
-      if (res.code === "0") {
-        // console.log(res)
-        // _self.toastService.creatNewMessage("申请成功");
-        super.showToast(_self.toastService, "申请成功");
-      } else {
-        // _self.toastService.creatNewMessage(res.message);
-        super.showToast(_self.toastService, res.message);
-      }
-    })
-  }
-
   //审核附件组和附件项
   //通过 
   postLoanOrderAdoptAttachment(id, i, k) {
     let _self = this;
+    this.loadingService.register("loading");
     this.orderService.postLoanOrderAdoptAttachment(id).subscribe(res => {
+      _self.loadingService.resolve("loading");
       if (res.code === "0") {
         console.log(res)
         _self.setStatus(i, k, res.data, '');
@@ -186,10 +129,12 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     })
   }
 
-  // //不通过 
+  //不通过 
   postLoanOrderNotPassAttachment(id, i, k) {
     let _self = this;
+    this.loadingService.register("loading");
     super.openPrompt({ message: "请输入不通过原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
+      _self.loadingService.resolve("loading");
       if (val) {
         _self.orderService.postLoanOrderNotPassAttachment(id, val).subscribe(res => {
           if (res.code === "0") {
@@ -233,6 +178,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       case "LoanOrderAttachmentStatus.Adopt": label = "通过"; break;
     }
     return label;
+  }
+
+  //提交申请
+  onSubmit($event) {
+
   }
 
 }
