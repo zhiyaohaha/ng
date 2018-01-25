@@ -401,4 +401,12 @@ export class OrderManageComponent implements OnInit {
   ngOnDestroy(): void {
     this.routerSubscribe.unsubscribe();
   }
+
+  //报单，申请贷款以后，跳转到补资料页面 
+  onGetOrderId($event) {
+    console.log($event);
+    this.sidenavKey = "FillInfo";
+    this.FillInfoId = $event;
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 
 @Component({
@@ -47,6 +47,8 @@ export class DeclarationComponent implements OnInit {
   selectedProduct; // 选择的产品
 
   bank: string;//开户行
+
+  @Output() onPostOrderId = new EventEmitter();  //发送最新上传的文件数据
 
   constructor(private orderService: OrderService) { }
 
@@ -166,13 +168,14 @@ export class DeclarationComponent implements OnInit {
       //this.showPersonData = res.success;
     })
   }
-  
+
   //开始认证
-  startVerify(){
-    this.orderService.sendCode(this.personRealId,this.phoneCode).subscribe(res=>{
+  startVerify() {
+    this.orderService.sendCode(this.personRealId, this.phoneCode).subscribe(res => {
       this.showPersonData = res.success;
       this.personData = res.data;
       console.log(res);
+      console.log(res.data.id);
     })
   }
 
@@ -180,6 +183,7 @@ export class DeclarationComponent implements OnInit {
   onSubmit() {
     this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {
       console.log(res);
+      this.onPostOrderId.emit(res.data.id);
     })
   }
   //搜索产品

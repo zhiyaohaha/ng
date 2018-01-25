@@ -25,7 +25,7 @@
         <!--详细模版内容-->
         <detail-model *ngIf="sidenavKey === 'Detail' && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
           (onClick)="detailClick($event)"></detail-model>
-        <free-declaration *ngIf="sidenavKey === 'Other'"></free-declaration>
+        <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
         <!-- 资料补充  -->
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
