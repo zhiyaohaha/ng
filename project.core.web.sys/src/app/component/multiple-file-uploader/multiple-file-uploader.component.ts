@@ -40,7 +40,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
   @Input() readyOnly: boolean = false;  //该组件是否为只读状态
 
-  uploading: boolean = false; //上传中
+  // uploading: boolean = false; //上传中
   defaultImgSrc: string = "../../../assets/Images/uploading.gif"; //默认上传图片
   imgQuality = defaultValue.imgQuality;
   uploader: FileUploader = new FileUploader({
@@ -167,7 +167,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    * @memberof MultipleFileUploaderComponent
    */
   changeNickname() {
-    this.uploading = true;
+    // this.uploading = true;
     let data = this.uploader.queue;
     let that = this;
     if (this.uploadUrl) {
@@ -191,12 +191,13 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
               item.isSuccess = false;
               item.isError = true;
             }
-            let queueRes = JSON.parse(item._xhr.response);
-            //清除有重复文件的提交记录
-            if (queueRes.code === "Fail" || queueRes.code === "UnknownError") {
-              data.splice(index, 1);
+            if (item._xhr) {
+              let queueRes = JSON.parse(item._xhr.response);
+              //清除有重复文件的提交记录
+              if (queueRes.code === "Fail" || queueRes.code === "UnknownError") {
+                data.splice(index, 1);
+              }
             }
-            that.uploading = false;
           });
         } else {
           that.toastService.creatNewMessage({ message: "上传成功" });
@@ -211,7 +212,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           // console.log(res);
           // console.log(res.data);
           that.onPostFileData.emit(res.data);
-          that.uploading = false;
+          // that.uploading = false;
         }
       };
     }

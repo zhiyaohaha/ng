@@ -22,8 +22,8 @@
     </div>
 
     <!-- 手动上传过程中 -->
-    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传（ok uploader.queue && uploading） existingDatas ? uploader.queue && uploading : uploader.queue-->
-    <div *ngIf="uploader.queue && uploading">
+    <!-- 用于之前没有数据的时候上传，用于之前有数据的时候上传-->
+    <div *ngIf="uploader.queue">
       <li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(uploader.queue)">
