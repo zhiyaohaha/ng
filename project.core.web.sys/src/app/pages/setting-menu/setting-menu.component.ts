@@ -111,6 +111,7 @@ export class SettingMenuComponent implements OnInit {
       if (r.data) {
         this.menus = r.data;
       }
+      console.log(this.menus);
     });
   }
 

@@ -2,6 +2,7 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button md-raised-button class="add-button" (click)="setPower();sidenav.open()">添加</button>
   </div>
 
   <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
@@ -11,7 +12,10 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-        <div class="tableBox">
+        
+        <free-permissions [menus]="datas" [id]="'59afc3fafb95ae3140308fd2'" [from]="'SysJob'"></free-permissions>
+        <!-- <div class="tableBox">
+
           <div class="boxHeader">
             <span>编号</span>
             <span>姓名</span>
@@ -53,7 +57,7 @@
             </div>
           </div>
 
-        </div>
+        </div> -->
       </div>
     </div>
   </md-sidenav>

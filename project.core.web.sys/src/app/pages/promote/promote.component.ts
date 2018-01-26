@@ -27,6 +27,7 @@ import { MdSidenav } from "@angular/material";
 import { PromoteService } from "app/services/promote/promote.service";
 import { CommonService } from "app/services/common/common.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
+import { PermissionsService } from "app/services/permissions/permissions.service";
 
 
 @Component({
@@ -43,7 +44,7 @@ import { animate, state, style, transition, trigger } from "@angular/animations"
       ])
     ])
   ],
-  providers: [TdLoadingService, PromoteService, CommonService]
+  providers: [TdLoadingService, PromoteService, CommonService, PermissionsService]
 })
 export class PromoteComponent implements OnInit {
   [x: string]: any;
@@ -100,7 +101,7 @@ export class PromoteComponent implements OnInit {
 
   levels: Array<any> = [];
 
-
+  datas: Array<any> = [];//接收的数据
 
   constructor(
     private fnUtil: FnUtil,
@@ -113,7 +114,8 @@ export class PromoteComponent implements OnInit {
     private baseService: BaseService,
     private lodaingService: TdLoadingService,
     private promoteService: PromoteService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private permissionsService: PermissionsService
   ) {
     /**
      * 加载动画
@@ -251,5 +253,12 @@ export class PromoteComponent implements OnInit {
         });
     }
   }
-  
+  //获取菜单列表数据
+  setPower() {
+    this.permissionsService.getPermissions().subscribe(res => {
+      console.log(res.data);
+      this.datas = res.data;
+    })
+  }    
+
 }

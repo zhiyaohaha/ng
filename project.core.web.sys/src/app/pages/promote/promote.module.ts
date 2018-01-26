@@ -29,7 +29,7 @@ import { PromoteRoutingModule } from "app/pages/promote/promote-routing.module";
         TimiFileUploaderModule,
         TimiInputModule,
         NewComponentModule,
-        DetailModelModule
+        DetailModelModule,
     ],
     declarations: [PromoteComponent],
     providers: [SharepageService, ParamsManageService]

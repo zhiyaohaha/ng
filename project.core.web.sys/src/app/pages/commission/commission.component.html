@@ -36,10 +36,6 @@
             <span>业务员姓名：</span>
             <span>{{detailInfo.loanOrder._creater.name}}</span>
           </p>
-          <!-- <p> 暂不展示
-            <span>渠道商姓名：</span>
-            <span>{{detailInfo}}</span>
-          </p> -->
           <p>
             <span>返佣总金额：</span>
             <span>{{detailInfo.loanOrder.rakeBackValue}}</span>
@@ -54,7 +50,6 @@
           <table>
             <tr>
               <th>姓名</th>
-              <!-- <th>用户类型</th> -->
               <th>用户状态</th>
               <th>返佣金额（元）</th>
               <th>返佣状态</th>
@@ -62,7 +57,6 @@
             </tr>
             <tr *ngFor="let item of detailInfo.userInfo;let i = index">
               <td>{{item.trade.userName}}</td>
-              <!-- <td>1</td> -->
               <td>{{item._state}}</td>
               <td>{{item.trade.value}}</td>
               <td>{{item.trade._tradeState}}</td>

@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <ul>
+    <li class="menu-row" *ngFor="let menu of menus">
+      <div class="menu-card" *ngFor="let page of menu;let i = index;">
+        <div class="pages-item">
+          {{page.name}}
+        </div>
+        <div class="authority-first" *ngFor="let item of page._functions">
+          <div class="authority-btn" (click)="changeStyle(item)">
+            {{item.name}}
+            <i class="fa" [class.fa-check]="item.active===true"></i>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<button md-raised-button class="add-button" (click)="onSubmit()">确定</button>

@@ -52,8 +52,6 @@
             <p>业务员列表</p>
             <ul>
               <li *ngFor="let item of userList;let j=index">
-                <!-- <input type="checkbox" (click)="showCheckedList($event,item,checkedUser,j)" id=`user{{j}}` #checkedUser [checked]="item.checked">
-                <label for=`user{{j}}`>{{item.name}}</label> -->
                 <span (click)="showCheckedList($event,item,j)">{{item.name}}</span>
               </li>
             </ul>

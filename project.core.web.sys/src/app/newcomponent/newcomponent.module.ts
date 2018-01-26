@@ -18,6 +18,7 @@ import { ResponsiveModelModule } from "app/component/responsive-model/responsive
 import { MultipleFileUploaderModule } from "../component/multiple-file-uploader/multiple-file-uploader.component";
 import { RegionModule } from "app/component/region/region.component";
 import { MdButtonModule } from '@angular/material';
+import { PermissionsComponent } from './permissions/permissions.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { MdButtonModule } from '@angular/material';
         ApplicationComponent,
         AuditInfoComponent,
         ChartComponent,
+        PermissionsComponent,
 
     ],
     imports: [
@@ -48,6 +50,7 @@ import { MdButtonModule } from '@angular/material';
         ApplicationComponent,
         AuditInfoComponent,
         ChartComponent,
+        PermissionsComponent,
     ],
     providers: [],
 })

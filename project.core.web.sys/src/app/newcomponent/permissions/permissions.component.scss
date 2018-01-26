@@ -1,0 +1,68 @@
+:host /deep/ {
+  $btn1bgc: #c2181f;
+  $btn1fc: #fff;
+  $btn2bgc: #e6e6e6;
+  $btn2fc: #000;
+  $btn3bgc: #f6f6f6;
+  $btn3border: 1px solid #e6e6e6;
+  md-sidenav-container {
+    user-select: none;
+    background-color: transparent;
+    height: 100%;
+    md-sidenav {
+      padding: 20px;
+      .mat-tab-body-wrapper {
+        padding: 10px 40px 0 0;
+      }
+    }
+  }
+  .menu-row {
+    list-style: none;
+    overflow: hidden;
+    margin: 10px 0;
+    display: flex;
+  }
+  .menu-card {
+    float: left;
+    margin-left: 10px;
+    width: 110px;
+    text-align: center;
+    box-sizing: content-box;
+    .pages-item {
+      width: 100%;
+      background-color: #cf000d;
+      color: #fff;
+      font-size: 13px;
+    }
+    .authority-first {
+      width: 100%;
+      line-height: 26px;
+      background-color: $btn2bgc;
+      .authority-btn {
+        width: 100%;
+        line-height: inherit;
+        background-color: $btn2bgc;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+          z-index: 1;
+          filter: brightness(1.1);
+        }
+      }
+    }
+    .add-authority {
+      width: 100%;
+      line-height: 26px;
+      background-color: $btn3bgc;
+      border-bottom: $btn3border;
+      cursor: pointer;
+    }
+    .add-page {
+      background-color: $btn2bgc;
+      cursor: pointer;
+    }
+  }
+}
