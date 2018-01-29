@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   Component,
   ComponentFactoryResolver,
@@ -6,17 +6,18 @@ import {
   OnInit,
   ViewChild
 } from "@angular/core";
-import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
-import { globalVar } from "../../common/global.config";
-import { FnUtil } from "../../common/fn-util";
-import { ToastService } from "../../component/toast/toast.service";
-import { ConvertUtil } from "../../common/convert-util";
-import { BaseService } from "../../services/base.service";
-import { MdSidenav } from "@angular/material";
-import { PromoteService } from "app/services/promote/promote.service";
-import { CommonService } from "app/services/common/common.service";
-import { animate, state, style, transition, trigger } from "@angular/animations";
-import { PermissionsService } from "app/services/permissions/permissions.service";
+import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {globalVar} from "../../common/global.config";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
+import {ConvertUtil} from "../../common/convert-util";
+import {BaseService} from "../../services/base.service";
+import {MdSidenav} from "@angular/material";
+import {PromoteService} from "app/services/promote/promote.service";
+import {CommonService} from "app/services/common/common.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {PermissionsService} from "app/services/permissions/permissions.service";
+import {BaseUIComponent} from "../baseUI.component";
 
 
 @Component({
@@ -35,7 +36,7 @@ import { PermissionsService } from "app/services/permissions/permissions.service
   ],
   providers: [TdLoadingService, PromoteService, CommonService, PermissionsService]
 })
-export class PromoteComponent implements OnInit {
+export class PromoteComponent extends BaseUIComponent implements OnInit {
   [x: string]: any;
 
   @ViewChild("sidenav")
@@ -50,9 +51,6 @@ export class PromoteComponent implements OnInit {
   btnType: string; //表单模板按钮类型
   edit: boolean; //点击编辑过后变成true
   detail: boolean; //查看详情时变成true
-
-  detailModel; //查询详情的模板
-  sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  Other ：其他不明情况:）
 
   /**
    * 表格title
@@ -84,61 +82,49 @@ export class PromoteComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
 
   levels: Array<any> = [];
 
   datas: Array<any> = []; //接收的数据
 
-  constructor(
-    private fnUtil: FnUtil,
-    private converUtil: ConvertUtil,
-    private routerInfo: ActivatedRoute,
-    private router: Router,
-    private toastService: ToastService,
-    private resolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private baseService: BaseService,
-    private lodaingService: TdLoadingService,
-    private promoteService: PromoteService,
-    private commonService: CommonService,
-    private permissionsService: PermissionsService
-  ) {
-    /**
-     * 加载动画
-     */
-    this.lodaingService.create({
-      name: "fullScreen",
-      mode: LoadingMode.Indeterminate,
-      type: LoadingType.Circular,
-      color: "warn"
-    });
+  constructor(private fnUtil: FnUtil,
+              private converUtil: ConvertUtil,
+              private routerInfor: ActivatedRoute,
+              private router: Router,
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService,
+              private loading: TdLoadingService,
+              private promoteService: PromoteService,
+              private commonService: CommonService,
+              private permissionsService: PermissionsService) {
+    super(loading, routerInfor);
+
+    routerInfor.paramMap
+      .subscribe(res => {
+        this.pagecode = this.fnUtil.getPageCode();
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.pagecode;
+        let paginationInfo = this.fnUtil.getPaginationInfo();
+
+        /**
+         * 每页条数pagesize和当前页码currentPage
+         */
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
+        if (this.authorityKey) {
+          this.getParamsList({
+            size: this.pageSize,
+            index: this.currentPage,
+            filters: ""
+          });
+        }
+      });
   }
 
   ngOnInit() {
-    this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-    /**
-     * 每页条数pagesize和当前页码currentPage
-     */
-    if (!localStorage.getItem(this.pagecode + "ps")) {
-      localStorage.setItem(this.pagecode + "ps", "10");
-      localStorage.setItem(this.pagecode + "cp", "0");
-      this.getParamsList({
-        size: 10,
-        index: 0,
-        filters: ""
-      });
-    } else {
-      this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-      this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-
-    }
-    this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.pagecode;
-    console.log(this.listparam);
-    this.getParamsList(this.listparam);
   }
 
   /**
@@ -147,8 +133,10 @@ export class PromoteComponent implements OnInit {
    */
 
   getParamsList(params) {
+    this.loading.register("loading");
     this.commonService.getTableList(params)
       .subscribe(res => {
+        this.loading.resolve("loading");
         if (res.code === "0") {
           let r = res;
           if (r.data.data && r.data.data.fields) {
@@ -159,7 +147,7 @@ export class PromoteComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -183,11 +171,8 @@ export class PromoteComponent implements OnInit {
    * 翻页
    */
   page($event) {
-    console.log($event);
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
-    localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
-    localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
     this.getParamsList(this.listparam);
   }
 
@@ -195,13 +180,12 @@ export class PromoteComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.promoteService.getEditParams({ userId: $event.row.id, level: "first" })
+    this.promoteService.getEditParams({userId: $event.row.id, level: "first"})
       .subscribe(r => {
         this.selectRow = r.data;
         for (let i = 0; i < this.selectRow.length; i++) {
           this.selectRow[i].checked = false;
         }
-        console.log(this.selectRow);
       });
   }
 
@@ -223,11 +207,12 @@ export class PromoteComponent implements OnInit {
    */
   closeEnd() {
   }
+
   //点击二级行的时候展示的内容
   showLevel(e, i) {
     this.selectRow[i].checked = !this.selectRow[i].checked;
     if (this.selectRow[i].checked === true) {
-      this.promoteService.getEditParams({ userId: this.selectRow[i].id, level: "first" })
+      this.promoteService.getEditParams({userId: this.selectRow[i].id, level: "first"})
         .subscribe(r => {
           this.levels[i] = r.data;
           console.log(r.data);
