@@ -1,24 +1,13 @@
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   Component,
-  ComponentFactory,
   ComponentFactoryResolver,
-  ComponentRef,
   ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
   OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-  forwardRef,
-  NgModule
+  ViewChild
 } from "@angular/core";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
 import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
 import { globalVar } from "../../common/global.config";
-import { fadeIn } from "../../common/animations";
 import { FnUtil } from "../../common/fn-util";
 import { ToastService } from "../../component/toast/toast.service";
 import { ConvertUtil } from "../../common/convert-util";
@@ -35,12 +24,12 @@ import { PermissionsService } from "app/services/permissions/permissions.service
   templateUrl: "./promote.component.html",
   styleUrls: ["./promote.component.scss"],
   animations: [
-    trigger('selectState', [
-      state('attachmentsDisplay', style({})),
-      transition(':enter', [
+    trigger("selectState", [
+      state("attachmentsDisplay", style({})),
+      transition(":enter", [
         style({
-          transform: 'translate(0, 80px)'  //从下面进入
-        }), animate('.4s cubic-bezier(.25,.8,.25,1)')
+          transform: "translate(0, 80px)"  //从下面进入
+        }), animate(".4s cubic-bezier(.25,.8,.25,1)")
       ])
     ])
   ],
@@ -101,7 +90,7 @@ export class PromoteComponent implements OnInit {
 
   levels: Array<any> = [];
 
-  datas: Array<any> = [];//接收的数据
+  datas: Array<any> = []; //接收的数据
 
   constructor(
     private fnUtil: FnUtil,
@@ -202,9 +191,6 @@ export class PromoteComponent implements OnInit {
     this.getParamsList(this.listparam);
   }
 
-  // modalData;
-  newModalData;
-
   /**
    * 点击行
    */
@@ -218,11 +204,6 @@ export class PromoteComponent implements OnInit {
         console.log(this.selectRow);
       });
   }
-
-  /**
-   * 获取模版
-   */
-  modalDOMS: HtmlDomTemplate;
 
   /**
    * 添加
@@ -245,7 +226,7 @@ export class PromoteComponent implements OnInit {
   //点击二级行的时候展示的内容
   showLevel(e, i) {
     this.selectRow[i].checked = !this.selectRow[i].checked;
-    if (this.selectRow[i].checked == true) {
+    if (this.selectRow[i].checked === true) {
       this.promoteService.getEditParams({ userId: this.selectRow[i].id, level: "first" })
         .subscribe(r => {
           this.levels[i] = r.data;
@@ -253,12 +234,4 @@ export class PromoteComponent implements OnInit {
         });
     }
   }
-  //获取菜单列表数据
-  setPower() {
-    this.permissionsService.getPermissions("59afc3fbfb95ae3140308fd7","SysJob").subscribe(res => {
-      console.log(res.data);
-      this.datas = res.data;
-    })
-  }    
-
 }

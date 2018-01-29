@@ -18,11 +18,19 @@
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
-      <div class="col-lg-12">
-        <detail-model *ngIf="detail && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
+      <div class="col-lg-12" [ngSwitch]="sidenavKey">
+        <ng-container *ngSwitchCase="'Detail'">
+          <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
+        </ng-container>
         <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
-        <timi-responsive-form *ngIf="edit && modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
-          (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+        <ng-container *ngSwitchCase="'Form'">
+          <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
+            (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'setFunction'">
+          <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>
+        </ng-container>
       </div>
     </div>
   </md-sidenav>
