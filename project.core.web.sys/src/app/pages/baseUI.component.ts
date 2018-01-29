@@ -1,10 +1,11 @@
 import {ToastService} from "../component/toast/toast.service";
 import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {BaseUIAlertConfig, BaseUIConfirmConfig, BaseUIPromptConfig} from "./baseUI.service";
+import {ActivatedRoute} from "@angular/router";
 
 export abstract class BaseUIComponent {
 
-  constructor(loadingService: TdLoadingService) {
+  constructor(loadingService: TdLoadingService, routerInfor: ActivatedRoute) {
     /**
      * 加载loading
      * 显示 this.loadingService.register("loading");
@@ -16,6 +17,11 @@ export abstract class BaseUIComponent {
       type: LoadingType.Circular,
       color: "warn"
     });
+
+    routerInfor.paramMap
+      .subscribe(res => {
+        localStorage.setItem("pageCode", res.get("pageCode"));
+      });
   }
 
   /**

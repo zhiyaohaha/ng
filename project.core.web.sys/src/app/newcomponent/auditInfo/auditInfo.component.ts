@@ -1,28 +1,26 @@
-import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { forEach } from '@angular/router/src/utils/collection';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 
-import { TimiSelectModule } from "../../component/timi-select/select.component";
-import { TimiInputModule } from "../../component/timi-input/timi-input.component";
 import { ToastService } from "../../component/toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
-  selector: 'free-auditInfo',
-  templateUrl: './auditInfo.component.html',
-  styleUrls: ['./auditInfo.component.scss'],
+  selector: "free-auditInfo",
+  templateUrl: "./auditInfo.component.html",
+  styleUrls: ["./auditInfo.component.scss"],
   providers: [OrderService],
   animations: [
-    trigger('selectState', [
-      state('attachmentsDisplay', style({})),
-      transition(':enter', [
+    trigger("selectState", [
+      state("attachmentsDisplay", style({})),
+      transition(":enter", [
         style({
-          transform: 'translate(0, 80px)'  //从下面进入
-        }), animate('.4s cubic-bezier(.25,.8,.25,1)')
+          transform: "translate(0, 80px)"  //从下面进入
+        }), animate(".4s cubic-bezier(.25,.8,.25,1)")
       ])
     ])
   ],
@@ -50,8 +48,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     private toastService: ToastService,
     private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private viewContainerRef: ViewContainerRef) {
-    super(loadingService);
+    private viewContainerRef: ViewContainerRef,
+    private routerInfor: ActivatedRoute) {
+    super(loadingService, routerInfor);
   }
 
   ngOnInit() {
@@ -87,14 +86,14 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     attachmentGroup.temporaryData = "";
     this.firstAttachmentActive = true;
 
-    //每次切换，展示当前附件组下面的附件项 
+    //每次切换，展示当前附件组下面的附件项
     if (attachmentGroup.attachmentsDisplay === undefined) {
       attachmentGroup.attachmentsDisplay = true;
     } else {
       attachmentGroup.attachmentsDisplay = !attachmentGroup.attachmentsDisplay;
     }
 
-    //每次切换，隐藏其它附件组下面的附件项 
+    //每次切换，隐藏其它附件组下面的附件项
     attachmentGroups.forEach((item, i) => {
       if (i !== index) {
         item.attachmentsDisplay = false;
@@ -106,21 +105,21 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   //附件组和附件项的 状态样式
   statusStyle(status) {
     let color;
-    color = (status == '通过' ? '#1aae88' : (status == '待审核' ? '#177bbb' : (status == '待填写' ? '#fbb23e' : '#e33244')));
+    color = (status == "通过" ? "#1aae88" : (status == "待审核" ? "#177bbb" : (status == "待填写" ? "#fbb23e" : "#e33244")));
     return color;
   }
 
 
   //审核附件组和附件项
-  //通过 
+  //通过
   postLoanOrderAdoptAttachment(id, i, k) {
     let _self = this;
     this.loadingService.register("loading");
     this.orderService.postLoanOrderAdoptAttachment(id).subscribe(res => {
       _self.loadingService.resolve("loading");
       if (res.code === "0") {
-        console.log(res)
-        _self.setStatus(i, k, res.data, '');
+        console.log(res);
+        _self.setStatus(i, k, res.data, "");
         super.showToast(_self.toastService, "已通过");
         // _self.toastService.creatNewMessage("申请成功");
       } else {
@@ -129,7 +128,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     })
   }
 
-  //不通过 
+  //不通过
   postLoanOrderNotPassAttachment(id, i, k) {
     let _self = this;
     this.loadingService.register("loading");
@@ -162,7 +161,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
               item2.statusRemark = NotPassReason;
             }
           }
-        })
+        });
         item1._status = this.stausCodeLabel(resData.groupStatus);
       }
     })

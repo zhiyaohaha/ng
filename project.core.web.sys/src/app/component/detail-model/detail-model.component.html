@@ -31,6 +31,7 @@
               date:"yyyy-MM-dd"}}
             </div>
             <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord : modelDOMSData}}</div>
+            <div class="span" *ngSwitchCase="'HtmlPipe.Tag'">{{child.name | booleanToWord : modelDOMSData}}</div>
             <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
           </ng-container>
         </div>
@@ -48,8 +49,8 @@
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Table'">
           <div class="label">{{child.ui.label}}</div>
           <div class="span" *ngIf="child.bindData.total">
-            <td-data-table [columns]="child.bindData.data.fields" [data]="child.bindData.data.bindData">
-            </td-data-table>
+            <timi-table [headers]="child.bindData.data.fields" [data]="child.bindData.data.bindData">
+            </timi-table>
           </div>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'"
@@ -57,6 +58,11 @@
           <ng-container *ngFor="let btn of child.childrens;">
             <button md-raised-button (click)="clickEvent(btn.cmds)">{{btn.ui.label}}</button>
           </ng-container>
+        </div>
+
+        <div class="form-group columns{{child.ui.columns}} pl20" *ngSwitchCase="'HtmlDomDisplayType.Panel'">
+          <h5>{{child.ui.label}}</h5>
+          <detail-unit [modelDOMS]="child" [modelDOMSData]="modelDOMSData"></detail-unit>
         </div>
       </ng-container>
     </ng-container>
@@ -68,7 +74,7 @@
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">1111
             <div class="label">{{child.ui.label}}</div>
             <ng-container [ngSwitch]="child.ui.pipe">
               <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | lastdot : data |
@@ -104,7 +110,8 @@
               </div>
           </div>
 
-          <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Panel'">
+          <div class="form-group columns{{child.ui.columns}} pl20" *ngSwitchCase="'HtmlDomDisplayType.Panel'">
+            <h5>{{child.ui.label}}</h5>
             <detail-unit [modelDOMS]="child" [modelDOMSData]="data"></detail-unit>
           </div>
         </ng-container>

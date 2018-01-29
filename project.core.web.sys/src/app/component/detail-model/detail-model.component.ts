@@ -10,6 +10,7 @@ import {NewComponentModule} from "../../newcomponent/newcomponent.module";
 import {PreviewService} from "../../services/preview/preview.service";
 import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
 import {CovalentDataTableModule} from "@covalent/core";
+import {TimiTableModule} from "../timi-table/timi-table.component";
 
 @Component({
   selector: "detail-model",
@@ -160,7 +161,7 @@ export class DetailUnitComponent implements OnInit {
     MdButtonModule,
     NewComponentModule,
     NgxGalleryModule, SharedPipeModule,
-    CovalentDataTableModule
+    CovalentDataTableModule, TimiTableModule
   ],
   declarations: [DetailModelComponent, DetailUnitComponent],
   exports: [DetailModelComponent, DetailUnitComponent]

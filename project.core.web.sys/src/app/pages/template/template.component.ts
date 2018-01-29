@@ -65,17 +65,13 @@ export class TemplateComponent implements OnInit, AfterViewInit {
               private fnUtil: FnUtil,
               private lodaingService: TdLoadingService,
               private sanitizer: DomSanitizer,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private routerInfo: ActivatedRoute) {
+    this.routerInfo.paramMap
+      .subscribe(res => {
+        this.pagecode = res.get("pageCode");
+        localStorage.setItem("pageCode", this.pagecode);
 
-    /**
-     * 路由器结束订阅加载不同的页面
-     * @type {Subscription}
-     */
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-
-        this.pagecode = this.fnUtil.getPageCode();
         /**
          * 每页条数pagesize和当前页码currentPage
          */
@@ -90,7 +86,7 @@ export class TemplateComponent implements OnInit, AfterViewInit {
           });
         }
         //每次订阅不同的页面，关闭右侧弹出的iframe
-        this.sidenav.close();
+        // this.sidenav.close();
       });
 
     /**

@@ -1,148 +1,123 @@
 <aside class="left-menu iscroll">
-    <free-accordion-group [closeOthers]="true">
-        <ng-container *ngFor="let item of leftNav">
-            <ul class="left-menu-item" *ngIf="!item.hidden && item.childrens.length == 0">
-                <li fRipple>
-                    <a routerLink="{{item.url}}" routerLinkActive="active">
-                        <i class="timi-{{item.icon}}"></i>
-                        <span class="accordion-toggle-title">{{item.name}}</span>
-                    </a>
-                </li>
-            </ul>
-            <free-accordion *ngIf="!item.hidden && item.childrens.length > 0" class="let-menu-item" header="{{item.name}}" iconName="{{item.icon}}">
-                <ul>
-                    <li fRipple *ngFor="let m of item.childrens" [ngSwitch]="m.type">
-                        <ng-container *ngSwitchCase="'MenuType.DataPage'">
-                          <a [routerLink]="'dp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                            <cite>{{m.name}}</cite>
-                            <em></em>
-                          </a>
-                        </ng-container>
-                      <ng-container *ngSwitchCase="'MenuType.CascadeDataPage'">
-                        <a [routerLink]="'cdp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                          <cite>{{m.name}}</cite>
-                          <em></em>
-                        </a>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="'MenuType.FormFramePage'">
-                        <a [routerLink]="'tp'" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                          <cite>{{m.name}}</cite>
-                          <em></em>
-                        </a>
-                      </ng-container>
-                        <ng-container *ngSwitchDefault>
-                          <a [routerLink]="m.url" [queryParams]="{pageCode: m.code}" routerLinkActive="active">
-                            <cite>{{m.name}}</cite>
-                            <em></em>
-                          </a>
-                        </ng-container>
+  <free-accordion-group [closeOthers]="true">
+    <ng-container *ngFor="let item of leftNav">
+      <ul class="left-menu-item" *ngIf="!item.hidden && item.childrens.length == 0">
+        <li fRipple>
+          <a routerLink="{{item.url}}" routerLinkActive="active">
+            <i class="timi-{{item.icon}}"></i>
+            <span class="accordion-toggle-title">{{item.name}}</span>
+          </a>
+        </li>
+      </ul>
+      <free-accordion *ngIf="!item.hidden && item.childrens.length > 0" class="let-menu-item" header="{{item.name}}"
+                      iconName="{{item.icon}}">
+        <ul>
+          <li fRipple *ngFor="let m of item.childrens" [ngSwitch]="m.type">
+            <ng-container *ngSwitchCase="'MenuType.DataPage'">
+              <a [routerLink]="'dp/'+m.code" routerLinkActive="active">
+                <cite>{{m.name}}</cite>
+                <em></em>
+              </a>
+            </ng-container>
+            <ng-container *ngSwitchCase="'MenuType.CascadeDataPage'">
+              <a [routerLink]="'cdp/'+m.code" routerLinkActive="active">
+                <cite>{{m.name}}</cite>
+                <em></em>
+              </a>
+            </ng-container>
+            <ng-container *ngSwitchCase="'MenuType.FormFramePage'">
+              <a [routerLink]="'tp/'+m.code" routerLinkActive="active">
+                <cite>{{m.name}}</cite>
+                <em></em>
+              </a>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <a [routerLink]="m.url+'/'+m.code" routerLinkActive="active">
+                <cite>{{m.name}}</cite>
+                <em></em>
+              </a>
+            </ng-container>
 
-                    </li>
-                </ul>
-            </free-accordion>
-        </ng-container>
-    </free-accordion-group>
-    <!-- <free-accordion-group [closeOthers]="true">
-        <free-accordion class="let-menu-item" header="设置test" iconName="wrench">
-            <ul>
-                <li fRipple>
-                    <a routerLink="/login" routerLinkActive="active">
-                        <cite>登录页</cite>
-                        <em>Login</em>
-                    </a>
-                </li>
-            </ul>
-        </free-accordion>
-        <free-accordion class="let-menu-item" header="个人中心test" iconName="wrench">
-            <ul>
-                <li fRipple>
-                    <a routerLink="personal" routerLinkActive="active">
-                        <cite>基础信息</cite>
-                    </a>
-                </li>
-                <li fRipple>
-                    <a routerLink="updatePassword" routerLinkActive="active">
-                        <cite>修改密码</cite>
-                    </a>
-                </li>
-            </ul>
-        </free-accordion>
-    </free-accordion-group> -->
+          </li>
+        </ul>
+      </free-accordion>
+    </ng-container>
+  </free-accordion-group>
 </aside>
 <div class="top-menu">
-    <div class="aside-header">
-        <div class="aside-header-inner">
-            <ul>
-                <li class="toggle-btn">
-                    <a (click)="toggleAside()" fRipple>
-                        <!--<free-hamburge type="line"></free-hamburge>-->
-                        <free-icon icon="navicon"></free-icon>
-                    </a>
-                </li>
-            </ul>
-            <span class="top-logo-mini">F</span>
-            <span class="top-logo">汉力金服后台管理系统</span>
-        </div>
+  <div class="aside-header">
+    <div class="aside-header-inner">
+      <ul>
+        <li class="toggle-btn">
+          <a (click)="toggleAside()" fRipple>
+            <!--<free-hamburge type="line"></free-hamburge>-->
+            <free-icon icon="navicon"></free-icon>
+          </a>
+        </li>
+      </ul>
+      <span class="top-logo-mini">F</span>
+      <span class="top-logo">汉力金服后台管理系统</span>
     </div>
-    <nav class="navbar-header">
-        <ul class="navbar-header-right pull-right">
-            <li>
-                <a class="color-white" (click)="toggleSearch()">
-                    <free-icon icon="search"></free-icon>
-                </a>
-            </li>
-            <li>
-                <a class="color-white" (click)="fullscreenToggle()">
-                    <free-icon icon="expand"></free-icon>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a>
-                    <free-dropdown color="blue" [caret]="false" direction="bottom-right">
-                        <f-header>
-                            <free-icon icon="envelope"></free-icon>
-                            <free-badge content="9" [up]="true"></free-badge>
-                        </f-header>
-                        <free-list>
-                            <free-list-item>
-                                inBox
-                            </free-list-item>
-                            <free-list-item>
-                                inBox
-                            </free-list-item>
-                            <free-list-item>
-                                inBox
-                            </free-list-item>
-                            <free-list-item>
-                                inBox
-                            </free-list-item>
-                        </free-list>
-                    </free-dropdown>
-                </a>
-            </li>
-            <li>
-                <a class="color-white">
-                    <free-icon icon="bell"></free-icon>
-                    <free-badge content="1" [up]="true"></free-badge>
-                </a>
-            </li>
-            <li class="nav-user">
-                <free-dropdown direction="bottom-right" [menus]="dropdownItem" [caret]="false">
-                  <f-header><img src="{{avatar}}" id="avatar"></f-header>
-                </free-dropdown>
-            </li>
-        </ul>
-    </nav>
+  </div>
+  <nav class="navbar-header">
+    <ul class="navbar-header-right pull-right">
+      <li>
+        <a class="color-white" (click)="toggleSearch()">
+          <free-icon icon="search"></free-icon>
+        </a>
+      </li>
+      <li>
+        <a class="color-white" (click)="fullscreenToggle()">
+          <free-icon icon="expand"></free-icon>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a>
+          <free-dropdown color="blue" [caret]="false" direction="bottom-right">
+            <f-header>
+              <free-icon icon="envelope"></free-icon>
+              <free-badge content="9" [up]="true"></free-badge>
+            </f-header>
+            <free-list>
+              <free-list-item>
+                inBox
+              </free-list-item>
+              <free-list-item>
+                inBox
+              </free-list-item>
+              <free-list-item>
+                inBox
+              </free-list-item>
+              <free-list-item>
+                inBox
+              </free-list-item>
+            </free-list>
+          </free-dropdown>
+        </a>
+      </li>
+      <li>
+        <a class="color-white">
+          <free-icon icon="bell"></free-icon>
+          <free-badge content="1" [up]="true"></free-badge>
+        </a>
+      </li>
+      <li class="nav-user">
+        <free-dropdown direction="bottom-right" [menus]="dropdownItem" [caret]="false">
+          <f-header><img src="{{avatar}}" id="avatar"></f-header>
+        </free-dropdown>
+      </li>
+    </ul>
+  </nav>
 
-    <div class="search-box" [class.open]="searchState">
-        <div class="row middle-lg middle-md center-lg center-md center-xs">
-            <div class="search-input">
-                <free-icon icon="search"></free-icon>
-                <input type="text" class="pull-center">
-            </div>
-            <free-icon icon="close" (click)="toggleSearch()" class="search-box-close"></free-icon>
-        </div>
+  <div class="search-box" [class.open]="searchState">
+    <div class="row middle-lg middle-md center-lg center-md center-xs">
+      <div class="search-input">
+        <free-icon icon="search"></free-icon>
+        <input type="text" class="pull-center">
+      </div>
+      <free-icon icon="close" (click)="toggleSearch()" class="search-box-close"></free-icon>
     </div>
+  </div>
 </div>
 
 <!-- <div class="theme-setting" #setting (click)="open()">
@@ -150,15 +125,16 @@
 </div> -->
 
 <main class="main-layout-container iscroll" #main>
-    <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"></router-outlet>
+  <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"></router-outlet>
 </main>
 
 <free-sidebar [open]="sidebarActive" direction="right" [top]="60">
-    <h4>主题设置</h4>
-    <div class="row">
-        <ul class="theme-color-list">
-            <li *ngFor="let t of theme" class="theme-color-item" (click)="selectTheme(t.name)" [ngStyle]="{background: t.color}">
-            </li>
-        </ul>
-    </div>
+  <h4>主题设置</h4>
+  <div class="row">
+    <ul class="theme-color-list">
+      <li *ngFor="let t of theme" class="theme-color-item" (click)="selectTheme(t.name)"
+          [ngStyle]="{background: t.color}">
+      </li>
+    </ul>
+  </div>
 </free-sidebar>

@@ -12,6 +12,7 @@ import {UEditorConfig} from "ngx-ueditor";
 import {BaseUIComponent} from "../baseUI.component";
 import {ToastService} from "../../component/toast/toast.service";
 import {TdDataTableService, TdDialogService, TdLoadingService} from "@covalent/core";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "app-root",
@@ -43,8 +44,9 @@ export class MainComponent extends BaseUIComponent implements OnInit {
               private loadingService: TdLoadingService,
               private dialogService: TdDialogService,
               private viewContainerRef: ViewContainerRef,
+              private routerInfor: ActivatedRoute
               ) {
-    super(loadingService);
+    super(loadingService, routerInfor);
     // this.loader = BaseUIComponent.registerLoading(this.loadingService, "loading");
   }
 
@@ -143,13 +145,16 @@ export class MainComponent extends BaseUIComponent implements OnInit {
   }
 
   sendMsg() {
-    super.showToast(this.toastService, "123");
-    this.loadingService.register("loading");
-    setTimeout(() => {
-      this.loadingService.resolve("loading");
-    }, 2000);
-    super.openConfirm({message: "xxxx", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef}, function (accept: boolean) {
-      console.log(accept);
+    // super.showToast(this.toastService, "123");
+    // this.loadingService.register("loading");
+    // setTimeout(() => {
+    //   this.loadingService.resolve("loading");
+    // }, 2000);
+    // super.openConfirm({message: "xxxx", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef}, function (accept: boolean) {
+    //   console.log(accept);
+    // });
+    super.openPrompt({message: "xxxx", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef}, function (value: string) {
+      console.log(value);
     });
   }
 
