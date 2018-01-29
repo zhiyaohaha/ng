@@ -1,32 +1,22 @@
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   Component,
-  ComponentFactory,
   ComponentFactoryResolver,
-  ComponentRef,
   ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
   OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-  forwardRef,
-  NgModule
+  ViewChild
 } from "@angular/core";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
-import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
-import { globalVar } from "../../common/global.config";
-import { fadeIn } from "../../common/animations";
-import { FnUtil } from "../../common/fn-util";
-import { ToastService } from "../../component/toast/toast.service";
-import { ConvertUtil } from "../../common/convert-util";
-import { BaseService } from "../../services/base.service";
-import { MdSidenav } from "@angular/material";
-import { CommonService } from "app/services/common/common.service";
-import { BaseUIComponent } from "app/pages/baseUI.component";
-import { PhoneBookService } from "app/services/phone-book/phone-book.service";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {globalVar} from "../../common/global.config";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
+import {ConvertUtil} from "../../common/convert-util";
+import {BaseService} from "../../services/base.service";
+import {MdSidenav} from "@angular/material";
+import {CommonService} from "app/services/common/common.service";
+import {BaseUIComponent} from "app/pages/baseUI.component";
+import {PhoneBookService} from "app/services/phone-book/phone-book.service";
 
 
 @Component({
@@ -84,15 +74,13 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
 
   //新增的通讯录部分所需的变量
   typeTab: number = 1; //tab切换  1是通话记录   2是通讯录
 
-  recordData: Array<any> = [];//通话记录数据
-  addressData: Array<any> = [];//通讯录数据
+  recordData: Array<any> = []; //通话记录数据
+  addressData: Array<any> = []; //通讯录数据
   //通话记录的pagesize,index
   recordPageSize: number = 10;
   recordActiveIndex: number = 0;
@@ -101,30 +89,28 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   addressActiveIndex: number = 0;
   personId: string;
 
-  constructor(
-    private fnUtil: FnUtil,
-    private converUtil: ConvertUtil,
-    private routerInfo: ActivatedRoute,
-    private router: Router,
-    private toastService: ToastService,
-    private resolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private baseService: BaseService,
-    private loading: TdLoadingService,
-    private commonService: CommonService,
-    private phoneBookService: PhoneBookService
-  ) {
+  constructor(private fnUtil: FnUtil,
+              private converUtil: ConvertUtil,
+              private routerInfor: ActivatedRoute,
+              private router: Router,
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService,
+              private loading: TdLoadingService,
+              private commonService: CommonService,
+              private phoneBookService: PhoneBookService) {
 
-    super(loading, routerInfo);
+    super(loading, routerInfor);
 
     /**
      * 路由器结束订阅加载不同的页面
      * @type {Subscription}
      */
 
-    this.routerInfo.paramMap
+    this.routerInfor.paramMap
       .subscribe(res => {
-        this.pagecode = localStorage.getItem("pageCode");
+        this.pagecode = this.fnUtil.getPageCode();
 
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.pagecode;
@@ -154,27 +140,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
-    /**
-     * 每页条数pagesize和当前页码currentPage
-     */
-    if (!localStorage.getItem(this.pagecode + "ps")) {
-      localStorage.setItem(this.pagecode + "ps", "10");
-      localStorage.setItem(this.pagecode + "cp", "0");
-      this.getParamsList({
-        size: 10,
-        index: 0,
-        filters: ""
-      });
-    } else {
-      this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-      this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-
-    }
-    this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.pagecode;
-    console.log(this.listparam);
-    this.getParamsList(this.listparam);
   }
 
   /**
@@ -195,7 +160,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -220,11 +185,8 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
    * 翻页
    */
   page($event) {
-    console.log($event);
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
-    localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
-    localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
     this.getParamsList(this.listparam);
   }
 
@@ -263,7 +225,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
    * 关闭
    */
   closeEnd() {
-    this.personId = '';
+    this.personId = "";
     this.recordPageSize = 10;
     this.recordActiveIndex = 0;
     this.addressPageSize = 10;
@@ -277,10 +239,12 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   getRecordData(res) {
     this.recordData = res;
   }
+
   //获取通讯录数据
-  getAddressData(res){
+  getAddressData(res) {
     this.addressData = res;
   }
+
   //通话记录列表
   toRecord() {
     this.typeTab = 1;
@@ -288,13 +252,15 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
       this.getRecordData(res.data);
     });
   }
+
   //通讯录列表
   toAddress() {
     this.typeTab = 2;
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
       this.getAddressData(res.data);
-    })
+    });
   }
+
   //通话记录分页
   recordChange(e) {
     this.recordPageSize = e.pageSize;
@@ -303,8 +269,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
       this.getRecordData(res.data);
     });
   }
+
   //通讯录分页
-  addressChange(e){
+  addressChange(e) {
     this.addressPageSize = e.pageSize;
     this.addressActiveIndex = e.activeIndex;
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {

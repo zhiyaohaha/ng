@@ -1,35 +1,29 @@
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
   OnInit,
-  Output,
   ViewChild,
-  ViewContainerRef,
-  forwardRef,
-  NgModule
+  ViewContainerRef
 } from "@angular/core";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
-import { SharepageService } from "../../services/sharepage-service/sharepage.service";
-import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
-import { globalVar } from "../../common/global.config";
-import { fadeIn } from "../../common/animations";
-import { FnUtil } from "../../common/fn-util";
-import { ToastService } from "../../component/toast/toast.service";
-import { ConvertUtil } from "../../common/convert-util";
-import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
-import { BaseService } from "../../services/base.service";
-import { MdSidenav } from "@angular/material";
-import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {SharepageService} from "../../services/sharepage-service/sharepage.service";
+import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {globalVar} from "../../common/global.config";
+import {fadeIn} from "../../common/animations";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
+import {ConvertUtil} from "../../common/convert-util";
+import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
+import {BaseService} from "../../services/base.service";
+import {MdSidenav} from "@angular/material";
 
-import { CommonService } from "app/services/common/common.service";
-import { LoandemandService } from "app/services/loandemand/loandemand.service";
+import {CommonService} from "app/services/common/common.service";
+import {LoandemandService} from "app/services/loandemand/loandemand.service";
+import {BaseUIComponent} from "../baseUI.component";
 
 
 @Component({
@@ -39,10 +33,10 @@ import { LoandemandService } from "app/services/loandemand/loandemand.service";
   animations: [fadeIn],
   providers: [TdLoadingService, CommonService, LoandemandService]
 })
-export class LoandemandComponent implements OnInit {
+export class LoandemandComponent extends BaseUIComponent implements OnInit {
 
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -70,12 +64,9 @@ export class LoandemandComponent implements OnInit {
   filters = [];
   searchFilters; //页面显示的搜索条件
 
-  fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
   pageSize: number = globalVar.pageSize; //每页显示条数
   searchTerm: string = ""; //搜索关键字
-  sortBy: string = "";
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   filteredTotal = 0; //总共条数
   filteredData; //过滤后的数据
   //搜索条件
@@ -87,8 +78,6 @@ export class LoandemandComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string; //页面代码
 
   sidenavType: number = 1; //1默认情况，点击行的时候展示的侧滑  2点击分发的时候展示的侧滑内容  3点击分发详情展示的内容
@@ -96,13 +85,13 @@ export class LoandemandComponent implements OnInit {
   //三级分销部分内容
   selectArray: Array<any> = []; //选中的数组
 
-  orgList: Array<any> = [];//组织机构列表
-  userList: Array<any> = [];//业务员列表
+  orgList: Array<any> = []; //组织机构列表
+  userList: Array<any> = []; //业务员列表
 
-  isShowUserList: boolean = false;//显示第二条
-  isShowCheckedList: boolean = false;//显示第三条
+  isShowUserList: boolean = false; //显示第二条
+  isShowCheckedList: boolean = false; //显示第三条
 
-  orgIdNow: string = '';
+  orgIdNow: string = "";
 
   loandemandInfo: Array<any> = [];
 
@@ -113,47 +102,42 @@ export class LoandemandComponent implements OnInit {
 
 
   constructor(private sharepageService: SharepageService,
-    private fnUtil: FnUtil,
-    private converUtil: ConvertUtil,
-    private routerInfo: ActivatedRoute,
-    private router: Router,
-    private toastService: ToastService,
-    private resolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private baseService: BaseService,
-    private lodaingService: TdLoadingService,
-    private commonService: CommonService,
-    private loandemandService: LoandemandService) {
+              private fnUtil: FnUtil,
+              private converUtil: ConvertUtil,
+              private routerInfor: ActivatedRoute,
+              private router: Router,
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService,
+              private loading: TdLoadingService,
+              private commonService: CommonService,
+              private loandemandService: LoandemandService) {
+    super(loading, routerInfor);
+
+    routerInfor.paramMap
+      .subscribe(res => {
+        let pageConfig = this.fnUtil.getPaginationInfo();
+        this.pageSize = pageConfig.pageSize;
+        this.currentPage = pageConfig.currentPage;
+
+        this.getParamsList({
+          size: this.pageSize,
+          index: this.currentPage,
+          filters: ""
+        });
+        if (this.el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          this.el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.fnUtil.getPageCode();
+
+        this.loadModal();
+      });
 
   }
 
   ngOnInit() {
-    let pageConfig = this.fnUtil.getPaginationInfo();
-    this.pageSize = pageConfig.pageSize;
-    this.currentPage = pageConfig.currentPage;
-
-    this.getParamsList({
-      size: this.pageSize,
-      index: this.currentPage,
-      filters: ""
-    });
-    if (this.el.nativeElement.querySelector(".mat-drawer-backdrop")) {
-      this.el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-    }
-    this.authorities = this.fnUtil.getFunctions();
-    this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
-
-    this.loadModal();
-
-    /**
-     * 加载动画
-     */
-    this.lodaingService.create({
-      name: "fullScreen",
-      mode: LoadingMode.Indeterminate,
-      type: LoadingType.Circular,
-      color: "warn"
-    });
   }
 
   /**
@@ -174,7 +158,7 @@ export class LoandemandComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -199,11 +183,8 @@ export class LoandemandComponent implements OnInit {
    * 翻页
    */
   page($event) {
-    console.log($event);
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
-    localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
-    localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
     this.getParamsList(this.listparam);
   }
 
@@ -217,7 +198,7 @@ export class LoandemandComponent implements OnInit {
     this.sidenavType = 1;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({ id: $event.row.id });
+    this.loadDetailModel({id: $event.row.id});
   }
 
   /**
@@ -225,13 +206,14 @@ export class LoandemandComponent implements OnInit {
    */
   modalDOMS: HtmlDomTemplate;
 
-  //临时代码3----资料收集 
+  //临时代码3----资料收集
   collect() {
     this.selectRow = "";
     this.sidenavKey = "";
     this.btnType = "new";
     this.sidenavKey = "Collection";
   }
+
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -269,7 +251,7 @@ export class LoandemandComponent implements OnInit {
         });
       }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
       });
     } else if (value.name === "HtmlDomCmd.Form") {
@@ -305,11 +287,11 @@ export class LoandemandComponent implements OnInit {
    * 提交表单
    */
   submitMethod($event) {
-    this.lodaingService.register("fullScreen");
+    this.loading.register("loading");
     if (this.btnType === "new") {
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
-          this.lodaingService.resolve("fullScreen");
+          this.loading.resolve("loading");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
             this.getParamsList(this.listparam);
@@ -323,7 +305,7 @@ export class LoandemandComponent implements OnInit {
     } else {
       this.sharepageService.saveEditParams($event)
         .subscribe(res => {
-          this.lodaingService.resolve("fullScreen");
+          this.loading.resolve("loading");
           this.toastService.creatNewMessage(res.message);
           if (res.code === "0") {
             this.getParamsList(this.listparam);
@@ -335,15 +317,16 @@ export class LoandemandComponent implements OnInit {
 
   //提交表单的时候需要走多个接口的情况
   submitMoreURL(param, Urls: any[]) {
+    this.loading.register("loading");
     Urls.forEach((item) => {
       this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
-        this.lodaingService.resolve("fullScreen");
         this.toastService.creatNewMessage(res.message);
         if (res.code === "0") {
           this.getParamsList(this.listparam);
         }
       });
     });
+    this.loading.resolve("loading");
   }
 
   createComponent(menus) {
@@ -358,19 +341,23 @@ export class LoandemandComponent implements OnInit {
   getUserListOrg(res) {
     this.orgList = res;
   }
+
   //获取业务员列表
   getUserLists(res) {
     this.userList = res;
   }
+
   //获取选择的用户数据
   selectedRows(e) {
-    console.log(e); 
+    console.log(e);
     this.selectArray = e.totalRow;
   }
+
   //获取分发详情信息
   getLoandemandInfo(res) {
     this.loandemandInfo = res;
   }
+
   //点击分发时的事件
   distribution() {
     if (this.selectArray[0]) {
@@ -387,18 +374,19 @@ export class LoandemandComponent implements OnInit {
                 name: item.name,
                 checked: false,
                 children: []
-              })
-            })
+              });
+            });
             return obj;
           }
         })
         .subscribe(item => {
           this.getUserListOrg(item);
-        })
+        });
     } else {
-      alert('请选择用户');
+      super.showToast(this.toastService, "请选择用户");
     }
   }
+
   //点击分发详情的事件
   distributionDetail() {
     if (this.selectArray[0]) {
@@ -406,9 +394,9 @@ export class LoandemandComponent implements OnInit {
       this.sidenav.open();
       this.loandemandService.getDetail(this.selectArray[0].id).subscribe(res => {
         this.getLoandemandInfo(res.data);
-      })
+      });
     } else {
-      alert('请选择用户');
+      super.showToast(this.toastService, "请选择用户");
     }
   }
 
@@ -428,15 +416,16 @@ export class LoandemandComponent implements OnInit {
               id: item.id,
               name: item.name,
               checked: false
-            })
-          })
+            });
+          });
         }
-        return obj
+        return obj;
       })
       .subscribe(item => {
         this.getUserLists(item);
-      })
+      });
   }
+
   //已选业务员列表显示
   showCheckedList(e, item, j) {
     let isInarray = this.inArray(this.orgList[this.orgIndex], this.lastShow);
@@ -451,19 +440,20 @@ export class LoandemandComponent implements OnInit {
       this.lastShow.push(this.orgList[this.orgIndex]);
     }
   }
+
   //删除已选业务员
   removeRow(e, item) {
     let id = item.id;
     for (let i = 0; i < this.lastShow.length; i++) {
-        for (let j = 0; j < this.lastShow[i].children.length; j++) {
-          if (id == this.lastShow[i].children[j].id) {
-            this.removeByValue(this.lastShow[i].children, item);
-            this.removeByValue(this.judgeArray,item.name);
-            if (this.lastShow[i].children.length == 0) {
-              this.removeByValue(this.lastShow, this.lastShow[i]);
-            }
+      for (let j = 0; j < this.lastShow[i].children.length; j++) {
+        if (id === this.lastShow[i].children[j].id) {
+          this.removeByValue(this.lastShow[i].children, item);
+          this.removeByValue(this.judgeArray, item.name);
+          if (this.lastShow[i].children.length === 0) {
+            this.removeByValue(this.lastShow, this.lastShow[i]);
           }
         }
+      }
     }
   }
 
@@ -486,6 +476,7 @@ export class LoandemandComponent implements OnInit {
     }
     return false;
   }
+
   //分发需求
   onSubmit() {
     let str = "";
@@ -493,26 +484,26 @@ export class LoandemandComponent implements OnInit {
     let idList = [];
     for (let i = 0; i < this.selectArray.length; i++) {
       idList.push(this.selectArray[i].id);
-      str = idList.join(',');
+      str = idList.join(",");
     }
-    for(let i=0;i<this.lastShow.length;i++){
+    for (let i = 0; i < this.lastShow.length; i++) {
       let arr = [];
       for (let j = 0; j < this.lastShow[i].children.length; j++) {
         arr.push(this.lastShow[i].children[j].id);
       }
-      obj[this.lastShow[i].id] = arr.join(',');
+      obj[this.lastShow[i].id] = arr.join(",");
     }
     this.loandemandService.sendInfo(str, obj).subscribe(res => {
-      if(res.code==="0"){
+      if (res.code === "0") {
         this.getParamsList(this.listparam);
       }
       console.log(res);
-    })
+    });
     this.sidenav.close();
     this.isShowUserList = false;
     this.isShowCheckedList = false;
     this.lastShow = [];
-    this.orgIdNow = '';
+    this.orgIdNow = "";
     this.judgeArray = [];
     this.orgList = [];
     this.userList = [];
