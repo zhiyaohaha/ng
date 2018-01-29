@@ -24,7 +24,7 @@
         </ng-container>
         <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
         <ng-container *ngSwitchCase="'Form'">
-          <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
+          <timi-responsive-form *ngIf="modalDOMS && selectRow" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
             (ngSubmit)="submitMethod($event)"></timi-responsive-form>
         </ng-container>
 

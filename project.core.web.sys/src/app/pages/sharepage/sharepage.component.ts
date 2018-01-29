@@ -195,7 +195,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    // this.new = false;
+    this.new = false;
     // this.detail = true;
     this.btnType = "edit";
     this.sidenavKey = "Detail";
