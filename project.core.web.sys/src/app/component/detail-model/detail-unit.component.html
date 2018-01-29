@@ -28,9 +28,12 @@
             date:"yyyy-MM-dd"}}
           </div>
           <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord : modelDOMSData}}</div>
-          <div class="span" *ngSwitchDefault>{{child.name.slice(child.name.indexOf(".") + 1) | ergodicJson :
-            modelDOMSData}}
-          </div>
+          <!--<div class="span" *ngSwitchDefault>{{child.name.slice(child.name.indexOf(".") + 1) | ergodicJson :-->
+            <!--modelDOMSData}}-->
+          <!--</div>-->
+
+          <!--2018年1月25日修改结构 tcl-->
+          <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
         </ng-container>
       </div>
       <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"

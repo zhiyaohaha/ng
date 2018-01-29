@@ -1,12 +1,13 @@
 import {fadeIn} from "./../../common/animations";
 import {Component, OnInit, Renderer2} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {TdDialogService} from "@covalent/core";
+import {TdDialogService, TdLoadingService} from "@covalent/core";
 import {ToastService} from "./../../component/toast/toast.service";
 import {SettingMenuService} from "app/services/setting-menu/setting-menu.service";
 import {HtmlDomTemplate} from "app/models/HtmlDomTemplate";
 import {ConvertUtil} from "./../../common/convert-util";
 import {FnUtil} from "./../../common/fn-util";
+import {BaseUIComponent} from "../baseUI.component";
 
 @Component({
   selector: "app-setting-menu",
@@ -14,7 +15,7 @@ import {FnUtil} from "./../../common/fn-util";
   styleUrls: ["./setting-menu.component.scss"],
   animations: [fadeIn]
 })
-export class SettingMenuComponent implements OnInit {
+export class SettingMenuComponent extends BaseUIComponent implements OnInit {
 
   authorities: string[]; //权限
 
@@ -40,14 +41,22 @@ export class SettingMenuComponent implements OnInit {
   addOrUpdate: boolean; //添加false 修改true
   menuOrAuthority; //菜单或权限
 
+  pagecode: string;
+
   constructor(private settingMenuService: SettingMenuService,
               private util: ConvertUtil,
+              private loading: TdLoadingService,
               private toastService: ToastService,
               private routerInfor: ActivatedRoute,
               private fnUtil: FnUtil,
               private renderer2: Renderer2,
               private dialogService: TdDialogService) {
-    this.authorities = this.fnUtil.getFunctions();
+    super(loading, routerInfor);
+    this.routerInfor.paramMap
+      .subscribe(res => {
+        this.pagecode = localStorage.getItem("pageCode");
+        this.authorities = this.fnUtil.getFunctions();
+      });
   }
 
   ngOnInit() {
@@ -166,7 +175,7 @@ export class SettingMenuComponent implements OnInit {
    * 接口回调
    */
   cb(data) {
-    this.toastService.creatNewMessage(data.message);
+    super.showToast(this.toastService, data.message);
     if (data.code === "0") {
       this.getMenuLists();
     }
@@ -196,8 +205,8 @@ export class SettingMenuComponent implements OnInit {
     }).afterClosed().subscribe((accept: boolean) => {
       if (accept) {
         this.settingMenuService.deleteAuthorty(id).subscribe(r => {
-          this.toastService.creatNewMessage(r.message);
-          if (r.code == "0") {
+          super.showToast(this.toastService, r.message);
+          if (r.code === "0") {
             this.renderer2.setStyle($event.target.parentNode, "display", "none");
           }
         });
@@ -215,7 +224,7 @@ export class SettingMenuComponent implements OnInit {
     }).afterClosed().subscribe((accept: boolean) => {
       if (accept) {
         this.settingMenuService.deletePage(id).subscribe(r => {
-          this.toastService.creatNewMessage(r.message);
+          super.showToast(this.toastService, r.message);
           if (r.code === "0") {
             if (index === 0) {
               this.renderer2.setStyle($event.target.parentNode.parentNode.parentNode, "display", "none");

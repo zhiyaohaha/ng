@@ -1,4 +1,4 @@
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -7,7 +7,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -24,6 +23,7 @@ import { SetAuthorityComponent } from "../../component/set-authority/set-authori
 import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { BaseUIComponent } from "../baseUI.component";
+import "rxjs/add/operator/switchMap";
 
 @Component({
   selector: "app-sharepage",
@@ -32,7 +32,7 @@ import { BaseUIComponent } from "../baseUI.component";
   animations: [fadeIn],
   providers: [TdLoadingService]
 })
-export class SharepageComponent extends BaseUIComponent implements OnInit, OnDestroy {
+export class SharepageComponent extends BaseUIComponent implements OnInit {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
   @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
@@ -79,8 +79,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
     filters: ""
   };
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
 
   //@ViewChild("table") table;
@@ -94,18 +92,21 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
     private el: ElementRef,
     private baseService: BaseService,
     private loadingService: TdLoadingService) {
-    super(loadingService);
+    super(loadingService, routerInfo);
 
     /**
      * 路由器结束订阅加载不同的页面
      * @type {Subscription}
      */
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
+
+    this.routerInfo.paramMap
+      .subscribe(res => {
+        this.pagecode = localStorage.getItem("pageCode");
+
         this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
+        this.authorityKey = this.pagecode;
         let paginationInfo = this.fnUtil.getPaginationInfo();
+
         /**
          * 每页条数pagesize和当前页码currentPage
          */
@@ -122,10 +123,10 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
         this.new = true;
         this.edit = false;
         this.btnType = "new";
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
 
-        // this.loadDetailModel();
-        // this.loadModal();
+        if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
       });
   }
 
@@ -291,11 +292,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit, OnDes
     const factory: ComponentFactory<SetAuthorityComponent> = this.resolver.resolveComponentFactory(SetAuthorityComponent);
     this.setAuthorityComponent = this.container.createComponent(factory);
   }
-
-  ngOnDestroy(): void {
-    this.routerSubscribe.unsubscribe();
-  }
-
 }
 
 @Component({
@@ -327,9 +323,10 @@ export class FormUnitComponent extends BaseUIComponent {
   _selectRow; //修改数据内容
 
   constructor(private toastService: ToastService,
-    private loadingService: TdLoadingService
+    private loadingService: TdLoadingService,
+    private routerInfo: ActivatedRoute
   ) {
-    super(loadingService);
+    super(loadingService, routerInfo);
   }
 
   submitMethod($event) {

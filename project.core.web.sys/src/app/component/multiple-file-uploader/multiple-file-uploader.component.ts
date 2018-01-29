@@ -15,6 +15,7 @@ import { PreviewService } from "app/services/preview/preview.service";
 import { ToastService } from "../toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
+import {ActivatedRoute} from "@angular/router";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -61,8 +62,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     private toastService: ToastService,
     private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private viewContainerRef: ViewContainerRef) {
-    super(loadingService);
+    private viewContainerRef: ViewContainerRef,
+    private routerInfor: ActivatedRoute) {
+    super(loadingService, routerInfor);
   }
 
   ngOnInit(): void {
@@ -139,7 +141,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    * @memberof MultipleFileUploaderComponent
    */
   removeConfirm(back) {
-    // let confirmRes = confirm("确认要删除该文件吗?");   
+    // let confirmRes = confirm("确认要删除该文件吗?");
     super.openConfirm({ message: "确认要删除该文件吗?", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (accept: boolean) {
       if (accept) {
         back();
@@ -230,7 +232,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       }
     }
 
-    //上传时，临时用于显示的别名 
+    //上传时，临时用于显示的别名
     data.forEach(item => {
       let filename = item.file.name;
       //alias字段是别名；filename字段是真实名称。

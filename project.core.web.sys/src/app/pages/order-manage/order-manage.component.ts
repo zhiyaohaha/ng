@@ -1,4 +1,4 @@
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -15,20 +15,21 @@ import {
   forwardRef,
   NgModule
 } from "@angular/core";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
-import { SharepageService } from "../../services/sharepage-service/sharepage.service";
-import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
-import { globalVar } from "../../common/global.config";
-import { fadeIn } from "../../common/animations";
-import { FnUtil } from "../../common/fn-util";
-import { ToastService } from "../../component/toast/toast.service";
-import { ConvertUtil } from "../../common/convert-util";
-import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
-import { BaseService } from "../../services/base.service";
-import { MdSidenav } from "@angular/material";
-import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {SharepageService} from "../../services/sharepage-service/sharepage.service";
+import {ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {globalVar} from "../../common/global.config";
+import {fadeIn} from "../../common/animations";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
+import {ConvertUtil} from "../../common/convert-util";
+import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
+import {BaseService} from "../../services/base.service";
+import {MdSidenav} from "@angular/material";
+import {NG_VALUE_ACCESSOR} from "@angular/forms";
 
-import { CommonService } from "app/services/common/common.service";
+import {CommonService} from "app/services/common/common.service";
+import {BaseUIComponent} from "../baseUI.component";
 
 @Component({
   selector: "app-order-manage",
@@ -37,11 +38,11 @@ import { CommonService } from "app/services/common/common.service";
   animations: [fadeIn],
   providers: [TdLoadingService, CommonService]
 })
-export class OrderManageComponent implements OnInit {
+export class OrderManageComponent extends BaseUIComponent implements OnInit {
   [x: string]: any;
 
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -88,76 +89,52 @@ export class OrderManageComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
 
 
   constructor(private sharepageService: SharepageService,
-    private fnUtil: FnUtil,
-    private converUtil: ConvertUtil,
-    private routerInfo: ActivatedRoute,
-    private router: Router,
-    private toastService: ToastService,
-    private resolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private baseService: BaseService,
-    private lodaingService: TdLoadingService,
-    private commonService: CommonService) {
+              private fnUtil: FnUtil,
+              private converUtil: ConvertUtil,
+              private routerInfor: ActivatedRoute,
+              private router: Router,
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService,
+              private loading: TdLoadingService,
+              private commonService: CommonService) {
+    super(loading, routerInfor);
 
     /**
      * 路由器结束订阅加载不同的页面
      * @type {Subscription}
      */
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
-        this.pagecode = this.routerInfo.snapshot.queryParams["pageCode"];
+    this.routerInfor.paramMap
+      .subscribe(res => {
+        this.pagecode = res.get("pageCode");
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.pagecode;
+
+        let paginationInfo = this.fnUtil.getPaginationInfo();
+
         /**
          * 每页条数pagesize和当前页码currentPage
          */
-        if (!localStorage.getItem(this.pagecode + "ps")) {
-          localStorage.setItem(this.pagecode + "ps", "10");
-          localStorage.setItem(this.pagecode + "cp", "0");
-          this.getParamsList({
-            size: 10,
-            index: 0,
-            filters: ""
-          });
-        } else {
-          this.pageSize = parseInt(localStorage.getItem(this.pagecode + "ps"), 10);
-          this.currentPage = parseInt(localStorage.getItem(this.pagecode + "cp"), 10);
-          // let a = this.table.pageTo(parseInt(localStorage.getItem(this.pagecode + "cp"), 10));
-          this.getParamsList({
-            size: this.pageSize,
-            index: localStorage.getItem(this.pagecode + "cp"),
-            filters: ""
-          });
-        }
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
+        this.getParamsList({
+          size: this.pageSize,
+          index: this.currentPage,
+          filters: ""
+        });
         this.selectRow = null;
         this.new = true;
         this.edit = false;
         this.btnType = "new";
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
-        this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
-
-        // this.loadDetailModel();
-        this.loadModal();
+        if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
       });
-
-    /**
-     * 加载动画
-     */
-    this.lodaingService.create({
-      // name: "fullScreen",
-      // type: "circular",
-      // mode: "indeterminate"
-      name: "fullScreen",
-      mode: LoadingMode.Indeterminate,
-      type: LoadingType.Circular,
-      color: "warn"
-    });
   }
 
   ngOnInit() {
@@ -182,7 +159,7 @@ export class OrderManageComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -224,7 +201,7 @@ export class OrderManageComponent implements OnInit {
     this.new = false;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({ id: $event.id });
+    this.loadDetailModel({id: $event.id});
     // this.commonService.getDetailModel({id: $event.row.id})
     //   .subscribe(r => {
     //     this.selectRow = r.data.bindData;
@@ -297,7 +274,7 @@ export class OrderManageComponent implements OnInit {
           param[item] = this.selectRow[item];
         });
 
-        if (value.triggerUrl.indexOf('#') !== -1) {  //url里面有#
+        if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#
 
           this.FillInfoId = this.selectRow.id;
 
@@ -314,7 +291,7 @@ export class OrderManageComponent implements OnInit {
 
       }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
       });
     } else if (value.name === "HtmlDomCmd.Form") {
@@ -398,11 +375,7 @@ export class OrderManageComponent implements OnInit {
     this.setAuthorityComponent = this.container.createComponent(factory);
   }
 
-  ngOnDestroy(): void {
-    this.routerSubscribe.unsubscribe();
-  }
-
-  //报单，申请贷款以后，跳转到补资料页面 
+  //报单，申请贷款以后，跳转到补资料页面
   onGetOrderId($event) {
     console.log($event);
     this.sidenavKey = "FillInfo";

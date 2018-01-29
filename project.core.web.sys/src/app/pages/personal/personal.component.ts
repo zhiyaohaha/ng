@@ -7,6 +7,9 @@ import {CommunicationService} from "./../../services/share/communication.service
 import {globalUrl} from "../../common/global.config";
 import {FnUtil} from "../../common/fn-util";
 import {environment} from "../../../environments/environment";
+import {BaseUIComponent} from "../baseUI.component";
+import {TdLoadingService} from "@covalent/core";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "app-personal",
@@ -14,7 +17,7 @@ import {environment} from "../../../environments/environment";
   styleUrls: ["./personal.component.scss"],
   animations: [fadeIn]
 })
-export class PersonalComponent implements OnInit {
+export class PersonalComponent extends BaseUIComponent implements OnInit {
 
   personImg: string = "";
   personInfo;
@@ -28,7 +31,10 @@ export class PersonalComponent implements OnInit {
               private util: ConvertUtil,
               private myService: CommunicationService,
               private fnUtil: FnUtil,
-              private renderer2: Renderer2) {
+              private renderer2: Renderer2,
+              private loading: TdLoadingService,
+              private routerInfor: ActivatedRoute) {
+    super(loading, routerInfor);
   }
 
   ngOnInit() {

@@ -1,8 +1,8 @@
 import {fadeIn} from "../../common/animations";
 import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {
   ITdDataTableColumn, TdDataTableService, TdDialogService,
   TdLoadingService
@@ -27,7 +27,7 @@ import {BaseUIComponent} from "../baseUI.component";
   animations: [fadeIn],
   providers: [TdDataTableService, ParamsManageService]
 })
-export class MainParameterManageComponent extends BaseUIComponent implements OnInit, OnDestroy {
+export class MainParameterManageComponent extends BaseUIComponent implements OnInit {
   authorities: string[]; //权限数组
   authorityKey: string; //权限KEY
 
@@ -113,19 +113,20 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
               private _paramsManageService: ParamsManageService,
               private _util: ConvertUtil,
               private router: Router,
-              private routerInfo: ActivatedRoute,
+              private routerInfor: ActivatedRoute,
               private toastService: ToastService,
               private fnUtil: FnUtil,
               private el: ElementRef,
               private loading: TdLoadingService) {
-    super(loading);
+    super(loading, routerInfor);
 
-    this.routerSubscribe = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(event => {
+    this.routerInfor.paramMap
+      .subscribe(res => {
+        this.pagecode = res.get("pageCode");
+        localStorage.setItem("pageCode", this.pagecode);
+
         this.authorities = this.fnUtil.getFunctions();
-        this.authorityKey = this.routerInfo.snapshot.queryParams["pageCode"];
-        this.pagecode = this.authorityKey;
+        this.authorityKey = this.pagecode;
         let paginationInfo = this.fnUtil.getPaginationInfo();
         /**
          * 每页条数pagesize和当前页码currentPage
@@ -139,9 +140,8 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
             filters: ""
           });
         }
-        el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        // el.nativeElement.querySelector(".mat-drawer-backdrop").click();
       });
-
   }
 
   ngOnInit() {
@@ -378,10 +378,6 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
    * 上传成功
    */
   uploaded($event) {
-  }
-
-  ngOnDestroy() {
-    this.routerSubscribe.unsubscribe();
   }
 
 }

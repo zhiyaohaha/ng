@@ -11,8 +11,7 @@ export class FnUtil {
 
   private _subject: Subject<any> = new Subject<any>();
 
-  constructor(private convertUtil: ConvertUtil,
-              private routerInfo: ActivatedRoute) {
+  constructor(private convertUtil: ConvertUtil) {
   }
 
   /**
@@ -72,12 +71,7 @@ export class FnUtil {
    * @param str 包含的字符串
    */
   public arrayIsInclude(array: string[], str: string): boolean {
-    let bool = array.map(r => r === str);
-    if (bool) {
-      return true;
-    } else {
-      return false;
-    }
+    return array.indexOf(str) > -1;
   }
 
   /**
@@ -148,7 +142,7 @@ export class FnUtil {
    * 获取页面代码
    */
   public getPageCode(): string {
-    return this.routerInfo.snapshot.queryParams["pageCode"];
+    return localStorage.getItem("pageCode");
   }
 
 }
