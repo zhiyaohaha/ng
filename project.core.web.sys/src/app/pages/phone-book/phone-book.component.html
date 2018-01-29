@@ -1,0 +1,64 @@
+<md-sidenav-container>
+
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+  </div>
+
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
+    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
+  </app-table>
+
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="tab">
+          <div class="record" [class.active]="typeTab==1" (click)="toRecord()">
+            通话记录
+          </div>
+          <div class="addressbook" [class.active]="typeTab==2" (click)="toAddress()">
+            通讯录
+          </div>
+        </div>
+        <div class="recordContent" *ngIf="typeTab==1">
+          <table class="recordBox">
+            <tr>
+              <th>通话时间</th>
+              <th>通话人姓名</th>
+              <th>通话号码</th>
+              <th>呼叫行为</th>
+              <th>呼叫结果</th>
+              <th>通话时长</th>
+            </tr>
+            <tr *ngFor="let item of recordData.phoneBookDetails">
+              <td>{{item.time}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.phone}}</td>
+              <td>{{item.behavior}}</td>
+              <td>{{item.result}}</td>
+              <td>{{item.length}}</td>
+            </tr>
+          </table>
+          <timi-pagination *ngIf="recordData" [total]="recordData.total" [pageSize]="recordPageSize" [activeIndex]="recordActiveIndex"
+            (onChange)="recordChange($event)">
+          </timi-pagination>
+        </div>
+
+        <div class="addressContent" *ngIf="typeTab==2">
+          <ul>
+            <li *ngFor="let item of addressData.phoneBookDetails">
+              <span class="left">{{item.name}}</span>
+              <span class="right">{{item.mobilePhone}}</span>
+            </li>
+          </ul>
+          <timi-pagination *ngIf="addressData" [total]="addressData.total" [pageSize]="addressPageSize" [activeIndex]="addressActiveIndex"
+            (onChange)="addressChange($event)">
+          </timi-pagination>
+        </div>
+
+        <!-- 分页部分 -->
+        <!-- <timi-pagination *ngIf="dataTable.hasData" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex" (onChange)="pageChange($event)"></timi-pagination> -->
+      </div>
+    </div>
+  </md-sidenav>
+
+</md-sidenav-container>
