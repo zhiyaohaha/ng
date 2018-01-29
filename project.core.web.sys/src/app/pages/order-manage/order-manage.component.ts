@@ -1,4 +1,4 @@
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -15,21 +15,21 @@ import {
   forwardRef,
   NgModule
 } from "@angular/core";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
-import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
-import {globalVar} from "../../common/global.config";
-import {fadeIn} from "../../common/animations";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {ConvertUtil} from "../../common/convert-util";
-import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
-import {BaseService} from "../../services/base.service";
-import {MdSidenav} from "@angular/material";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
+import { SharepageService } from "../../services/sharepage-service/sharepage.service";
+import { ITdDataTableColumn, LoadingMode, LoadingType, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
+import { globalVar } from "../../common/global.config";
+import { fadeIn } from "../../common/animations";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
+import { BaseService } from "../../services/base.service";
+import { MdSidenav } from "@angular/material";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import {CommonService} from "app/services/common/common.service";
-import {BaseUIComponent} from "../baseUI.component";
+import { CommonService } from "app/services/common/common.service";
+import { BaseUIComponent } from "../baseUI.component";
 
 @Component({
   selector: "app-order-manage",
@@ -42,7 +42,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   [x: string]: any;
 
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -93,16 +93,16 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
 
 
   constructor(private sharepageService: SharepageService,
-              private fnUtil: FnUtil,
-              private converUtil: ConvertUtil,
-              private routerInfor: ActivatedRoute,
-              private router: Router,
-              private toastService: ToastService,
-              private resolver: ComponentFactoryResolver,
-              private el: ElementRef,
-              private baseService: BaseService,
-              private loading: TdLoadingService,
-              private commonService: CommonService) {
+    private fnUtil: FnUtil,
+    private converUtil: ConvertUtil,
+    private routerInfor: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private loading: TdLoadingService,
+    private commonService: CommonService) {
     super(loading, routerInfor);
 
     /**
@@ -159,7 +159,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -201,7 +201,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.new = false;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({id: $event.id});
+    this.loadDetailModel({ id: $event.id });
     // this.commonService.getDetailModel({id: $event.row.id})
     //   .subscribe(r => {
     //     this.selectRow = r.data.bindData;
@@ -236,11 +236,10 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   }
 
   //资料审核
-  audit() {
+  audit(sidenavKey) {
     this.selectRow = "";
-    this.sidenavKey = "audit";
+    this.sidenavKey = sidenavKey;
   }
-
 
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
@@ -265,6 +264,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
    * 详情组件点击事件
    */
   detailClick(value) {
+    console.log(value)
     if (value.name === "HtmlDomCmd.Redirect") {
       this.sidenavKey = "Form";
       this.edit = true;
@@ -275,10 +275,13 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
         });
 
         if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#
-
           this.FillInfoId = this.selectRow.id;
+          this.AuditId = this.selectRow.id;
 
+          // 补充资料
           this.collect(value.triggerUrl.substr(1, value.triggerUrl.length));
+          // 审核资料
+          this.audit(value.triggerUrl.substr(1, value.triggerUrl.length));
 
         } else {
           this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
@@ -291,7 +294,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
 
       }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
       });
     } else if (value.name === "HtmlDomCmd.Form") {

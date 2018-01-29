@@ -5,11 +5,7 @@
   <!-- 录入信息[(ngModel)]="loanInfo.applyFormData" -->
   <div class="loan">
     <h4>录入信息</h4>
-    <!-- 新增 -->
-    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""></timi-responsive-form>
-    <!-- 修改 -->
-    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""
-      [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
+    <timi-responsive-form [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""></timi-responsive-form>
   </div>
 
   <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->
@@ -67,7 +63,7 @@
     </ul>
 
     <div class="resultBtn">
-      <!-- <button type="button" class="mat-raised-button" (click)="onSubmit($event)">提交审核</button> -->
+      <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit(btn.url,btn.label)">{{btn.label}}</button>
     </div>
 
   </div>
