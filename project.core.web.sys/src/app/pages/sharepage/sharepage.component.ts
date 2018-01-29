@@ -242,14 +242,13 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
         // this.detail = false;
         // this.edit = true;
         // this.setFunction = false;
-        this.sidenavKey = "Other";
+        this.sidenavKey = "Form";
       }
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
         super.showToast(this.toastService, res.message);
       });
     }
-
   }
 
   /**
