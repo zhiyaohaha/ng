@@ -237,7 +237,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   rowClickEvent(e) {
     this.personId = e.row.id;
     this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
-      console.log(res.data);
       this.getRecordData(res.data);
     });
   }
@@ -284,19 +283,15 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   }
   //通话记录列表
   toRecord() {
-    console.log(this.personId);
     this.typeTab = 1;
     this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
-      console.log(res.data);
       this.getRecordData(res.data);
     });
   }
   //通讯录列表
   toAddress() {
-    console.log(this.personId);
     this.typeTab = 2;
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
-      console.log(res.data);
       this.getAddressData(res.data);
     })
   }
@@ -310,11 +305,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   }
   //通讯录分页
   addressChange(e){
-    console.log(1);
     this.addressPageSize = e.pageSize;
     this.addressActiveIndex = e.activeIndex;
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
-      console.log(res.data);
       this.getAddressData(res.data);
     });
   }
