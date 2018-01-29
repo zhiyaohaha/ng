@@ -255,7 +255,7 @@ export class PromoteComponent implements OnInit {
   }
   //获取菜单列表数据
   setPower() {
-    this.permissionsService.getPermissions().subscribe(res => {
+    this.permissionsService.getPermissions("59afc3fbfb95ae3140308fd7","SysJob").subscribe(res => {
       console.log(res.data);
       this.datas = res.data;
     })

@@ -13,20 +13,60 @@ export class PermissionsComponent implements OnInit {
   @Input() id: string;
   @Input() from: string;
 
-  
+
 
   codes: Array<string> = [];//选择的code字符串数组
 
   constructor(private permissionsService: PermissionsService) { }
 
   ngOnInit() {
-    this.codes = [];
+    console.log(this.menus);
   }
-
-
+  //全选
+  multipleCheck(page, menu) {
+    if (page.depth == 0) {
+      page.active = !page.active;
+      if (page.active == true) {
+        for (let i = 0; i < menu.length; i++) {
+          if (menu[i]._functions.length > 0) {
+            for (let j = 0; j < menu[i]._functions.length; j++) {
+              if (!(this.inArray(menu[i]._functions[j].code, this.codes))) {
+                this.codes.push(menu[i]._functions[j].code);
+                menu[i]._functions[j].active = true;
+              }
+            }
+          }
+        }
+      } else if (page.active == false) {
+        for (let i = 0; i < menu.length; i++) {
+          for (let j = 0; j < menu[i]._functions.length; j++) {
+            this.removeByValue(this.codes, menu[i]._functions[j].code);
+            menu[i]._functions[j].active = false;
+          }
+        }
+      }
+      console.log("每个page第一个数据");
+    } else if (page.depth == 1) {
+      page.active = !page.active;
+      if (page.active == true && page._functions.length > 0) {
+        for (let i = 0; i < page._functions.length; i++) {
+          if (!(this.inArray(page._functions[i].code, this.codes))) {
+            this.codes.push(page._functions[i].code);
+            page._functions[i].active = true;
+          }
+        }
+      } else if (page.active == false) {
+        for (let i = 0; i < page._functions.length; i++){
+          this.removeByValue(this.codes, page._functions[i].code);
+          page._functions[i].active = false;
+        }
+      }
+      console.log("每个page第二个之后数据");
+    }
+  }
   //赋予权限，并添加字体图标
-  changeStyle(item) {
-    item.active = !item.active
+  changeStyle(page, item) {
+    item.active = !item.active;
     if (item.active === true) {
       this.codes.push(item.code);
     } else if (item.active === false) {
@@ -42,10 +82,19 @@ export class PermissionsComponent implements OnInit {
       }
     }
   }
+  //判断元素是否在数组中
+  inArray(search, array) {
+    for (let i in array) {
+      if (array[i] === search) {
+        return true;
+      }
+    }
+    return false;
+  }
   //传递数据
   onSubmit() {
-    this.permissionsService.setPermissions(this.id,this.from,this.codes).subscribe(res=>{
-      console.log(res)
+    this.permissionsService.setPermissions(this.id, this.from, this.codes).subscribe(res => {
+      console.log(res);
     })
   }
 }
