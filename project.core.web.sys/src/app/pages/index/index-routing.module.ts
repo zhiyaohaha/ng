@@ -27,6 +27,7 @@ const childRoutes: Routes = [
   { path: "dp/:pageCode", loadChildren: "../sharepage/sharepage.module#SharepageModule" },
   { path: "cdp/:pageCode", loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule" },
   { path: "tp/:pageCode", loadChildren: "../template/template.module#TemplateModule" },
+  { path: "PhoneBook/:pageCode", loadChildren: "../phone-book/phone-book.module#PhoneBookModule" },
   {
     path: "OrgStructure.GroupMgr/:pageCode",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
