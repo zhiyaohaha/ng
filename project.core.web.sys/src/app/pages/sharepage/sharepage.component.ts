@@ -79,8 +79,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
     filters: ""
   };
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
 
   //@ViewChild("table") table;
@@ -125,6 +123,10 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
         this.new = true;
         this.edit = false;
         this.btnType = "new";
+
+        if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
       });
   }
 
