@@ -6,7 +6,7 @@ import { FormBuilder } from "@angular/forms";
 import { ToastService } from "../../component/toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
@@ -180,8 +180,21 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   //提交申请
-  onSubmit($event) {
-
+  onSubmit(url, label) {
+    let _self = this;
+    let id = this.id;
+    super.openPrompt({ message: "请输入备注", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
+      if (val) {
+        _self.orderService.onSubmitAuditData(url, id, val).subscribe(res => {
+          if (res.code === "0") {
+            // super.showToast(_self.toastService, label + "成功");
+            _self.toastService.creatNewMessage({ message: label + "成功" });
+          } else {
+            _self.toastService.creatNewMessage({ message: res.message });
+          }
+        })
+      }
+    })
   }
 
 }

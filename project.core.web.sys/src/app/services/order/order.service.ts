@@ -90,8 +90,8 @@ export class OrderService {
   }
 
   //提交补充资料信息
-  onSubmitComplementaryData(data) {
-    return this.baseService.post("/api/LoanOrder/Save", data);
+  onSubmitComplementaryData(url, data) {
+    return this.baseService.post("/api/" + url, data);
   }
 
   //获取审核资料信息
@@ -117,6 +117,14 @@ export class OrderService {
     return this.baseService.post("/api/LoanOrder/NotPassAttachment", {
       id: id,
       statusRemark: statusRemark
+    });
+  }
+
+  //提交审核资料信息
+  onSubmitAuditData(url, id, description) {
+    return this.baseService.post("/api/" + url, {
+      id: id,
+      description: description
     });
   }
 

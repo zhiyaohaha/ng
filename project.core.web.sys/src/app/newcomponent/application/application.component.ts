@@ -1,12 +1,12 @@
-import {Component, OnInit, Input} from "@angular/core";
-import {OrderService} from "app/services/order/order.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {FormBuilder} from "@angular/forms";
+import { Component, OnInit, Input } from "@angular/core";
+import { OrderService } from "app/services/order/order.service";
+import { animate, state, style, transition, trigger } from "@angular/animations";
+import { FormBuilder } from "@angular/forms";
 
-import {ToastService} from "../../component/toast/toast.service";
-import {TdLoadingService} from "@covalent/core";
-import {BaseUIComponent} from "../../pages/baseUI.component";
-import {ActivatedRoute} from "@angular/router";
+import { ToastService } from "../../component/toast/toast.service";
+import { TdLoadingService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "free-application",
@@ -41,10 +41,10 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   @Input() id: string;
 
   constructor(private orderService: OrderService,
-              private fb: FormBuilder,
-              private toastService: ToastService,
-              private loadingService: TdLoadingService,
-              private routerInfor: ActivatedRoute) {
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private loadingService: TdLoadingService,
+    private routerInfor: ActivatedRoute) {
     super(loadingService, routerInfor);
   }
 
@@ -162,7 +162,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   }
 
   //提交申请
-  onSubmit($event) {
+  onSubmit($event, url, label) {
     let _self = this;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
@@ -174,12 +174,12 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     };
     // console.log(this.applicationForm)
     this.loadingService.register("loading");
-    this.orderService.onSubmitComplementaryData(this.applicationForm).subscribe(res => {
+    this.orderService.onSubmitComplementaryData(url, this.applicationForm).subscribe(res => {
       _self.loadingService.resolve("loading");
       if (res.code === "0") {
         // console.log(res)
         // _self.toastService.creatNewMessage("申请成功");
-        super.showToast(_self.toastService, "申请成功");
+        super.showToast(_self.toastService, label + "成功");
       } else {
         // _self.toastService.creatNewMessage(res.message);
         super.showToast(_self.toastService, res.message);
