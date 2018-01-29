@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -12,17 +12,17 @@ import {
   ViewChild,
   ViewContainerRef
 } from "@angular/core";
-import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
-import { SharepageService } from "../../services/sharepage-service/sharepage.service";
-import { ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService } from "@covalent/core";
-import { globalVar } from "../../common/global.config";
-import { fadeIn } from "../../common/animations";
-import { FnUtil } from "../../common/fn-util";
-import { ToastService } from "../../component/toast/toast.service";
-import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
-import { BaseService } from "../../services/base.service";
-import { MdSidenav } from "@angular/material";
-import { BaseUIComponent } from "../baseUI.component";
+import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
+import {SharepageService} from "../../services/sharepage-service/sharepage.service";
+import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {globalVar} from "../../common/global.config";
+import {fadeIn} from "../../common/animations";
+import {FnUtil} from "../../common/fn-util";
+import {ToastService} from "../../component/toast/toast.service";
+import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
+import {BaseService} from "../../services/base.service";
+import {MdSidenav} from "@angular/material";
+import {BaseUIComponent} from "../baseUI.component";
 import "rxjs/add/operator/switchMap";
 
 @Component({
@@ -34,7 +34,7 @@ import "rxjs/add/operator/switchMap";
 })
 export class SharepageComponent extends BaseUIComponent implements OnInit {
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -47,6 +47,10 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   btnType: string; //表单模板按钮类型
   edit: boolean; //点击编辑过后变成true
   detail: boolean; //查看详情时变成true
+  setFunction: boolean; //设置权限
+  sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  setFunction ： 设置权限  Other ：其他不明情况:）
+
+  pageFrom: string; //设置权限的时候需要传递的查询表名字  SysJob 职业级别 SysRole 职业类别 SysGroupData组织模板
 
   detailModel; //查询详情的模板
   modalDOMS: HtmlDomTemplate; //表单模版
@@ -84,14 +88,14 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
-    private fnUtil: FnUtil,
-    private routerInfo: ActivatedRoute,
-    private router: Router,
-    private toastService: ToastService,
-    private resolver: ComponentFactoryResolver,
-    private el: ElementRef,
-    private baseService: BaseService,
-    private loadingService: TdLoadingService) {
+              private fnUtil: FnUtil,
+              private routerInfo: ActivatedRoute,
+              private router: Router,
+              private toastService: ToastService,
+              private resolver: ComponentFactoryResolver,
+              private el: ElementRef,
+              private baseService: BaseService,
+              private loadingService: TdLoadingService) {
     super(loadingService, routerInfo);
 
     /**
@@ -127,6 +131,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
         if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
           el.nativeElement.querySelector(".mat-drawer-backdrop").click();
         }
+        this.getPageSearchTableName(this.pagecode);
       });
   }
 
@@ -154,7 +159,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
           if (r.data.data && r.data.data.filters.length > 0) {
             this.filters = [];
             r.data.data.filters.forEach(i => {
-              this.filters.push({ "key": i.name, "value": i.value || "" });
+              this.filters.push({"key": i.name, "value": i.value || ""});
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -190,11 +195,12 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.new = false;
-    this.detail = true;
+    // this.new = false;
+    // this.detail = true;
     this.btnType = "edit";
+    this.sidenavKey = "Detail";
 
-    this.sharepageService.getDetailModel({ id: $event.id })
+    this.sharepageService.getDetailModel({id: $event.id})
       .subscribe(res => {
         this.detailModel = res.data.doms;
         this.selectRow = res.data.bindData;
@@ -206,8 +212,9 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    */
   newAdd() {
     this.selectRow = "";
-    this.new = true;
-    this.edit = true;
+    // this.new = true;
+    // this.edit = true;
+    this.sidenavKey = "Form";
     this.btnType = "new";
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -220,16 +227,25 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 详情组件点击事件
    */
   detailClick(value) {
-    this.sharepageService.editParamsModal({ id: this.selectRow.id }).subscribe(r => {
+    this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
       }
     });
     if (value.name === "HtmlDomCmd.Redirect") {
-      this.detail = false;
-      this.edit = true;
+      if (value.triggerUrl === "#SetFunction") {
+        // this.detail = false;
+        // this.edit = false;
+        // this.setFunction = true;
+        this.sidenavKey = "setFunction";
+      } else {
+        // this.detail = false;
+        // this.edit = true;
+        // this.setFunction = false;
+        this.sidenavKey = "Other";
+      }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
         super.showToast(this.toastService, res.message);
       });
     }
@@ -287,6 +303,20 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
     this.sidenav.close();
   }
 
+  getPageSearchTableName(key) {
+    switch (key) {
+      case "OrgStructure.JobMgr":
+        this.pageFrom = "SysJob";
+        break;
+      case "OrgStructure.RoleMgr":
+        this.pageFrom = "SysRole";
+        break;
+      case "OrgStructure.GroupMgr":
+        this.pageFrom = "SysGroupData";
+        break;
+    }
+  }
+
   createComponent(menus) {
     this.container.clear();
     const factory: ComponentFactory<SetAuthorityComponent> = this.resolver.resolveComponentFactory(SetAuthorityComponent);
@@ -323,9 +353,8 @@ export class FormUnitComponent extends BaseUIComponent {
   _selectRow; //修改数据内容
 
   constructor(private toastService: ToastService,
-    private loadingService: TdLoadingService,
-    private routerInfo: ActivatedRoute
-  ) {
+              private loadingService: TdLoadingService,
+              private routerInfo: ActivatedRoute) {
     super(loadingService, routerInfo);
   }
 

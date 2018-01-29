@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="menus">
   <ul>
     <li class="menu-row" *ngFor="let menu of menus">
       <div class="menu-card" *ngFor="let page of menu;let i = index">
