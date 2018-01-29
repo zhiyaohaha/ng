@@ -1,19 +1,22 @@
 <md-sidenav-container>
 
   <div class="main-container clearfix">
-    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters"
+                 (onSearch)="onSearch($event)"></search-form>
     <button md-raised-button class="add-button" (click)="setPower();sidenav.open()">添加</button>
   </div>
 
-  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
+  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
+             [activeIndex]="currentPage"
+             [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
   </app-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-        
-        <free-permissions [menus]="datas" [id]="'59afc3fbfb95ae3140308fd7'" [from]="'SysJob'" *ngIf="datas.length>1"></free-permissions>
+
+        <free-permissions [menus]="datas" [id]="'59afc3fbfb95ae3140308fd7'" [from]="'SysJob'"
+                          *ngIf="datas.length>1"></free-permissions>
         <!-- <div class="tableBox">
 
           <div class="boxHeader">
@@ -27,7 +30,7 @@
             <span>下级代理个数</span>
             <span>备注</span>
           </div>
-          
+
           <div class="tableContent" *ngFor="let item of selectRow;let i=index">
             <div class="level2" (click)="showLevel($event,i)">
               <span>{{i+1}}</span>
