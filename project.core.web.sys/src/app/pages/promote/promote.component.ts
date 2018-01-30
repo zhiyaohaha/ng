@@ -34,13 +34,10 @@ import {BaseUIComponent} from "../baseUI.component";
       ])
     ])
   ],
-  providers: [TdLoadingService, PromoteService, CommonService, PermissionsService]
+  providers: [TdLoadingService, PromoteService, CommonService]
 })
 export class PromoteComponent extends BaseUIComponent implements OnInit {
   [x: string]: any;
-
-  @ViewChild("sidenav")
-  private sidenav: MdSidenav;
 
   //权限
   authorities: string[];
@@ -65,12 +62,9 @@ export class PromoteComponent extends BaseUIComponent implements OnInit {
   filters = [];
   searchFilters; //页面显示的搜索条件
 
-  fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
   pageSize: number = globalVar.pageSize; //每页显示条数
   searchTerm: string = ""; //搜索关键字
-  sortBy: string = "";
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   filteredTotal = 0; //总共条数
   filteredData; //过滤后的数据
   //搜索条件
@@ -86,8 +80,6 @@ export class PromoteComponent extends BaseUIComponent implements OnInit {
 
   levels: Array<any> = [];
 
-  datas: Array<any> = []; //接收的数据
-
   constructor(private fnUtil: FnUtil,
               private converUtil: ConvertUtil,
               private routerInfor: ActivatedRoute,
@@ -98,8 +90,7 @@ export class PromoteComponent extends BaseUIComponent implements OnInit {
               private baseService: BaseService,
               private loading: TdLoadingService,
               private promoteService: PromoteService,
-              private commonService: CommonService,
-              private permissionsService: PermissionsService) {
+              private commonService: CommonService) {
     super(loading, routerInfor);
 
     routerInfor.paramMap
@@ -180,7 +171,7 @@ export class PromoteComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    this.promoteService.getEditParams({userId: $event.row.id, level: "first"})
+    this.promoteService.getEditParams({userId: $event.id, level: "first"})
       .subscribe(r => {
         this.selectRow = r.data;
         for (let i = 0; i < this.selectRow.length; i++) {
