@@ -48,7 +48,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   edit: boolean; //点击编辑过后变成true
   detail: boolean; //查看详情时变成true
   setFunction: boolean; //设置权限
-  sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  setFunction ： 设置权限  Other ：其他不明情况:）
+  sidenavKey: string; //侧滑需要显示的组件判断值 Add ：添加  Edit ：修改 Detail ：详细模板  SetFunction ： 设置权限  Other ：其他不明情况:）
 
   pageFrom: string; //设置权限的时候需要传递的查询表名字  SysJob 职业级别 SysRole 职业类别 SysGroupData组织模板
 
@@ -84,8 +84,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   };
 
   pagecode: string;
-
-  //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
@@ -214,7 +212,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
     this.selectRow = "";
     // this.new = true;
     // this.edit = true;
-    this.sidenavKey = "Form";
+    this.sidenavKey = "Add";
     this.btnType = "new";
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -237,12 +235,12 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
         // this.detail = false;
         // this.edit = false;
         // this.setFunction = true;
-        this.sidenavKey = "setFunction";
+        this.sidenavKey = "SetFunction";
       } else {
         // this.detail = false;
         // this.edit = true;
         // this.setFunction = false;
-        this.sidenavKey = "Form";
+        this.sidenavKey = "Edit";
       }
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
@@ -255,8 +253,9 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 返回详情
    */
   backClick() {
-    this.detail = true;
-    this.edit = false;
+    // this.detail = true;
+    // this.edit = false;
+    this.sidenavKey = "Detail";
   }
 
   /**
