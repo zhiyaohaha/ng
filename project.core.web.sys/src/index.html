@@ -2,46 +2,46 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>汉力金服后台管理系统</title>
-    <base href="/">
+  <meta charset="utf-8">
+  <title>汉力金服后台管理系统</title>
+  <base href="/">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://data.cpf360.com/ico/sys.cpf360.com.favicon.ico">
-    <link rel="stylesheet" href="./assets/fonts/style.css">
-    <link rel="stylesheet" href="./assets/freeng.css">
-    <link rel="stylesheet" href="./assets/css/dragula.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="http://data.cpf360.com/ico/sys.cpf360.com.favicon.ico">
+  <link rel="stylesheet" href="./assets/fonts/style.css">
+  <link rel="stylesheet" href="./assets/freeng.css">
+  <link rel="stylesheet" href="./assets/css/dragula.min.css">
 </head>
 
-<body class="main-type">
-    <app-root>
-        <div class="free-loading main-loading">
-            <div class="spinner">
-                <div class="bounce1"></div>
-                <div class="bounce2"></div>
-                <div class="bounce3"></div>
-                <div class="bounce4"></div>
-                <div class="bounce5"></div>
-            </div>
-        </div>
-    </app-root>
-    <script language="Javascript">
-        document.onkeydown = function(ev) {
-            const event = window.event || ev;
-            if ((window.event.altKey) &&
-                ((window.event.keyCode == 37) || //屏蔽   Alt+   方向键   ←
-                    (window.event.keyCode == 39))) //屏蔽   Alt+   方向键   →
-            {
-                event.returnValue = false;
-            }
+<body class="main-type" oncontextmenu="return false;">
+<app-root>
+  <div class="free-loading main-loading">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+      <div class="bounce4"></div>
+      <div class="bounce5"></div>
+    </div>
+  </div>
+</app-root>
+<script language="Javascript">
+  document.onkeydown = function (ev) {
+    const event = window.event || ev;
+    if ((window.event.altKey) &&
+      ((window.event.keyCode === 37) || //屏蔽   Alt+   方向键   ←
+        (window.event.keyCode === 39))) //屏蔽   Alt+   方向键   →
+    {
+      event.returnValue = false;
+    }
 
-//            if ((event.keyCode == 116) || //屏蔽   F5   刷新键
-//                (event.ctrlKey && event.keyCode == 82)) { //Ctrl   +   R
-//                event.keyCode = 0;
-//                event.returnValue = false;
-//            }
-        };
-    </script>
+    // if ((event.keyCode === 116) || //屏蔽   F5   刷新键
+    //   (event.ctrlKey && event.keyCode === 82)) { //Ctrl   +   R
+    //   event.keyCode = 0;
+    //   event.returnValue = false;
+    // }
+  };
+</script>
 </body>
 
 </html>
