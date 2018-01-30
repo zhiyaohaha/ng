@@ -77,6 +77,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   groups: TimiChipComponent[] = [];
   value: any[] = [];
   _placeholder = "回车添加";
+  @Output() blur: EventEmitter<any> = new EventEmitter();
 
   private _propagateChange = (_: any) => { };
 
@@ -117,6 +118,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   }
 
   onBlur($event) {
+    this.blur.emit($event);
     $event.path[3].className =  $event.path[3].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.focus = !this.focus;
     this.setChipClass();
