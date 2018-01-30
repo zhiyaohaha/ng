@@ -7,6 +7,8 @@ import { ToastService } from "../../component/toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
+import { TimiSelectModule } from "../../component/timi-select/select.component";
+import { TimiInputModule } from "../../component/timi-input/timi-input.component";
 
 
 @Component({
@@ -32,8 +34,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   uploadUrl: string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
   master: string = "/api/LoanOrder/UploadAttachmentFile";
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
-  // applicationForm: FormGroup;   //资料收集表单;
-  applicationForm: any;
+  waitLoanForm: any;
   applyFormData: any;           //动态表单数据
   areaCities: any; //市级数据
   areaCounties: any; //区县级数据
@@ -42,6 +43,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   readyOnly: boolean = true;  //贷款信息是否是只读
 
   @Input() id: string;
+  @Input() status: string;  //用于区分资料补充/待放款
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -62,6 +64,14 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         this.getLoanInfo(res.data);
       }
     })
+
+    if (this.status == 'waitLoan') {  //待放款
+      this.waitLoanForm = this.fb.group({
+        loanApprovedAmount: [''],   //批贷金额
+        loanApprovedTerm: [''],   //  批贷期限
+        loanApprovedRepaymentMethod: [''],   //    批贷还款方式
+      })
+    }
   }
 
   //贷款信息
@@ -183,9 +193,26 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   onSubmit(url, label) {
     let _self = this;
     let id = this.id;
+    let _status = this.status;
+    let postData = {};
     super.openPrompt({ message: "请输入备注", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
       if (val) {
-        _self.orderService.onSubmitAuditData(url, id, val).subscribe(res => {
+        if (_status == 'audit') {  //资料审核
+          postData = {
+            id: id,
+            description: val
+          };
+        } else if (_status == 'waitLoan') {  //待放款
+          postData = {
+            id: id,
+            description: val,
+            loanApprovedAmount: _self.waitLoanForm.value.loanApprovedAmount,   //批贷金额
+            loanApprovedTerm: _self.waitLoanForm.value.loanApprovedTerm,   //  批贷期限
+            loanApprovedRepaymentMethod: _self.waitLoanForm.value.loanApprovedRepaymentMethod,   //    批贷还款方式
+          };
+        }
+        // console.log(postData)
+        _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
           if (res.code === "0") {
             // super.showToast(_self.toastService, label + "成功");
             _self.toastService.creatNewMessage({ message: label + "成功" });

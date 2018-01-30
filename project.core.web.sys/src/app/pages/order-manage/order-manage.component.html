@@ -30,8 +30,11 @@
         <!-- 资料补充  -->
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
 
-        <!-- 资料审核 -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId"></free-auditInfo>
+        <!-- 资料审核（初审/复审/终审） -->
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="audit"></free-auditInfo>
+
+        <!-- 待放款 -->
+        <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan"></free-auditInfo>
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
