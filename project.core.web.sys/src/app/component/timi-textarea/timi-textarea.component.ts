@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {AfterViewInit, Component, forwardRef, Input, NgModule, OnInit, Renderer2,ElementRef} from "@angular/core";
+import {AfterViewInit, Component, forwardRef, Input, NgModule, OnInit, Renderer2,ElementRef,Output,EventEmitter} from "@angular/core";
 import {DomRenderer} from "../../common/dom";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
@@ -16,7 +16,7 @@ export const TIMI_TEXTAREA_VALUE_ACCESSOR: any = {
     <div class="box-item item-control-wrapper">
       <div class="item-control">
         <textarea class="item-textarea" placeholder="{{placeholder}}" disabled="{{disabled}}"
-               name="{{name}}" spellcheck="false" autocomplete="off" (blur)="blur($event)"
+               name="{{name}}" spellcheck="false" autocomplete="off" (blur)="onBlur($event)"
                   required="{{require}}">{{value}}</textarea>
         <span class="item-error-tip">{{errorTips}}</span>
       </div>
@@ -47,7 +47,7 @@ export class TimiTextareaComponent implements ControlValueAccessor, AfterViewIni
   @Input() require: boolean;
   @Input() pattern: string;
   @Input() errorTips: string;
-
+  @Output() blur: EventEmitter<any> = new EventEmitter();
   private valueChange = (_: any) => { };
 
   constructor(private renderer: Renderer2,private er:ElementRef) {
@@ -57,9 +57,10 @@ export class TimiTextareaComponent implements ControlValueAccessor, AfterViewIni
       this.er.nativeElement.classList.add("ng-pristine-custom");  //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
   }
 
-  blur($event) {  
+  onBlur($event) {  
     $event.path[4].className =  $event.path[4].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.value = $event.target.value;
+    this.blur.emit($event);
   }
 
   writeValue(obj: any): void {
