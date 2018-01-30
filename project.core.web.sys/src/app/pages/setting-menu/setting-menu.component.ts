@@ -142,6 +142,7 @@ export class SettingMenuComponent extends BaseUIComponent implements OnInit {
         data[key] = $event[key];
       }
     }
+    this.loading.register("loading");
     if (this.menuOrAuthority === "menu") {
       data["parentId"] = this.addId;
       this.settingMenuService.addMenuPage(data).subscribe(r => this.cb(r)); //添加页面
@@ -164,6 +165,7 @@ export class SettingMenuComponent extends BaseUIComponent implements OnInit {
       }
     }
     data.parentId = this.addId;
+    this.loading.register("loading");
     if (this.menuOrAuthority === "menu") {
       this.settingMenuService.updateMenu(data).subscribe(r => this.cb(r)); //添加页面
     } else if (this.menuOrAuthority === "authority") {
@@ -175,6 +177,7 @@ export class SettingMenuComponent extends BaseUIComponent implements OnInit {
    * 接口回调
    */
   cb(data) {
+    this.loading.resolve("loading");
     super.showToast(this.toastService, data.message);
     if (data.code === "0") {
       this.getMenuLists();
