@@ -6,8 +6,7 @@ import {
   OnInit,
   ViewChild
 } from "@angular/core";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
-import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
@@ -36,13 +35,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   authorityKey: string; //权限关键字
 
   selectRow; //每一行的具体数据
-  new: boolean; //是否新添加
   btnType: string; //表单模板按钮类型
-  edit: boolean; //点击编辑过后变成true
-  detail: boolean; //查看详情时变成true
-
-  detailModel; //查询详情的模板
-  sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  Other ：其他不明情况:）
 
   /**
    * 表格title
@@ -57,12 +50,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   filters = [];
   searchFilters; //页面显示的搜索条件
 
-  fromRow: number = 1; //当前页第一行的总行数
   currentPage: number = 0; //当前页码
   pageSize: number = globalVar.pageSize; //每页显示条数
   searchTerm: string = ""; //搜索关键字
-  sortBy: string = "";
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   filteredTotal = 0; //总共条数
   filteredData; //过滤后的数据
   //搜索条件
@@ -129,8 +119,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
           });
         }
         this.selectRow = null;
-        this.new = true;
-        this.edit = false;
         this.btnType = "new";
 
         if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
@@ -190,23 +178,15 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     this.getParamsList(this.listparam);
   }
 
-  // modalData;
-  newModalData;
-
   /**
    * 点击行
    */
-  rowClickEvent(e) {
-    this.personId = e.row.id;
+  rowClickEvent($event) {
+    this.personId = $event.id;
     this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
       this.getRecordData(res.data);
     });
   }
-
-  /**
-   * 获取模版
-   */
-  modalDOMS: HtmlDomTemplate;
 
   /**
    * 添加

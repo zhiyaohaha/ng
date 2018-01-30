@@ -11,7 +11,7 @@ import {
 } from "@angular/core";
 import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, TdDataTableSortingOrder, TdLoadingService} from "@covalent/core";
+import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {fadeIn} from "../../common/animations";
 import {FnUtil} from "../../common/fn-util";
@@ -48,19 +48,12 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
   new: boolean; //是否新添加
   btnType: string; //表单模板按钮类型
 
-  detailModel; //查询详情的模板
   sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  Other ：其他不明情况:）
-  selectedRows;
 
   /**
    * 表格title
    */
   columns: ITdDataTableColumn[];
-
-  /**
-   * 表格数据
-   */
-  basicData;
 
   filters = [];
   searchFilters; //页面显示的搜索条件
@@ -117,8 +110,6 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
         }
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.fnUtil.getPageCode();
-
-        this.loadModal();
       });
   }
 
@@ -141,7 +132,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
             this.columns = r.data.data.fields;
           }
           if (r.data.data && r.data.data.bindData) {
-            this.filteredData = this.basicData = r.data.data.bindData;
+            this.filteredData = r.data.data.bindData;
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
@@ -174,29 +165,21 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.getParamsList(this.listparam);
   }
 
-  // modalData;
-  newModalData;
-
   /**
    * 点击行
    */
   rowClickEvent($event) {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel($event.row.id);
-    if ($event.row._rakeBack === "审批中") {
+    this.loadDetailModel($event.id);
+    if ($event._rakeBack === "审批中") {
       this.isShowDetail = 1;
-    } else if ($event.row._rakeBack === "未返佣") {
+    } else if ($event._rakeBack === "未返佣") {
       this.isShowDetail = 3;
-    } else if ($event.row._rakeBack === "已返佣") {
+    } else if ($event._rakeBack === "已返佣") {
       this.isShowDetail = 2;
     }
   }
-
-  /**
-   * 获取模版
-   */
-  modalDOMS: HtmlDomTemplate;
 
   //临时代码3----资料收集
   collect() {
@@ -204,15 +187,6 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "";
     this.btnType = "new";
     this.sidenavKey = "Collection";
-  }
-
-  loadModal() {
-    this.sharepageService.editParamsModal().subscribe(r => {
-      if (r.code === "0") {
-        this.modalDOMS = r.data.doms;
-        this.newModalData = r.data;
-      }
-    });
   }
 
   loadDetailModel(param) {

@@ -4,9 +4,13 @@
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
   </div>
 
-  <app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"
-    [clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">
-  </app-table>
+  <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
+    <!--[clickAuthority]="2" (change)="page($event)" (rowClick)="rowClickEvent($event);sidenav.open()">-->
+  <!--</app-table>-->
+
+  <timi-table #table [data]="filteredData" [headers]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
+              [activeIndex]="currentPage" [clickRowable]="true" (pageEvent)="page($event)"
+              (clickRowEvent)="rowClickEvent($event);sidenav.open()"></timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
