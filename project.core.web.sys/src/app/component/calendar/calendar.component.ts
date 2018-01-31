@@ -202,6 +202,7 @@ export class CalendarSelectorComponent {
       </div>
     </div>
   `,
+  styleUrls: ["./calendar.component.scss"],
   animations: [
     trigger('selectState', [
       state('in', style({
