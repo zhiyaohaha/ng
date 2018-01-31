@@ -2,6 +2,12 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+    <button md-raised-button class="add-button" (click)="deleteRows()">
+      删除
+    </button>
+        <button md-raised-button class="add-button" (click)="goToHistory()">
+          历史
+        </button>
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
@@ -10,7 +16,8 @@
 
   <timi-table #table [data]="filteredData" [headers]="columns" [totals]="filteredTotal" [pageSize]="pageSize"
               [activeIndex]="currentPage" [clickRowable]="true" (pageEvent)="page($event)"
-              (clickRowEvent)="rowClickEvent($event);sidenav.open()"></timi-table>
+              (clickRowEvent)="rowClickEvent($event);sidenav.open()" [selectable]="true" (checkeRowEvent)="rowChecked($event)">
+  </timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
@@ -22,23 +29,34 @@
           <div class="addressbook" [class.active]="typeTab==2" (click)="toAddress()">
             通讯录
           </div>
+          <button md-raised-button class="defaultColor fr" (click)="deleteRocord()" [class.default]="checkRocord.length>0" [disabled]="checkRocord.length>0?false:true" *ngIf="typeTab==1">
+              删除
+          </button>
+          <button md-raised-button class="defaultColor fr" (click)="deleteDetail()" [class.default]="checkDetail.length>0" [disabled]="checkDetail.length>0?false:true" *ngIf="typeTab==2">
+            删除
+          </button>
         </div>
-        <div class="recordContent" *ngIf="typeTab==1">
+
+        <div class="recordContent clear" *ngIf="typeTab==1">
           <table class="recordBox">
             <tr>
+              <th>
+                <input type="checkbox" (click)="checkedAll($event)">
+              </th>
               <th>通话时间</th>
               <th>通话人姓名</th>
               <th>通话号码</th>
               <th>呼叫行为</th>
-              <th>呼叫结果</th>
               <th>通话时长（秒）</th>
             </tr>
             <tr *ngFor="let item of recordData.phoneBookDetails">
+              <td>
+                <input type="checkbox" (click)="checkedRocord($event,item)">
+              </td>
               <td>{{item.time}}</td>
               <td>{{item.name}}</td>
               <td>{{item.phone}}</td>
               <td>{{item.behavior}}</td>
-              <td>{{item.result}}</td>
               <td>{{item.length}}</td>
             </tr>
           </table>
@@ -47,10 +65,13 @@
           </timi-pagination>
         </div>
 
-        <div class="addressContent" *ngIf="typeTab==2">
+        <div class="addressContent clear" *ngIf="typeTab==2">
           <ul>
             <li *ngFor="let item of addressData.phoneBookDetails">
-              <span class="left">{{item.name}}</span>
+              <span class="left">
+                <input type="checkbox" (click)="checkedDetail($event,item)">
+              </span>
+              <span class="mid">{{item.name}}</span>
               <span class="right">{{item.mobilePhone}}</span>
             </li>
           </ul>

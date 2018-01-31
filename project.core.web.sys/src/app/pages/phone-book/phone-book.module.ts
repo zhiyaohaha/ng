@@ -16,6 +16,7 @@ import {TimiTableModule} from "app/component/timi-table/timi-table.component";
 import {PhoneBookComponent} from "app/pages/phone-book/phone-book.component";
 import {PhoneBookRoutingModule} from "app/pages/phone-book/phone-book-routing.module";
 import {TimiPaginationModule} from "app/component/timi-pagination/pagination.component";
+import { HistoryComponent } from './history/history/history.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import {TimiPaginationModule} from "app/component/timi-pagination/pagination.com
     TimiPaginationModule,
     TimiTableModule
   ],
-  declarations: [PhoneBookComponent],
+  declarations: [PhoneBookComponent, HistoryComponent],
   providers: [SharepageService, ParamsManageService]
 })
 export class PhoneBookModule {

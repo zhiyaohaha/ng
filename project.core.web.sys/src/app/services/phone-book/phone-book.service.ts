@@ -14,4 +14,17 @@ export class PhoneBookService {
   getAddressBook(id, index, size) {
     return this.baseService.get("/api/PhoneBook/GetPhoneBookDetailList", { "id": id, "index": index, "size": size });
   }
+  //删除选中的行
+  deleteRow(id) {
+    return this.baseService.post("/api/PhoneBook/DeletePhoneBook", { data: { "id": id } });
+  }
+  //删除通话记录中的行
+  deleteRocords(id) {
+    return this.baseService.post("/api/PhoneBook/DeletePhoneBookRecord", { data: { "ids": id } });
+  }
+  //删除通讯录中的行
+  deleteDetails(id) {
+    return this.baseService.post("/api/PhoneBook/DeletePhoneBookDetail", { data: { "ids": id } });
+  }
+
 }

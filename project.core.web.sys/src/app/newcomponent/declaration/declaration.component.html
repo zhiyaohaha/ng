@@ -52,7 +52,6 @@
         <span class="right red" *ngIf="errorOfPerson==1">{{errorMessage}}</span>
         <span class="right red" *ngIf="errorOfPerson==2">{{errorMessage}}</span>
       </li>
-<!-- showCertification==2 -->
       <li *ngIf="showCertification==2">
         <span class="left">开户行：</span>
         <timi-select pholder="{{'请选择开户行'}}" [options]="bankData" multipleForUse="showCertification==2" class="right" (onChange)="getBank($event)" [filter]="showCertification==2"></timi-select>
@@ -65,9 +64,6 @@
       <li *ngIf="showCertification==2">
         <span class="left">银行预留手机号：</span>
         <input type="text" #phoneNum class="info-input" placeholder="请输入长度为11位数字的电话号码" maxlength="11" (keyup)="getPhoneNum(phoneNum)">
-        <!-- <span class="right">
-          <button type="button" (click)="getPhoneNum($event,phoneNum)">发送验证码</button>
-        </span> -->
       </li>
       <div class="authenticationPic" *ngIf="showCertification==2">
         <timi-file-uploader [btnName]="'身份证人相面'" name="portrait" (success)="uploaded1($event)"></timi-file-uploader>
@@ -107,7 +103,7 @@
       </ul>
     </div>
     <div class="resultBtn">
-      <button type="button" (click)="onSubmit($event)">申请贷款</button>
+      <button type="button" (click)="onSubmit()">申请贷款</button>
     </div>
   </div>
 

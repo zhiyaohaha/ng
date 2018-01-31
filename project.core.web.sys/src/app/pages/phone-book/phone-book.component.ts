@@ -1,4 +1,4 @@
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   Component,
   ComponentFactoryResolver,
@@ -6,16 +6,16 @@ import {
   OnInit,
   ViewChild
 } from "@angular/core";
-import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
-import {globalVar} from "../../common/global.config";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {ConvertUtil} from "../../common/convert-util";
-import {BaseService} from "../../services/base.service";
-import {MdSidenav} from "@angular/material";
-import {CommonService} from "app/services/common/common.service";
-import {BaseUIComponent} from "app/pages/baseUI.component";
-import {PhoneBookService} from "app/services/phone-book/phone-book.service";
+import { ITdDataTableColumn, TdLoadingService } from "@covalent/core";
+import { globalVar } from "../../common/global.config";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { BaseService } from "../../services/base.service";
+import { MdSidenav } from "@angular/material";
+import { CommonService } from "app/services/common/common.service";
+import { BaseUIComponent } from "app/pages/baseUI.component";
+import { PhoneBookService } from "app/services/phone-book/phone-book.service";
 
 
 @Component({
@@ -69,7 +69,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //新增的通讯录部分所需的变量
   typeTab: number = 1; //tab切换  1是通话记录   2是通讯录
 
-  recordData: Array<any> = []; //通话记录数据
+  recordData: any = {}; //通话记录数据
   addressData: Array<any> = []; //通讯录数据
   //通话记录的pagesize,index
   recordPageSize: number = 10;
@@ -77,19 +77,25 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //通讯录的pagesize,index
   addressPageSize: number = 10;
   addressActiveIndex: number = 0;
-  personId: string;
+  personId: string;//选中行的id
+
+  checkRocord: Array<any> = [];
+  checkDetail: Array<any> = [];
+  rowId: string;
+
+  historyId: string;
 
   constructor(private fnUtil: FnUtil,
-              private converUtil: ConvertUtil,
-              private routerInfor: ActivatedRoute,
-              private router: Router,
-              private toastService: ToastService,
-              private resolver: ComponentFactoryResolver,
-              private el: ElementRef,
-              private baseService: BaseService,
-              private loading: TdLoadingService,
-              private commonService: CommonService,
-              private phoneBookService: PhoneBookService) {
+    private converUtil: ConvertUtil,
+    private routerInfor: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private loading: TdLoadingService,
+    private commonService: CommonService,
+    private phoneBookService: PhoneBookService) {
 
     super(loading, routerInfor);
 
@@ -148,7 +154,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -181,8 +187,8 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   /**
    * 点击行
    */
-  rowClickEvent($event) {
-    this.personId = $event.id;
+  rowClickEvent(e) {
+    this.personId = e.id;
     this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
       this.getRecordData(res.data);
     });
@@ -212,12 +218,13 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     this.addressActiveIndex = 0;
     this.typeTab = 1;
     this.addressData = [];
-    this.recordData = [];
+    this.recordData = {};
   }
 
   //获取通话记录数据
   getRecordData(res) {
     this.recordData = res;
+
   }
 
   //获取通讯录数据
@@ -228,6 +235,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //通话记录列表
   toRecord() {
     this.typeTab = 1;
+    this.checkRocord = [];
     this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
       this.getRecordData(res.data);
     });
@@ -236,6 +244,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //通讯录列表
   toAddress() {
     this.typeTab = 2;
+    this.checkDetail = [];
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
       this.getAddressData(res.data);
     });
@@ -257,5 +266,105 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
       this.getAddressData(res.data);
     });
+  }
+  //删除通话记录数据
+  deleteRocord() {
+    let id = this.checkRocord.join(",");
+    let r = confirm("确定要删除选中的记录吗？");
+    if (r === true) {
+      this.phoneBookService.deleteRocords(id).subscribe(res => {
+        if (res.success == true) {
+          this.checkRocord = [];
+          this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
+            this.getRecordData(res.data);
+          });
+        }
+      })
+    }
+  }
+  //删除通讯录
+  deleteDetail() {
+    let id = this.checkDetail.join(",");
+    let r = confirm("确定要删除选中的记录吗？");
+    if (r === true) {
+      this.phoneBookService.deleteDetails(id).subscribe(res => {
+        if (res.success == true) {
+          this.checkDetail = [];
+          this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
+            this.getAddressData(res.data);
+          });
+        }
+      })
+    }
+  }
+  //删除行
+  deleteRows() {
+    this.phoneBookService.deleteRow(this.rowId).subscribe(res => {
+      console.log(res);
+    })
+  }
+  //获取勾选ID第一个
+  rowChecked(e) {
+    this.rowId = e[0].id;
+  }
+  //全选
+  checkedAll(e) {
+    // if (e.srcElement.checked == true) {
+    //   for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
+    //     let isInarray = this.inArray(this.recordData.phoneBookDetails.id, this.checkRocord);
+    //     if (!isInarray) {
+    //       this.checkRocord.push(this.recordData.phoneBookDetails.id);
+    //     }
+    //   }
+    // } else if (e.srcElement.checked == false){
+    //   for (let i = 0; i < this.recordData.phoneBookDetails.length; i++){
+    //     this.removeByValue(this.checkRocord, this.recordData.phoneBookDetails.id)
+    //   }
+    // }
+    console.log(this.checkRocord);
+  }
+  //选择行通话记录
+  checkedRocord(e, item) {
+    let isInarray = this.inArray(item.id, this.checkRocord);
+    if (e.srcElement.checked == true && !isInarray) {
+      this.checkRocord.push(item.id);
+    } else if (e.srcElement.checked == false && isInarray) {
+      this.removeByValue(this.checkRocord, item.id);
+    }
+  }
+  //选择行通讯录
+  checkedDetail(e, item) {
+    let isInarray = this.inArray(item.id, this.checkDetail);
+    if (e.srcElement.checked == true && !isInarray) {
+      this.checkDetail.push(item.id);
+    } else if (e.srcElement.checked == false && isInarray) {
+      this.removeByValue(this.checkDetail, item.id);
+    }
+    console.log(this.checkDetail);
+  }
+
+
+  //删除数组中的特定值
+  removeByValue(arr, value) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  //判断元素是否在数组中
+  inArray(search, array) {
+    for (let i in array) {
+      if (array[i] === search) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  goToHistory(){
+    this.router.navigateByUrl("/main/PhoneBook/PhoneBook.PhoneBook/history/" + this.rowId);
   }
 }
