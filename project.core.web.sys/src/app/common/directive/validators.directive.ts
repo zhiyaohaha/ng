@@ -92,22 +92,25 @@ export class CustomValidatorsDirective implements OnInit {
     // console.log(1111111111111)
     let validatorRequired = this.validatorRequired;
     let customValidator = this.customValidator;
-    if (validatorValue && validatorValue.length > 0) {  //有输入值（包括0 的情况）
-      // console.log('有值')
-      if (status == 'validator-required') {  //验证输入值(必填+正则)
-        this.verifyInputValueValidatorRequired(validatorValue, customValidator);
-      } else if (status == 'required') {   //验证输入值(必填)
-        this.storeErrData.emit('');
-        this.errorTipsDisplay('', false);
-      }
 
-    } else {  //无输入值
+    if (validatorValue == '' || validatorValue == undefined || validatorValue == null || validatorValue.length == 0) {  //无输入值
+
       //判断是否是必填
       if (validatorRequired) {
         this.storeErrData.emit(reuiqredMsg);
         if (!this.firstEnterView) {
           this.errorTipsDisplay(reuiqredMsg, true);
         }
+      }
+
+    } else {  //有输入值（包括0 的情况）
+      // console.log('有值')
+
+      if (status == 'validator-required') {  //验证输入值(必填+正则)
+        this.verifyInputValueValidatorRequired(validatorValue, customValidator);
+      } else if (status == 'required') {   //验证输入值(必填)
+        this.storeErrData.emit('');
+        this.errorTipsDisplay('', false);
       }
 
     }
@@ -156,8 +159,10 @@ export class CustomValidatorsDirective implements OnInit {
         _self._renderer.addClass(_self._elRef.nativeElement.parentNode, componentParentClass);
       })
       // this._renderer.addClass(this._elRef.nativeElement.parentNode, 'errBorderParent');
+
       //组件样式 
       this._renderer.addClass(this._elRef.nativeElement, 'errComponent');
+
       //errTisps样式 
       if (!this.pElement) {   //动态添加，已经添加过，则不用再添加了
         this.pElement = this._renderer.createElement('p');
@@ -197,7 +202,7 @@ export class CustomValidatorsDirective implements OnInit {
       case "file-uploader": componentParentClass = "errBorderParentFileUpLoad"; break;
       case "textarea": componentParentClass = "errBorderParentTextArea"; break;
       case "tags": componentParentClass = "errBorderParentTags"; break;
-      default: componentParentClass = "errBorderParent"; break;
+      default: componentParentClass = "errBorderParent"; break;  //例如input
     }
     // console.log(componentParentClass)
     back(componentParentClass);

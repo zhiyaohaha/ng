@@ -1,6 +1,7 @@
 :host /deep/ {
   .form-group {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
+    margin-bottom: 16px;
     float: left;
   }
   .columns1 {
@@ -37,11 +38,6 @@
   }
   .edui-editor div {
     line-height: 18px;
-  }
-
-  //验证error 样式
-  .form-group {
-    // margin-bottom: 2px;
   }
 
 

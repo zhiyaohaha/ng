@@ -7,12 +7,10 @@
         <h4 class="">{{item.ui.label}}</h4>
         <ng-container *ngFor="let child of item.childrens">
           <ng-container [ngSwitch]="child.ui.displayType">
-
-            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
-                [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"
-                (blur)="commitData()"></timi-input>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                (blur)="commitData()" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-input>
             </div>
             <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -25,17 +23,17 @@
             </div>
             <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
               placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}} errBorderParentTextArea" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label" [placeholder]="child.ui.placeholder"
-                [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-textarea>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                [submitVerify]="submitVerify" validatorComponentType="textarea" (storeErrData)="storeErrData($event,child.name)"></timi-textarea>
             </div>
-            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
               <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                 [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                (onChange)="selectChange($event, child.cmds)" [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-select>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必选",child.name)}}</p>
+                (onChange)="selectChange($event, child.cmds)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
+                validatorComponentType="select" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)"></timi-select>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
               <md-input-container>
@@ -50,17 +48,18 @@
                 <md-datepicker #picker2></md-datepicker>
               </md-input-container>
             </div>
-            <div class="form-group columns{{child.ui.columns}} errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
                 <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [btnName]="child.ui.label" [src]="_modelDOMSData['_'+child.name]"
-                  [columns]="child.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-file-uploader>
-                <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必选",child.name)}}</p>
+                  [columns]="child.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required"
+                  [customValidator]="child.verifies" validatorComponentType="file-uploader" [validatorInputValue]="_modelDOMSData[child.name]"
+                  [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-file-uploader>
               </div>
             </div>
-            <div class="form-group columns{{child.ui.columns}}  errBorderParent errBorderParentTags" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
               <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
-                [columns]="child.ui.columns" [ngClass]="{'errComponent':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-chip-group>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,_modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                [columns]="child.ui.columns" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                [submitVerify]="submitVerify" validatorComponentType="tags" (storeErrData)="storeErrData($event,child.name)"></timi-chip-group>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
               <div class="box-item item-label">
@@ -84,10 +83,10 @@
               <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
               <ng-container *ngFor="let grandson of child.childrens">
                 <ng-container [ngSwitch]="grandson.ui.displayType">
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
                     <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
-                      [ngClass]="{'errComponent':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-input>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                     <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
@@ -100,17 +99,17 @@
                   </div>
                   <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
                     placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParentTextArea" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                    [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
                     <timi-textarea name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder"
-                      [ngClass]="{'errComponent':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-textarea>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
                     <timi-select name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" pholder="{{grandson.ui.placeholder || '请选择'}}"
                       [options]="grandson.bindData" [columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'"
-                      [filter]="grandson.ui.filter" (onChange)="selectChange($event, grandson.cmds)" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-select>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,"必选",grandson.name)}}</p>
+                      [filter]="grandson.ui.filter" (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required"
+                      [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                      (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="select"></timi-select>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
                     <md-input-container>
@@ -125,17 +124,19 @@
                       <md-datepicker #picker2></md-datepicker>
                     </md-input-container>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
                     <div>
                       <timi-file-uploader name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [btnName]="grandson.ui.label" [src]="_modelDOMSData['_'+grandson.name]"
-                        [columns]="grandson.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-file-uploader>
-                      <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,"必选",grandson.name)}}</p>
+                        [columns]="grandson.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
+                        [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
                     </div>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}}  errBorderParent errBorderParentTags" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                     <timi-chip-group name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
-                      [labeName]="grandson.ui.label" [columns]="grandson.ui.columns" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-chip-group>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,_modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [labeName]="grandson.ui.label" [columns]="grandson.ui.columns" [validatorRequired]="grandson.ui.required"
+                      [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                      (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
                     <div class="box-item item-label">
@@ -175,17 +176,13 @@
         <h4>{{item.ui.label}}</h4>
         <ng-container *ngFor="let child of item.childrens">
           <ng-container [ngSwitch]="child.ui.displayType">
-            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-input [labelName]="child.ui.label" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [value]="modelDOMSData[child.name]" [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"
-                [placeholder]="child.ui.placeholder" (blur)="commitData()"></timi-input>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                [value]="modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" (blur)="commitData()" [validatorRequired]="child.ui.required"
+                [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)"></timi-input>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-              <!--<timi-checkbox name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"-->
-              <!--[multiple]="child.ui.multiple" [labelName]="child.ui.label"-->
-              <!--[checkboxs]="child.bindData || child.ui.label"-->
-              <!--[columns]="child.ui.columns"></timi-checkbox>-->
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData"
                 [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
               <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [labelName]="child.ui.label"
@@ -196,23 +193,18 @@
             </div>
             <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
               placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}}  errBorderParentTextArea" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-              [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
               <timi-textarea name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [labelName]="child.ui.label" [placeholder]="child.ui.placeholder" [columns]="child.ui.columns" [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-textarea>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                [labelName]="child.ui.label" [placeholder]="child.ui.placeholder" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
+                [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="textarea"></timi-textarea>
             </div>
-            <div class="form-group columns{{child.ui.columns}} errBorderParent " *ngSwitchCase="'HtmlDomDisplayType.Select'">
-              <!--<free-select name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"-->
-              <!--[selected]="modelDOMSData[child.name]"-->
-              <!--pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"-->
-              <!--[columns]="child.ui.columns" [multiple]="child.ui.multiple"-->
-              <!--[freeSelectName]="child.ui.label || '请选择'"></free-select>-->
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
               <timi-select name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                 pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                 [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)"
-                [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-select>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必选",child.name)}}</p>
+                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]"
+                [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)" validatorComponentType="select"></timi-select>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
               <md-input-container>
@@ -227,19 +219,20 @@
                 <md-datepicker #picker2></md-datepicker>
               </md-input-container>
             </div>
-            <div class="form-group columns{{child.ui.columns}}  errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
               <div>
-
                 <timi-file-uploader name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                   [btnName]="child.ui.label" [src]="displayLogoFun(child.name,modelDOMSData)" [columns]="child.ui.columns"
-                  (success)="uploaded($event)" (files)="selected($event)" [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-file-uploader>
-                <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必选",child.name)}}</p>
+                  (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
+                  [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"
+                  validatorComponentType="file-uploader"></timi-file-uploader>
               </div>
             </div>
-            <div class="form-group columns{{child.ui.columns}}  errBorderParent errBorderParentTags" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
               <timi-chip-group name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [placeholder]="child.ui.placeholder" [labeName]="child.ui.label" [columns]="child.ui.columns" [ngClass]="{'errComponent':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}"></timi-chip-group>
-              <p [ngClass]="{'errBorder':vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,'必填',child.name)}">{{vertifyFun(child.verifies,modelDOMSData[child.name],child.ui.required,"必填",child.name)}}</p>
+                [placeholder]="child.ui.placeholder" [labeName]="child.ui.label" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
+                [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="tags"></timi-chip-group>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
               <div class="box-item item-label">
@@ -275,17 +268,13 @@
               <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
               <ng-container *ngFor="let grandson of child.childrens">
                 <ng-container [ngSwitch]="grandson.ui.displayType">
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
                     <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
-                      [(ngModel)]="modelDOMSData[grandson.name]" [value]="modelDOMSData[grandson.name]" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"
-                      [placeholder]="grandson.ui.placeholder"></timi-input>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [(ngModel)]="modelDOMSData[grandson.name]" [value]="modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                    <!--<timi-checkbox name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"-->
-                    <!--[multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label"-->
-                    <!--[checkboxs]="grandson.bindData || grandson.ui.label"-->
-                    <!--[columns]="grandson.ui.columns"></timi-checkbox>-->
                     <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
                       [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"></timi-checkbox>
                     <timi-checkbox *ngIf="!grandson.ui.multiple" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
@@ -296,24 +285,19 @@
                   </div>
                   <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"
                     placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}}  errBorderParentTextArea" *ngSwitchCase="'HtmlDomDisplayType.Textarea'"
-                    [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
                     <timi-textarea name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                       [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder" [columns]="grandson.ui.columns"
-                      [ngClass]="{'errComponent':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-textarea>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}} errBorderParent " *ngSwitchCase="'HtmlDomDisplayType.Select'">
-                    <!--<free-select name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"-->
-                    <!--[selected]="modelDOMSData[grandson.name]"-->
-                    <!--pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData"-->
-                    <!--[columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple"-->
-                    <!--[freeSelectName]="grandson.ui.label || '请选择'"></free-select>-->
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
                     <timi-select name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                       pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData" [columns]="grandson.ui.columns"
                       [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'" [filter]="grandson.ui.filter"
-                      (onChange)="selectChange($event, grandson.cmds)" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-select>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,"必选",grandson.name)}}</p>
+                      (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies"
+                      [validatorInputValue]="modelDOMSData[grandson.name]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"
+                      validatorComponentType="select"></timi-select>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
                     <md-input-container>
@@ -328,20 +312,20 @@
                       <md-datepicker #picker2></md-datepicker>
                     </md-input-container>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}}  errBorderParentFileUpLoad" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
                     <div>
-
                       <timi-file-uploader name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                         [btnName]="grandson.ui.label" [src]="displayLogoFun(grandson.name,modelDOMSData)" [columns]="grandson.ui.columns"
-                        (success)="uploaded($event)" (files)="selected($event)" [ngClass]="{'errComponent':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-file-uploader>
-                      <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,"必选",grandson.name)}}</p>
+                        (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
+                        [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
                     </div>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}}  errBorderParent errBorderParentTags" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
                     <timi-chip-group name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                       [placeholder]="grandson.ui.placeholder" [labeName]="grandson.ui.label" [columns]="grandson.ui.columns"
-                      [ngClass]="{'errComponent':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}"></timi-chip-group>
-                    <p [ngClass]="{'errBorder':vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,'必填',grandson.name)}">{{vertifyFun(grandson.verifies,modelDOMSData[grandson.name],grandson.ui.required,"必填",grandson.name)}}</p>
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
                     <div class="box-item item-label">

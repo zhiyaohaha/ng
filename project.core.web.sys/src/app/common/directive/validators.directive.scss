@@ -1,33 +1,23 @@
 :host /deep/ {
-    .errBorderParent {
+    .errBorderParent,.errBorderParentFileUpLoad,.errBorderParentTags,.errBorderParentTextArea,.errBorderParentSelect{
         position: relative;
-        height: 48px;
     }
-
     .errBorderParentFileUpLoad {
-        position: relative;
         height: 170px;
-        margin-bottom:45px;
+        margin-bottom:31px;
         .errBorder {
-            bottom: -50px;
-            left: 4px;
+            bottom: -47px;
+            left:0;
         }
     }
-    .errBorderParentTags {
-        position: relative;
-        height: 48px;
-        margin-bottom: 7px;
+    .errBorderParentTags,.errBorderParentTextArea{
         .errBorder {
-            bottom: -5px;
+            bottom: -17px;
+            left:0;
         }
     }
     .errBorderParentTextArea {
-        position: relative;
-        height: 108px;
-    }
-    .errBorderParentSelect {
-        position: relative;
-        height: 48px;
+        margin-bottom:18px;
     }
 
     .errComponent {
@@ -54,7 +44,5 @@
         line-height: 15px;
         display: inline-block;
         position: absolute;
-        bottom: 0px;
-        left: 0px;
     }
 }
