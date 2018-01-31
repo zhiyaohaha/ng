@@ -301,6 +301,13 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   deleteRows() {
     this.phoneBookService.deleteRow(this.rowId).subscribe(res => {
       console.log(res);
+      if(res.success == true){
+        this.getParamsList({
+          size: this.pageSize,
+          index: this.currentPage,
+          filters: ""
+        });
+      }
     })
   }
   //获取勾选ID第一个
