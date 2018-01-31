@@ -21,15 +21,15 @@ import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import { forEach } from "@angular/router/src/utils/collection";
+import { CustomValidatorsDirective } from "../../common/directive/validators.directive";
 
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
-  styleUrls: ["./responsive-model.component.scss"],
+  styleUrls: ["./responsive-model.component.scss", "../../common/directive/validators.directive.scss"],
 })
 
 export class ResponsiveModelComponent implements OnInit {
-
   config = {
     toolbars: [["bold", "italic", "underline", "removeformat", "indent", "paragraph", "Fontsize", "forecolor", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "Undo", "Redo"]],
     autoClearinitialContent: true,
@@ -67,6 +67,8 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() backClick: EventEmitter<any> = new EventEmitter();
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
+  submitVerify: boolean = false;   //是否开始组件统一验证（提交时开启）
+
   @ViewChild("form") formDiv: ElementRef;
 
   constructor(private baseService: BaseService, private er: ElementRef) {
@@ -86,25 +88,17 @@ export class ResponsiveModelComponent implements OnInit {
    * 提交表单
    */
   onSubmit($event, cmds?: any) {
-    //  显示错误提示
-    let errs = this.er.nativeElement.getElementsByClassName("ng-valid");
-    for (let errItem in errs) {
-      if (errs[errItem]) {
-        let className = errs[errItem].className;
-        if (errs[errItem].className) {
-          errs[errItem].className = errs[errItem].className.replace("ng-pristine", "ng-dirty");
-        }
-      }
-    }
 
-    //如果有错误，则停止提交
+    //验证：点击提交，开始统一验证所有组件。 
+    this.submitVerify = true;
+
+    //验证：如果有验证错误信息，则停止提交
     let errData = this._errData;
     for (let i in errData) {
       if (errData[i]) {
         return false;   //如果有错误，则停止提交
       }
     }
-
 
     //没有错误，可以继续提交
     let data = {};
@@ -125,7 +119,7 @@ export class ResponsiveModelComponent implements OnInit {
       }
     }
     // console.log($event)
-    // console.log(data)A
+    // console.log(data)
     if (cmds) {
       let param = {};
       param["data"] = data;
@@ -137,7 +131,14 @@ export class ResponsiveModelComponent implements OnInit {
 
   }
 
-  //通过basic.logo 获取 basic._logo的值
+  /**
+   * 通过basic.logo 获取 basic._logo的值
+   * 
+   * @param {any} value 
+   * @param {any} data 
+   * @returns 
+   * @memberof ResponsiveModelComponent
+   */
   displayLogoFun(value, data) {
     let key = value.split(".");
     if (key.length === 1) {
@@ -145,49 +146,6 @@ export class ResponsiveModelComponent implements OnInit {
     }
     return data[key[0]]["_" + key[1]];
   }
-
-  vertifyFun(vertify, data, required, displayMsg, key) {
-    let msg;
-
-    if (data && data.length > 0) {
-      if (vertify && vertify.length > 0) { //如果有正则
-        let reg;
-        vertify.forEach(item => {
-          reg = new RegExp(item.regular);
-          if (!reg.test(data)) {  //匹配错误，显示error
-            msg = item.message;
-            this._errData[key] = msg;
-            return false;
-          }
-        });
-      }
-    } else {
-      // if (required) {
-      //   msg = displayMsg;
-      // }
-      if (required) {
-        if (!data) {
-          if (data === 0) {   //填0的情况是可以的，同时需要对0进行匹配
-            vertify.forEach(item => {
-              let reg1;
-              reg1 = new RegExp(item.regular);
-              if (!reg1.test(data)) {  //匹配错误，显示error
-                msg = item.message;
-                this._errData[key] = msg;
-                return false;
-              }
-            });
-          } else {
-            msg = displayMsg;
-          }
-
-        }
-      }
-    }
-    this._errData[key] = msg;
-    return msg;
-  }
-
 
   /**
    * 上传文件
@@ -252,7 +210,14 @@ export class ResponsiveModelComponent implements OnInit {
     this.commitData();
   }
 
-  //附件组联动附件项，附件项传递数据到附件组预览。
+  /**
+   * 附件组联动附件项，附件项传递数据到附件组预览。
+   * 
+   * @param {any} res 
+   * @param {any} key 
+   * @param {any} status 
+   * @memberof ResponsiveModelComponent
+   */
   judgeSetChangeData(res, key, status) {
     // if (res[0]["id"]) {   // 是附件项的时候才执行（但是不应该写成固定的 key。因为后天随时会改变）
     let data = [];
@@ -294,7 +259,11 @@ export class ResponsiveModelComponent implements OnInit {
     }
   }
 
-  //不使用 提交按钮，提交表单数据
+  /**
+   * 不使用 提交按钮，通过监听组件事件提交表单数据
+   * 
+   * @memberof ResponsiveModelComponent
+   */
   commitData() {
     if (!this.submitBtnNeed) {  //不需要提交按钮
       if (this.btnType == 'new') {
@@ -320,8 +289,15 @@ export class ResponsiveModelComponent implements OnInit {
     }
   }
 
-  fun(val) {
-    console.log(val)
+  /**
+   * 记录，验证错误信息
+   * 
+   * @param {any} e 
+   * @param {any} key 
+   * @memberof ResponsiveModelComponent
+   */
+  storeErrData(e, key) {
+    this._errData[key] = e;
   }
 
 }
@@ -425,7 +401,7 @@ export class ResponsiveModelComponent implements OnInit {
       // }
     })
   ],
-  declarations: [ResponsiveModelComponent],
+  declarations: [ResponsiveModelComponent, CustomValidatorsDirective],
   providers: [],
   exports: [ResponsiveModelComponent]
 })
