@@ -1,0 +1,16 @@
+<md-sidenav-container>
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchDOMS" [filters]="searchDOMS" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
+  </div>
+
+  <timi-table [headers]="headers" [data]="datas" [clickRowable]="true"
+              [totals]="totals" [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+  </timi-table>
+
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end">
+    <div class="row">
+      <div class="col-lg-12">
+      </div>
+    </div>
+  </md-sidenav>
+</md-sidenav-container>

@@ -1,0 +1,88 @@
+<md-sidenav-container>
+  <div class="main-container clearfix">
+    <search-form *ngIf="searchDOMS" [filters]="searchDOMS" [condition]="filters"
+                 (onSearch)="onSearch($event)"></search-form>
+  </div>
+  <div (click)="sidenav.open();">aaaaaa</div>
+
+  <timi-table [headers]="headers" [data]="datas" [clickRowable]="true" [totals]="totals" [pageSize]="pageSize"
+              [activeIndex]="currentPage" (pageEvent)="page($event)"
+              (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+  </timi-table>
+
+  <md-sidenav #sidenav class="sidenav container-fluid" align="end">
+    <div class="row">
+      <div class="col-lg-12" [ngSwitch]="sidenavKey">
+        <ng-container *ngSwitchCase="'Detail'">
+          <div class="section clearfix">
+            <h4>订单基本信息</h4>
+            <div class="form-group columns1">
+              <div class="label">交易单编号</div>
+              <div class="span">3213123</div>
+            </div>
+          </div>
+          <div class="section clearfix">
+            <h4>还款计划</h4>
+            <table>
+              <thead>
+              <tr>
+                <th>计划还款时间</th>
+                <th>利息</th>
+                <th>应还金额</th>
+                <th>实际还款时间</th>
+                <th>实还滞纳金</th>
+                <th>实还金额</th>
+                <th>还款凭证</th>
+                <th>操作人</th>
+                <th>备注</th>
+                <th>还款方</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>11</td>
+                <td>22</td>
+                <td>33</td>
+                <td>44</td>
+                <td>55</td>
+                <td>66</td>
+                <td>77</td>
+                <td>88</td>
+                <td>99</td>
+                <td>11</td>
+                <td>22</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Repayment'">
+          <div class="section clearfix">
+            <div class="form-group columns1">
+              <div class="label"><label>还款日期</label></div>
+              <free-calendar lang="cn"></free-calendar>
+            </div>
+            <div class="form-group columns1">
+              <timi-input [labelName]="'还款金额'"></timi-input>
+            </div>
+            <div class="form-group columns1">
+              <timi-input [labelName]="'滞纳金'"></timi-input>
+            </div>
+            <div class="form-group columns1">
+              <timi-select [freeSelectName]="'还款类型'" [options]="repaymentTypes"></timi-select>
+            </div>
+          </div>
+          <div class="section clearfix">
+            <div class="columns2" style="margin-bottom: 1rem;">
+              <timi-file-uploader [btnName]="'还款凭证'"></timi-file-uploader>
+            </div>
+          </div>
+          <div class="section clearfix">
+            <timi-textarea [labelName]="'备注'"></timi-textarea>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </md-sidenav>
+</md-sidenav-container>
