@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from "@angular/core";
-import {PermissionsService} from "../../services/permissions/permissions.service";
+import { Component, OnInit, Input } from "@angular/core";
+import { PermissionsService } from "../../services/permissions/permissions.service";
 
 @Component({
   selector: "free-permissions",
@@ -9,7 +9,7 @@ import {PermissionsService} from "../../services/permissions/permissions.service
 })
 export class PermissionsComponent implements OnInit {
 
-  @Input() menus: Array<any> = []; //接收的数据
+  menus: Array<any> = []; //接收的数据
   @Input() id: string;
   @Input() from: string;
 
@@ -31,7 +31,23 @@ export class PermissionsComponent implements OnInit {
   getMenus(id, from) {
     this.permissionsService.getPermissions(id)
       .subscribe(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          for (let j = 0; j < res.data[i].length; j++) {
+            let num = 0;
+            let size = res.data[i][j]._functions.length;
+            for (let n = 0; n < size; n++) {
+              if (res.data[i][j]._functions[n].active) {
+                this.codes.push(res.data[i][j]._functions[n].code);
+                num++;
+              }
+            }
+            if (num == size) {
+              res.data[i][j].active = true;
+            }
+          }
+        }
         this.menus = res.data;
+        console.log(this.menus);
       });
   }
 
@@ -80,7 +96,19 @@ export class PermissionsComponent implements OnInit {
 
   //赋予权限，并添加字体图标
   changeStyle(page, item) {
+    let num = 0;
     item.active = !item.active;
+    for (let i = 0; i < page._functions.length; i++) {
+      if (page._functions[i].active == true) {
+        num++;
+      }
+    }
+    if (num == page._functions.length) {
+      page.active = true;
+    } else {
+      page.active = false;
+    }
+    console.log(page);
     if (item.active === true) {
       this.codes.push(item.code);
     } else if (item.active === false) {
@@ -110,6 +138,7 @@ export class PermissionsComponent implements OnInit {
 
   //传递数据
   onSubmit() {
+    console.log(this.codes);
     this.permissionsService.setPermissions(this.id, this.codes).subscribe(res => {
       console.log(res);
     });
