@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { IndexComponent } from "./index.component";
-
-
+import {BranchCountModule} from "../post-loan-management/branch-count/branch-count.module";
+import {RepaymentModule} from "../post-loan-management/repayment/repayment.module";
 
 const childRoutes: Routes = [
   { path: "dashboard", loadChildren: "../main/main.module#MainModule" },
@@ -37,6 +37,10 @@ const childRoutes: Routes = [
   { path: "LoanDemand/:pageCode", loadChildren: "../loandemand/loandemand.module#LoandemandModule" },
   { path: "CapitalRakeBackManage/:pageCode", loadChildren: "../commission/commission.module#CommissionModule" },
   { path: "DataStatistics/:pageCode", loadChildren: "../statistics/statistics.module#StatisticsModule" },
+  // 贷后管理
+  {path: "LoanCount/:pageCode", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
+  {path: "BranchCount/:pageCode", loadChildren: "../post-loan-management/branch-count/branch-count.module#BranchCountModule"},
+  {path: "RepaymentCount/:pageCode", loadChildren: "../post-loan-management/repayment/repayment.module#RepaymentModule"},
   { path: "", redirectTo: "/main/dashboard", pathMatch: "full" },
   { path: "**", redirectTo: "/error" }
 ];

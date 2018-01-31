@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {ConvertUtil} from "./convert-util";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {globalVar} from "./global.config";
 
 @Injectable()
 export class FnUtil {
@@ -142,7 +143,7 @@ export class FnUtil {
    * 获取页面代码
    */
   public getPageCode(): string {
-    return localStorage.getItem("pageCode");
+    return globalVar.pageCode;
   }
 
 }

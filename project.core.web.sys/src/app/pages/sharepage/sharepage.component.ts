@@ -100,7 +100,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
 
     this.routerInfo.paramMap
       .subscribe(res => {
-        this.pagecode = localStorage.getItem("pageCode");
+        this.pagecode = fnUtil.getPageCode();
 
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.pagecode;

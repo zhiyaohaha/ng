@@ -54,7 +54,7 @@ export class SettingMenuComponent extends BaseUIComponent implements OnInit {
     super(loading, routerInfor);
     this.routerInfor.paramMap
       .subscribe(res => {
-        this.pagecode = localStorage.getItem("pageCode");
+        this.pagecode = this.fnUtil.getPageCode();
         this.authorities = this.fnUtil.getFunctions();
       });
   }

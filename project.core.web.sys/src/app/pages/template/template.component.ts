@@ -1,12 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ElementRef} from "@angular/core";
-import {ITdDataTableColumn, LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
+import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {TableComponent} from "../../component/table/table.component";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MdSidenav} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
 import {CommonService} from "../../services/common/common.service";
 import {FnUtil} from "../../common/fn-util";
+import {BaseUIComponent} from "../baseUI.component";
 
 @Component({
   selector: "app-template",
@@ -14,20 +15,16 @@ import {FnUtil} from "../../common/fn-util";
   styleUrls: ["./template.component.scss"],
   providers: [CommonService]
 })
-export class TemplateComponent implements OnInit, AfterViewInit {
-  pageIndex; //当前页数
+export class TemplateComponent extends BaseUIComponent implements OnInit, AfterViewInit {
   selectRow; //每一行的具体数据
   dangerousUrl: string;
   trustedUrl;
   editUrl: string; //模板编辑url
-  // iframeHeight:string;
 
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
   sidenavHeight;
-  // @ViewChild("iframeContent")
-  // private iframeContent:ElementRef;
 
   /**
    * 表格title
@@ -54,23 +51,19 @@ export class TemplateComponent implements OnInit, AfterViewInit {
     filters: ""
   };
 
-  routerSubscribe; //路由订阅事件
-
   pagecode: string;
-  @ViewChild("table")
-  private table: TableComponent;
 
   constructor(private router: Router,
               private commonService: CommonService,
               private fnUtil: FnUtil,
-              private lodaingService: TdLoadingService,
               private sanitizer: DomSanitizer,
               private el: ElementRef,
-              private routerInfo: ActivatedRoute) {
-    this.routerInfo.paramMap
+              private loading: TdLoadingService,
+              private routerInfor: ActivatedRoute) {
+    super(loading, routerInfor);
+    this.routerInfor.paramMap
       .subscribe(res => {
-        this.pagecode = res.get("pageCode");
-        localStorage.setItem("pageCode", this.pagecode);
+        this.pagecode = this.fnUtil.getPageCode();
 
         /**
          * 每页条数pagesize和当前页码currentPage
@@ -85,20 +78,10 @@ export class TemplateComponent implements OnInit, AfterViewInit {
             filters: ""
           });
         }
-        //每次订阅不同的页面，关闭右侧弹出的iframe
-        // this.sidenav.close();
+        if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
       });
-
-    /**
-     * 加载动画
-     */
-    this.lodaingService.create({
-      name: "fullScreen",
-      mode: LoadingMode.Indeterminate,
-      type: LoadingType.Circular,
-      color: "warn"
-    });
-
   }
 
   ngOnInit() {
@@ -142,6 +125,8 @@ export class TemplateComponent implements OnInit, AfterViewInit {
    */
   onSearch($event) {
     this.listparam.filters = $event;
+    this.listparam.index = 0;
+    this.currentPage = 0;
     this.getParamsList(this.listparam);
   }
 
@@ -151,8 +136,6 @@ export class TemplateComponent implements OnInit, AfterViewInit {
   page($event) {
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
-    // localStorage.setItem(this.pagecode + "ps", this.listparam.size.toString());
-    // localStorage.setItem(this.pagecode + "cp", this.listparam.index.toString());
     this.getParamsList(this.listparam);
   }
 

@@ -2,6 +2,7 @@ import {ToastService} from "../component/toast/toast.service";
 import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {BaseUIAlertConfig, BaseUIConfirmConfig, BaseUIPromptConfig} from "./baseUI.service";
 import {ActivatedRoute} from "@angular/router";
+import {globalVar} from "../common/global.config";
 
 export abstract class BaseUIComponent {
 
@@ -20,7 +21,7 @@ export abstract class BaseUIComponent {
 
     routerInfor.paramMap
       .subscribe(res => {
-        localStorage.setItem("pageCode", res.get("pageCode"));
+        globalVar.pageCode = res.get("pageCode");
       });
   }
 

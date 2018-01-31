@@ -123,7 +123,6 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
     this.routerInfor.paramMap
       .subscribe(res => {
         this.pagecode = res.get("pageCode");
-        localStorage.setItem("pageCode", this.pagecode);
 
         this.authorities = this.fnUtil.getFunctions();
         this.authorityKey = this.pagecode;
@@ -140,7 +139,9 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
             filters: ""
           });
         }
-        // el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
+          el.nativeElement.querySelector(".mat-drawer-backdrop").click();
+        }
       });
   }
 

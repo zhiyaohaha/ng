@@ -9,7 +9,6 @@ import {
   ViewChild,
   ViewContainerRef,
 } from "@angular/core";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
 import {SharepageService} from "../../services/sharepage-service/sharepage.service";
 import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";

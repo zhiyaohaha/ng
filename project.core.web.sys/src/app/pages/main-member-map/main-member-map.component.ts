@@ -1,19 +1,27 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { BaseService } from "./../../services/base.service";
-import { FnUtil } from "./../../common/fn-util";
+import { BaseService } from "../../services/base.service";
+import { FnUtil } from "../../common/fn-util";
+import {BaseUIComponent} from "../baseUI.component";
+import {TdLoadingService} from "@covalent/core";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "app-main-member-map",
   templateUrl: "./main-member-map.component.html",
   styleUrls: ["./main-member-map.component.scss"]
 })
-export class MainMemberMapComponent implements OnInit {
+export class MainMemberMapComponent extends BaseUIComponent implements OnInit {
 
   datas;
   data;
   list: string[] = [];
 
-  constructor(private baseService: BaseService, private fnUtil: FnUtil) { }
+  constructor(private baseService: BaseService,
+              private fnUtil: FnUtil,
+              private loading: TdLoadingService,
+              private routerInfor: ActivatedRoute) {
+    super(loading, routerInfor);
+  }
 
   ngOnInit() {
     this.baseService.get(this.fnUtil.searchAPI("SystemSetting.MemberMindMapping.View")).subscribe(r => {
