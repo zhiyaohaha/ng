@@ -5,9 +5,9 @@
     <button md-raised-button class="add-button" (click)="deleteRows()">
       删除
     </button>
-        <button md-raised-button class="add-button" (click)="goToHistory()">
-          历史
-        </button>
+    <button md-raised-button class="add-button" (click)="goToHistory()">
+      历史
+    </button>
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
@@ -30,7 +30,7 @@
             通讯录
           </div>
           <button md-raised-button class="defaultColor fr" (click)="deleteRocord()" [class.default]="checkRocord.length>0" [disabled]="checkRocord.length>0?false:true" *ngIf="typeTab==1">
-              删除
+            删除
           </button>
           <button md-raised-button class="defaultColor fr" (click)="deleteDetail()" [class.default]="checkDetail.length>0" [disabled]="checkDetail.length>0?false:true" *ngIf="typeTab==2">
             删除
@@ -41,7 +41,7 @@
           <table class="recordBox">
             <tr>
               <th>
-                <input type="checkbox" (click)="checkedAll($event)">
+                <!-- <input type="checkbox" (click)="checkedAll($event)"> -->
               </th>
               <th>通话时间</th>
               <th>通话人姓名</th>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="addressContent clear" *ngIf="typeTab==2">
-          <ul>
+          <!-- <ul>
             <li *ngFor="let item of addressData.phoneBookDetails">
               <span class="left">
                 <input type="checkbox" (click)="checkedDetail($event,item)">
@@ -74,7 +74,21 @@
               <span class="mid">{{item.name}}</span>
               <span class="right">{{item.mobilePhone}}</span>
             </li>
-          </ul>
+          </ul> -->
+          <table class="detailBox">
+            <tr>
+              <th></th>
+              <th>姓名</th>
+              <th>电话号码</th>
+            </tr>
+            <tr *ngFor="let item of addressData.phoneBookDetails">
+              <td>
+                <input type="checkbox" (click)="checkedDetail($event,item)">
+              </td>
+              <td>{{item.name}}</td>
+              <td>{{item.mobilePhone}}</td>
+            </tr>
+          </table>
           <timi-pagination *ngIf="addressData" [total]="addressData.total" [pageSize]="addressPageSize" [activeIndex]="addressActiveIndex"
             (onChange)="addressChange($event)">
           </timi-pagination>

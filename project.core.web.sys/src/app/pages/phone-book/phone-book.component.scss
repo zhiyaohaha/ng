@@ -50,11 +50,13 @@ md-sidenav {
   background-color: yellow;
 }
 
-.recordBox {
+.recordBox,
+.detailBox {
   width: 100%;
 }
 
-.recordBox td {
+.recordBox td,
+.detailBox td {
   text-align: center;
 }
 
