@@ -1,0 +1,76 @@
+:host /deep/ {
+    .errBorderParent {
+        position: relative;
+        height: 48px;
+    }
+
+    .errBorderParentFileUpLoad {
+        position: relative;
+        height: 170px;
+        margin-bottom: 32px;
+        .errBorder {
+        bottom: -50px;
+        left: 4px;
+        }
+    }
+    .errBorderParentTags {
+        margin-bottom: 7px;
+        .errBorder {
+        bottom: -5px;
+        }
+    }
+    .errBorderParentTextArea {
+        position: relative;
+        height: 108px;
+    }
+    .errBorderParentSelect {
+        position: relative;
+        height: 48px;
+    }
+
+    .errComponent {
+        height:550px;
+        input, .free-select, .item-textarea {
+        border-color: #cf000d !important;
+        }
+        .timi-chip-input {
+        border: 1px solid #cf000d !important;
+        border-radius: 10px;
+        }
+        .preview {
+        border: 1px solid #cf000d;
+        }
+    }
+    .errBorder{
+        background-color: #cf000d;
+        border-radius: 10px;
+        font-size: 12px;
+        color: #FFF;
+        padding: 0px 10px;
+        margin: 0px 0px 0px 120px;
+        height: 16px;
+        line-height: 15px;
+        display: inline-block;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+    }
+
+    //初始化未填写状态下，不显示error
+    // .ng-pristine {
+    //     input, .free-select {
+    //     border-color: #d9d9d9 !important;
+    //     }
+    //     .preview {
+    //     border-width: 0px !important;
+    //     }
+    // }
+    // .ng-pristine-custom {
+    //     .item-textarea, .timi-chip-input {
+    //     border-color: #d9d9d9 !important;
+    //     }
+    // }
+    // .ng-pristine + .errBorder, .ng-pristine-custom + .errBorder {
+    //     display: none;
+    // }
+}
