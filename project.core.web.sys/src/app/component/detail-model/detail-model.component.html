@@ -74,7 +74,7 @@
       <ng-container *ngFor="let child of item.childrens">
         <ng-container [ngSwitch]="child.ui.displayType">
           <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">1111
+               [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
             <div class="label">{{child.ui.label}}</div>
             <ng-container [ngSwitch]="child.ui.pipe">
               <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | lastdot : data |

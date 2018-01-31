@@ -241,6 +241,12 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = sidenavKey;
   }
 
+  //待放款
+  waitLoan(sidenavKey) {
+    this.selectRow = "";
+    this.sidenavKey = sidenavKey;
+  }
+
   loadModal() {
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -277,12 +283,14 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
         if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#
           this.FillInfoId = this.selectRow.id;
           this.AuditId = this.selectRow.id;
+          this.WaitLoanId = this.selectRow.id;
 
           // 补充资料
           this.collect(value.triggerUrl.substr(1, value.triggerUrl.length));
           // 审核资料
           this.audit(value.triggerUrl.substr(1, value.triggerUrl.length));
-
+          //待放款
+          this.waitLoan(value.triggerUrl.substr(1, value.triggerUrl.length));
         } else {
           this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
             if (res.code === "0") {

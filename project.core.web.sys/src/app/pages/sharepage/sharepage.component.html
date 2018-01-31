@@ -23,12 +23,16 @@
           <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
         </ng-container>
         <!--<form-unit *ngIf="selectRow" [DOMS]="modalDOMS" [selectRow]="selectRow" (changes)="submitMethod($event)"></form-unit>-->
-        <ng-container *ngSwitchCase="'Form'">
-          <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
+        <ng-container *ngSwitchCase="'Add'">
+          <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [btnType]="btnType" (backClick)="backClick()"
+                                (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Edit'">
+          <timi-responsive-form *ngIf="modalDOMS && selectRow" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" [btnType]="btnType" (backClick)="backClick()"
             (ngSubmit)="submitMethod($event)"></timi-responsive-form>
         </ng-container>
 
-        <ng-container *ngSwitchCase="'setFunction'">
+        <ng-container *ngSwitchCase="'SetFunction'">
           <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>
         </ng-container>
       </div>

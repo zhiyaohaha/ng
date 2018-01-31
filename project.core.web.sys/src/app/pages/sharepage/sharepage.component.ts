@@ -43,12 +43,9 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   authorityKey: string; //权限关键字
 
   selectRow; //每一行的具体数据
-  new: boolean; //是否新添加
   btnType: string; //表单模板按钮类型
-  edit: boolean; //点击编辑过后变成true
-  detail: boolean; //查看详情时变成true
   setFunction: boolean; //设置权限
-  sidenavKey: string; //侧滑需要显示的组件判断值 Form ：表单模板  Detail ：详细模板  setFunction ： 设置权限  Other ：其他不明情况:）
+  sidenavKey: string; //侧滑需要显示的组件判断值 Add ：添加  Edit ：修改 Detail ：详细模板  SetFunction ： 设置权限  Other ：其他不明情况:）
 
   pageFrom: string; //设置权限的时候需要传递的查询表名字  SysJob 职业级别 SysRole 职业类别 SysGroupData组织模板
 
@@ -84,8 +81,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
   };
 
   pagecode: string;
-
-  //@ViewChild("table") table;
 
   constructor(private sharepageService: SharepageService,
               private fnUtil: FnUtil,
@@ -124,8 +119,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
           });
         }
         this.selectRow = null;
-        this.new = true;
-        this.edit = false;
         this.btnType = "new";
 
         if (el.nativeElement.querySelector(".mat-drawer-backdrop")) {
@@ -195,8 +188,6 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    // this.new = false;
-    // this.detail = true;
     this.btnType = "edit";
     this.sidenavKey = "Detail";
 
@@ -212,9 +203,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    */
   newAdd() {
     this.selectRow = "";
-    // this.new = true;
-    // this.edit = true;
-    this.sidenavKey = "Form";
+    this.sidenavKey = "Add";
     this.btnType = "new";
     this.sharepageService.editParamsModal().subscribe(r => {
       if (r.code === "0") {
@@ -234,15 +223,9 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
     });
     if (value.name === "HtmlDomCmd.Redirect") {
       if (value.triggerUrl === "#SetFunction") {
-        // this.detail = false;
-        // this.edit = false;
-        // this.setFunction = true;
-        this.sidenavKey = "setFunction";
+        this.sidenavKey = "SetFunction";
       } else {
-        // this.detail = false;
-        // this.edit = true;
-        // this.setFunction = false;
-        this.sidenavKey = "Form";
+        this.sidenavKey = "Edit";
       }
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
@@ -255,8 +238,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 返回详情
    */
   backClick() {
-    this.detail = true;
-    this.edit = false;
+    this.sidenavKey = "Detail";
   }
 
   /**
@@ -269,8 +251,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 关闭
    */
   closeEnd() {
-    this.detail = false;
-    this.edit = false;
+    this.sidenavKey = "";
     this.selectRow = null;
   }
 
@@ -279,7 +260,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    */
   submitMethod($event) {
     this.loadingService.register("loading");
-    if (this.new) {
+    if (this.sidenavKey === "Add") {
       this.sharepageService.saveNewParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");
@@ -289,7 +270,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
             this.getParamsList(this.listparam);
           }
         });
-    } else {
+    } else if (this.sidenavKey === "Edit") {
       this.sharepageService.saveEditParams($event)
         .subscribe(res => {
           this.loadingService.resolve("loading");

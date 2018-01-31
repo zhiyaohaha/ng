@@ -121,11 +121,8 @@ export class OrderService {
   }
 
   //提交审核资料信息
-  onSubmitAuditData(url, id, description) {
-    return this.baseService.post("/api/" + url, {
-      id: id,
-      description: description
-    });
+  onSubmitAuditData(url, data) {
+    return this.baseService.post("/api/" + url, data);
   }
 
 }
