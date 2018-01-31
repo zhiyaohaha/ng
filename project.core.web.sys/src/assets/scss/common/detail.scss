@@ -1,0 +1,33 @@
+.form-group {
+  float: left;
+  height: 1.75rem;
+  .label {
+    float: left;
+    width: 120px;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.5);
+    &::after {
+      content: ':';
+      position: relative;
+      margin: 0 8px 0 2px;
+    }
+  }
+  .span {
+    float: left;
+    width: calc(100% - 120px);
+  }
+}
+
+.columns1 {
+  width: 50%;
+}
+
+.columns2 {
+  width: 100%;
+  .label {
+    width: 120px;
+  }
+  .span {
+    width: calc(100% - 120px);
+  }
+}
