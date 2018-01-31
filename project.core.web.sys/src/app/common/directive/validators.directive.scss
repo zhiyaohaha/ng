@@ -7,16 +7,18 @@
     .errBorderParentFileUpLoad {
         position: relative;
         height: 170px;
-        margin-bottom: 32px;
+        margin-bottom:45px;
         .errBorder {
-        bottom: -50px;
-        left: 4px;
+            bottom: -50px;
+            left: 4px;
         }
     }
     .errBorderParentTags {
+        position: relative;
+        height: 48px;
         margin-bottom: 7px;
         .errBorder {
-        bottom: -5px;
+            bottom: -5px;
         }
     }
     .errBorderParentTextArea {
@@ -31,14 +33,14 @@
     .errComponent {
         height:550px;
         input, .free-select, .item-textarea {
-        border-color: #cf000d !important;
+            border-color: #cf000d !important;
         }
         .timi-chip-input {
-        border: 1px solid #cf000d !important;
-        border-radius: 10px;
+            border: 1px solid #cf000d !important;
+            border-radius: 10px;
         }
         .preview {
-        border: 1px solid #cf000d;
+            border: 1px solid #cf000d;
         }
     }
     .errBorder{
@@ -55,22 +57,4 @@
         bottom: 0px;
         left: 0px;
     }
-
-    //初始化未填写状态下，不显示error
-    // .ng-pristine {
-    //     input, .free-select {
-    //     border-color: #d9d9d9 !important;
-    //     }
-    //     .preview {
-    //     border-width: 0px !important;
-    //     }
-    // }
-    // .ng-pristine-custom {
-    //     .item-textarea, .timi-chip-input {
-    //     border-color: #d9d9d9 !important;
-    //     }
-    // }
-    // .ng-pristine + .errBorder, .ng-pristine-custom + .errBorder {
-    //     display: none;
-    // }
 }
