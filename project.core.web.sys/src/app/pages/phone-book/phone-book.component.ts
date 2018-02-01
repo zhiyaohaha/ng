@@ -333,11 +333,12 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
 
   //获取勾选的所有ID
   rowChecked(e) {
-    if (e.length > 0) {
-      this.rowId = e[0].id;
-    } else {
-      this.rowId = "";
+    let arr = [];
+    console.log(e);
+    for(let i=0;i<e.length;i++){
+      arr.push(e[i].id);
     }
+    this.rowId = arr.join(",");
   }
 
   //全选

@@ -38,6 +38,9 @@
         </div>
 
         <div class="recordContent clear" *ngIf="typeTab==1">
+          <timi-pagination *ngIf="recordData" [total]="recordData.total" [pageSize]="recordPageSize" [activeIndex]="recordActiveIndex"
+            (onChange)="recordChange($event)">
+          </timi-pagination>
           <table class="recordBox">
             <tr>
               <!-- <th>
@@ -66,6 +69,9 @@
         </div>
 
         <div class="addressContent clear" *ngIf="typeTab==2">
+          <timi-pagination *ngIf="addressData" [total]="addressData.total" [pageSize]="addressPageSize" [activeIndex]="addressActiveIndex"
+            (onChange)="addressChange($event)">
+          </timi-pagination>
           <table class="detailBox">
             <tr>
               <!-- <th>
