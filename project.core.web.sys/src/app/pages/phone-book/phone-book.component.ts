@@ -4,14 +4,13 @@ import {
   ComponentFactoryResolver,
   ElementRef,
   OnInit,
-  ViewChild
+  ViewChild, ViewContainerRef
 } from "@angular/core";
-import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
+import {ITdDataTableColumn, TdDialogService, TdLoadingService} from "@covalent/core";
 import {globalVar} from "../../common/global.config";
 import {FnUtil} from "../../common/fn-util";
 import {ToastService} from "../../component/toast/toast.service";
 import {ConvertUtil} from "../../common/convert-util";
-import {BaseService} from "../../services/base.service";
 import {MdSidenav} from "@angular/material";
 import {CommonService} from "app/services/common/common.service";
 import {BaseUIComponent} from "app/pages/baseUI.component";
@@ -77,22 +76,21 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //通讯录的pagesize,index
   addressPageSize: number = 10;
   addressActiveIndex: number = 0;
-  personId: string;//选中行的id
+  personId: string; //选中行的id
 
   checkRocord: Array<any> = [];
   checkDetail: Array<any> = [];
   rowId: string;
 
-  historyId: string;
-
   constructor(private fnUtil: FnUtil,
               private converUtil: ConvertUtil,
               private routerInfor: ActivatedRoute,
               private router: Router,
+              private dialogService: TdDialogService,
+              private viewContainerRef: ViewContainerRef,
               private toastService: ToastService,
               private resolver: ComponentFactoryResolver,
               private el: ElementRef,
-              private baseService: BaseService,
               private loading: TdLoadingService,
               private commonService: CommonService,
               private phoneBookService: PhoneBookService) {
@@ -143,9 +141,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
 
   getParamsList(params) {
     this.commonService.getTableList(params)
-      .subscribe(res => {
-        if (res.code === "0") {
-          let r = res;
+      .subscribe(r => {
+        if (r.code === "0") {
+          this.rowId = "";
           if (r.data.data && r.data.data.fields) {
             this.columns = r.data.data.fields;
           }
@@ -181,6 +179,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   page($event) {
     this.listparam.index = $event.activeIndex;
     this.listparam.size = $event.pageSize;
+    this.rowId = "";
     this.getParamsList(this.listparam);
   }
 
@@ -271,52 +270,74 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //删除通话记录数据
   deleteRocord() {
     let id = this.checkRocord.join(",");
-    let r = confirm("确定要删除选中的记录吗？");
-    if (r === true) {
-      this.phoneBookService.deleteRocords(id).subscribe(res => {
-        if (res.success === true) {
-          this.checkRocord = [];
-          this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
-            this.getRecordData(res.data);
-          });
-        }
-      })
-    }
+    super.openConfirm({
+      dialogService: this.dialogService,
+      message: "确定要删除选中的记录吗？"
+    }, (accept) => {
+      if (accept) {
+        this.phoneBookService.deleteRocords(id).subscribe(res => {
+          if (res.success === true) {
+            this.checkRocord = [];
+            this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(r => {
+              this.getRecordData(r.data);
+            });
+          }
+        });
+      }
+    });
   }
 
   //删除通讯录
   deleteDetail() {
     let id = this.checkDetail.join(",");
-    let r = confirm("确定要删除选中的记录吗？");
-    if (r === true) {
-      this.phoneBookService.deleteDetails(id).subscribe(res => {
-        if (res.success == true) {
-          this.checkDetail = [];
-          this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
-            this.getAddressData(res.data);
-          });
-        }
-      })
-    }
+    super.openConfirm({
+      dialogService: this.dialogService,
+      message: "确定要删除选中的记录吗？",
+    }, (accept) => {
+      if (accept) {
+        this.phoneBookService.deleteDetails(id).subscribe(res => {
+          if (res.success === true) {
+            this.checkDetail = [];
+            this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(r => {
+              this.getAddressData(r.data);
+            });
+          }
+        });
+      }
+    });
   }
 
   //删除行
   deleteRows() {
-    this.phoneBookService.deleteRow(this.rowId).subscribe(res => {
-      console.log(res);
-      if(res.success == true){
-        this.getParamsList({
-          size: this.pageSize,
-          index: this.currentPage,
-          filters: ""
+
+    // let r = confirm("确定要删除选中的记录吗？");
+
+    super.openConfirm({
+      dialogService: this.dialogService,
+      viewContainerRef: this.viewContainerRef,
+      message: "确定要删除选中的记录吗？",
+    }, (accept) => {
+      if (accept) {
+        this.phoneBookService.deleteRow(this.rowId).subscribe(res => {
+          if (res.success === true) {
+            this.getParamsList({
+              size: this.pageSize,
+              index: this.currentPage,
+              filters: ""
+            });
+          }
         });
       }
-    })
+    });
   }
 
   //获取勾选ID第一个
   rowChecked(e) {
-    this.rowId = e[0].id;
+    if (e.length > 0) {
+      this.rowId = e[0].id;
+    } else {
+      this.rowId = "";
+    }
   }
 
   //全选
@@ -339,9 +360,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //选择行通话记录
   checkedRocord(e, item) {
     let isInarray = this.inArray(item.id, this.checkRocord);
-    if (e.srcElement.checked == true && !isInarray) {
+    if (e.srcElement.checked === true && !isInarray) {
       this.checkRocord.push(item.id);
-    } else if (e.srcElement.checked == false && isInarray) {
+    } else if (e.srcElement.checked === false && isInarray) {
       this.removeByValue(this.checkRocord, item.id);
     }
   }
@@ -349,9 +370,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //选择行通讯录
   checkedDetail(e, item) {
     let isInarray = this.inArray(item.id, this.checkDetail);
-    if (e.srcElement.checked == true && !isInarray) {
+    if (e.srcElement.checked === true && !isInarray) {
       this.checkDetail.push(item.id);
-    } else if (e.srcElement.checked == false && isInarray) {
+    } else if (e.srcElement.checked === false && isInarray) {
       this.removeByValue(this.checkDetail, item.id);
     }
     console.log(this.checkDetail);

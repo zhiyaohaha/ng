@@ -5,7 +5,7 @@
     <button md-raised-button class="add-button" (click)="deleteRows()">
       删除
     </button>
-    <button md-raised-button class="add-button" (click)="goToHistory()">
+    <button md-raised-button class="add-button" (click)="goToHistory()" [disabled]="!rowId">
       历史
     </button>
   </div>

@@ -23,7 +23,7 @@
   text-align: center;
   margin: 0;
   min-width: 88px;
-  line-height: 34px;
+  line-height: 36px;
   padding: 0 16px;
   border-radius: 2px;
 }
@@ -68,12 +68,13 @@ md-sidenav {
   line-height: 30px;
   width: 46%;
 }
-.left{
-    display: inline-block;
-    text-align: center;
-    height: 30px;
-    line-height: 30px;
-    width: 6%;
+
+.left {
+  display: inline-block;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  width: 6%;
 }
 
 .default {
@@ -106,10 +107,12 @@ md-sidenav {
   padding: 0 16px;
   border-radius: 2px;
 }
-.fr{
-    float: right;
-    margin-right: 100px;
+
+.fr {
+  float: right;
+  margin-right: 100px;
 }
-.clear{
-    clear: both;
+
+.clear {
+  clear: both;
 }

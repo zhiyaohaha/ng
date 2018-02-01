@@ -31,9 +31,6 @@ export class HistoryComponent implements OnInit {
           if (res.data.total) {
             this.searchDOMS = res.data.data.filters;
             this.headers = res.data.data.fields;
-            this.datas = res.data.data.bindData;
-            this.totals = res.data.total;
-
 
             this.filters = [];
             res.data.data.filters.forEach(i => {
