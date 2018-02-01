@@ -3,8 +3,8 @@ import {TdDialogService} from "@covalent/core";
 
 export interface BaseUIDialogConfig {
   dialogService: TdDialogService;
-  viewContainerRef: ViewContainerRef;
   message: string;
+  viewContainerRef?: ViewContainerRef;
   title?: string;
   disableClose?: boolean;
 }
