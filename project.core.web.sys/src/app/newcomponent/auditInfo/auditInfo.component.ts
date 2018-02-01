@@ -79,7 +79,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       }
     })
 
-    if (this.status == 'auditFirstRecheck') {  // 初审/复审,
+    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal') {  // 初审/复审,
       this.auditResultForm = this.fb.group({
         res1: '',                            //审核结果
         res2: [''],                          //审核原因

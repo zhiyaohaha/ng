@@ -35,7 +35,7 @@
             <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
-              <div *ngIf="status == 'auditFirstRecheck'">
+              <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">不通过</span>
@@ -51,7 +51,7 @@
             <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
-              <div *ngIf="status == 'auditFirstRecheck'">
+              <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">不通过</span>
@@ -68,7 +68,7 @@
   </div>
 
   <!-- 审核结果 -->
-  <div>
+  <div class="m-b-20">
     <h4>审核结果</h4>
     <form [formGroup]="auditResultForm">
       <ul class="loan-info clearfix">
@@ -84,7 +84,7 @@
         </li>
       </ul>
     </form>
-    <div *ngIf="auditResultReason">
+    <div *ngIf="auditResultReason" class="clearfix">
       <timi-chip-group labeName="原因" [(ngModel)]="auditResultReason" clickFilter="true" placeholder="点击选中,回车添加"></timi-chip-group>
     </div>
   </div>
@@ -117,6 +117,11 @@
         <li>
           <div class="form-group columns1">
             <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="批核还款方式" pholder="{{'请选择还款方式'}}" [options]="termBindData"></timi-select>
+          </div>
+        </li>
+        <li *ngIf="status == 'auditFinal'">
+          <div class="form-group columns1">
+            <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="termBindData"></timi-select>
           </div>
         </li>
       </ul>
