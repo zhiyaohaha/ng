@@ -18,66 +18,60 @@ export class HistoryComponent implements OnInit {
   currentPage = 0;
   pageSize = 10;
 
-  search: any;
+  search: any = "";
   id;
 
-  constructor(private baseService: BaseService,
-              private router: ActivatedRoute) {
+  listparam = {
+    index: 0,
+    size: 10,
+    filter: ""
+  };
 
-    this.baseService.get("/api/Template/List/PhoneBookOperatRecord")
-      .subscribe(res => {
-        console.log(res);
-        if (res.code === "0") {
-          if (res.data.total) {
-            this.searchDOMS = res.data.data.filters;
-            this.headers = res.data.data.fields;
-
-            this.filters = [];
-            res.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
-            });
-
-            this.search = [];
-            this.search.push({key: "id", value: this.id});
-            this.getLists();
-          }
-        }
-      });
-
+  constructor(private baseService: BaseService) {
   }
 
   ngOnInit() {
-    this.router.paramMap
-      .subscribe(res => {
-        this.id = res.get("id");
-      });
+    this.getLists();
   }
 
   getLists() {
     if (typeof this.search !== "string") {
       this.search = JSON.stringify(this.search);
     }
-    this.baseService.get("/api/Template/List/PhoneBookOperatRecord", {filters: this.search})
+    this.baseService.get("/api/Template/List/PhoneBookOperatRecord", this.listparam)
       .subscribe(res => {
-        console.log(res);
         if (res.code === "0") {
           if (res.data.total) {
             this.datas = res.data.data.bindData;
             this.totals = res.data.total;
+
+            if (!res.data.search) {
+              this.searchDOMS = res.data.data.filters;
+              this.headers = res.data.data.fields;
+            }
+
+            this.filters = [];
+            res.data.data.filters.forEach(i => {
+              this.filters.push({"key": i.name, "value": i.value || ""});
+            });
+
+          } else {
+            this.totals = 0;
+            this.datas = [];
           }
         }
       });
   }
 
   onSearch($event) {
-    this.search = $event;
-    this.search = JSON.parse(this.search);
-    this.search.push({key: "id", value: this.id});
+    this.listparam.filter = $event;
     this.getLists();
   }
 
   page($event) {
-    console.log($event);
+    this.listparam.index = $event.activeIndex;
+    this.listparam.size = $event.pageSize;
+    this.getLists();
   }
 
 }

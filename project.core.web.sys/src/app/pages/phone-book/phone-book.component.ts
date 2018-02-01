@@ -332,8 +332,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //获取勾选的所有ID
   rowChecked(e) {
     let arr = [];
-    console.log(e);
-    for(let i=0;i<e.length;i++){
+    for (let i = 0; i < e.length; i++) {
       arr.push(e[i].id);
     }
     this.rowId = arr.join(",");
@@ -356,7 +355,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   //   }
   //   console.log(this.checkRocord);
   // }
-  
+
   //选择行通话记录
   checkedRocord(e, item) {
     let isInarray = this.inArray(item.id, this.checkRocord);
@@ -400,6 +399,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   }
 
   goToHistory() {
-    this.router.navigateByUrl("/main/PhoneBook/PhoneBook.PhoneBook/history/" + this.rowId);
+    this.router.navigateByUrl("/main/PhoneBook/PhoneBook.PhoneBook/history");
   }
 }
