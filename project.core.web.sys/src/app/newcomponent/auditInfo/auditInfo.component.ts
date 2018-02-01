@@ -7,9 +7,6 @@ import { ToastService } from "../../component/toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
-import { TimiSelectModule } from "../../component/timi-select/select.component";
-import { TimiInputModule } from "../../component/timi-input/timi-input.component";
-
 
 @Component({
   selector: "free-auditInfo",
@@ -34,13 +31,30 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   uploadUrl: string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
   master: string = "/api/LoanOrder/UploadAttachmentFile";
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
-  waitLoanForm: any;
+
   applyFormData: any;           //动态表单数据
   areaCities: any; //市级数据
   areaCounties: any; //区县级数据
   applyFormPostData: any; //用于提交的动态表单数据
 
   readyOnly: boolean = true;  //贷款信息是否是只读
+
+  waitLoanForm: any;
+  approveInfoForm: any;   //批核信息表单
+  auditResultForm: any;   //审核结果表单
+  auditResultReason: any;  //审核结果原因
+  auditResultPass: boolean = false;  //审核通过
+  //临时数据代码
+  //还款方式 
+  termBindData: any = [
+    { text: "吃饭", value: "11", childrens: null },
+    { text: "睡觉", value: "12", childrens: null }
+  ]
+  //通过与不通过原因 
+  // terms2: any = ['我们不同意', "心情不好", "饿了", "还行", "随意", "就这样吧"];
+  // terms1: any = ['我们同意', "心情好", "还行", "随意", "就这样吧", "随缘吧"];
+  terms2: any = [{ label: '我们不同意', status: false }, { label: "心情不好", status: true }, { label: "饿了", status: false }, { label: "还行", status: false }, { label: "随意", status: false }, { label: "就这样吧", status: true }];
+  terms1: any = [{ label: '我们同意', status: false }, { label: "心情好", status: false }, { label: "还行", status: true }, { label: "随意", status: false }, { label: "就这样吧", status: false }, { label: "随缘吧", status: true }];
 
   @Input() id: string;
   @Input() status: string;  //用于区分资料补充/待放款
@@ -65,11 +79,23 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       }
     })
 
+    if (this.status == 'auditFirstRecheck') {  // 初审/复审,
+      this.auditResultForm = this.fb.group({
+        res1: '',                            //审核结果
+        res2: [''],                          //审核原因
+      })
+      this.approveInfoForm = this.fb.group({
+        loanApprovedAmount: [''],                            //批贷金额
+        loanApprovedTerm: [''],                              //  批贷期限
+        loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
+      })
+    }
+
     if (this.status == 'waitLoan') {  //待放款
       this.waitLoanForm = this.fb.group({
-        loanApprovedAmount: [''],   //批贷金额
-        loanApprovedTerm: [''],   //  批贷期限
-        loanApprovedRepaymentMethod: [''],   //    批贷还款方式
+        loanApprovedAmount: [''],                            //批贷金额
+        loanApprovedTerm: [''],                              //  批贷期限
+        loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
       })
     }
   }
@@ -189,39 +215,54 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     return label;
   }
 
+  //根据审核结果的不同，显示不同结果的原因 
+  setAuidtResult($event) {
+    if ($event.value == '通过') {
+      this.auditResultReason = this.terms1;
+      this.auditResultPass = true;
+    } else if ($event.value == '不通过') {
+      this.auditResultReason = this.terms2;
+      this.auditResultPass = false;
+    }
+  }
+
   //提交申请
   onSubmit(url, label) {
-    let _self = this;
-    let id = this.id;
-    let _status = this.status;
-    let postData = {};
-    super.openPrompt({ message: "请输入备注", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
-      if (val) {
-        if (_status == 'audit') {  //资料审核
-          postData = {
-            id: id,
-            description: val
-          };
-        } else if (_status == 'waitLoan') {  //待放款
-          postData = {
-            id: id,
-            description: val,
-            loanApprovedAmount: _self.waitLoanForm.value.loanApprovedAmount,   //批贷金额
-            loanApprovedTerm: _self.waitLoanForm.value.loanApprovedTerm,   //  批贷期限
-            loanApprovedRepaymentMethod: _self.waitLoanForm.value.loanApprovedRepaymentMethod,   //    批贷还款方式
-          };
-        }
-        // console.log(postData)
-        _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
-          if (res.code === "0") {
-            // super.showToast(_self.toastService, label + "成功");
-            _self.toastService.creatNewMessage({ message: label + "成功" });
-          } else {
-            _self.toastService.creatNewMessage({ message: res.message });
-          }
-        })
-      }
-    })
+    // console.log(this.approveInfoForm.value)  //批准表单
+    console.log(this.auditResultForm.value)  //审核结果
+    console.log(this.auditResultReason) //审核结果原因
+
+    // let _self = this;
+    // let id = this.id;
+    // let _status = this.status;
+    // let postData = {};
+    // super.openPrompt({ message: "请输入备注", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
+    //   if (val) {
+    //     if (_status == 'audit') {  //资料审核
+    //       postData = {
+    //         id: id,
+    //         description: val
+    //       };
+    //     } else if (_status == 'waitLoan') {  //待放款
+    //       postData = {
+    //         id: id,
+    //         description: val,
+    //         loanApprovedAmount: _self.waitLoanForm.value.loanApprovedAmount,   //批贷金额
+    //         loanApprovedTerm: _self.waitLoanForm.value.loanApprovedTerm,   //  批贷期限
+    //         loanApprovedRepaymentMethod: _self.waitLoanForm.value.loanApprovedRepaymentMethod,   //    批贷还款方式
+    //       };
+    //     }
+    //     // console.log(postData)
+    //     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
+    //       if (res.code === "0") {
+    //         // super.showToast(_self.toastService, label + "成功");
+    //         _self.toastService.creatNewMessage({ message: label + "成功" });
+    //       } else {
+    //         _self.toastService.creatNewMessage({ message: res.message });
+    //       }
+    //     })
+    //   }
+    // })
   }
 
 }
