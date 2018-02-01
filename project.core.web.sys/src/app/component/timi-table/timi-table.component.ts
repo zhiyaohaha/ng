@@ -28,7 +28,8 @@ export class TimiTableComponent implements OnInit {
   // 表格数据
   @Input()
   set data(value: object[]) {
-    if (value && value.length > 0) {
+    this.checkIndex = [];
+    if (value && value.length > 0 && this.headers) {
       this.outData = value;
       let arr = this.getTableCell(this.headers, value);
       this.slowAppendData(arr);
@@ -173,7 +174,6 @@ export class TimiTableComponent implements OnInit {
         clearInterval(timer);
       }
     }, 10);
-    console.log(this._data);
   }
 
 }

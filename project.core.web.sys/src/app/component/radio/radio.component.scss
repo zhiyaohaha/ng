@@ -1,11 +1,11 @@
-@import "../../../assets/sass/variables";
+@import "../../../assets/scss/variables.scss";
 
 .free-radio {
   display: flex;
   cursor: pointer;
   align-items: center;
   margin-bottom: .5rem;
-
+  margin-left:120px;
   .free-radio-inner,
   .free-radio-ins {
     display: flex;

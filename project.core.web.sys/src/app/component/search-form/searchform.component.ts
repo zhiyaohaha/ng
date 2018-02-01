@@ -6,6 +6,7 @@ import {ButtonModule} from "../button/button.directive";
 import {ConvertUtil} from "../../common/convert-util";
 import {TimiInputModule} from "../timi-input/timi-input.component";
 import {TimiSelectModule} from "../timi-select/select.component";
+import {CalendarModule} from "../calendar/calendar.component";
 
 @Component({
   selector: "search-form",
@@ -49,30 +50,34 @@ export class SearchFormComponent implements OnInit {
 
   //搜索
   searchParams($event) {
-    this.condition.filter(i => {
-      if (i.key === "createdDate" && this.StartTime && this.EndTime) {
-        i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
+    if (this.condition) {
+      this.condition.filter(i => {
+        if (i.key === "createdDate" && this.StartTime && this.EndTime) {
+          i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
+        } else {
+          i.value = $event[i.key];
+        }
+      });
+      let filter = false;
+      this.condition.forEach(item => {
+        if (item.value && item.value !== 0) {
+          filter = true;
+        }
+      });
+      if (filter) {
+        let str = JSON.stringify(this.condition);
+        this.onSearch.emit(str);
       } else {
-        i.value = $event[i.key];
+        this.onSearch.emit("");
       }
-    });
-    let filter = false;
-    this.condition.forEach(item => {
-      if (item.value && item.value !== 0) {
-        filter = true;
-      }
-    });
-    if (filter) {
-      let str = JSON.stringify(this.condition);
-      this.onSearch.emit(str);
     } else {
-      this.onSearch.emit("");
+      this.onSearch.emit($event);
     }
   }
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MdInputModule, MdButtonModule, MdDatepickerModule, MdSelectModule, ButtonModule, TimiInputModule, TimiSelectModule],
+  imports: [CommonModule, FormsModule, MdInputModule, MdButtonModule, MdDatepickerModule, MdSelectModule, ButtonModule, TimiInputModule, TimiSelectModule, CalendarModule],
   declarations: [SearchFormComponent],
   exports: [SearchFormComponent]
 })

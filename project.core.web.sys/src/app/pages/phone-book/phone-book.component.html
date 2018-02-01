@@ -5,7 +5,7 @@
     <button md-raised-button class="add-button" (click)="deleteRows()">
       删除
     </button>
-    <button md-raised-button class="add-button" (click)="goToHistory()">
+    <button md-raised-button class="add-button" (click)="goToHistory()" [disabled]="!rowId">
       历史
     </button>
   </div>
@@ -29,20 +29,20 @@
           <div class="addressbook" [class.active]="typeTab==2" (click)="toAddress()">
             通讯录
           </div>
-          <button md-raised-button class="defaultColor fr" (click)="deleteRocord()" [class.default]="checkRocord.length>0" [disabled]="checkRocord.length>0?false:true" *ngIf="typeTab==1">
+          <!-- <button md-raised-button class="defaultColor fr" (click)="deleteRocord()" [class.default]="checkRocord.length>0" [disabled]="checkRocord.length>0?false:true" *ngIf="typeTab==1">
             删除
           </button>
           <button md-raised-button class="defaultColor fr" (click)="deleteDetail()" [class.default]="checkDetail.length>0" [disabled]="checkDetail.length>0?false:true" *ngIf="typeTab==2">
             删除
-          </button>
+          </button> -->
         </div>
 
         <div class="recordContent clear" *ngIf="typeTab==1">
           <table class="recordBox">
             <tr>
-              <th>
+              <!-- <th>
                 <input type="checkbox" (click)="checkedAll($event)" [checked]="recordCheck">
-              </th>
+              </th> -->
               <th>通话时间</th>
               <th>通话人姓名</th>
               <th>通话号码</th>
@@ -50,9 +50,9 @@
               <th>通话时长（秒）</th>
             </tr>
             <tr *ngFor="let item of recordData.phoneBookDetails">
-              <td>
+              <!-- <td>
                 <input type="checkbox" (click)="checkedRocord($event,item)" [checked]="recordCheck">
-              </td>
+              </td> -->
               <td>{{item.time}}</td>
               <td>{{item.name}}</td>
               <td>{{item.phone}}</td>
@@ -68,16 +68,16 @@
         <div class="addressContent clear" *ngIf="typeTab==2">
           <table class="detailBox">
             <tr>
-              <th>
+              <!-- <th>
                 <input type="checkbox" (click)="checkedAllDetail($event)" [checked]="detailCheck">
-              </th>
+              </th> -->
               <th>姓名</th>
               <th>电话号码</th>
             </tr>
             <tr *ngFor="let item of addressData.phoneBookDetails">
-              <td>
+              <!-- <td>
                 <input type="checkbox" (click)="checkedDetail($event,item)" [checked]="detailCheck">
-              </td>
+              </td> -->
               <td>{{item.name}}</td>
               <td>{{item.mobilePhone}}</td>
             </tr>

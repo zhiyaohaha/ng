@@ -23,6 +23,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
       <div class="free-radio-label">{{label}}</div>
     </label>
   `,
+  styleUrls: ["radio.component.scss"],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class RadioComponent implements ControlValueAccessor, AfterViewInit {
@@ -31,7 +32,7 @@ export class RadioComponent implements ControlValueAccessor, AfterViewInit {
   @Input() label: string;
   @Input() checked: boolean;
   @Input() disabled: boolean;
-  @Input() value: any;
+  @Input() inputValue: any;
   @Input() theme: string;
   @Output() onClick: EventEmitter<any> = new EventEmitter();
   @ViewChild('container') container: ElementRef;
@@ -63,8 +64,12 @@ export class RadioComponent implements ControlValueAccessor, AfterViewInit {
   onChange(e: any) {
     if (!this.disabled) {
       e = e.target;
-      this.checked = e.checked;
-      this.onModelChange(this.checked);
+      if(this.inputValue){
+        this.onModelChange(this.inputValue);
+      }else{
+        this.checked = e.checked;
+        this.onModelChange(this.checked);
+      }
       this.onClick.emit({
         name: e.name,
         value: e.value,

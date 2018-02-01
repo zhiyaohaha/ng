@@ -46,7 +46,6 @@ export abstract class BaseUIComponent {
     config.dialogService.openAlert({
       message: config.message,
       disableClose: true,
-      viewContainerRef: config.viewContainerRef,
       title: config.title,
       closeButton: config.closeButton || "确定"
     });
@@ -61,7 +60,6 @@ export abstract class BaseUIComponent {
     config.dialogService.openConfirm({
       message: config.message,
       disableClose: true,
-      viewContainerRef: config.viewContainerRef,
       title: config.title || "警告",
       cancelButton: config.cancelButton || "取消",
       acceptButton: config.acceptButton || "确定"
@@ -72,7 +70,6 @@ export abstract class BaseUIComponent {
     config.dialogService.openPrompt({
       message: config.message,
       disableClose: true,
-      viewContainerRef: config.viewContainerRef,
       title: config.title || "",
       cancelButton: config.cancelButton || "取消",
       acceptButton: config.acceptButton || "确定"

@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import {NgModule} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
 import {LoanCountComponent} from "./loan-count.component";
 
 const routes: Routes = [{
@@ -10,4 +10,5 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LoanCountRoutingModule { }
+export class LoanCountRoutingModule {
+}
