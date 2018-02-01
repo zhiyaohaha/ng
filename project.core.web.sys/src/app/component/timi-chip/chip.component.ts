@@ -1,4 +1,4 @@
-import {CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
   AfterViewInit,
   Component,
@@ -13,7 +13,8 @@ import {
   Renderer2,
   ViewChild
 } from "@angular/core";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { forEach } from "@angular/router/src/utils/collection";
 
 const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,7 +30,7 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
     </div>
     <div class="chip-wrap" onkeydown="if(event.keyCode==13){return false;}">
       <div class="timi-chip-group" [ngClass]="chipClass">
-        <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="delChip(i)"></timi-chip>
+        <timi-chip *ngFor="let chip of value;let i = index;" [value]="clickFilter?chip.label:chip" (click)="clickFilter?lightChip(i):delChip(i)" [timiChipActive]="timiChipActive" [timiChipActiveIndex]="i"></timi-chip>
         <input spellcheck="false" type="text" placeholder="{{placeholder}}"
                (focus)="onFocus()" (blur)="onBlur($event)" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
                (drop)="drop($event)">
@@ -46,12 +47,35 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   set chips(value: any) {
     this.value = [];
     for (const v of value) {
+      let label;
+      if (this.clickFilter) {
+        label = v['label'];
+      } else {
+        label = v;
+      }
+
       const isExited = this.value.find((elem, index, array) => {
-        return elem === v;
+        if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+          return elem['label'] == label;
+        } else {
+          return elem == label;
+        }
       });
       if (!isExited) {
-        this.value.push(v);
+        if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+          this.chips.push({ 'label': label, 'status': v['status'] });
+        } else {
+          this.value.push(label);
+        }
+      } else {
+        alert('已有重复项')
       }
+    }
+    //还原标签状态
+    if (this.clickFilter && value.length > 0) {
+      value.forEach((element, index) => {
+        this.timiChipActive[index] = element['status'];
+      });
     }
     this._propagateChange(this.chips);
   }
@@ -78,10 +102,12 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   value: any[] = [];
   _placeholder = "回车添加";
   @Output() blur: EventEmitter<any> = new EventEmitter();
+  @Input() clickFilter: boolean;  //是否启用“点击单个标签,高亮选中该标签”的交互，是否禁用“点击单个标签删除该标签”的交互；
+  timiChipActive: any[] = [];  //存储多个标签，是否高亮状态的集合
 
   private _propagateChange = (_: any) => { };
 
-  constructor(private er:ElementRef) {
+  constructor(private er: ElementRef) {
   }
 
   ngOnInit() {
@@ -119,7 +145,8 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   onBlur($event) {
     this.blur.emit(this.chips);
-    $event.path[3].className =  $event.path[3].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
+    console.log(this.chips)
+    $event.path[3].className = $event.path[3].className.replace("ng-pristine-custom ", "")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.focus = !this.focus;
     this.setChipClass();
   }
@@ -127,8 +154,12 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
   onEnter(event: any) {
     const value = event.target.value.trim();
     if (value) {
-      this.chips.push(value);
-      this.chips = this.chips.slice();
+      if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+        this.chips.push({ 'label': value, 'status': true });
+      } else {
+        this.chips.push(value);
+      }
+      this.chips = this.chips.slice();  //Angular不会比较数组内容和对象属性，它只比较对象标识。在此通知Angular更改检测更新绑定
       event.target.value = "";
     }
     this.chipsChange.emit(this.chips);
@@ -147,8 +178,12 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
     this.chipsChange.emit(this.chips);
   }
 
-  delChip(index) {
+  delChip(index) {  //点击删除   
     this.value.splice(index, 1);
+  }
+  lightChip(index) {   //点击高亮
+    this.timiChipActive[index] = !this.timiChipActive[index];
+    this.chips[index]['status'] = !this.chips[index]['status'];
   }
 
   writeValue(value: any) {
@@ -170,7 +205,7 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 @Component({
   selector: "timi-chip",
   template: `
-    <div #container class="timi-chip" tabindex="0">{{value}}</div>
+    <div #container class="timi-chip" tabindex="0" [ngClass]="{'timi-chip-active':timiChipActive[timiChipActiveIndex]}">{{value}}</div>
   `
 })
 export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -178,10 +213,12 @@ export class TimiChipComponent implements OnInit, AfterViewInit, OnDestroy {
   protected group: TimiChipGroupComponent;
   @Input() value: any;
   @Input() delete: boolean;
+  @Input() timiChipActive: any;   //是否高亮的数组
+  @Input() timiChipActiveIndex: any;  //指定哪一个标签高亮
   @ViewChild("container") container: ElementRef;
 
   constructor(private renderer2: Renderer2,
-              group: TimiChipGroupComponent) {
+    group: TimiChipGroupComponent) {
     this.group = group;
   }
 
