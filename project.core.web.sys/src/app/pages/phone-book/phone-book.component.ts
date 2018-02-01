@@ -309,9 +309,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
 
   //删除行
   deleteRows() {
-
-    // let r = confirm("确定要删除选中的记录吗？");
-
+    console.log(this.pageSize)
     super.openConfirm({
       dialogService: this.dialogService,
       viewContainerRef: this.viewContainerRef,
