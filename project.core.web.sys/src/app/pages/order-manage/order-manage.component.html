@@ -6,8 +6,26 @@
       报单
     </button>
     <!--1 临时按钮 -->
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit();sidenav.open()">
-      审核资料
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      资料收集
+    </button>
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      补充资料
+    </button> -->
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      审核(初审/复审)
+    </button>
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      终审
+    </button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      面签
+    </button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      待放款
+    </button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      放款
     </button> -->
   </div>
 
@@ -31,7 +49,7 @@
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
 
         <!-- 资料审核（初审/复审/终审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="audit"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstRecheck"></free-auditInfo>
 
         <!-- 待放款 -->
         <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan"></free-auditInfo>

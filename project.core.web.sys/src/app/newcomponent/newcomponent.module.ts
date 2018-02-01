@@ -13,6 +13,9 @@ import { AuditInfoComponent } from './auditInfo/auditInfo.component';
 import { PersonalLoanInfoComponent } from './personalLoanInfo/personalLoanInfo.component';
 import { TimiSelectModule } from 'app/component/timi-select/select.component';
 import { ChartComponent } from './chart/chart.component';
+import { TimiCheckboxModule } from "app/component/timi-checkbox/timi-checkbox.component";
+import { RadioModule } from "app/component/radio/radio.component";
+import { TimiChipModule } from "app/component/timi-chip/chip.component";
 
 import { ResponsiveModelModule } from "app/component/responsive-model/responsive-model.component";
 import { MultipleFileUploaderModule } from "../component/multiple-file-uploader/multiple-file-uploader.component";
@@ -38,6 +41,9 @@ import { PermissionsComponent } from './permissions/permissions.component';
         TimiFileUploaderModule,
         TimiInputModule,
         TimiSelectModule,
+        TimiCheckboxModule,
+        RadioModule,
+        TimiChipModule,
         ResponsiveModelModule,
         MultipleFileUploaderModule,
         RegionModule,

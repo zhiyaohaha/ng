@@ -27,6 +27,20 @@ select{
     border-radius: 5px;
 }
 
+.loan{
+    clear: both;
+}
+.loan-info li{
+    width: 50%;
+    float: left;
+    .form-group-checkbox{
+        margin-bottom:0px;
+    }
+}
+.loan-info li.areasComponent{
+    width: 100%;
+}
+
 //附件
 .accessory{
     border-bottom-width:0px;

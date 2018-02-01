@@ -2,13 +2,13 @@
   <!-- 个人信息和贷款信息(审核资料时，为只读) - -->
   <free-personalLoanInfo [loanInfo]="loanInfo" [readyOnly]="readyOnly"></free-personalLoanInfo>
 
-  <!-- 录入信息[(ngModel)]="loanInfo.applyFormData" -->
+  <!-- 录入信息 -->
   <div class="loan">
     <h4>录入信息</h4>
     <timi-responsive-form [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""></timi-responsive-form>
   </div>
 
-  <!-- 所需附件  [ngClass]="{'statusPass':attachmentGroup._status == '通过'}"-->
+  <!-- 所需附件 -->
   <div class="m-b-20">
     <h4>所需附件</h4>
     <ul class="clearfix accessory">
@@ -35,7 +35,7 @@
             <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
-              <div *ngIf="status == 'audit'">
+              <div *ngIf="status == 'auditFirstRecheck'">
                 <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">不通过</span>
@@ -51,7 +51,7 @@
             <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
               <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
-              <div *ngIf="status == 'audit'">
+              <div *ngIf="status == 'auditFirstRecheck'">
                 <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">不通过</span>
@@ -67,6 +67,63 @@
     </ul>
   </div>
 
+  <!-- 审核结果 -->
+  <div>
+    <h4>审核结果</h4>
+    <form [formGroup]="auditResultForm">
+      <ul class="loan-info clearfix">
+        <li>
+          <div class="form-group columns1 form-group-checkbox ">
+            <free-radio label="通过" name="auditResult" formControlName="res1" theme="info" inputValue="true" (onClick)="setAuidtResult($event)"></free-radio>
+          </div>
+        </li>
+        <li>
+          <div class="form-group columns1 form-group-checkbox">
+            <free-radio label="不通过" name="auditResult" formControlName="res1" theme="info" inputValue="false" (onClick)="setAuidtResult($event)"></free-radio>
+          </div>
+        </li>
+      </ul>
+    </form>
+    <div *ngIf="auditResultReason">
+      <timi-chip-group labeName="原因" [(ngModel)]="auditResultReason" clickFilter="true" placeholder="点击选中,回车添加"></timi-chip-group>
+    </div>
+  </div>
+
+  <!-- 批核信息 -->
+  <div class="m-b-20" *ngIf="auditResultPass">
+    <h4>批核信息</h4>
+    <form [formGroup]="approveInfoForm">
+      <ul class="loan-info clearfix">
+        <li>
+          <div class="form-group columns1">
+            <timi-input labelName="批核金额" formControlName="loanApprovedAmount"></timi-input>
+          </div>
+        </li>
+        <li>
+          <div class="form-group columns1">
+            <timi-input labelName="批核期限" formControlName="loanApprovedTerm"></timi-input>
+          </div>
+        </li>
+        <li>
+          <div class="form-group columns1">
+            <timi-input labelName="批核年化" formControlName="loanApprovedTerm"></timi-input>
+          </div>
+        </li>
+        <li>
+          <div class="form-group columns1">
+            <timi-input labelName="批核月费率" formControlName="loanApprovedTerm"></timi-input>
+          </div>
+        </li>
+        <li>
+          <div class="form-group columns1">
+            <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="批核还款方式" pholder="{{'请选择还款方式'}}" [options]="termBindData"></timi-select>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+
+  <!-- 放款  -->
   <div *ngIf="status == 'waitLoan'">
     <h4>放款信息</h4>
     <form [formGroup]="waitLoanForm">
