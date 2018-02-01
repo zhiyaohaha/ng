@@ -1,25 +1,37 @@
 
-  .search-item {
+.search-item {
+  float: left;
+  &:not(:last-child) {
+    width: 25%;
+    min-width: 300px;
+  }
+  md-select {
+    position: relative;
+    bottom: -25px;
+    width: 200px;
+  }
+  .label {
+    text-align: right;
+    width: 120px;
     float: left;
-    &:not(:last-child) {
-      width: 25%;
-      min-width: 300px;
-    }
-    md-select {
-      position: relative;
-      bottom: -25px;
-      width: 200px;
-    }
-    .data-range {
-      position: relative;
-      left: 14px;
-      md-input-container {
-        width: 138px;
-        top: -14px;
-      }
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.5);
+    &::after {
+      content: ":";
+      margin: 0 8px 0 2px;
     }
   }
-  button {
-    top: -3px;
-    left: 20px;
+  .data-range {
+    position: relative;
+    left: 14px;
+    md-input-container {
+      width: 138px;
+      top: -14px;
+    }
   }
+}
+
+button {
+  top: -3px;
+  left: 20px;
+}

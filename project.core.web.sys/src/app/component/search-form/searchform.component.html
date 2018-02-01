@@ -1,34 +1,40 @@
 <form #form="ngForm">
-    <div class="search-item" *ngFor="let item of filters">
-      <ng-container [ngSwitch]="item.ui.displayType">
-        <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Text'"
-             [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
-          <timi-input ngModel [labelName]="item.ui.label" name="{{item.name}}"
-                      [placeholder]="item.ui.placeholder"></timi-input>
-        </div>
-        <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-          <timi-select name="{{item.name}}" ngModel
-                       pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData"
-                       [multiple]="item.ui.multiple"
-                       [freeSelectName]="item.ui.label || '请选择'"></timi-select>
-        </div>
-        <div class="data-range" *ngSwitchCase="'HtmlDomDisplayType.DateRange'">
-          <md-input-container>
-            <input mdInput [ngModelOptions]="{standalone: true}" [mdDatepicker]="picker" placeholder="{{item.ui.label}}" [(ngModel)]="StartTime">
-            <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-            <md-datepicker #picker></md-datepicker>
-          </md-input-container>
-          <md-input-container>
-            <input mdInput [ngModelOptions]="{standalone: true}" [mdDatepicker]="picker2" placeholder="{{item.ui.label}}" [(ngModel)]="EndTime">
-            <!-- <button mdSuffix [mdDatepickerToggle]="picker2"></button> -->
-            <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-            <md-datepicker #picker2></md-datepicker>
-          </md-input-container>
-        </div>
-      </ng-container>
-    </div>
-    <div class="search-item">
-      <button md-raised-button (click)="searchParams(form.value)">搜索</button>
-    </div>
+  <div class="search-item" *ngFor="let item of filters">
+    <ng-container [ngSwitch]="item.ui.displayType">
+      <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Text'"
+           [ngStyle]="{'display': item.ui.hidden ? 'none' : 'show'}">
+        <timi-input ngModel [labelName]="item.ui.label" name="{{item.name}}"
+                    [placeholder]="item.ui.placeholder"></timi-input>
+      </div>
+      <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+        <timi-select ngModel name="{{item.name}}" pholder="{{item.ui.placeholder || '请选择'}}" [options]="item.bindData"
+                     [multiple]="item.ui.multiple" [freeSelectName]="item.ui.label || '请选择'"></timi-select>
+      </div>
+
+      <div class="form-group" *ngSwitchCase="'HtmlDomDisplayType.Date'">
+        <div class="label"><label>{{item.ui.label}}</label></div>
+        <free-calendar ngModel name="{{item.name}}" lang="CN"></free-calendar>
+      </div>
+
+      <!--<div class="data-range" *ngSwitchCase="'HtmlDomDisplayType.DateRange'">-->
+        <!--<md-input-container>-->
+          <!--<input mdInput [ngModelOptions]="{standalone: true}" [mdDatepicker]="picker" placeholder="{{item.ui.label}}"-->
+                 <!--[(ngModel)]="StartTime">-->
+          <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker"></button> &ndash;&gt;-->
+          <!--<md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>-->
+          <!--<md-datepicker #picker></md-datepicker>-->
+        <!--</md-input-container>-->
+        <!--<md-input-container>-->
+          <!--<input mdInput [ngModelOptions]="{standalone: true}" [mdDatepicker]="picker2" placeholder="{{item.ui.label}}"-->
+                 <!--[(ngModel)]="EndTime">-->
+          <!--&lt;!&ndash; <button mdSuffix [mdDatepickerToggle]="picker2"></button> &ndash;&gt;-->
+          <!--<md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>-->
+          <!--<md-datepicker #picker2></md-datepicker>-->
+        <!--</md-input-container>-->
+      <!--</div>-->
+    </ng-container>
+  </div>
+  <div class="search-item">
+    <button md-raised-button (click)="searchParams(form.value)">搜索</button>
+  </div>
 </form>
