@@ -39,6 +39,7 @@ const childRoutes: Routes = [
   { path: "DataStatistics/:pageCode", loadChildren: "../statistics/statistics.module#StatisticsModule" },
   // 贷后管理
   {path: "LoanCount/:pageCode", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
+  {path: "LoanCount/:pageCode/:cid", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
   {path: "BranchCount/:pageCode", loadChildren: "../post-loan-management/branch-count/branch-count.module#BranchCountModule"},
   {path: "RepaymentCount/:pageCode", loadChildren: "../post-loan-management/repayment/repayment.module#RepaymentModule"},
   { path: "", redirectTo: "/main/dashboard", pathMatch: "full" },
