@@ -11,10 +11,15 @@ import {
   OnInit,
   Output,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ViewContainerRef
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { forEach } from "@angular/router/src/utils/collection";
+import { ToastService } from "../toast/toast.service";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
+import { ActivatedRoute } from "@angular/router";
+import { BaseUIComponent } from "../../pages/baseUI.component";
 
 const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -41,7 +46,7 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
   providers: [TIMI_CHIP_GROUP_VALUE_ACCESSOR]
 })
 
-export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
+export class TimiChipGroupComponent extends BaseUIComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set chips(value: any) {
@@ -68,7 +73,8 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
           this.value.push(label);
         }
       } else {
-        alert('已有重复项')
+        // alert('已有重复项')
+        super.openAlert({ title: "提示", message: "已有重复项", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     }
     //还原标签状态
@@ -107,7 +113,13 @@ export class TimiChipGroupComponent implements ControlValueAccessor, OnInit {
 
   private _propagateChange = (_: any) => { };
 
-  constructor(private er: ElementRef) {
+  constructor(private er: ElementRef,
+    private toastService: ToastService,
+    private loadingService: TdLoadingService,
+    private routerInfor: ActivatedRoute,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef) {
+    super(loadingService, routerInfor);
   }
 
   ngOnInit() {
