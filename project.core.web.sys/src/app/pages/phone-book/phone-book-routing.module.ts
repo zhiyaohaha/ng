@@ -8,7 +8,7 @@ import { HistoryComponent } from "app/pages/phone-book/history/history.component
 const routes: Routes = [{
     path: "", component: PhoneBookComponent
 }, {
-    path: "history/:id", component: HistoryComponent
+    path: "history", component: HistoryComponent
 }];
 
 @NgModule({
