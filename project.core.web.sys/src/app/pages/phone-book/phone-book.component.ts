@@ -70,7 +70,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   typeTab: number = 1; //tab切换  1是通话记录   2是通讯录
 
   recordData: any = {}; //通话记录数据
-  addressData: Array<any> = []; //通讯录数据
+  addressData: any = {}; //通讯录数据
   //通话记录的pagesize,index
   recordPageSize: number = 10;
   recordActiveIndex: number = 0;
@@ -84,6 +84,9 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   rowId: string;
 
   historyId: string;
+
+  recordCheck: boolean = false;
+  detailCheck: boolean = false;
 
   constructor(private fnUtil: FnUtil,
     private converUtil: ConvertUtil,
@@ -217,7 +220,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     this.addressPageSize = 10;
     this.addressActiveIndex = 0;
     this.typeTab = 1;
-    this.addressData = [];
+    this.addressData = {};
     this.recordData = {};
   }
 
@@ -275,6 +278,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
       this.phoneBookService.deleteRocords(id).subscribe(res => {
         if (res.success == true) {
           this.checkRocord = [];
+          this.recordCheck = false;
           this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(res => {
             this.getRecordData(res.data);
           });
@@ -290,6 +294,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
       this.phoneBookService.deleteDetails(id).subscribe(res => {
         if (res.success == true) {
           this.checkDetail = [];
+          this.detailCheck = false;
           this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(res => {
             this.getAddressData(res.data);
           });
@@ -301,7 +306,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   deleteRows() {
     this.phoneBookService.deleteRow(this.rowId).subscribe(res => {
       console.log(res);
-      if(res.success == true){
+      if (res.success == true) {
         this.getParamsList({
           size: this.pageSize,
           index: this.currentPage,
@@ -314,21 +319,39 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   rowChecked(e) {
     this.rowId = e[0].id;
   }
-  //全选
+  //全选通话记录
   checkedAll(e) {
-    // if (e.srcElement.checked == true) {
-    //   for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
-    //     let isInarray = this.inArray(this.recordData.phoneBookDetails.id, this.checkRocord);
-    //     if (!isInarray) {
-    //       this.checkRocord.push(this.recordData.phoneBookDetails.id);
-    //     }
-    //   }
-    // } else if (e.srcElement.checked == false){
-    //   for (let i = 0; i < this.recordData.phoneBookDetails.length; i++){
-    //     this.removeByValue(this.checkRocord, this.recordData.phoneBookDetails.id)
-    //   }
-    // }
+    this.recordCheck = !this.recordCheck;
+    if (e.srcElement.checked == true) {
+      for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
+        let isInarray = this.inArray(this.recordData.phoneBookDetails[i].id, this.checkRocord);
+        if (!isInarray) {
+          this.checkRocord.push(this.recordData.phoneBookDetails[i].id);
+        }
+      }
+    } else if (e.srcElement.checked == false) {
+      for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
+        this.removeByValue(this.checkRocord, this.recordData.phoneBookDetails[i].id)
+      }
+    }
     console.log(this.checkRocord);
+  }
+  //全选通讯录
+  checkedAllDetail(e){
+    this.detailCheck = !this.detailCheck;
+    if (e.srcElement.checked == true) {
+      for (let i = 0; i < this.addressData.phoneBookDetails.length; i++) {
+        let isInarray = this.inArray(this.addressData.phoneBookDetails[i].id, this.checkDetail);
+        if (!isInarray) {
+          this.checkDetail.push(this.addressData.phoneBookDetails[i].id);
+        }
+      }
+    } else if (e.srcElement.checked == false) {
+      for (let i = 0; i < this.addressData.phoneBookDetails.length; i++) {
+        this.removeByValue(this.checkDetail, this.addressData.phoneBookDetails[i].id)
+      }
+    }
+    console.log(this.checkDetail);
   }
   //选择行通话记录
   checkedRocord(e, item) {
@@ -371,7 +394,7 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     return false;
   }
 
-  goToHistory(){
+  goToHistory() {
     this.router.navigateByUrl("/main/PhoneBook/PhoneBook.PhoneBook/history/" + this.rowId);
   }
 }

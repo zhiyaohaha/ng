@@ -54,7 +54,7 @@
       </li>
       <li *ngIf="showCertification==2">
         <span class="left">开户行：</span>
-        <timi-select pholder="{{'请选择开户行'}}" [options]="bankData" multipleForUse="showCertification==2" class="right" (onChange)="getBank($event)" [filter]="showCertification==2"></timi-select>
+        <timi-select pholder="{{'请选择开户行'}}" [options]="bankData" multipleForUse="showCertification==2" class="right" (onChange)="getBank($event)"></timi-select>
       </li>
       <li *ngIf="showCertification==2">
         <span class="left">银行卡号：</span>

@@ -92,7 +92,6 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   @Input() pholder: string;
   @Input() multipleTotal: boolean; //多选中的全选
   @Input() editable: boolean;
-  @Input() filter: boolean;
   @Input() selected: any;
   _selected: any; //中间变量
   @Input() multiple: boolean;
@@ -136,7 +135,27 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     }
     this._options = value;
     this.getValue();
+
+    if (this.options.length > 8) {
+      this.filter = true;
+    } else {
+      this.filter = false;
+    }
+
   }
+  @Input() filter: boolean;
+  // @Input()
+  // get filter():boolean{
+  //   return this._filter;
+  // }
+  // set filter(value:boolean){
+  //   if(this.options.length>8){
+  //     this._filter = true;
+  //   }else{
+  //     this._filter = false;
+  //   }
+  // }
+
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   onModelChange: Function = () => { };
