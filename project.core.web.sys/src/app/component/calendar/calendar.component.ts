@@ -1,10 +1,10 @@
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   NgModule, Component, OnInit, Input, Output, EventEmitter, OnDestroy, forwardRef, Inject, ElementRef
 } from '@angular/core';
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DomRenderer} from '../../common/dom';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DomRenderer } from '../../common/dom';
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -40,7 +40,7 @@ export class CalendarSelectorComponent {
   }
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   _value: number;
-  constructor(@Inject(forwardRef(() => CalendarComponent)) private calendar: CalendarComponent) {
+  constructor( @Inject(forwardRef(() => CalendarComponent)) private calendar: CalendarComponent) {
     this.setCurrentValue();
   }
 
@@ -62,13 +62,19 @@ export class CalendarSelectorComponent {
     const date = new Date();
     switch (this.type) {
       case 'h':
-        this.calendar.currentHour = this.value = date.getHours();
+        setTimeout(() =>
+          this.calendar.currentHour = this.value = date.getHours()
+        )
         break;
       case 'm':
-        this.calendar.currentMinute = this.value = date.getMinutes();
+        setTimeout(() =>
+          this.calendar.currentMinute = this.value = date.getMinutes()
+        )
         break;
       case 's':
-        this.calendar.currentSecond = this.value = date.getSeconds();
+        setTimeout(() =>
+          this.calendar.currentSecond = this.value = date.getSeconds()
+        )
     }
   }
 
@@ -299,6 +305,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
     this.format = 'yyyy-MM-dd';
     this.years = [];
     this.width = 250;
+    this.pholder = 'Select Time';
   }
 
   ngOnInit() {
@@ -323,7 +330,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
         this.value = this.domRenderer.dateFormat(this.currentDate, this.format);
       }
       this.dates = [];
-      this.pholder = 'Select Time';
       // this.itemWidth = parseFloat(((this.width - 10) / 7).toFixed(3));
       this.firstYear = this.todayDate.getFullYear();
       this.createCalendar();
@@ -650,6 +656,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
 
   toToady() {
     this.selectDate(this.todayDate);
+    this.onModelChange(this.value);
     this.createCalendar();
   }
 

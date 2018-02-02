@@ -8,9 +8,11 @@ import {TimiSelectModule} from "../timi-select/select.component";
 import {MdInputModule} from "@angular/material";
 import {TimiFileUploaderModule} from "../timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {TimiChipModule} from "../timi-chip/chip.component";
-import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
 import {CheckboxModule} from "../checkbox/checkbox.component";
 import {defaultValue} from "../../common/global.config";
+import {BaseService} from "../../services/base.service";
+
 export const DYNAMIC_DOMS_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DynamicDomsComponent),
@@ -34,7 +36,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
   modelDOMSData = [{}]; //需要修改的原数据
   afterMoveData = [{}]; //移动过后的数据
- 
+
   imgSrc = defaultValue.imgSrc; //图片默认地址
   @Input() custom;  //用于区分是否显示加减按钮,与边框
 
@@ -44,7 +46,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this._notes = value.childrens;
       this._notes.map(item => {
         item.name = item.name.replace(value.name + ".", "");
-    });
+      });
       // this._modelDOMS.push(this._notes);
     }
     this.title = value.ui.label;
@@ -57,7 +59,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   onModelChange: Function = () => {
   };
 
-  constructor() {
+  constructor(private baseService: BaseService) {
   }
 
   ngOnInit() {
@@ -65,18 +67,14 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
 
 
   //对ngmodel中 需要使用 管道的数据进行手动处理
-  updateAmount(data,value,event){
-    var key = value.split(".").pop();
+  updateAmount(data, value, event) {
+    let key = value.split(".").pop();
     data[key] = event;
     this.onModelChange(this.modelDOMSData);
   }
 
-  customFun(){  //用于设置是否显示加减按钮,与边框
-      if(this.custom.key == "custom" && this.custom.value == "true"){
-          return true;
-      }else{
-        return false;
-      }
+  customFun() {  //用于设置是否显示加减按钮,与边框
+    return this.custom.key === "custom" && this.custom.value === "true";
   }
 
   /**
@@ -90,11 +88,11 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   writeValue(value: any) {
     this.afterMoveData = value;
 
-    if (Array.isArray(value)) {  
-      this._modelDOMS = [];  
+    if (Array.isArray(value)) {
+      this._modelDOMS = [];
 
       this.modelDOMSData = [];
-      
+
       this.modelDOMSData = value;
 
       for (let i = 0; i < value.length; i++) {
@@ -102,14 +100,14 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       }
     }
     if (!value) {
-      this._modelDOMS = []; 
-      if(this.customFun()){   //产品管理 - 增加时不显示默认附件组结构
+      this._modelDOMS = [];
+      if (this.customFun()) {   //产品管理 - 增加时不显示默认附件组结构
         this._modelDOMS[0] = this._notes;
       }
       this.onModelChange(null);
     }
   }
-  
+
   registerOnChange(fn: any): void {
     this.onModelChange = fn;
   }
@@ -128,10 +126,31 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   /**
    * 下拉框change事件
    * @param $event
-   * @param child
+   * @param cmds
+   * @param index
    */
-  selectChange($event, dom) {
+  selectChange($event, cmds: any[], index: number) {
     this.onModelChange(this.modelDOMSData);
+    if (cmds && cmds.length > 0) {
+      cmds.forEach((item) => {
+        if (item.name === "HtmlDomCmd.DataLinkage") {
+          let params = {};
+          if (item.bindParamFields && item.bindParamFields.length > 0) {
+            item.bindParamFields.forEach(i => {
+              params[i] = this.getValue(this.modelDOMSData[index], i);
+            });
+          }
+          this.baseService.get("/api/" + item.triggerUrl, params)
+            .subscribe(res => {
+              console.log(res);
+              console.log(item.triggerDom);
+              console.log(this._modelDOMS[index]);
+              this.setValue(this._modelDOMS[index], item.triggerDom, res.data);
+              console.log(this._modelDOMS[index]);
+            });
+        }
+      });
+    }
   }
 
   /**
@@ -204,15 +223,38 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
   }
 
   //获取带点key的最后一个字段
-  lastdotFun(value){
-    let key = value.split(".").pop();
-    return key;
+  lastdotFun(value) {
+    return value.split(".").pop();
+  }
+
+  getValue(obj, str) {
+    let arr = str.split(".");
+    arr.shift();
+    if (arr.length > 1) {
+      this.getValue(obj[arr[0]], arr.join("."));
+    } else {
+      return obj[arr[0]];
+    }
+  }
+
+  setValue(obj, str, data) {
+    let arr = str.split(".");
+    arr.shift();
+    obj.forEach(item => {
+      if (item.name === arr[0]) {
+        if (arr.length > 1) {
+          this.setValue(item, arr.join("."), data);
+        } else {
+          item["bindData"] = data;
+        }
+      }
+    });
   }
 }
 
 @NgModule({
   imports: [CommonModule, FormsModule, TimiInputModule, TimiCheckboxModule, TimiTextareaModule,
-    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule, SharedPipeModule ,CheckboxModule],
+    TimiSelectModule, MdInputModule, TimiFileUploaderModule, TimiChipModule, SharedPipeModule, CheckboxModule],
   declarations: [DynamicDomsComponent],
   exports: [DynamicDomsComponent]
 })

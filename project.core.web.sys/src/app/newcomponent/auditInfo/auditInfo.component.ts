@@ -75,7 +75,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     })
 
     // 初审/复审/终审/面签/待放款
-    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan') {
+    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
       this.auditResultForm = this.fb.group({
         res1: '',                            //审核结果
         res2: [''],                          //审核原因
@@ -84,6 +84,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedTerm: [''],                              //  批贷期限
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
+        loanTime1: '',                               //放款时间 
+        loanTime2: ''
       })
 
       if (this.status == 'waitLoan') {
@@ -221,8 +223,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   //提交申请
   onSubmit(url, label) {
     // console.log(this.approveLoanInfoForm.value)  //批准表单
-    console.log(this.auditResultForm.value)  //审核结果
-    console.log(this.auditResultReason) //审核结果原因
+    // console.log(this.auditResultForm.value)  //审核结果
+    // console.log(this.auditResultReason) //审核结果原因集合
 
     // let _self = this;
     // let id = this.id;

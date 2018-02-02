@@ -1,71 +1,118 @@
-input{
-    position: relative;
-    padding: 4px 7px;
-    width: 32%;
-    height: 28px;
-    line-height: 1.5;
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    transition: all .3s;
-    &:focus {
-      border-color: #3b99fc;
-      box-shadow: 0 0 3px 0 #3b99fc;
+:host /deep/ {
+    .clearfix:after{  //清除浮动
+        content: '';
+        display: block;
+        clear: both;
     }
-}
-.clearfix:after{  //清除浮动
-    content: '';
-    display: block;
-    clear: both;
-}
-.m-b-20{
-    margin-bottom:20px;
-}
-
-
-select{
-    border-radius: 5px;
-}
-
-.loan{
-    clear: both;
-}
-.loan-info li{
-    width: 50%;
-    float: left;
-    .form-group-checkbox{
-        margin-bottom:0px;
+    .m-b-20{
+        margin-bottom:20px;
     }
-}
-.loan-info li.areasComponent{
-    width: 100%;
-}
-
-//附件
-.accessory{
-    border-bottom-width:0px;
-}
-.accessory  span.status{
-    position: absolute;
-    top:0;
-    bottom:0;
-    margin:auto;
-    right:10px;
-    height:20px;
-    line-height:15px;
-} 
-.accessory li{
-    border-bottom:1px dashed #cf000d;
-}
-
-.accessory .accessoryTop{
-    text-align:center;
-    overflow:hidden;
-    position: relative;
-    height: 36px;
-    line-height: 36px;
-    &:hover{
-        cursor: pointer;
+    
+    
+    select{
+        border-radius: 5px;
+    }
+    
+    .loan{
+        clear: both;
+    }
+    .loan-info>li{
+        width: 50%;
+        float: left;
+        .form-group-checkbox{
+            margin-bottom:0px;
+        }
+    }
+    .loan-info li.areasComponent{
+        width: 100%;
+    }
+    
+    //附件
+    .accessory{
+        border-bottom-width:0px;
+    }
+    .accessory  span.status{
+        position: absolute;
+        top:0;
+        bottom:0;
+        margin:auto;
+        right:10px;
+        height:20px;
+        line-height:15px;
+    } 
+    .accessory li{
+        border-bottom:1px dashed #cf000d;
+    }
+    
+    .accessory .accessoryTop{
+        text-align:center;
+        overflow:hidden;
+        position: relative;
+        height: 36px;
+        line-height: 36px;
+        &:hover{
+            cursor: pointer;
+            background-color: #cf000d;
+            color: #FFF;
+            font-size: 18px;
+            height: 36px;
+            line-height:  36px;
+            font-weight: bold;
+        }
+    } 
+    
+    .accessory  .accessoryBottom ul{
+        display:flex;
+        background-color:#F2F2F2;
+    }
+    .accessory  .accessoryBottom ul li{
+       flex-grow:1;
+    }
+    .accessory  .accessoryBottom .accessoryBottomTop{
+        position: relative;
+        padding-left:5px;
+        background-color:#fff;
+        font-size:12px;
+        &:hover{
+            cursor: pointer;
+            background-color: #FFF;
+            font-size:  12px;
+            box-shadow: 2px 3px 8px #cf000d;
+        }
+     }
+     .accessory  .accessoryBottom .accessoryBottomBottom{
+        padding-left:5px;
+        background-color:#fff;
+     }
+     .accessoryBottomBottom pre{
+        font-size:12px;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        line-height:16px;
+        white-space: pre-wrap;
+     }
+     .accessoryBottomBottom .auditBtnParent{
+        .auditNeedCount{
+            float: left;
+        }
+        .auditBtn{
+            float: right;
+            cursor: pointer;
+            span{
+                height: 20px;
+                line-height: 15px;
+            }
+            .auditBtnPass{
+                background-color:#177bbb;
+            }
+            .auditBtnNotPass{
+                background-color:#666666;
+            }
+        }
+     }
+    
+    //高亮当前附件组 和 附件项
+    .attachmentGroupActive{
         background-color: #cf000d;
         color: #FFF;
         font-size: 18px;
@@ -73,79 +120,54 @@ select{
         line-height:  36px;
         font-weight: bold;
     }
-} 
-
-.accessory  .accessoryBottom ul{
-    display:flex;
-    background-color:#F2F2F2;
-}
-.accessory  .accessoryBottom ul li{
-   flex-grow:1;
-}
-.accessory  .accessoryBottom .accessoryBottomTop{
-    position: relative;
-    padding-left:5px;
-    background-color:#fff;
-    font-size:12px;
-    &:hover{
-        cursor: pointer;
+    .attachmentActive{
         background-color: #FFF;
         font-size:  12px;
         box-shadow: 2px 3px 8px #cf000d;
     }
- }
- .accessory  .accessoryBottom .accessoryBottomBottom{
-    padding-left:5px;
-    background-color:#fff;
- }
- .accessoryBottomBottom pre{
-    font-size:12px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    line-height:16px;
-    white-space: pre-wrap;
- }
- .accessoryBottomBottom .auditBtnParent{
-    .auditNeedCount{
+    
+    //提交申请按钮 
+    .resultBtn{
+        text-align: center;
+        clear: both;
+        padding: 30px 0;
+        button{
+            margin:auto 2px;
+        }
+    }
+    
+    //时间选择组件样式
+    .time-picker-label{
+        display: block;
         float: left;
+        width: 120px;
+        text-align: right;
+        color: rgba(0, 0, 0, 0.5);
     }
-    .auditBtn{
-        float: right;
-        cursor: pointer;
-        span{
-            height: 20px;
-            line-height: 15px;
-        }
-        .auditBtnPass{
-            background-color:#177bbb;
-        }
-        .auditBtnNotPass{
-            background-color:#666666;
-        }
+    .time-picker-label:after {
+        content: ":";
+        position: relative;
+        margin: 0 8px 0 2px;
     }
- }
-
-//高亮当前附件组 和 附件项
-.attachmentGroupActive{
-    background-color: #cf000d;
-    color: #FFF;
-    font-size: 18px;
-    height: 36px;
-    line-height:  36px;
-    font-weight: bold;
-}
-.attachmentActive{
-    background-color: #FFF;
-    font-size:  12px;
-    box-shadow: 2px 3px 8px #cf000d;
-}
-
-//提交申请按钮 
-.resultBtn{
-    text-align: center;
-    clear: both;
-    padding: 30px 0;
-    button{
-        margin:auto 2px;
+    .time-picker{
+        display: inline-block;
+        height: 28px;
+        line-height: 1.5;
+        width: calc( 100% - 120px);
+        free-calendar{
+            float:left;
+            width: 50%;
+            .free-calendar{
+                .free-select-input{
+                    line-height:normal;
+                    width:8.6rem;
+                    height: 28px;
+                    border-radius: 4px;
+                    input{
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
     }
 }

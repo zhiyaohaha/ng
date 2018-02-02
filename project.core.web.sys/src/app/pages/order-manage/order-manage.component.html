@@ -9,9 +9,6 @@
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       资料收集
     </button>
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
-      补充资料
-    </button> -->
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditFirstRecheckId='5a6974c7ac52db1898da86cf';sidenav.open()">
       初/复审
     </button>
@@ -24,9 +21,12 @@
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('WaitLoan');WaitLoanId='5a6974c7ac52db1898da86cf';sidenav.open()">
       待放款
     </button>
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Loan');LoanId='5a6974c7ac52db1898da86cf';sidenav.open()">
       放款
-    </button> -->
+    </button>
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('UpdateInfo');UpdateInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+      补充资料
+    </button>
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
@@ -45,8 +45,10 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
-        <!-- 资料补充  -->
+        <!-- 资料收集  -->
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
+        <!-- 补充资料  -->
+        <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId"></free-application>
 
         <!-- 资料审核（初审/复审） -->
         <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditFirstRecheckId" status="auditFirstRecheck"></free-auditInfo>
@@ -59,6 +61,9 @@
 
         <!-- 待放款 -->
         <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan"></free-auditInfo>
+
+        <!-- 放款 -->
+        <free-auditInfo *ngIf="sidenavKey === 'Loan'" [id]="LoanId" status="loan"></free-auditInfo>
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
