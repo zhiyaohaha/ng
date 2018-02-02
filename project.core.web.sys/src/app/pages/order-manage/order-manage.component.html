@@ -12,19 +12,19 @@
     <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       补充资料
     </button> -->
-    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditFirstRecheckId='5a6974c7ac52db1898da86cf';sidenav.open()">
       初/复审
     </button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit1');AuditId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit1');AuditFinalId='5a6974c7ac52db1898da86cf';sidenav.open()">
       终审
     </button>
-    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Interview');InterviewId='5a6974c7ac52db1898da86cf';sidenav.open()">
       面签
     </button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('WaitLoan');WaitLoanId='5a6974c7ac52db1898da86cf';sidenav.open()">
       待放款
     </button>
-    <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="audit('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       放款
     </button> -->
   </div>
@@ -49,10 +49,13 @@
         <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
 
         <!-- 资料审核（初审/复审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstRecheck"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditFirstRecheckId" status="auditFirstRecheck"></free-auditInfo>
 
         <!-- 资料审核（终审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit1'" [id]="AuditId" status="auditFinal"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'Audit1'" [id]="AuditFinalId" status="auditFinal"></free-auditInfo>
+
+        <!-- 面签 -->
+        <free-auditInfo *ngIf="sidenavKey === 'Interview'" [id]="InterviewId" status="interview"></free-auditInfo>
 
         <!-- 待放款 -->
         <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan"></free-auditInfo>
