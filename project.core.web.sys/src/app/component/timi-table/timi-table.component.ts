@@ -74,9 +74,11 @@ export class TimiTableComponent implements OnInit {
    * 页码组件事件
    * @param $event
    */
-  pageChange($event) {
+  pageChange(e) {
     this.checkIndex = [];
-    this.pageEvent.emit($event);
+    this.pageSize = e.pageSize;
+    this.activeIndex = e.activeIndex;
+    this.pageEvent.emit(e);
   }
 
   /**

@@ -109,6 +109,8 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   @Input() multipleForUse: boolean; //多个select一起使用,公用一个label（例如三级地区联动，放在一行使用）
   @Input() disabledVal: boolean = false;
 
+  @Input() filter: boolean;
+
   _options: any;
   @Input()
   get options(): any {
@@ -143,17 +145,21 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     }
 
   }
-  @Input() filter: boolean;
+
+  // _filter: boolean;
   // @Input()
-  // get filter():boolean{
+  // get filter(): boolean {
   //   return this._filter;
   // }
-  // set filter(value:boolean){
-  //   if(this.options.length>8){
-  //     this._filter = true;
-  //   }else{
-  //     this._filter = false;
+  // set filter(value: boolean) {
+  //   if(this.options.length){
+  //     if (this.options.length > 8) {
+  //       this._filter = true;
+  //     } else {
+  //       this._filter = false;
+  //     }
   //   }
+    
   // }
 
 
