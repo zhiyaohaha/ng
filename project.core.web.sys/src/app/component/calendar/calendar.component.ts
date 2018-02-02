@@ -226,7 +226,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() format: string;
   @Input() hourFormat: string;
   @Input() width: any;
-  @Input() pholder: string  = 'Select Time';
+  @Input() pholder: string;
   @Input() readonly: boolean;
   @Input() timeOnly: boolean;
   @Input()
@@ -305,6 +305,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
     this.format = 'yyyy-MM-dd';
     this.years = [];
     this.width = 250;
+    this.pholder = 'Select Time';
   }
 
   ngOnInit() {
@@ -329,7 +330,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
         this.value = this.domRenderer.dateFormat(this.currentDate, this.format);
       }
       this.dates = [];
-      // this.pholder = 'Select Time';
       // this.itemWidth = parseFloat(((this.width - 10) / 7).toFixed(3));
       this.firstYear = this.todayDate.getFullYear();
       this.createCalendar();
