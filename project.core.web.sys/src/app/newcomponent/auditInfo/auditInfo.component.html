@@ -90,7 +90,7 @@
   </div>
 
   <!-- 批核信息 -->
-  <div class="m-b-20" *ngIf="auditResultPass">
+  <div class="m-b-20" *ngIf="status !== 'interview'?auditResultPass:false">
     <h4>批核信息</h4>
     <form [formGroup]="approveInfoForm">
       <ul class="loan-info clearfix">
