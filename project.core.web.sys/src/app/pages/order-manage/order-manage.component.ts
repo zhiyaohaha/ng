@@ -247,6 +247,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   //   this.sidenavKey = sidenavKey;
   // }
 
+  //设置侧滑模板 
   setSidenavKey(sidenavKey) {
     this.selectRow = "";
     this.sidenavKey = sidenavKey;
@@ -275,7 +276,6 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
    * 详情组件点击事件
    */
   detailClick(value) {
-    console.log(value)
     if (value.name === "HtmlDomCmd.Redirect") {
       this.sidenavKey = "Form";
       this.edit = true;
@@ -285,17 +285,18 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
           param[item] = this.selectRow[item];
         });
 
-        if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#
-          this.FillInfoId = this.selectRow.id;
-          this.AuditId = this.selectRow.id;
-          this.WaitLoanId = this.selectRow.id;
+        if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#(所以要截取一下)
+          let status = value.triggerUrl.substr(1, value.triggerUrl.length);
+          let statusId = status + "Id";
+          this[statusId] = this.selectRow.id;
+          this.setSidenavKey(status);
 
-          // 补充资料
-          this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
-          // 审核资料
-          this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
-          //待放款
-          this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+          // // 补充资料
+          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+          // // 审核资料
+          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+          // //待放款
+          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
         } else {
           this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
             if (res.code === "0") {

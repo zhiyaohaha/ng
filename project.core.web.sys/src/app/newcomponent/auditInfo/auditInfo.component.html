@@ -90,33 +90,33 @@
   </div>
 
   <!-- 批核信息 -->
-  <div class="m-b-20" *ngIf="auditResultPass">
+  <div class="m-b-20" *ngIf="status !== 'interview'?auditResultPass:false">
     <h4>批核信息</h4>
-    <form [formGroup]="approveInfoForm">
+    <form [formGroup]="approveLoanInfoForm">
       <ul class="loan-info clearfix">
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="批核金额" formControlName="loanApprovedAmount"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}金额" formControlName="loanApprovedAmount"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="批核期限" formControlName="loanApprovedTerm"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}期限" formControlName="loanApprovedTerm"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="批核年化" formControlName="loanApprovedTerm"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}年化" formControlName="loanApprovedTerm"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="批核月费率" formControlName="loanApprovedTerm"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}月费率" formControlName="loanApprovedTerm"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="批核还款方式" pholder="{{'请选择还款方式'}}" [options]="termBindData"></timi-select>
+            <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="还款方式" pholder="{{'请选择还款方式'}}" [options]="termBindData"></timi-select>
           </div>
         </li>
         <li *ngIf="status == 'auditFinal'">
@@ -124,34 +124,15 @@
             <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="termBindData"></timi-select>
           </div>
         </li>
-      </ul>
-    </form>
-  </div>
-
-  <!-- 放款  -->
-  <div *ngIf="status == 'waitLoan'">
-    <h4>放款信息</h4>
-    <form [formGroup]="waitLoanForm">
-      <ul class="loan-info clearfix">
-        <li>
+        <li *ngIf="status == 'waitLoan'">
           <div class="form-group columns1">
-            <timi-input labelName="批贷金额" formControlName="loanApprovedAmount"></timi-input>
-          </div>
-        </li>
-        <li>
-          <div class="form-group columns1">
-            <timi-input labelName="批贷期限" formControlName="loanApprovedTerm"></timi-input>
-          </div>
-        </li>
-        <li>
-          <div class="form-group columns1">
-            <!-- <timi-select formControlName="loanApprovedRepaymentMethod" [(ngModel)]="loanApprovedRepaymentMethod" [options]="loanInfo.termBindData" pholder="{{'请选择还款方式'}}"></timi-select> -->
+            放款时间
+            <!-- <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="termBindData"></timi-select> -->
           </div>
         </li>
       </ul>
     </form>
   </div>
-
   <div class="resultBtn">
     <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit(btn.url,btn.label)">{{btn.label}}</button>
   </div>

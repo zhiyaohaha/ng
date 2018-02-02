@@ -1,19 +1,10 @@
-import {CommonModule} from "@angular/common";
+import {CommonModule} from '@angular/common';
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  forwardRef,
-  Inject,
-  Input,
-  NgModule,
-  OnDestroy,
-  OnInit,
-  Output
-} from "@angular/core";
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {DomRenderer} from "../../common/dom";
+  NgModule, Component, OnInit, Input, Output, EventEmitter, OnDestroy, forwardRef, Inject, ElementRef
+} from '@angular/core';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {DomRenderer} from '../../common/dom';
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -22,7 +13,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: "free-calendar-selector",
+  selector: 'free-calendar-selector',
   template: `
     <div class="free-calendar-selector" (click)="onSelector($event)">
       <span class="fa fa-angle-up" (click)="count(1)"></span>
@@ -38,7 +29,7 @@ export class CalendarSelectorComponent {
   @Input() type: string;
   @Input()
   set value(value: number) {
-    if (typeof value !== "undefined") {
+    if (typeof value !== 'undefined') {
       this._value = value;
     } else {
       this.setCurrentValue();
@@ -308,7 +299,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
     this.format = 'yyyy-MM-dd';
     this.years = [];
     this.width = 250;
-    this.pholder = 'Select Time';
   }
 
   ngOnInit() {
@@ -333,6 +323,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
         this.value = this.domRenderer.dateFormat(this.currentDate, this.format);
       }
       this.dates = [];
+      this.pholder = 'Select Time';
       // this.itemWidth = parseFloat(((this.width - 10) / 7).toFixed(3));
       this.firstYear = this.todayDate.getFullYear();
       this.createCalendar();

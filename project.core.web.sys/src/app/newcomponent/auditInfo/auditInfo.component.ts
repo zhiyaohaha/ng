@@ -28,22 +28,16 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   loanInfo: any; //贷款信息
   attachmentsDisplay: false; //展现附件组下面的附件项
-  uploadUrl: string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
-  master: string = "/api/LoanOrder/UploadAttachmentFile";
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
-
-  applyFormData: any;           //动态表单数据
-  areaCities: any; //市级数据
-  areaCounties: any; //区县级数据
-  applyFormPostData: any; //用于提交的动态表单数据
 
   readyOnly: boolean = true;  //贷款信息是否是只读
 
-  waitLoanForm: any;
-  approveInfoForm: any;   //批核信息表单
+  approveLoanInfoForm: any;   //批核/放款---信息表单
+  approveLoanInfoFormDislayLabel: string = '批核';  // 展示批核/放款的label
   auditResultForm: any;   //审核结果表单
   auditResultReason: any;  //审核结果原因
-  auditResultPass: boolean = false;  //审核通过
+  auditResultPass: boolean = false;  //审核是否通过
+
   //临时数据代码
   //还款方式 
   termBindData: any = [
@@ -56,8 +50,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   terms2: any = [{ label: '我们不同意', status: false }, { label: "心情不好", status: true }, { label: "饿了", status: false }, { label: "还行", status: false }, { label: "随意", status: false }, { label: "就这样吧", status: true }];
   terms1: any = [{ label: '我们同意', status: false }, { label: "心情好", status: false }, { label: "还行", status: true }, { label: "随意", status: false }, { label: "就这样吧", status: false }, { label: "随缘吧", status: true }];
 
+
   @Input() id: string;
-  @Input() status: string;  //用于区分资料补充/待放款
+  @Input() status: string;  //用于区分当前侧滑状态
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -79,24 +74,21 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       }
     })
 
-    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal') {  // 初审/复审,
+    // 初审/复审/终审/面签/待放款
+    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan') {
       this.auditResultForm = this.fb.group({
         res1: '',                            //审核结果
         res2: [''],                          //审核原因
       })
-      this.approveInfoForm = this.fb.group({
+      this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedTerm: [''],                              //  批贷期限
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
       })
-    }
 
-    if (this.status == 'waitLoan') {  //待放款
-      this.waitLoanForm = this.fb.group({
-        loanApprovedAmount: [''],                            //批贷金额
-        loanApprovedTerm: [''],                              //  批贷期限
-        loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
-      })
+      if (this.status == 'waitLoan') {
+        this.approveLoanInfoFormDislayLabel = '放款';
+      }
     }
   }
 
@@ -228,7 +220,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit(url, label) {
-    // console.log(this.approveInfoForm.value)  //批准表单
+    // console.log(this.approveLoanInfoForm.value)  //批准表单
     console.log(this.auditResultForm.value)  //审核结果
     console.log(this.auditResultReason) //审核结果原因
 
