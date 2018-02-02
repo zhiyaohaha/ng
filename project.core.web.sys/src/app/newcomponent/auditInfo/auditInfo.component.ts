@@ -26,6 +26,11 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
+  // 审核(初/复审) /终审/待放款 -------(默认情况)--------只读（不传不删）,可审
+
+  // 面签，放款--------1)其它附件(默认情况)-----只读（不传不删），可审
+  //2)指定附件-----非只读（可传可删除）,不可审。 
+
   loanInfo: any; //贷款信息
   attachmentsDisplay: false; //展现附件组下面的附件项
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
