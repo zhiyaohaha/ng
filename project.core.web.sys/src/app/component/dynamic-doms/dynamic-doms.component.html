@@ -1,7 +1,7 @@
 <h4 class="">{{title}}</h4>
 <div class="wrap clearfix" *ngFor="let item of _modelDOMS;let i = index;" #boxHeight [ngClass]="{'wrap-border':!customFun()}">
   <div class="moveBox" (mousedown)="toMove($event,moveBox,boxHeight,i)" #moveBox>
-    <ng-container *ngFor="let child of item">
+    <ng-container *ngFor="let child of item;let num = index;">
       <ng-container [ngSwitch]="child.ui.displayType">
         <!-- 一级面板动态组件（附件组）  -->
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
@@ -12,7 +12,7 @@
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
           <timi-select name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]" pholder="{{child.ui.placeholder || '请选择'}}"
             [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'"
-            [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)">
+            [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds, num)">
           </timi-select>
         </div>
 
@@ -70,7 +70,7 @@
           </div>
           <div class="img-wrap span">
 
-            <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
+            <ng-template [ngIf]="child.ui.multiple && modelDOMSData['files']">
 
               <img *ngFor="let file of child.name | ergodicJson : modelDOMSData[i]" src="{{file || imgSrc}}" alt="">
             </ng-template>
@@ -130,7 +130,7 @@
                       <label>{{child.ui.label}}</label>
                     </div>
                     <div class="img-wrap span">
-                      <ng-template [ngIf]="child.ui.multiple && modelDOMSData.files">
+                      <ng-template [ngIf]="child.ui.multiple && modelDOMSData['files']">
                         <img *ngFor="let file of child.name | ergodicJson : modelDOMSData[i]" src="{{file || imgSrc}}" alt="">
                       </ng-template>
                       <ng-template [ngIf]="!child.ui.multiple">
