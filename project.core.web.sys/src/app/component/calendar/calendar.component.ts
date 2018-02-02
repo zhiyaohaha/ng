@@ -656,6 +656,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
 
   toToady() {
     this.selectDate(this.todayDate);
+    this.onModelChange(this.value);
     this.createCalendar();
   }
 
