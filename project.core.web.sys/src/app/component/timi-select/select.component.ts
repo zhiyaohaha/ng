@@ -40,7 +40,7 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
             <free-checkbox *ngIf="multiple" [checked]="multipleTotal" (onChange)="onMultipleTotal($event)">
             </free-checkbox>
 
-            <div class="free-select-inner">
+            <div class="free-select-inner comWidth">
               <i class="fa fa-search"></i>
               <input type="text" [(ngModel)]="_filterValue" (input)="onFilterChange($event)">
             </div>
@@ -57,7 +57,7 @@ const CUSTOM_SELECT_CONTROL_VALUE_ACCESSOR: any = {
             <ul *ngIf="multiple">
               <li *ngFor="let option of filterValue(options, 'text')" (click)="clickLi($event)">
                 <free-checkbox (onChange)="onCheckboxSelect($event, option)" [checked]="option.checked"
-                               [label]="option.text" [value]="option.value">
+                               [label]="option.text" [value]="option.value" class="comWidth">
                 </free-checkbox>
               </li>
             </ul>
@@ -240,7 +240,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     }
     this.getSelectedValue();
   }
-
+  
   /**
    * 多选时选中或取消某一项
    */
@@ -392,6 +392,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
 
   clickLi($event) {
     $event.stopPropagation();
+    console.log(1);
   }
 
   filterValue(options: any[], value: string) {

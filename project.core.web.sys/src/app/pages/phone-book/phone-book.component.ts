@@ -268,48 +268,47 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   }
 
   //删除通话记录数据
-  deleteRocord() {
-    let id = this.checkRocord.join(",");
-    super.openConfirm({
-      dialogService: this.dialogService,
-      message: "确定要删除选中的记录吗？"
-    }, (accept) => {
-      if (accept) {
-        this.phoneBookService.deleteRocords(id).subscribe(res => {
-          if (res.success === true) {
-            this.checkRocord = [];
-            this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(r => {
-              this.getRecordData(r.data);
-            });
-          }
-        });
-      }
-    });
-  }
-
+  // deleteRocord() {
+  //   let id = this.checkRocord.join(",");
+  //   super.openConfirm({
+  //     dialogService: this.dialogService,
+  //     message: "确定要删除选中的记录吗？"
+  //   }, (accept) => {
+  //     if (accept) {
+  //       this.phoneBookService.deleteRocords(id).subscribe(res => {
+  //         if (res.success === true) {
+  //           this.checkRocord = [];
+  //           this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(r => {
+  //             this.getRecordData(r.data);
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  
   //删除通讯录
-  deleteDetail() {
-    let id = this.checkDetail.join(",");
-    super.openConfirm({
-      dialogService: this.dialogService,
-      message: "确定要删除选中的记录吗？",
-    }, (accept) => {
-      if (accept) {
-        this.phoneBookService.deleteDetails(id).subscribe(res => {
-          if (res.success === true) {
-            this.checkDetail = [];
-            this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(r => {
-              this.getAddressData(r.data);
-            });
-          }
-        });
-      }
-    });
-  }
+  // deleteDetail() {
+  //   let id = this.checkDetail.join(",");
+  //   super.openConfirm({
+  //     dialogService: this.dialogService,
+  //     message: "确定要删除选中的记录吗？",
+  //   }, (accept) => {
+  //     if (accept) {
+  //       this.phoneBookService.deleteDetails(id).subscribe(res => {
+  //         if (res.success === true) {
+  //           this.checkDetail = [];
+  //           this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(r => {
+  //             this.getAddressData(r.data);
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   //删除行
   deleteRows() {
-    console.log(this.pageSize)
     super.openConfirm({
       dialogService: this.dialogService,
       viewContainerRef: this.viewContainerRef,
@@ -357,25 +356,25 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
   // }
 
   //选择行通话记录
-  checkedRocord(e, item) {
-    let isInarray = this.inArray(item.id, this.checkRocord);
-    if (e.srcElement.checked === true && !isInarray) {
-      this.checkRocord.push(item.id);
-    } else if (e.srcElement.checked === false && isInarray) {
-      this.removeByValue(this.checkRocord, item.id);
-    }
-  }
+  // checkedRocord(e, item) {
+  //   let isInarray = this.inArray(item.id, this.checkRocord);
+  //   if (e.srcElement.checked === true && !isInarray) {
+  //     this.checkRocord.push(item.id);
+  //   } else if (e.srcElement.checked === false && isInarray) {
+  //     this.removeByValue(this.checkRocord, item.id);
+  //   }
+  // }
 
   //选择行通讯录
-  checkedDetail(e, item) {
-    let isInarray = this.inArray(item.id, this.checkDetail);
-    if (e.srcElement.checked === true && !isInarray) {
-      this.checkDetail.push(item.id);
-    } else if (e.srcElement.checked === false && isInarray) {
-      this.removeByValue(this.checkDetail, item.id);
-    }
-    console.log(this.checkDetail);
-  }
+  // checkedDetail(e, item) {
+  //   let isInarray = this.inArray(item.id, this.checkDetail);
+  //   if (e.srcElement.checked === true && !isInarray) {
+  //     this.checkDetail.push(item.id);
+  //   } else if (e.srcElement.checked === false && isInarray) {
+  //     this.removeByValue(this.checkDetail, item.id);
+  //   }
+  //   console.log(this.checkDetail);
+  // }
 
 
   //删除数组中的特定值
