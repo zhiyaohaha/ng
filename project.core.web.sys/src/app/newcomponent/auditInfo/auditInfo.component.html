@@ -126,8 +126,11 @@
         </li>
         <li *ngIf="status == 'waitLoan'">
           <div class="form-group columns1">
-            放款时间
-            <!-- <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="termBindData"></timi-select> -->
+            <span class="time-picker-label ">放款时间</span>
+            <div class="time-picker">
+              <free-calendar formControlName="loanTime1" lang="cn" pholder="选择日期"></free-calendar>
+              <free-calendar formControlName="loanTime2" [timeOnly]="true" pholder="选择时间"></free-calendar>
+            </div>
           </div>
         </li>
       </ul>
