@@ -104,7 +104,7 @@
                 <td>{{item?.Remark}}</td>
                 <td>{{item?.RepaymentWay}}</td>
                 <td>
-                  <button md-raised-button (click)="sidenavKey = 'Repayment'">还款</button>
+                  <button md-raised-button (click)="onClickRepayment(item)">还款</button>
                 </td>
               </tr>
               </tbody>
@@ -114,7 +114,7 @@
         <!--还款-->
         <ng-container *ngSwitchCase="'Repayment'">
           <form #form="ngForm">
-            <input type="hidden" ngModel name="Id" value="123">
+            <input type="hidden" name="id" [(ngModel)]="repaymentId">
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>

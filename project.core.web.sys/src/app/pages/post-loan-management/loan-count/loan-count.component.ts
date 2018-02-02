@@ -36,6 +36,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   orderDetail; // 订单基本信息
   repaymentPlan; // 还款计划
+  repaymentId; // 还款的ID
 
   pagecode: string;
 
@@ -266,6 +267,19 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.getLists();
   }
 
+  /**
+   * 点击还款
+   * @param $event
+   */
+  onClickRepayment($event) {
+    this.sidenavKey = "Repayment";
+    this.repaymentId = $event.id;
+  }
+
+  /**
+   * 确定还款
+   * @param $event
+   */
   submitRepayment($event) {
     this.postLoanManagementService.submitRepayment($event)
       .subscribe(res => {
