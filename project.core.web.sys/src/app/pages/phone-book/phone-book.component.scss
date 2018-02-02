@@ -47,7 +47,7 @@ md-sidenav {
 }
 
 .active {
-  background-color: yellow;
+  background-color:  #D81E07;
 }
 
 .recordBox,
@@ -58,6 +58,9 @@ md-sidenav {
 .recordBox td,
 .detailBox td {
   text-align: center;
+}
+.detailBox td{
+  width: 50%;
 }
 
 .mid,
