@@ -114,7 +114,7 @@
         <!--还款-->
         <ng-container *ngSwitchCase="'Repayment'">
           <form #form="ngForm">
-            <input type="hidden" name="Id" value="123">
+            <input type="hidden" ngModel name="Id" value="123">
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>

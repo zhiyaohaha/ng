@@ -45,10 +45,6 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
               private postLoanManagementService: PostLoanManagementService,
               private fnUtil: FnUtil) {
     super(loading, activatedRoute);
-    activatedRoute.paramMap
-      .subscribe(res => {
-        this.cid = res.get("cid");
-      });
   }
 
   ngOnInit() {
@@ -65,6 +61,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       value: 3,
       childrens: null
     }];
+
+    this.cid = this.activatedRoute.snapshot.paramMap.get("cid");
 
     this.pagecode = this.fnUtil.getPageCode();
     let paginationInfo = this.fnUtil.getPaginationInfo();
@@ -269,6 +267,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   }
 
   submitRepayment($event) {
-    console.log($event);
+    this.postLoanManagementService.submitRepayment($event)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 }

@@ -39,4 +39,8 @@ export class PostLoanManagementService {
     return this.baseService.get("/api/LoanOrderRepaymentDetails/LendersDetailed", params);
   }
 
+  submitRepayment(params): Observable<any> {
+    return this.baseService.post("/api/LoanOrderRepaymentDetails/Repayment", params);
+  }
+
 }
