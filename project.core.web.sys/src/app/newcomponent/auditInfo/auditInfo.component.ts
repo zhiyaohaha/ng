@@ -222,9 +222,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit(url, label) {
-    // console.log(this.approveLoanInfoForm.value)  //批准表单
-    // console.log(this.auditResultForm.value)  //审核结果
-    // console.log(this.auditResultReason) //审核结果原因集合
+    console.log(this.approveLoanInfoForm.value)  //批准表单
+    console.log(this.auditResultForm.value)  //审核结果
+    console.log(this.auditResultReason) //审核结果原因集合
 
     // let _self = this;
     // let id = this.id;

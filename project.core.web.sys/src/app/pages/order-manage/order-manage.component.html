@@ -46,9 +46,9 @@
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
         <!-- 资料收集  -->
-        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId"></free-application>
+        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId" status="fillInfo"></free-application>
         <!-- 补充资料  -->
-        <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId"></free-application>
+        <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
 
         <!-- 资料审核（初审/复审） -->
         <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditFirstRecheckId" status="auditFirstRecheck"></free-auditInfo>

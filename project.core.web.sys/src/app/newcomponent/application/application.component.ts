@@ -39,6 +39,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   applyFormPostData: any = null; //用于提交的动态表单数据
 
   @Input() id: string;
+  @Input() status: string;  //用于区分当前侧滑状态
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
