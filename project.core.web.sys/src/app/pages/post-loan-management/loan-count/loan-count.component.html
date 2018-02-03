@@ -54,7 +54,7 @@
             </div>
             <div class="form-group columns1">
               <div class="label">放贷时间</div>
-              <div class="span">{{orderDetail?.loanDate | date}}</div>
+              <div class="span">{{orderDetail?.loanDate | date:"yyyy-MM-dd HH:mm:ss"}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">月费率</div>
@@ -113,34 +113,39 @@
         </ng-container>
         <!--还款-->
         <ng-container *ngSwitchCase="'Repayment'">
-          <form #form="ngForm">
-            <input type="hidden" name="id" [(ngModel)]="repaymentId">
+          <form [formGroup]="repaymentForm" (ngSubmit)="submitRepayment()">
+            <input type="hidden" formControlName="id">
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>
-                <free-calendar ngModel lang="cn" name="ActualTime"></free-calendar>
+                <free-calendar lang="cn" formControlName="ActualTime"></free-calendar>
+                <p class="errors" *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">必填</p>
               </div>
               <div class="form-group columns1">
-                <timi-input ngModel [labelName]="'还款金额'" name="ActualAmount"></timi-input>
+                <timi-input [labelName]="'还款金额'" formControlName="ActualAmount" ></timi-input>
+                <p class="errors" *ngIf="getFormControl('ActualAmount').dirty && getFormControl('ActualAmount').hasError('required')">必填</p>
               </div>
               <div class="form-group columns1">
-                <timi-input ngModel [labelName]="'滞纳金'" name="ActualLateFee"></timi-input>
+                <timi-input [labelName]="'滞纳金'" formControlName="ActualLateFee" ></timi-input>
+                <p class="errors" *ngIf="getFormControl('ActualLateFee').dirty && getFormControl('ActualLateFee').hasError('required')">必填</p>
               </div>
               <div class="form-group columns1">
-                <timi-select ngModel [freeSelectName]="'还款类型'" [options]="repaymentTypes" name="RepaymentWay"></timi-select>
+                <timi-select [freeSelectName]="'还款类型'" [options]="repaymentTypes" formControlName="RepaymentWay"></timi-select>
+                <p class="errors" *ngIf="getFormControl('RepaymentWay').dirty && getFormControl('RepaymentWay').hasError('required')">必填</p>
               </div>
             </div>
             <div class="section clearfix">
-              <div class="columns2" style="margin-bottom: 1rem;">
-                <timi-file-uploader ngModel [btnName]="'还款凭证'" name="PaymentVoucher"></timi-file-uploader>
+              <div class="columns2 upfile" style="margin-bottom: 1rem;">
+                <timi-file-uploader [btnName]="'还款凭证'" formControlName="PaymentVoucher"></timi-file-uploader>
+                <p class="errors" *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">必填</p>
               </div>
             </div>
             <div class="section clearfix">
-              <timi-textarea ngModel [labelName]="'备注'" name="Remark"></timi-textarea>
+              <timi-textarea [labelName]="'备注'" formControlName="Remark"></timi-textarea>
             </div>
             <div class="section clearfix operateBar">
-              <button md-raised-button (click)="sidenavKey = 'Detail'">返回</button>
-              <button md-raised-button (click)="submitRepayment(form.value)">确定</button>
+              <button md-raised-button (click)="onClickBack()">返回</button>
+              <button md-raised-button type="submit">确定</button>
             </div>
           </form>
         </ng-container>

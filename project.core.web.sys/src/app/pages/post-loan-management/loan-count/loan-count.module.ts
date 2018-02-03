@@ -11,11 +11,11 @@ import {CalendarModule} from "../../../component/calendar/calendar.component";
 import {TimiSelectModule} from "../../../component/timi-select/select.component";
 import {TimiTextareaModule} from "../../../component/timi-textarea/timi-textarea.component";
 import {TimiFileUploaderModule} from "../../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   imports: [
-    CommonModule, FormsModule,
+    CommonModule, FormsModule, ReactiveFormsModule,
     LoanCountRoutingModule,
     SearchFormModule, MdSidenavModule, MdButtonModule, TimiTableModule,
     TimiInputModule, TimiSelectModule, TimiTextareaModule, TimiFileUploaderModule, CalendarModule

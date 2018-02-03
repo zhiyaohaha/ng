@@ -4,6 +4,8 @@ import {ActivatedRoute} from "@angular/router";
 import {PostLoanManagementService} from "../../../services/post-loan-management/post-loan-management.service";
 import {FnUtil} from "../../../common/fn-util";
 import {BaseUIComponent} from "../../baseUI.component";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ToastService} from "../../../component/toast/toast.service";
 
 /**
  * 放款统计
@@ -36,12 +38,17 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   orderDetail; // 订单基本信息
   repaymentPlan; // 还款计划
+  rowId; // 点击行存下的ID
   repaymentId; // 还款的ID
+
+  repaymentForm: FormGroup;
 
   pagecode: string;
 
 
-  constructor(private loading: TdLoadingService,
+  constructor(private fb: FormBuilder,
+              private loading: TdLoadingService,
+              private toastService: ToastService,
               private activatedRoute: ActivatedRoute,
               private postLoanManagementService: PostLoanManagementService,
               private fnUtil: FnUtil) {
@@ -230,6 +237,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    */
   rowClickEvent($event) {
     this.sidenavKey = "Detail";
+    this.rowId = $event.id;
     this.getOrderDetail($event.id);
     this.getRepaymentPlan($event.id);
   }
@@ -274,16 +282,58 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   onClickRepayment($event) {
     this.sidenavKey = "Repayment";
     this.repaymentId = $event.id;
+
+    this.repaymentForm = this.fb.group({
+      id: [this.repaymentId],
+      ActualTime: ["", Validators.required],
+      ActualAmount: ["", Validators.required],
+      ActualLateFee: ["", Validators.required],
+      RepaymentWay: ["", Validators.required],
+      PaymentVoucher: ["", Validators.required],
+      Remark: [""]
+    });
+
+  }
+
+  onClickBack() {
+    this.sidenavKey = "Detail";
+    // this.getOrderDetail(this.rowId);
+    this.getRepaymentPlan(this.rowId);
   }
 
   /**
    * 确定还款
    * @param $event
    */
-  submitRepayment($event) {
-    this.postLoanManagementService.submitRepayment($event)
-      .subscribe(res => {
-        console.log(res);
-      });
+  submitRepayment() {
+
+    // 校验输入值
+    for (const i in this.repaymentForm.controls) {
+      if (this.repaymentForm.controls[i]) {
+        this.repaymentForm.controls[i].markAsDirty();
+      }
+    }
+
+    console.log(this.repaymentForm);
+    if (this.repaymentForm.valid) {
+      this.loading.register("loading");
+      this.postLoanManagementService.submitRepayment(this.repaymentForm.value)
+        .subscribe(res => {
+          this.loading.resolve("loading");
+          super.showToast(this.toastService, res.message || "状态未知");
+          if (res.code === "0") {
+            this.sidenavKey = "Detail";
+          }
+        });
+    }
+  }
+
+  /**
+   * 获取表单control
+   * @param name
+   * @returns {any}
+   */
+  getFormControl(name): AbstractControl {
+    return this.repaymentForm.controls[name];
   }
 }

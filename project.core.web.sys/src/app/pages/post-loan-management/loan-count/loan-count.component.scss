@@ -21,5 +21,21 @@ md-sidenav-container {
       text-align: center;
       padding: 1rem;
     }
+    .form-group {
+      position: relative;
+      .errors {
+        position: absolute;
+        top: 22px;
+        left: 120px;
+      }
+    }
+    .upfile {
+      position: relative;
+      .errors {
+        position: absolute;
+        top: 194px;
+        left: 120px;
+      }
+    }
   }
 }
