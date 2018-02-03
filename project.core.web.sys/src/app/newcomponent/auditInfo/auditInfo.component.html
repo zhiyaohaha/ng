@@ -34,7 +34,7 @@
             <pre *ngIf="attachmentGroup._attachments[0].description">{{attachmentGroup._attachments[0].description}}</pre>
             <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+              <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件,最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</p>
               <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
@@ -43,14 +43,14 @@
               </div>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
-                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly" [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
           </div>
           <!-- 非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
             <pre *ngIf="attachmentGroup.temporaryData.description">{{attachmentGroup.temporaryData.description}}</pre>
             <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件,最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</p>
               <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
@@ -59,7 +59,7 @@
               </div>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
           </div>
 
         </div>
@@ -140,5 +140,5 @@
   <div class="resultBtn">
     <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit(btn.url,btn.label)">{{btn.label}}</button>
   </div>
-  
+
 </div>
