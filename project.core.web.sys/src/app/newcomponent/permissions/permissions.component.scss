@@ -18,14 +18,13 @@
   }
   .menu-row {
     list-style: none;
-    overflow: hidden;
     margin: 10px 0;
     display: flex;
   }
   .menu-card {
     float: left;
     margin-left: 10px;
-    width: 110px;
+    min-width: 110px;
     text-align: center;
     box-sizing: content-box;
     .pages-item {

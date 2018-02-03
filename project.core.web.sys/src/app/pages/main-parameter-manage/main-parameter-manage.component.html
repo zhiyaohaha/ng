@@ -2,32 +2,47 @@
   <md-sidenav #sidenav class="example-sidenav container-fluid" position="end" (open-start)="sidenavOpen()"
               (close)="closeEnd()">
     <div class="row">
+      <!-- 选择树节点部分 -->
       <div class="sidenav-left" *ngIf="!isNew">
         <div class="sidenav-container">
           <ng-container *ngIf="!tree">loading</ng-container>
           <tree [tree]="tree" (nodeSelected)="treeSelected($event)" (onAddChild)="addChild($event)"></tree>
         </div>
       </div>
-      <div class="sidenav-right" *ngIf="selectNode">
-        <md-tab-group>
-          <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1">
-            <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" [modelDOMSData]="selectNode" btnValue="确定修改"
-                                  (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
-          </md-tab>
-          <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1">
-            <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" btnValue="确定新增" btnType="new"
-                                  (ngSubmit)="onSubmitAddParams($event)"></timi-responsive-form>
-          </md-tab>
-        </md-tab-group>
+
+      <!-- 内部的添加修改部分 -->
+      <div class="sidenav-right" *ngIf="selectNode" [class.special]="templateType === '#SetFunction'">
+
+        <detail-model *ngIf="firstModalDOMS && defaultShow" [modelDOMS]="firstModalDOMS" [modelDOMSData]="selectNode" (onClick)="detailClick($event)"></detail-model>
+
+        <!-- <md-tab-group>
+          <md-tab label="修改" *ngIf="authorities.indexOf(authorityKey+'.Update') != -1"> -->
+            <timi-responsive-form *ngIf="templateType === '#FormUpdateTemplate'" [modelDOMS]="modalDOMS" [modelDOMSData]="selectNode" btnValue="确定修改"
+                                  (ngSubmit)="onSubmitParams($event)">
+            </timi-responsive-form>
+          <!-- </md-tab>
+          <md-tab label="添加" *ngIf="authorities.indexOf(authorityKey+'.Add') != -1"> -->
+            <timi-responsive-form *ngIf="templateType === '#FormAddTemplate'" [modelDOMS]="modalDOMS" btnValue="确定新增" btnType="new"
+                                  (ngSubmit)="onSubmitAddParams($event)">
+            </timi-responsive-form>
+
+            <free-permissions [id]="selectNode.id" [from]="" *ngIf="templateType === '#SetFunction'"></free-permissions>
+          <!-- </md-tab>
+        </md-tab-group> -->
       </div>
+
+      <!-- 页面上搜索边的添加 -->
       <div class="sidenav-new" *ngIf="isNew">
         <md-tab-group>
           <md-tab label="添加">
             <timi-responsive-form *ngIf="modalDOMS" [modelDOMS]="modalDOMS" btnValue="确定新增" btnType="new"
-                                  (ngSubmit)="onSubmitNewAdd($event)"></timi-responsive-form>
+                                  (ngSubmit)="onSubmitNewAdd($event)">
+            </timi-responsive-form>
           </md-tab>
         </md-tab-group>
       </div>
+
+
     </div>
   </md-sidenav>
 
