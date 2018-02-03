@@ -38,22 +38,22 @@
             <pre *ngIf="attachmentGroup._attachments[0].description">{{attachmentGroup._attachments[0].description}}</pre>
             <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件</p>
+              <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件,最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"
-              [readyOnly]=" status == 'updateInfo' && attachmentGroup._attachments[0]._status !== '不通过'"></multiple-uploader>
+              [readyOnly]=" status == 'updateInfo' && attachmentGroup._attachments[0]._status !== '不通过'" [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
           </div>
           <!-- 附件组非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
             <pre *ngIf="attachmentGroup.temporaryData.description">{{attachmentGroup.temporaryData.description}}</pre>
             <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件</p>
+              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件,最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"
-              [readyOnly]=" status == 'updateInfo'  && attachmentGroup.temporaryData._status !== '不通过'"></multiple-uploader>
+              [readyOnly]=" status == 'updateInfo'  && attachmentGroup.temporaryData._status !== '不通过'" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
           </div>
         </div>
       </li>
