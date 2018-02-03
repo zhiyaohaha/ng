@@ -15,7 +15,7 @@ import { PreviewService } from "app/services/preview/preview.service";
 import { ToastService } from "../toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -40,6 +40,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   @Input() uploaderQueueHidden: boolean;   //隐藏手动上传的样式(否则在切换其它附件项的时候，会出现同样的上传样式)
   @Output() onPostFileData = new EventEmitter();  //发送最新上传的文件数据
   @Input() readyOnly: boolean = false;  //该组件是否为只读状态
+  @Input() upperLimit: number;  //最大上传数量
 
   // uploading: boolean = false; //上传中
   defaultImgSrc: string = "../../../assets/Images/uploading.gif"; //默认上传图片
@@ -338,6 +339,18 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   }
 
   registerOnTouched(fn: any): void {
+  }
+
+  //根据最大上传数量和当前上传的附件数量，判断，是否可以继续上传。
+  clickUpload(e) {
+    if (this.existingDatas) {
+      let currentNum = this.existingDatas.length;    //最大上传数量
+      let upperLimitNum = this.upperLimit;           //当前数量
+      if (currentNum >= upperLimitNum) {
+        e.preventDefault();    //默认事件就是打开文件对话框
+        super.openAlert({ title: "提示", message: "该附件项最多上传" + upperLimitNum + "个附件", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      }
+    }
   }
 
 }

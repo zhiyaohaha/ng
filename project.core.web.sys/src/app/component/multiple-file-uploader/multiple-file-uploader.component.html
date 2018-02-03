@@ -50,7 +50,7 @@
     <div class="upload-custom-btn ">
       <i class="fa fa-plus"></i>
     </div>
-    <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (change)="changeNickname()">
+    <input type="file" class="upload-input" ng2FileSelect [uploader]="uploader" multiple (click)="clickUpload($event)" (change)="changeNickname()">
   </a>
 
 </div>
