@@ -8,15 +8,6 @@
   .example-container {
     height: 100%;
   }
-  .example-sidenav {
-    .panel {
-      overflow: hidden;
-      padding-right: 40px;
-      &:first-child {
-        padding-top: 10px;
-      }
-    }
-  }
   .sidenav-left {
     background-color: #eee;
     min-width: 20vw;
@@ -220,6 +211,16 @@
     }
     100% {
       color: #6a1b9a;
+    }
+  }
+}
+
+.example-sidenav {
+  .panel {
+    overflow: hidden;
+    padding-right: 40px;
+    &:first-child {
+      padding-top: 10px;
     }
   }
 }

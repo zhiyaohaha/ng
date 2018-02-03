@@ -48,7 +48,7 @@ export class ParamsManageService {
   }
 
   /**
-   * 点击tree上面的节点获取数据
+   * 点击tree上面的节点获取详细数据
    * @param param
    * @returns {Observable<any>}
    */
