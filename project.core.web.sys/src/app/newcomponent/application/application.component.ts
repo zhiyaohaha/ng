@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { FormBuilder } from "@angular/forms";
 
 import { ToastService } from "../../component/toast/toast.service";
-import { TdLoadingService } from "@covalent/core";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
 
@@ -44,6 +44,8 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     private toastService: ToastService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef,
     private loadingService: TdLoadingService,
     private routerInfor: ActivatedRoute) {
     super(loadingService, routerInfor);
@@ -164,6 +166,8 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit($event, url, label) {
+    if (!this.multipleFileUploaderLowerLimit()) return false;
+    // console.log('可以上传')
     let _self = this;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
@@ -188,5 +192,40 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     })
   }
 
+  //根据多文件上传，上传最小数量的限制。 来判断是否可以继续提交 
+  multipleFileUploaderLowerLimit() {
+    let attachmentGroups = this.loanInfo._attachmentGroups;
+    let BreakException = {};
+    try {
+      attachmentGroups.forEach((element, index) => {
+        let attachments = element['_attachments'];
+        attachments.forEach(element1 => {
+          let currentNum = element1['_files'] ? element1['_files'].length : 0;
+          let lowerLimit = element1['needCount'];
+          if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
+            //提示 
+            let msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+            super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            //展开该附件组
+            element.attachmentsDisplay = true;
+            //,关闭其他附件组
+            attachmentGroups.forEach((e, i) => {
+              if (i !== index) {
+                e.attachmentsDisplay = false;
+              }
+            })
+            //展开该附件项
+            this.firstAttachmentActive = false;
+            element.temporaryData = element1;
+            //停止继续提交
+            throw BreakException;
+          }
+        });
+      });
+    } catch (e) {
+      return false;   //不能继续提交了
+    }
+    return true;  //可以继续提交
+  }
 
 }
