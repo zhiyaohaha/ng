@@ -39,8 +39,21 @@ export class PostLoanManagementService {
     return this.baseService.get("/api/LoanOrderRepaymentDetails/LendersDetailed", params);
   }
 
+  /**
+   * 提交还款
+   * @param params
+   * @returns {Observable<any>}
+   */
   submitRepayment(params): Observable<any> {
     return this.baseService.post("/api/LoanOrderRepaymentDetails/Repayment", params);
   }
 
+  /**
+   * 生成还款计划
+   * @param params
+   * @returns {Observable<any>}
+   */
+  submitCreatePlan(params): Observable<any> {
+    return this.baseService.post("/api/LoanOrderRepaymentDetails/uptLoanOrderRepaymentDetails", params);
+  }
 }

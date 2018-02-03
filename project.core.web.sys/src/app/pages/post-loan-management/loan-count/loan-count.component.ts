@@ -32,8 +32,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     filter: ""
   };
 
-  sidenavKey: string; // Detail 详细  Repayment 还款
+  sidenavKey: string; // Detail 详细 CreatePlan 生成还款计划  Repayment 还款
   repaymentTypes; // 还款类型
+  repaymentWay; // 还款方式
   cid; // 公司ID
 
   orderDetail; // 订单基本信息
@@ -41,7 +42,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   rowId; // 点击行存下的ID
   repaymentId; // 还款的ID
 
-  repaymentForm: FormGroup;
+  repaymentForm: FormGroup; // 还款表单
+  repaymentPlanForm: FormGroup; // 还款计划表单
 
   pagecode: string;
 
@@ -69,6 +71,11 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       value: 3,
       childrens: null
     }];
+    this.repaymentWay = [{
+      text: "先息后本",
+      value: "1",
+      childrens: null
+    }];
 
     this.cid = this.activatedRoute.snapshot.paramMap.get("cid");
 
@@ -86,6 +93,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.getLists();
   }
 
+  /**
+   * 获取表格列表
+   */
   getLists() {
     this.loading.register("loading");
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
@@ -281,8 +291,12 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    */
   onClickRepayment($event) {
     this.sidenavKey = "Repayment";
-    this.repaymentId = $event.id;
-
+    if ($event === "all") {
+      this.repaymentId = "";
+    } else {
+      this.repaymentId = $event.id;
+    }
+    // 还款表单
     this.repaymentForm = this.fb.group({
       id: [this.repaymentId],
       ActualTime: ["", Validators.required],
@@ -292,9 +306,26 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       PaymentVoucher: ["", Validators.required],
       Remark: [""]
     });
-
   }
 
+  /**
+   * 还款计划表
+   */
+  createPlan() {
+    this.sidenavKey = "CreatePlan";
+    // 还款计划表单
+    this.repaymentPlanForm = this.fb.group({
+      id: [this.rowId],
+      loanTime: ["", Validators.required],
+      yearRate: ["", Validators.required],
+      monthRate: ["", Validators.required],
+      repaymentType: ["1", Validators.required]
+    });
+  }
+
+  /**
+   * 返回详细
+   */
   onClickBack() {
     this.sidenavKey = "Detail";
     // this.getOrderDetail(this.rowId);
@@ -324,6 +355,24 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
           if (res.code === "0") {
             this.sidenavKey = "Detail";
           }
+        });
+    }
+  }
+
+  submitCreatePlan() {
+    // 校验输入值
+    for (const i in this.repaymentPlanForm.controls) {
+      if (this.repaymentPlanForm.controls[i]) {
+        this.repaymentPlanForm.controls[i].markAsDirty();
+      }
+    }
+
+    if (this.repaymentPlanForm.valid) {
+      this.loading.register("loading");
+      this.postLoanManagementService.submitCreatePlan(this.repaymentPlanForm.value)
+        .subscribe(res => {
+          this.loading.resolve("loading");
+          console.log(res);
         });
     }
   }
