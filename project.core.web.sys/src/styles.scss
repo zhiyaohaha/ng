@@ -185,3 +185,8 @@ md-select.mat-select {
 .mat-select-panel {
     max-height: 500px !important;
 }
+
+// 弹框字体颜色
+.mat-button.mat-accent, .mat-icon-button.mat-accent {
+  color: #cf000d !important;
+}
