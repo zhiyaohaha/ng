@@ -346,7 +346,6 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     if (this.existingDatas) {
       let currentNum = this.existingDatas.length;    //最大上传数量
       let upperLimitNum = this.upperLimit;           //当前数量
-      upperLimitNum = 2;
       if (currentNum >= upperLimitNum) {
         e.preventDefault();    //默认事件就是打开文件对话框
         super.openAlert({ title: "提示", message: "该附件项最多上传" + upperLimitNum + "个附件", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
