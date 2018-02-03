@@ -96,13 +96,13 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
       this.modelDOMSData = value;
 
       for (let i = 0; i < value.length; i++) {
-        this._modelDOMS.push(this._notes);
+        this._modelDOMS.push(JSON.parse(JSON.stringify(this._notes)));
       }
     }
     if (!value) {
       this._modelDOMS = [];
       if (this.customFun()) {   //产品管理 - 增加时不显示默认附件组结构
-        this._modelDOMS[0] = this._notes;
+        this._modelDOMS[0] = JSON.parse(JSON.stringify(this._notes));
       }
       this.onModelChange(null);
     }
@@ -142,11 +142,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
           }
           this.baseService.get("/api/" + item.triggerUrl, params)
             .subscribe(res => {
-              console.log(res);
-              console.log(item.triggerDom);
-              console.log(this._modelDOMS[index]);
               this.setValue(this._modelDOMS[index], item.triggerDom, res.data);
-              console.log(this._modelDOMS[index]);
             });
         }
       });
@@ -160,7 +156,7 @@ export class DynamicDomsComponent implements OnInit, ControlValueAccessor {
    */
   handleNode(index, type) {
     if (type === "add") {
-      this._modelDOMS.push(this._notes);
+      this._modelDOMS.push(JSON.parse(JSON.stringify(this._notes)));
       this.modelDOMSData.push({});
     } else if (type === "del") {
       this._modelDOMS.splice(index, 1);
