@@ -39,9 +39,10 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   approveLoanInfoForm: any;   //批核/放款---信息表单
   approveLoanInfoFormDislayLabel: string = '批核';  // 展示批核/放款的label
-  auditResultForm: any;   //审核结果表单
-  auditResultReason: any;  //审核结果原因
-  auditResultPass: boolean = false;  //审核是否通过
+  auditStatus: string;   //审核状态
+  aduitOption: string; //审核选项
+  auditResultReason: any;  //审核状态原因
+  process: string; //流程
 
   //临时数据代码
   //还款方式 
@@ -50,10 +51,10 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     { text: "睡觉", value: "12", childrens: null }
   ]
   //通过与不通过原因 
-  terms2: any = ['我们不同意', "心情不好", "饿了", "还行", "随意", "就这样吧"];
-  terms1: any = ['我们同意', "心情好", "还行", "随意", "就这样吧", "随缘吧"];
-  // terms2: any = [{ label: '我们不同意', status: false }, { label: "心情不好", status: true }, { label: "饿了", status: false }, { label: "还行", status: false }, { label: "随意", status: false }, { label: "就这样吧", status: true }];
-  // terms1: any = [{ label: '我们同意', status: false }, { label: "心情好", status: false }, { label: "还行", status: true }, { label: "随意", status: false }, { label: "就这样吧", status: false }, { label: "随缘吧", status: true }];
+  // terms2: any = ['我们不同意', "心情不好", "饿了", "还行", "随意", "就这样吧"];
+  // terms1: any = ['我们同意', "心情好", "还行", "随意", "就这样吧", "随缘吧"];
+  terms2: any = [{ label: '我们不同意', status: false }, { label: "心情不好", status: true }, { label: "饿了", status: false }, { label: "还行", status: false }, { label: "随意", status: false }, { label: "就这样吧", status: true }];
+  terms1: any = [{ label: '我们同意', status: false }, { label: "心情好", status: false }, { label: "还行", status: true }, { label: "随意", status: false }, { label: "就这样吧", status: false }, { label: "随缘吧", status: true }];
 
 
   @Input() id: string;
@@ -75,16 +76,13 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       this.loadingService.resolve("loading");
       if (res.data) {
         // console.log(res)
+        this.process = res.data.process;
         this.getLoanInfo(res.data);
       }
     })
 
     // 初审/复审/终审/面签/待放款
     if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
-      this.auditResultForm = this.fb.group({
-        res1: '',                            //审核结果
-        res2: [''],                          //审核原因
-      })
       this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedTerm: [''],                              //  批贷期限
@@ -215,14 +213,37 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   //根据审核结果的不同，显示不同结果的原因 
-  setAuidtResult($event) {
-    if ($event.value == '通过') {
-      this.auditResultReason = this.terms1;
-      this.auditResultPass = true;
-    } else if ($event.value == '不通过') {
-      this.auditResultReason = this.terms2;
-      this.auditResultPass = false;
-    }
+  setAuidtResult(auditOption) {
+    let process = this.process;
+    this.auditStatus = auditOption.status;
+    this.aduitOption = auditOption.option;
+
+    this.loadingService.register("loading");
+    this.orderService.GetAuditOpinion(process, auditOption.status, auditOption.option).subscribe(res => {
+      this.loadingService.resolve("loading");
+      if (res.code == "0") {
+        this.auditResultReason = res.data
+      }
+    })
+  }
+
+  //审核结果原因
+  chipsChange(e) {
+    let process = this.process;
+    let content = e[0]['label'];
+    let aduitOption = this.aduitOption;
+    let _self = this;
+
+    this.loadingService.register("loading");
+    this.orderService.PostAddAuditOpinion(process, aduitOption['status'], aduitOption['option'], content).subscribe(res => {
+      this.loadingService.resolve("loading");
+      if (res.code == "0") {
+        super.showToast(_self.toastService, "添加成功");
+      } else {
+        super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      }
+    })
+
   }
 
   //设置附件组(reuiqed字段)是否显示必填。  
@@ -250,8 +271,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit(url, label) {
-    console.log(this.approveLoanInfoForm.value)  //批准表单
-    console.log(this.auditResultForm.value)  //审核结果
+    // console.log(this.approveLoanInfoForm.value)  //批准表单
+    console.log(this.auditStatus)  //审核状态
+    console.log(this.aduitOption)  //审核选项
     console.log(this.auditResultReason) //审核结果原因集合
 
     // let _self = this;
