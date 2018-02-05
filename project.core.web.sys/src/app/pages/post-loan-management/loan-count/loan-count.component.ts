@@ -46,8 +46,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   repaymentForm: FormGroup; // 还款表单
   repaymentPlanForm: FormGroup; // 还款计划表单
 
-  totalamountReturned = 0; // 总应还金额
-  totalLoanApprovedAmount = 0; // 总实际还款金额
+  totalLoanApprovedAmount = 0; // 总应还金额
+  totalActualAmount = 0; // 总实际还款金额
 
   pagecode: string;
 
@@ -91,7 +91,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
     this.listparam.index = this.pageSize;
     this.listparam.size = this.pageSize;
-    this.listparam.filter = this.convertUtil.toJsonStr({orgId: this.orgId});
+    if (this.orgId) {
+      this.listparam.filter = this.convertUtil.toJsonStr({orgId: this.orgId});
+    }
 
     this.initSearch();
     this.initHeaders();
@@ -109,8 +111,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       if (res.code === "0") {
         this.datas = res.data.Lending;
         this.totals = res.data.total;
-        this.totalamountReturned = res.data.totalamountReturned;
         this.totalLoanApprovedAmount = res.data.totalLoanApprovedAmount;
+        this.totalActualAmount = res.data.totalActualAmount;
       }
     });
   }
@@ -126,7 +128,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       obj["orgId"] = this.orgId;
       this.listparam.filter = this.convertUtil.toJsonStr(obj);
     } else {
-      this.listparam.filter = this.convertUtil.toJsonStr($event);
+      this.listparam.filter = $event;
     }
     this.getLists();
   }

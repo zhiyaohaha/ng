@@ -8,7 +8,7 @@
               [activeIndex]="currentPage" (pageEvent)="page($event)"
               (clickRowEvent)="rowClickEvent($event);sidenav.open()">
   </timi-table>
-  <p><span>总应还金额：<em>{{totalamountReturned}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalLoanApprovedAmount}}</em></span></p>
+  <p class="count-money"><span>总应还金额：<em>{{totalLoanApprovedAmount}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalActualAmount}}</em></span></p>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end">
     <div class="row">
