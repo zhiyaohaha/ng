@@ -22,12 +22,11 @@ export class SearchFormComponent implements OnInit {
   StartTime: Date;
   EndTime: Date;
 
-  constructor(private util: ConvertUtil) {
+  constructor(private convertUtil: ConvertUtil) {
   }
 
   ngOnInit() {
   }
-
 
   /**
    * 设置搜索关键字KV
@@ -42,37 +41,41 @@ export class SearchFormComponent implements OnInit {
     });
   }
 
-  keyPress($event, params) {
-    if ($event.which === 13) {
-      this.searchParams(params);
-    }
-  }
-
   //搜索
   searchParams($event) {
+
     if (this.condition) {
-      this.condition.filter(i => {
-        if (i.key === "createdDate" && this.StartTime && this.EndTime) {
-          i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
-        } else {
-          i.value = $event[i.key];
-        }
+      this.condition.map(item => {
+        item["value"] = $event[item["key"]];
       });
-      let filter = false;
-      this.condition.forEach(item => {
-        if (item.value && item.value !== 0) {
-          filter = true;
-        }
-      });
-      if (filter) {
-        let str = JSON.stringify(this.condition);
-        this.onSearch.emit(str);
-      } else {
-        this.onSearch.emit("");
-      }
+      this.onSearch.emit(this.convertUtil.toJsonStr(this.condition));
     } else {
-      this.onSearch.emit($event);
+      this.onSearch.emit(this.convertUtil.toJsonStr($event));
     }
+
+    // if (this.condition) {
+    //   this.condition.filter(i => {
+    //     if (i.key === "createdDate" && this.StartTime && this.EndTime) {
+    //       i.value = this.util.getFullDate(this.StartTime) + " " + this.util.getFullDate(this.EndTime);
+    //     } else {
+    //       i.value = $event[i.key];
+    //     }
+    //   });
+    //   let filter = false;
+    //   this.condition.forEach(item => {
+    //     if (item.value && item.value !== 0) {
+    //       filter = true;
+    //     }
+    //   });
+    //   if (filter) {
+    //     let str = JSON.stringify(this.condition);
+    //     this.onSearch.emit(str);
+    //   } else {
+    //     this.onSearch.emit("");
+    //   }
+    // } else {
+    //   this.onSearch.emit($event);
+    // }
   }
 }
 
