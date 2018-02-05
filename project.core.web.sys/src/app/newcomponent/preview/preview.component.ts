@@ -22,6 +22,9 @@ export class PreviewComponent implements OnInit {
   picUrl: string; //图片地址
   isSwitchShow: boolean; //是否显示左右切换
 
+  boxWidth:any;
+  boxHeight:any;
+
 
   constructor(private previewService: PreviewService) {
   }
@@ -33,6 +36,14 @@ export class PreviewComponent implements OnInit {
     } else {
       this.isSwitchShow = false;
     }
+    
+  }
+  ngAfterViewInit() {
+    // console.log(this.prePic.nativeElement.offsetWidth);
+    // this.boxWidth = this.prePic.nativeElement.offsetWidth/2;
+    // this.boxHeight = this.prePic.nativeElement.offsetHeight/2;
+    // this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+    // this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
   }
 
   closebtn() {
@@ -76,10 +87,8 @@ export class PreviewComponent implements OnInit {
   //滚动放大缩小图片
   listenToMousewheel(event) {
     if (event.deltaY > 0) {
-      console.log("向下滚动,放大图片");
       this.largen();
     } else if (event.deltaY < 0) {
-      console.log("向上滚动，缩小图片");
       this.shrink();
     }
 

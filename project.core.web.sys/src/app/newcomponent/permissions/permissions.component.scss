@@ -64,9 +64,15 @@
       cursor: pointer;
     }
   }
-  .add-button{
+  .box{
     position: relative;
-    left: calc(50% - 44px);
+  }
+  .add-button{
+    position: absolute;
+    right: 70px;
+    bottom: 20px;
+    background-color: $btn1bgc;
+    color: $btn1fc;
   }
 
 }
