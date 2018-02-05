@@ -31,14 +31,20 @@ select{
 .accessory{
     border-bottom-width:0px;
 }
-.accessory  span.status{
-    position: absolute;
-    top:0;
-    bottom:0;
-    margin:auto;
-    right:10px;
-    height:20px;
-    line-height:15px;
+.accessory{
+    span.status{
+        position: absolute;
+        top:0;
+        bottom:0;
+        margin:auto;
+        right:10px;
+        height:20px;
+        line-height:15px;
+    }
+    span.status-required{
+        right:58px;
+        background-color:'#e33244'
+    }
 } 
 .accessory li{
     border-bottom:1px dashed #cf000d;

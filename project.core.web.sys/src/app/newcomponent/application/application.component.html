@@ -22,6 +22,7 @@
         <div class="accessoryTop" (click)="displayAttachmentGroup(attachmentGroup.attachmentsDisplay,attachmentGroup,loanInfo._attachmentGroups,i)"
           [ngClass]="{'attachmentGroupActive':attachmentGroup.attachmentsDisplay}">
           <span>{{attachmentGroup.name}}</span>
+          <span class="free-badge status status-required" *ngIf="attachmentGroup.required">必填</span>
           <span class="free-badge status" [style.background-color]="statusStyle(attachmentGroup._status)">{{attachmentGroup._status}}</span>
         </div>
         <div class="accessoryBottom" *ngIf="attachmentGroup.attachmentsDisplay" [@selectState]="'attachmentsDisplay'">
@@ -29,6 +30,7 @@
             <li *ngFor="let attachment of attachmentGroup._attachments;let k = index;" (click)="displayAttachmentData(attachment,attachmentGroup,k)">
               <div class="accessoryBottomTop" [ngClass]="{'attachmentActive':k == 0 ? firstAttachmentActive : attachment.id == attachmentGroup.temporaryData.id}">
                 <span>{{attachment.name}}</span>
+                <span class="free-badge status status-required" *ngIf="attachment.needCount > 0">必填</span>
                 <span class="free-badge status" [style.background-color]="statusStyle(attachment._status)">{{attachment._status}}</span>
               </div>
             </li>
@@ -38,7 +40,10 @@
             <pre *ngIf="attachmentGroup._attachments[0].description">{{attachmentGroup._attachments[0].description}}</pre>
             <p *ngIf="attachmentGroup._attachments[0].statusRemark">不通过原因：{{attachmentGroup._attachments[0].statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件,最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</p>
+              <p class="auditNeedCount">
+                <span *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件,</span>
+                <span *ngIf="attachmentGroup._attachments[0].upperLimit">最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</span>
+              </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"
@@ -49,7 +54,10 @@
             <pre *ngIf="attachmentGroup.temporaryData.description">{{attachmentGroup.temporaryData.description}}</pre>
             <p *ngIf="attachmentGroup.temporaryData.statusRemark">不通过原因：{{attachmentGroup.temporaryData.statusRemark}}</p>
             <div class="clearfix auditBtnParent">
-              <p class="auditNeedCount" *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件,最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</p>
+              <p class="auditNeedCount">
+                <span *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件,</span>
+                <span *ngIf="attachmentGroup.temporaryData.upperLimit">最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</span>
+              </p>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"
