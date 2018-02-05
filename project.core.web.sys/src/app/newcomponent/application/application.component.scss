@@ -30,8 +30,6 @@ select{
 //附件
 .accessory{
     border-bottom-width:0px;
-}
-.accessory{
     span.status{
         position: absolute;
         top:0;
@@ -45,77 +43,80 @@ select{
         right:58px;
         background-color:'#e33244'
     }
-} 
-.accessory li{
-    border-bottom:1px dashed #cf000d;
-}
-
-.accessory .accessoryTop{
-    text-align:center;
-    overflow:hidden;
-    position: relative;
-    height: 36px;
-    line-height: 36px;
-    &:hover{
-        cursor: pointer;
-        background-color: #cf000d;
-        color: #FFF;
-        font-size: 18px;
+    li{
+        border-bottom:1px dashed #cf000d;
+    }
+    
+    .accessoryTop{
+        text-align:center;
+        overflow:hidden;
+        position: relative;
         height: 36px;
-        line-height:  36px;
-        font-weight: bold;
+        line-height: 36px;
+        &:hover{
+            cursor: pointer;
+            background-color: #cf000d;
+            color: #FFF;
+            font-size: 18px;
+            height: 36px;
+            line-height:  36px;
+            font-weight: bold;
+        }
+    } 
+    
+    .accessoryBottom{
+        ul{
+            display:flex;
+            background-color:#F2F2F2;
+            li{
+                flex-grow:1;
+             }
+        }
+        .accessoryBottomTop{
+            position: relative;
+            padding-left:5px;
+            background-color:#fff;
+            font-size:12px;
+            &:hover{
+                cursor: pointer;
+                background-color: #FFF;
+                font-size:  12px;
+                box-shadow: 2px 3px 8px #cf000d;
+            }
+         }
+         .accessoryBottomBottom{
+            padding-left:5px;
+            background-color:#fff;
+            pre{
+                font-size:12px;
+                margin-bottom: 30px;
+                margin-top: 10px;
+                line-height:16px;
+                white-space: pre-wrap;
+             }
+             .auditBtnParent{
+                .auditNeedCount{
+                    float: left;
+                }
+                .auditBtn{
+                    float: right;
+                    cursor: pointer;
+                    span{
+                        height: 20px;
+                        line-height: 15px;
+                    }
+                    .auditBtnPass{
+                        background-color:#177bbb;
+                    }
+                    .auditBtnNotPass{
+                        background-color:#666666;
+                    }
+                }
+             }
+         }
     }
+    
 } 
-
-.accessory  .accessoryBottom ul{
-    display:flex;
-    background-color:#F2F2F2;
-}
-.accessory  .accessoryBottom ul li{
-   flex-grow:1;
-}
-.accessory  .accessoryBottom .accessoryBottomTop{
-    position: relative;
-    padding-left:5px;
-    background-color:#fff;
-    font-size:12px;
-    &:hover{
-        cursor: pointer;
-        background-color: #FFF;
-        font-size:  12px;
-        box-shadow: 2px 3px 8px #cf000d;
-    }
- }
- .accessory  .accessoryBottom .accessoryBottomBottom{
-    padding-left:5px;
-    background-color:#fff;
- }
- .accessoryBottomBottom pre{
-    font-size:12px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    line-height:16px;
-    white-space: pre-wrap;
- }
- .accessoryBottomBottom .auditBtnParent{
-    .auditNeedCount{
-        float: left;
-    }
-    .auditBtn{
-        float: right;
-        cursor: pointer;
-        span{
-            height: 20px;
-            line-height: 15px;
-        }
-        .auditBtnPass{
-            background-color:#177bbb;
-        }
-        .auditBtnNotPass{
-            background-color:#666666;
-        }
-    }
- }
 
 //高亮当前附件组 和 附件项
 .attachmentGroupActive{
