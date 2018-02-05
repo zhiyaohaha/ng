@@ -158,6 +158,28 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     return label;
   }
 
+  //设置附件组(reuiqed字段)是否显示必填。  
+  setAttachmentGroupAttachmentRequired(attachmentGroupIndex) {
+    // 如果该附件组，下面附件项有一项为必填，则为必填
+    // 在没有点击附件组，之前是没有获取附属附件项数据的。 所以手动遍历
+    let data = this.loanInfo._attachmentGroups;
+    let BreakException = {};
+    try {
+      data.forEach((item1, index1) => {
+        if (index1 == attachmentGroupIndex) {
+          item1._attachments.forEach((item2, index2) => {
+            if (item2.required && item2.needCount > 0) {
+              throw BreakException;
+            }
+          })
+        }
+      })
+    } catch (e) {
+      return true;
+    }
+    return false;
+  }
+
   //动态表单数据
   onSubmitParams($event) {
     // console.log($event);

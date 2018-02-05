@@ -45,13 +45,13 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
-        <!-- 资料收集  -->
+        <!-- 1.资料收集  -->
         <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo"></free-application>
         <!-- 补充资料  -->
         <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
 
-        <!-- 资料审核（初审/复审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditFirstRecheckId" status="auditFirstRecheck"></free-auditInfo>
+        <!-- 2.资料审核（初审/复审） -->
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstRecheck"></free-auditInfo>
 
         <!-- 资料审核（终审） -->
         <free-auditInfo *ngIf="sidenavKey === 'Audit1'" [id]="AuditFinalId" status="auditFinal"></free-auditInfo>
