@@ -8,6 +8,7 @@
               [activeIndex]="currentPage" (pageEvent)="page($event)"
               (clickRowEvent)="rowClickEvent($event);sidenav.open()">
   </timi-table>
+  <p><span>总应还金额：<em>{{totalamountReturned}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalLoanApprovedAmount}}</em></span></p>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end">
     <div class="row">
@@ -30,11 +31,11 @@
             </div>
             <div class="form-group columns1">
               <div class="label">产品</div>
-              <div class="span">{{orderDetail?._product.name}}</div>
+              <div class="span">{{orderDetail?._product?.name}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">营业部</div>
-              <div class="span">{{orderDetail?.OrgName.name}}</div>
+              <div class="span">{{orderDetail?.orgName?.name}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">客户</div>
@@ -99,8 +100,10 @@
                 <td>{{item?.actualTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
                 <td>{{item?.actualLateFee}}</td>
                 <td>{{item?.actualAmount}}</td>
-                <td>{{item?.paymentVoucher}}</td>
-                <td>{{item?.operater}}</td>
+                <td>
+                  <img src="{{item?._paymentVoucher}}">
+                </td>
+                <td>{{item?._user}}</td>
                 <td>{{item?.remark}}</td>
                 <td>{{item?.repaymentWay}}</td>
                 <td>

@@ -6,6 +6,7 @@ import {FnUtil} from "../../../common/fn-util";
 import {BaseUIComponent} from "../../baseUI.component";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastService} from "../../../component/toast/toast.service";
+import {ConvertUtil} from "../../../common/convert-util";
 
 /**
  * 放款统计
@@ -35,7 +36,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   sidenavKey: string; // Detail 详细 CreatePlan 生成还款计划  Repayment 还款
   repaymentTypes; // 还款类型
   repaymentWay; // 还款方式
-  cid; // 公司ID
+  orgId; // 公司ID
 
   orderDetail; // 订单基本信息
   repaymentPlan; // 还款计划
@@ -45,6 +46,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   repaymentForm: FormGroup; // 还款表单
   repaymentPlanForm: FormGroup; // 还款计划表单
 
+  totalamountReturned = 0; // 总应还金额
+  totalLoanApprovedAmount = 0; // 总实际还款金额
+
   pagecode: string;
 
 
@@ -53,7 +57,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
               private toastService: ToastService,
               private activatedRoute: ActivatedRoute,
               private postLoanManagementService: PostLoanManagementService,
-              private fnUtil: FnUtil) {
+              private fnUtil: FnUtil,
+              private convertUtil: ConvertUtil) {
     super(loading, activatedRoute);
   }
 
@@ -77,7 +82,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       childrens: null
     }];
 
-    this.cid = this.activatedRoute.snapshot.paramMap.get("cid");
+    this.orgId = this.activatedRoute.snapshot.paramMap.get("orgId");
 
     this.pagecode = this.fnUtil.getPageCode();
     let paginationInfo = this.fnUtil.getPaginationInfo();
@@ -86,6 +91,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
     this.listparam.index = this.pageSize;
     this.listparam.size = this.pageSize;
+    this.listparam.filter = this.convertUtil.toJsonStr({orgId: this.orgId});
 
     this.initSearch();
     this.initHeaders();
@@ -103,6 +109,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       if (res.code === "0") {
         this.datas = res.data.Lending;
         this.totals = res.data.total;
+        this.totalamountReturned = res.data.totalamountReturned;
+        this.totalLoanApprovedAmount = res.data.totalLoanApprovedAmount;
       }
     });
   }
@@ -113,7 +121,14 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    */
   onSearch($event) {
     this.listparam.index = 0;
-    // this.listparam.filter = JSON.stringify();
+    if (this.orgId) {
+      let obj = this.convertUtil.toJSON($event);
+      obj["orgId"] = this.orgId;
+      this.listparam.filter = this.convertUtil.toJsonStr(obj);
+    } else {
+      this.listparam.filter = this.convertUtil.toJsonStr($event);
+    }
+    this.getLists();
   }
 
   /**
@@ -172,7 +187,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "营业部",
-      name: "orgName",
+      name: "orgName.name",
       pipe: ""
     }, {
       hidden: false,
