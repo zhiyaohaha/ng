@@ -314,7 +314,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
       for (let i in attrKeys) {
         if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
-          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = (approveLoanInfoForm[attrValues[i]]/100);
+          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = (approveLoanInfoForm[attrValues[i]] / 100);
         } else {
           approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = approveLoanInfoForm[attrValues[i]];
         }
@@ -336,6 +336,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         // _self.toastService.creatNewMessage({ message: res.message });
       }
+    }, (err) => {
+      super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
     })
   }
 
