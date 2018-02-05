@@ -4,7 +4,7 @@
   </div>
 
   <timi-table [headers]="headers" [data]="datas" [clickRowable]="true"
-              [totals]="totals" [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+              [totals]="totals" [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)">
   </timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end">

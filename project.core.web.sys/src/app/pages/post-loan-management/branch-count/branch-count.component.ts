@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {TdLoadingService} from "@covalent/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PostLoanManagementService} from "../../../services/post-loan-management/post-loan-management.service";
 import {FnUtil} from "../../../common/fn-util";
 import {BaseUIComponent} from "../../baseUI.component";
@@ -34,6 +34,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
 
 
   constructor(private loading: TdLoadingService,
+              private router: Router,
               private routerInfor: ActivatedRoute,
               private postLoanManagementService: PostLoanManagementService,
               private fnUtil: FnUtil,
@@ -58,6 +59,9 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
     this.getLists();
   }
 
+  /**
+   * 获取列表
+   */
   getLists() {
     this.loading.register("loading");
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
@@ -151,17 +155,17 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "订单数",
-      name: "",
+      name: "orderNum",
       pipe: ""
     }, {
       hidden: false,
       label: "总利息",
-      name: "",
+      name: "totalInterest",
       pipe: ""
     }, {
       hidden: false,
       label: "逾期数",
-      name: "",
+      name: "overdueNum",
       pipe: ""
     }];
   }
@@ -172,6 +176,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
    */
   rowClickEvent($event) {
     console.log($event);
+    this.router.navigateByUrl("/main/LoanCount/LoanAfter.LendingStatistics/" + $event.id);
   }
 
   /**

@@ -54,6 +54,9 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     this.getLists();
   }
 
+  /**
+   * 获取表格列表
+   */
   getLists() {
     this.loading.register("loading");
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
@@ -101,62 +104,62 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "订单ID",
-      name: "ActualLateFee",
+      name: "orderId",
       pipe: ""
     }, {
       hidden: false,
       label: "客户姓名",
-      name: "name",
+      name: "_customer",
       pipe: ""
     }, {
       hidden: false,
       label: "营业部",
-      name: "OrgName.name",
+      name: "_orgData.name",
       pipe: ""
     }, {
       hidden: false,
       label: "产品",
-      name: "_productName.name",
+      name: "_product.name",
       pipe: ""
     }, {
       hidden: false,
       label: "计划还款时间",
-      name: "",
-      pipe: ""
+      name: "plannedTime",
+      pipe: "HtmlPipe.DateTime"
     }, {
       hidden: false,
       label: "本金",
-      name: "",
+      name: "principal",
       pipe: ""
     }, {
       hidden: false,
       label: "利息",
-      name: "",
+      name: "interest",
       pipe: ""
     }, {
       hidden: false,
       label: "应还滞纳金",
-      name: "",
+      name: "amountPayable",
       pipe: ""
     }, {
       hidden: false,
       label: "实际还款时间",
-      name: "",
-      pipe: ""
+      name: "actualTime",
+      pipe: "HtmlPipe.DateTime"
     }, {
       hidden: false,
       label: "实还滞纳金",
-      name: "",
+      name: "actualLateFee",
       pipe: ""
     }, {
       hidden: false,
       label: "凭证",
-      name: "",
-      pipe: ""
+      name: "_paymentVoucher",
+      pipe: "HtmlPipe.Image"
     }, {
       hidden: false,
       label: "还款类型",
-      name: "",
+      name: "repaymentWay",
       pipe: ""
     }, {
       hidden: false,
@@ -171,22 +174,14 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "操作人",
-      name: "",
+      name: "_user",
       pipe: ""
     }, {
       hidden: false,
       label: "备注",
-      name: "",
+      name: "remark",
       pipe: ""
     }];
-  }
-
-  /**
-   * 点击表格的行执行的事件
-   * @param $event
-   */
-  rowClickEvent($event) {
-    console.log($event);
   }
 
   /**

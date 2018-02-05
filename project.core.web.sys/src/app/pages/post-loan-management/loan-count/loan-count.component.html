@@ -26,7 +26,7 @@
             </div>
             <div class="form-group columns1">
               <div class="label">机构</div>
-              <div class="span">{{orderDetail?.name}}</div>
+              <div class="span"></div>
             </div>
             <div class="form-group columns1">
               <div class="label">产品</div>
@@ -46,11 +46,11 @@
             </div>
             <div class="form-group columns1">
               <div class="label">批贷金额</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?.loanApprovedAmount}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">年化</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?._rate?.yearRate}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">放贷时间</div>
@@ -58,19 +58,19 @@
             </div>
             <div class="form-group columns1">
               <div class="label">月费率</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?._rate?.monthRate}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">期数</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?.loanTerm}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">还款方式</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?._loanRepaymentMethod}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">逾期期数</div>
-              <div class="span">{{orderDetail?.applyAmount}}</div>
+              <div class="span">{{orderDetail?.overdueNumber}}</div>
             </div>
           </div>
           <div class="section clearfix">
@@ -93,16 +93,16 @@
               </thead>
               <tbody>
               <tr *ngFor="let item of repaymentPlan">
-                <td>{{item?.PlannedTime | date:"yyyy-MM-dd"}}</td>
-                <td>{{item?.Interest}}</td>
-                <td>{{item?.Interest}}</td>
-                <td>{{item?.ActualTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
-                <td>{{item?.ActualLateFee}}</td>
-                <td>{{item?.ActualAmount}}</td>
-                <td>{{item?.PaymentVoucher}}</td>
+                <td>{{item?.plannedTime | date:"yyyy-MM-dd"}}</td>
+                <td>{{item?.interest}}</td>
+                <td>{{item?.interest}}</td>
+                <td>{{item?.actualTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                <td>{{item?.actualLateFee}}</td>
+                <td>{{item?.actualAmount}}</td>
+                <td>{{item?.paymentVoucher}}</td>
                 <td>{{item?.operater}}</td>
-                <td>{{item?.Remark}}</td>
-                <td>{{item?.RepaymentWay}}</td>
+                <td>{{item?.remark}}</td>
+                <td>{{item?.repaymentWay}}</td>
                 <td>
                   <button md-raised-button (click)="onClickRepayment(item)">还款</button>
                 </td>
@@ -110,14 +110,14 @@
               </tbody>
             </table>
           </div>
-          <div class="section clearfix">
+          <div class="section clearfix tac">
             <button md-raised-button (click)="createPlan()">生成还款明细</button>
             <button md-raised-button (click)="onClickRepayment('all')">全额还款</button>
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'CreatePlan'">
           <form [formGroup]="repaymentPlanForm" (ngSubmit)="submitCreatePlan()">
-            <input type="hidden" formControlName="id">
+            <input type="hidden" formControlName="order">
             <div class="form-group columns1">
               <div class="label">放款日期</div>
               <free-calendar lang="cn" formControlName="loanTime"></free-calendar>

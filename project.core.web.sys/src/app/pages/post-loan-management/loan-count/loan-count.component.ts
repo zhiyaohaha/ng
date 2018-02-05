@@ -73,7 +73,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }];
     this.repaymentWay = [{
       text: "先息后本",
-      value: "1",
+      value: "a4debcad58b8ebcd02739df",
       childrens: null
     }];
 
@@ -112,7 +112,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   onSearch($event) {
-    console.log($event);
+    this.listparam.index = 0;
+    // this.listparam.filter = JSON.stringify();
   }
 
   /**
@@ -171,7 +172,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "营业部",
-      name: "OrgName.name",
+      name: "orgName",
       pipe: ""
     }, {
       hidden: false,
@@ -191,52 +192,52 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "批贷金额",
-      name: "",
+      name: "loanApprovedAmount",
       pipe: ""
     }, {
       hidden: false,
       label: "年化",
-      name: "",
+      name: "yearRate",
       pipe: ""
     }, {
       hidden: false,
       label: "放款时间",
-      name: "",
-      pipe: ""
+      name: "loanDate",
+      pipe: "HtmlPipe.DateTime"
     }, {
       hidden: false,
       label: "还款方式",
-      name: "",
+      name: "_loanApprovedRepaymentMethod",
       pipe: ""
     }, {
       hidden: false,
       label: "期数",
-      name: "",
+      name: "loanApprovedTerm",
       pipe: ""
     }, {
       hidden: false,
       label: "已还期数",
-      name: "",
+      name: "numberOfReturns",
       pipe: ""
     }, {
       hidden: false,
       label: "逾期数",
-      name: "",
+      name: "overdueNumber",
       pipe: ""
     }, {
       hidden: false,
       label: "已还金额",
-      name: "",
+      name: "amountReturned",
       pipe: ""
     }, {
       hidden: false,
       label: "上次还款时间",
-      name: "",
+      name: "lastRepaymentDate",
       pipe: ""
     }, {
       hidden: false,
       label: "下次应还时间",
-      name: "",
+      name: "nextRepaymentDate",
       pipe: ""
     }];
   }
@@ -315,11 +316,11 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "CreatePlan";
     // 还款计划表单
     this.repaymentPlanForm = this.fb.group({
-      id: [this.rowId],
+      order: [this.rowId],
       loanTime: ["", Validators.required],
       yearRate: ["", Validators.required],
       monthRate: ["", Validators.required],
-      repaymentType: ["1", Validators.required]
+      repaymentType: ["a4debcad58b8ebcd02739df", Validators.required]
     });
   }
 
@@ -359,6 +360,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }
   }
 
+  /**
+   * 确定生成还款计划
+   */
   submitCreatePlan() {
     // 校验输入值
     for (const i in this.repaymentPlanForm.controls) {
