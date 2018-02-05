@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {TimiPaginationModule} from "../timi-pagination/pagination.component";
 import {CheckboxModule} from "../checkbox/checkbox.component";
 import {ConvertUtil} from "../../common/convert-util";
+import {PreviewService} from "../../services/preview/preview.service";
 
 @Component({
   selector: "timi-table",
@@ -57,7 +58,8 @@ export class TimiTableComponent implements OnInit {
   outData; // 需要传出的表格数据
   checkIndex = []; // 选中的数据索引
 
-  constructor(private convertUtil: ConvertUtil) {
+  constructor(private convertUtil: ConvertUtil,
+              private previewService: PreviewService) {
     this._cellTemp = {
       checked: false,
       hidden: false,
@@ -176,6 +178,21 @@ export class TimiTableComponent implements OnInit {
         clearInterval(timer);
       }
     }, 10);
+  }
+
+  /**
+   * 预览图片
+   * @param data
+   */
+  previewImg(data) {
+    let arr = [];
+    if (typeof data === "string") {
+      arr.push(data);
+    } else {
+      arr = data;
+    }
+    this.previewService.imgUrls = arr;
+    this.previewService.showPreview(true);
   }
 
 }

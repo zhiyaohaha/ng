@@ -1,46 +1,55 @@
-<timi-pagination [hidden]="!totals" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex" (onChange)="pageChange($event)">
+<timi-pagination [hidden]="!totals" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex"
+                 (onChange)="pageChange($event)">
 </timi-pagination>
 <table [hidden]="!totals">
   <thead>
-    <tr>
-      <th [hidden]="!selectable" class="checkbox">
-        <free-checkbox (onChange)="allCheckbox($event)" [checked]="data.length === checkIndex.length"></free-checkbox>
-      </th>
-      <ng-container *ngFor="let title of headers">
-        <ng-container ngSwitch="title.pipe">
-          <th [hidden]="title.hidden">
-            {{title.label}}
-          </th>
-        </ng-container>
+  <tr>
+    <th [hidden]="!selectable" class="checkbox">
+      <free-checkbox (onChange)="allCheckbox($event)" [checked]="data.length === checkIndex.length"></free-checkbox>
+    </th>
+    <ng-container *ngFor="let title of headers">
+      <ng-container ngSwitch="title.pipe">
+        <th [hidden]="title.hidden">
+          {{title.label}}
+        </th>
       </ng-container>
-    </tr>
+    </ng-container>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of data; index as i" (click)="rowClick($event, i)">
-      <td [hidden]="!selectable" class="checkbox">
-        <free-checkbox (onChange)="itemCheckbox($event, i)" [checked]="checkIndex.indexOf(i) !== -1"></free-checkbox>
-      </td>
-      <ng-container *ngFor="let value of item">
-        <ng-container [ngSwitch]="value.pipe">
-          <!--单图片显示-->
-          <td *ngSwitchCase="'HtmlPipe.Image'" [hidden]="value.hidden">
-            <img src="{{value.label}}" class="table-img">
-          </td>
-          <!--多图片显示-->
-          <td *ngSwitchCase="'HtmlPipe.ImageTag'" [hidden]="value.hidden">
-            <img *ngFor="let img of value.label" src="{{img}}" class="table-img">
-          </td>
-          <!--按钮-->
-          <td *ngSwitchCase="'HtmlPipe.Button'" [hidden]="value.hidden">
-            按钮
-          </td>
-          <!--默认直接显示-->
-          <td *ngSwitchDefault [hidden]="value.hidden">
-            {{value.label}}
-          </td>
-        </ng-container>
+  <tr *ngFor="let item of data; index as i" (click)="rowClick($event, i)">
+    <td [hidden]="!selectable" class="checkbox">
+      <free-checkbox (onChange)="itemCheckbox($event, i)" [checked]="checkIndex.indexOf(i) !== -1"></free-checkbox>
+    </td>
+    <ng-container *ngFor="let value of item">
+      <ng-container [ngSwitch]="value.pipe">
+        <!--日期-->
+        <td *ngSwitchCase="'HtmlPipe.Date'" [hidden]="value.hidden">
+          {{value.label | date:"yyyy-MM-dd"}}
+        </td>
+        <!--时间-->
+        <td *ngSwitchCase="'HtmlPipe.DateTime'" [hidden]="value.hidden">
+          {{value.label | date:"yyyy-MM-dd HH:mm:ss"}}
+        </td>
+        <!--单图片显示-->
+        <td *ngSwitchCase="'HtmlPipe.Image'" [hidden]="value.hidden">
+          <img src="{{value.label}}" class="table-img" (click)="previewImg(value.label)">
+        </td>
+        <!--多图片显示-->
+        <td *ngSwitchCase="'HtmlPipe.ImageTag'" [hidden]="value.hidden">
+          <img *ngFor="let img of value.label" src="{{img}}" class="table-img" (click)="previewImg(value.label)">
+        </td>
+        <!--按钮-->
+        <td *ngSwitchCase="'HtmlPipe.Button'" [hidden]="value.hidden">
+          按钮
+        </td>
+        <!--默认直接显示-->
+        <td *ngSwitchDefault [hidden]="value.hidden">
+          {{value.label}}
+        </td>
       </ng-container>
-    </tr>
+    </ng-container>
+  </tr>
   </tbody>
 </table>
 
@@ -49,5 +58,6 @@
 </div>
 
 
-<timi-pagination [hidden]="!totals" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex" (onChange)="pageChange($event)">
+<timi-pagination [hidden]="!totals" [total]="totals" [pageSize]="pageSize" [activeIndex]="activeIndex"
+                 (onChange)="pageChange($event)">
 </timi-pagination>
