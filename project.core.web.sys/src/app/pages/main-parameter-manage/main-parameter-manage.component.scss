@@ -15,8 +15,9 @@
     overflow: auto;
   }
   .sidenav-right {
-    min-width: 30vw;
-    max-width: 40vw;
+    // min-width: 30vw;
+    // max-width: 40vw;
+    width: 40vw;
     overflow: auto;
   }
   .sidenav-new {
@@ -223,4 +224,7 @@
       padding-top: 10px;
     }
   }
+}
+.special{
+  width: 60vw;
 }

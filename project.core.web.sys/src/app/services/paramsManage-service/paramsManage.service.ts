@@ -53,7 +53,11 @@ export class ParamsManageService {
    * @returns {Observable<any>}
    */
   public getDetailById(param) {
-    return this.service.get(this.fnUtil.searchAPI("FunctionType.FormTemplate", "type"), param);
+    return this.service.get(this.fnUtil.searchAPI("FunctionType.DetailTemplate", "type"), param);
   }
 
+  //获取修改和添加下级的doms结构
+  public getModify(param) {
+    return this.service.get(this.fnUtil.searchAPI("FunctionType.FormTemplate", "type"), param);
+  }
 }

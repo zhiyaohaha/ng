@@ -1,8 +1,8 @@
-import {fadeIn} from "../../common/animations";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
+import { fadeIn } from "../../common/animations";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import {
   ITdDataTableColumn, TdDataTableService, TdDialogService,
   TdLoadingService
@@ -12,13 +12,13 @@ import "rxjs/add/operator/startWith";
 import "rxjs/add/observable/merge";
 import "rxjs/add/operator/map";
 
-import {TreeModel} from "../../../../node_modules/ng2-tree";
-import {globalVar} from "../../common/global.config";
+import { TreeModel } from "../../../../node_modules/ng2-tree";
+import { globalVar } from "../../common/global.config";
 
-import {ParamsManageService} from "../../services/paramsManage-service/paramsManage.service";
-import {ConvertUtil} from "../../common/convert-util";
-import {HtmlDomTemplate} from "../../models/HtmlDomTemplate";
-import {BaseUIComponent} from "../baseUI.component";
+import { ParamsManageService } from "../../services/paramsManage-service/paramsManage.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { HtmlDomTemplate } from "../../models/HtmlDomTemplate";
+import { BaseUIComponent } from "../baseUI.component";
 
 @Component({
   selector: "app-main-parameter-manage",
@@ -90,7 +90,7 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
    */
   modalDOMS: HtmlDomTemplate;
   modalData;
-
+  firstModalDOMS: HtmlDomTemplate
   /**
    * 树结构
    */
@@ -106,18 +106,24 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
   pagecode: string;
   @ViewChild("table") table;
 
+  //展示切换
+  templateType: string;
+
+  defaultShow:boolean = true;
+  
+  
 
   constructor(private _dialogService: TdDialogService,
-              private _dataTableService: TdDataTableService,
-              private _viewContainerRef: ViewContainerRef,
-              private _paramsManageService: ParamsManageService,
-              private _util: ConvertUtil,
-              private router: Router,
-              private routerInfor: ActivatedRoute,
-              private toastService: ToastService,
-              private fnUtil: FnUtil,
-              private el: ElementRef,
-              private loading: TdLoadingService) {
+    private _dataTableService: TdDataTableService,
+    private _viewContainerRef: ViewContainerRef,
+    private _paramsManageService: ParamsManageService,
+    private _util: ConvertUtil,
+    private router: Router,
+    private routerInfor: ActivatedRoute,
+    private toastService: ToastService,
+    private fnUtil: FnUtil,
+    private el: ElementRef,
+    private loading: TdLoadingService) {
     super(loading, routerInfor);
 
     this.routerInfor.paramMap
@@ -164,7 +170,7 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
           if (r.data.data && r.data.data.filters.length > 0) {
             this.filters = [];
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters;
           }
@@ -190,11 +196,13 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
    */
   treeSelected($event): void {
     // 2018年1月15日 tcl
+    this.templateType = '';
+    this.defaultShow = true;
     this.selectNode = $event.node.node;
-    this._paramsManageService.getDetailById({id: this.selectNode.JSONdata.id})
+    this._paramsManageService.getDetailById({ id: this.selectNode.JSONdata.id })
       .subscribe(res => {
         if (res.code === "0") {
-          this.modalDOMS = res.data.doms;
+          this.firstModalDOMS = res.data.doms;
           this.selectNode = res.data.bindData;
         }
       });
@@ -323,7 +331,7 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
    * 获取详细的参数
    */
   getDetailParams() {
-    this._paramsManageService.getEditParams({id: this.clickNode}).subscribe(r => {
+    this._paramsManageService.getEditParams({ id: this.clickNode }).subscribe(r => {
       if (r.code === "0" && r.data) {
         this.tree = this.toTreeModel(r.data) as TreeModel;
       }
@@ -346,7 +354,7 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
     let treeData = {
       JSONdata: data,
       value: data.name,
-      settings: {rightMenu: false}
+      settings: { rightMenu: false }
     };
     if (data.childrens && data.childrens.length > 0) {
       treeData["children"] = [];
@@ -380,5 +388,33 @@ export class MainParameterManageComponent extends BaseUIComponent implements OnI
    */
   uploaded($event) {
   }
+
+  detailClick(value) {
+    this.defaultShow = false;
+    this._paramsManageService.getModify({ id: this.selectNode.id }).subscribe(res=>{
+      if (res.code === "0") {
+        this.modalDOMS = res.data.doms;
+        this.selectNode = res.data.bindData;
+        this.templateType = value.triggerUrl;
+      }
+    })
+    
+    // if (this.templateType === "#FormUpdateTemplate") {
+    //   this._paramsManageService.getModify({ id: this.selectNode.id }).subscribe(res=>{
+        // if (res.code === "0") {
+        //   this.modalDOMS = res.data.doms;
+        //   this.selectNode = res.data.bindData;
+        // }
+    //   })
+    // } else if (this.templateType === "#FormAddTemplate"){
+    //   this._paramsManageService.getModify({ id: this.selectNode.id }).subscribe(res => {
+    //     if (res.code === "0") {
+    //       this.modalDOMS = res.data.doms;
+    //       this.selectNode = res.data.bindData;
+    //     }
+    //   })
+    // }
+  }
+
 
 }

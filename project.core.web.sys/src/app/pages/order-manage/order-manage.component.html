@@ -5,8 +5,8 @@
     <button md-raised-button class="add-button" (click)="newAdd();sidenav.open()">
       报单
     </button>
-    <!--1 临时按钮 -->
-    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <!--1 临时入口按钮 -->
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       资料收集
     </button>
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditFirstRecheckId='5a6974c7ac52db1898da86cf';sidenav.open()">
@@ -26,7 +26,7 @@
     </button>
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('UpdateInfo');UpdateInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       补充资料
-    </button>
+    </button> -->
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
@@ -45,13 +45,13 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
-        <!-- 资料收集  -->
-        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId" status="fillInfo"></free-application>
+        <!-- 1.资料收集  -->
+        <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo"></free-application>
         <!-- 补充资料  -->
         <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
 
-        <!-- 资料审核（初审/复审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditFirstRecheckId" status="auditFirstRecheck"></free-auditInfo>
+        <!-- 2.资料审核（初审/复审） -->
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstRecheck"></free-auditInfo>
 
         <!-- 资料审核（终审） -->
         <free-auditInfo *ngIf="sidenavKey === 'Audit1'" [id]="AuditFinalId" status="auditFinal"></free-auditInfo>
