@@ -35,7 +35,7 @@ const TIMI_CHIP_GROUP_VALUE_ACCESSOR: any = {
     </div>
     <div class="chip-wrap" onkeydown="if(event.keyCode==13){return false;}">
       <div class="timi-chip-group" [ngClass]="chipClass">
-        <timi-chip *ngFor="let chip of value;let i = index;" [value]="chip" (click)="clickFilter?lightChip(i):delChip(i)" [timiChipActive]="timiChipActive" [timiChipActiveIndex]="i"></timi-chip>
+        <timi-chip *ngFor="let chip of value;let i = index;" [value]="clickFilter?chip.label:chip" (click)="clickFilter?lightChip(i):delChip(i)" [timiChipActive]="timiChipActive" [timiChipActiveIndex]="i"></timi-chip>
         <input spellcheck="false" type="text" placeholder="{{placeholder}}"
                (focus)="onFocus()" (blur)="onBlur($event)" (keyup.enter)="onEnter($event)" (dragover)="allowDrop($event)"
                (drop)="drop($event)">
@@ -52,12 +52,36 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   set chips(value: any) {
     this.value = [];
     for (const v of value) {
+      let label;
+      if (this.clickFilter) {
+        label = v['label'];
+      } else {
+        label = v;
+      }
+
       const isExited = this.value.find((elem, index, array) => {
-        return elem === v;
+        if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+          return elem['label'] == label;
+        } else {
+          return elem == label;
+        }
       });
       if (!isExited) {
-        this.value.push(v);
+        if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+          this.chips.push({ 'label': label, 'status': v['status'] });
+        } else {
+          this.value.push(label);
+        }
+      } else {
+        // alert('已有重复项')
+        super.openAlert({ title: "提示", message: "已有重复项", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
+    }
+    //还原标签状态
+    if (this.clickFilter && value.length > 0) {
+      value.forEach((element, index) => {
+        this.timiChipActive[index] = element['status'];
+      });
     }
     this._propagateChange(this.chips);
   }
@@ -141,8 +165,12 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   onEnter(event: any) {
     const value = event.target.value.trim();
     if (value) {
-      this.chips.push(value);
-      this.chips = this.chips.slice();
+      if (this.clickFilter) {  //点击删除和点击高亮的数据结构是不一样的、
+        this.chips.push({ 'label': value, 'status': true });
+      } else {
+        this.chips.push(value);
+      }
+      this.chips = this.chips.slice();  //Angular不会比较数组内容和对象属性，它只比较对象标识。在此通知Angular更改检测更新绑定
       event.target.value = "";
     }
     this.chipsChange.emit(this.chips);
@@ -166,6 +194,7 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   }
   lightChip(index) {   //点击高亮
     this.timiChipActive[index] = !this.timiChipActive[index];
+    this.chips[index]['status'] = !this.chips[index]['status'];
   }
 
   writeValue(value: any) {
