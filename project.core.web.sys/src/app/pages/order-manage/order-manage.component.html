@@ -5,8 +5,8 @@
     <button md-raised-button class="add-button" (click)="newAdd();sidenav.open()">
       报单
     </button>
-    <!--1 临时按钮 -->
-    <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
+    <!--1 临时入口按钮 -->
+    <!-- <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       资料收集
     </button>
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('Audit');AuditFirstRecheckId='5a6974c7ac52db1898da86cf';sidenav.open()">
@@ -26,7 +26,7 @@
     </button>
     <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('UpdateInfo');UpdateInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       补充资料
-    </button>
+    </button> -->
   </div>
 
   <!--<app-table #table [data]="filteredData" [columns]="columns" [totals]="filteredTotal" [pageSize]="pageSize" [activeIndex]="currentPage"-->
@@ -46,7 +46,7 @@
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
         <!-- 资料收集  -->
-        <free-application *ngIf="sidenavKey === 'FillInfo'" [id]="FillInfoId" status="fillInfo"></free-application>
+        <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo"></free-application>
         <!-- 补充资料  -->
         <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
 
