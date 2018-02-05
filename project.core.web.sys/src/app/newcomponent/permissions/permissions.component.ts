@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { PermissionsService } from "../../services/permissions/permissions.service";
+import { BaseUIComponent } from "app/pages/baseUI.component";
+import { TdLoadingService } from "@covalent/core";
+import { ActivatedRoute } from "@angular/router";
+import { ToastService } from "app/component/toast/toast.service";
 
 @Component({
   selector: "free-permissions",
@@ -7,7 +11,7 @@ import { PermissionsService } from "../../services/permissions/permissions.servi
   styleUrls: ["./permissions.component.scss"],
   providers: [PermissionsService]
 })
-export class PermissionsComponent implements OnInit {
+export class PermissionsComponent extends BaseUIComponent implements OnInit {
 
   menus: Array<any> = []; //接收的数据
   @Input() id: string;
@@ -16,7 +20,12 @@ export class PermissionsComponent implements OnInit {
 
   codes: Array<string> = []; //选择的code字符串数组
 
-  constructor(private permissionsService: PermissionsService) {
+  constructor(
+    private permissionsService: PermissionsService,
+    private loading: TdLoadingService,
+    private routerInfor: ActivatedRoute,
+    private toastService: ToastService) {
+    super(loading, routerInfor);
   }
 
   ngOnInit() {
@@ -74,7 +83,6 @@ export class PermissionsComponent implements OnInit {
           }
         }
       }
-      console.log("每个page第一个数据");
     } else if (page.depth === 1) {
       page.active = !page.active;
       if (page.active === true && page._functions.length > 0) {
@@ -90,7 +98,6 @@ export class PermissionsComponent implements OnInit {
           page._functions[i].active = false;
         }
       }
-      console.log("每个page第二个之后数据");
     }
   }
 
@@ -108,7 +115,6 @@ export class PermissionsComponent implements OnInit {
     } else {
       page.active = false;
     }
-    console.log(page);
     if (item.active === true) {
       this.codes.push(item.code);
     } else if (item.active === false) {
@@ -138,8 +144,10 @@ export class PermissionsComponent implements OnInit {
 
   //传递数据
   onSubmit() {
-    console.log(this.codes);
     this.permissionsService.setPermissions(this.id, this.codes).subscribe(res => {
+      if(res.success){
+        super.showToast(this.toastService, res.message);
+      }
       console.log(res);
     });
   }
