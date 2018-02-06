@@ -36,6 +36,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
 
   readyOnly: boolean = true;  //贷款信息是否是只读
+  uploadUrl: string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
 
   approveLoanInfoForm: any;   //批核/放款---信息表单
   approveLoanInfoFormDislayLabel: string = '批核';  // 展示批核/放款的label
@@ -339,6 +340,43 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     }, (err) => {
       super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
     })
+  }
+
+  //根据多文件上传，上传最小数量的限制。 来判断是否可以继续提交 
+  multipleFileUploaderLowerLimit() {
+    if (!this.multipleFileUploaderLowerLimit()) return false;
+    let attachmentGroups = this.loanInfo._attachmentGroups;
+    let BreakException = {};
+    try {
+      attachmentGroups.forEach((element, index) => {
+        let attachments = element['_attachments'];
+        attachments.forEach(element1 => {
+          let currentNum = element1['_files'] ? element1['_files'].length : 0;
+          let lowerLimit = element1['needCount'];
+          if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
+            //提示 
+            let msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+            super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            //展开该附件组
+            element.attachmentsDisplay = true;
+            //,关闭其他附件组
+            attachmentGroups.forEach((e, i) => {
+              if (i !== index) {
+                e.attachmentsDisplay = false;
+              }
+            })
+            //展开该附件项
+            this.firstAttachmentActive = false;
+            element.temporaryData = element1;
+            //停止继续提交
+            throw BreakException;
+          }
+        });
+      });
+    } catch (e) {
+      return false;   //不能继续提交了
+    }
+    return true;  //可以继续提交
   }
 
 }
