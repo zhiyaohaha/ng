@@ -315,9 +315,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
       for (let i in attrKeys) {
         if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
-          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = (approveLoanInfoForm[attrValues[i]] / 100);
+          approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = (approveLoanInfoForm[attrValues[i]] / 100);
         } else {
-          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = approveLoanInfoForm[attrValues[i]];
+          approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = approveLoanInfoForm[attrValues[i]];
         }
       }
 
@@ -329,7 +329,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         attrs: approveLoanInfoFormAttrs
       };
     }
-    console.log( postData)
+    // console.log(postData)
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
       if (res.code === "0") {
         _self.toastService.creatNewMessage({ message: label + "成功" });
