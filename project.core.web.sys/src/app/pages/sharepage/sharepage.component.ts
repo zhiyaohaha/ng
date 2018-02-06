@@ -259,6 +259,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 提交表单
    */
   submitMethod($event) {
+    console.log($event);
     this.loadingService.register("loading");
     if (this.sidenavKey === "Add") {
       this.sharepageService.saveNewParams($event)

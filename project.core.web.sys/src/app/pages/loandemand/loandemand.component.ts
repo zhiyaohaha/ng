@@ -286,33 +286,43 @@ export class LoandemandComponent extends BaseUIComponent implements OnInit {
   /**
    * 提交表单
    */
-  submitMethod($event) {
-    this.loading.register("loading");
-    if (this.btnType === "new") {
-      this.sharepageService.saveNewParams($event)
-        .subscribe(res => {
-          this.loading.resolve("loading");
-          this.toastService.creatNewMessage(res.message);
-          if (res.code === "0") {
-            this.getParamsList(this.listparam);
-          }
-        });
-    } else if (this.sidenavKey === "Form") {
-      // 侧滑为表单，提交表单的表单接口由后台表单模板提供
-      if ($event.cmds) {
-        this.submitMoreURL($event.data, $event.cmds);
-      }
-    } else {
-      this.sharepageService.saveEditParams($event)
-        .subscribe(res => {
-          this.loading.resolve("loading");
-          this.toastService.creatNewMessage(res.message);
-          if (res.code === "0") {
-            this.getParamsList(this.listparam);
-          }
-        });
-    }
-    this.sidenav.close();
+  submitMethod($event) {  
+    //this.loading.register("loading");
+    // if (this.btnType === "new") {
+    //   this.sharepageService.saveNewParams($event)
+    //     .subscribe(res => {
+    //       this.loading.resolve("loading");
+    //       this.toastService.creatNewMessage(res.message);
+    //       if (res.code === "0") {
+    //         this.getParamsList(this.listparam);
+    //       }
+    //     });
+    // } else if (this.sidenavKey === "Form") {
+    //   console.log($event);  
+    //   // 侧滑为表单，提交表单的表单接口由后台表单模板提供
+    //   if ($event.cmds) {
+    //     this.submitMoreURL($event.data, $event.cmds);
+    //   }
+    // } else {
+    //   this.sharepageService.saveEditParams($event)
+    //     .subscribe(res => {
+    //       this.loading.resolve("loading");
+    //       this.toastService.creatNewMessage(res.message);
+    //       if (res.code === "0") {
+    //         this.getParamsList(this.listparam);
+    //       }
+    //     });
+    // }
+    // this.sidenav.close();
+    this.sharepageService.saveEditParams($event)
+      .subscribe(res => {
+        console.log(res);
+        this.loading.resolve("loading");
+        super.showToast(this.toastService, res.message);
+        if (res.code === "0") {
+          this.getParamsList(this.listparam);
+        }
+      });
   }
 
   //提交表单的时候需要走多个接口的情况
@@ -320,13 +330,13 @@ export class LoandemandComponent extends BaseUIComponent implements OnInit {
     this.loading.register("loading");
     Urls.forEach((item) => {
       this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
+        this.loading.resolve("loading");
         this.toastService.creatNewMessage(res.message);
         if (res.code === "0") {
           this.getParamsList(this.listparam);
         }
       });
     });
-    this.loading.resolve("loading");
   }
 
   createComponent(menus) {
