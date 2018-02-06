@@ -221,7 +221,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     try {
       attachmentGroups.forEach((element, index) => {
         let attachments = element['_attachments'];
-        attachments.forEach(element1 => {
+        attachments.forEach((element1, index1) => {
           let currentNum = element1['_files'] ? element1['_files'].length : 0;
           let lowerLimit = element1['needCount'];
           if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
@@ -237,7 +237,11 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
               }
             })
             //展开该附件项
-            this.firstAttachmentActive = false;
+            if (index1 == 0) {
+              this.firstAttachmentActive = true;
+            } else {
+              this.firstAttachmentActive = false;
+            }
             element.temporaryData = element1;
             //停止继续提交
             throw BreakException;

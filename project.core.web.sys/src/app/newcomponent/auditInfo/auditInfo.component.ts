@@ -45,6 +45,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   auditResultReason: any;  //审核状态原因
   process: string; //流程
   auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
+  assignUsers: any;  //指派人
 
   //临时数据代码
   //还款方式 
@@ -70,10 +71,16 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     this.loadingService.register("loading");
     this.orderService.getLoanOrderDetail(this.id).subscribe(res => {
       this.loadingService.resolve("loading");
-      if (res.data) {
-        // console.log(res)
-        this.process = res.data.process;
-        this.getLoanInfo(res.data);
+      if (res.code == "0") {
+        let data = res.data;
+        this.process = data.process;
+        this.getLoanInfo(data);
+
+        this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
+          console.log(res)
+        })
+      } else {
+        super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
 
@@ -354,7 +361,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     try {
       attachmentGroups.forEach((element, index) => {
         let attachments = element['_attachments'];
-        attachments.forEach(element1 => {
+        attachments.forEach((element1, index1) => {
           let currentNum = element1['_files'] ? element1['_files'].length : 0;
           let lowerLimit = element1['needCount'];
           if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
@@ -370,7 +377,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
               }
             })
             //展开该附件项
-            this.firstAttachmentActive = false;
+            if (index1 == 0) {
+              this.firstAttachmentActive = true;
+            } else {
+              this.firstAttachmentActive = false;
+            }
             element.temporaryData = element1;
             //停止继续提交
             throw BreakException;
