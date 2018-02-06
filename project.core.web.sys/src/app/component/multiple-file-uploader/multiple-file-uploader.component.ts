@@ -185,6 +185,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         name: "id",
         value: this.uploadId
       }];
+      this.uploader.onBuildItemForm = function (e) {
+        that.loadingService.register("loading");
+      }
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
@@ -221,15 +224,21 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           that.onPostFileData.emit(res.data);
           // that.uploading = false;
         }
+        that.loadingService.resolve("loading");
       };
     } else {  //首页专用-1
+      this.uploader.onBuildItemForm = function (e) {
+        that.loadingService.register("loading");
+      }
       this.uploader.uploadAll();
+
       this.uploader.onSuccessItem = function (e) {
         let data = that.uploader.queue;
         data.forEach(item => {  // 每次都是单个上传
           item["contentType"] = "image/jpeg";
           item["isSuccess"] = false;
         });
+        that.loadingService.resolve("loading");
       }
     }
 
