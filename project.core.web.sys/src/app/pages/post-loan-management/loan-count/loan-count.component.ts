@@ -406,4 +406,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   getFormControl(name): AbstractControl {
     return this.repaymentForm.controls[name];
   }
+
+  onPostFileData($event){
+      console.log($event)
+  }
 }

@@ -186,7 +186,8 @@
             </div>
             <div class="section clearfix">
               <div class="columns2 upfile" style="margin-bottom: 1rem;">
-                <timi-file-uploader [btnName]="'还款凭证'" formControlName="PaymentVoucher"></timi-file-uploader>
+                <!-- <timi-file-uploader [btnName]="'还款凭证'" formControlName="PaymentVoucher"></timi-file-uploader> -->
+                <multiple-uploader (onPostFileData)="onPostFileData($event)"></multiple-uploader>
                 <p class="errors"
                    *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">
                   必填</p>
