@@ -344,47 +344,47 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   /**
    * 提交表单
    */
-  submitMethod($event) {
-    this.lodaingService.register("fullScreen");
-    if (this.new) {
-      this.sharepageService.saveNewParams($event)
-        .subscribe(res => {
-          this.lodaingService.resolve("fullScreen");
-          this.toastService.creatNewMessage(res.message);
-          if (res.code === "0") {
-            this.getParamsList(this.listparam);
-          }
-        });
-    } else if (this.sidenavKey === "Form") {
-      // 侧滑为表单，提交表单的表单接口由后台表单模板提供
-      if ($event.cmds) {
-        this.submitMoreURL($event.data, $event.cmds);
-      }
-    } else {
-      this.sharepageService.saveEditParams($event)
-        .subscribe(res => {
-          this.lodaingService.resolve("fullScreen");
-          this.toastService.creatNewMessage(res.message);
-          if (res.code === "0") {
-            this.getParamsList(this.listparam);
-          }
-        });
-    }
-    this.sidenav.close();
-  }
+  // submitMethod($event) {
+  //   this.lodaingService.register("fullScreen");
+  //   if (this.new) {
+  //     this.sharepageService.saveNewParams($event)
+  //       .subscribe(res => {
+  //         this.lodaingService.resolve("fullScreen");
+  //         this.toastService.creatNewMessage(res.message);
+  //         if (res.code === "0") {
+  //           this.getParamsList(this.listparam);
+  //         }
+  //       });
+  //   } else if (this.sidenavKey === "Form") {
+  //     // 侧滑为表单，提交表单的表单接口由后台表单模板提供
+  //     if ($event.cmds) {
+  //       this.submitMoreURL($event.data, $event.cmds);
+  //     }
+  //   } else {
+  //     this.sharepageService.saveEditParams($event)
+  //       .subscribe(res => {
+  //         this.lodaingService.resolve("fullScreen");
+  //         this.toastService.creatNewMessage(res.message);
+  //         if (res.code === "0") {
+  //           this.getParamsList(this.listparam);
+  //         }
+  //       });
+  //   }
+  //   this.sidenav.close();
+  // }
 
   //提交表单的时候需要走多个接口的情况
-  submitMoreURL(param, Urls: any[]) {
-    Urls.forEach((item) => {
-      this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
-        this.lodaingService.resolve("fullScreen");
-        this.toastService.creatNewMessage(res.message);
-        if (res.code === "0") {
-          this.getParamsList(this.listparam);
-        }
-      });
-    });
-  }
+  // submitMoreURL(param, Urls: any[]) {
+  //   Urls.forEach((item) => {
+  //     this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
+  //       this.lodaingService.resolve("fullScreen");
+  //       this.toastService.creatNewMessage(res.message);
+  //       if (res.code === "0") {
+  //         this.getParamsList(this.listparam);
+  //       }
+  //     });
+  //   });
+  // }
 
   createComponent(menus) {
     this.container.clear();

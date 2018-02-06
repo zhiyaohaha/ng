@@ -39,11 +39,10 @@ export class PreviewComponent implements OnInit {
     
   }
   ngAfterViewInit() {
-    // console.log(this.prePic.nativeElement.offsetWidth);
-    // this.boxWidth = this.prePic.nativeElement.offsetWidth/2;
-    // this.boxHeight = this.prePic.nativeElement.offsetHeight/2;
-    // this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-    // this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    this.boxWidth = this.prePic.nativeElement.offsetWidth/2;
+    this.boxHeight = this.prePic.nativeElement.offsetHeight/2;
+    this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+    this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
   }
 
   closebtn() {
@@ -97,13 +96,16 @@ export class PreviewComponent implements OnInit {
   //拖拽图片
   drag(event, prePic) {
 
+    // clientX浏览器左侧到鼠标点击的距离
+    // offsetLeft中心块儿到浏览器左侧的距离
+    // distanceX鼠标点击中心块到中心块左侧的距离
+    
     let distanceX = event.clientX - prePic.offsetLeft;
     let distanceY = event.clientY - prePic.offsetTop;
-
-
+    
     document.onmousemove = (evt) => {
-      let left = evt.clientX - distanceX;
-      let top = evt.clientY - distanceY;
+      let left = evt.clientX - distanceX + this.boxWidth;
+      let top = evt.clientY - distanceY + this.boxHeight;
 
       prePic.style.left = left + "px";
       prePic.style.top = top + "px";
