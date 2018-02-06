@@ -40,7 +40,7 @@
                 <span *ngIf="attachmentGroup._attachments[0].needCount">至少上传{{attachmentGroup._attachments[0].needCount}}个文件,</span>
                 <span *ngIf="attachmentGroup._attachments[0].upperLimit">最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</span>
               </p>
-              <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
+              <div *ngIf="status == 'auditFirstSecond' ||status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">不通过</span>
@@ -59,7 +59,7 @@
                 <span *ngIf="attachmentGroup.temporaryData.needCount">至少上传{{attachmentGroup.temporaryData.needCount}}个文件,</span>
                 <span *ngIf="attachmentGroup.temporaryData.upperLimit">最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</span>
               </p>
-              <div *ngIf="status == 'auditFirstRecheck' || status == 'auditFinal'">
+              <div *ngIf="status == 'auditFirstSecond' || status == 'auditFinal'">
                 <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">不通过</span>
@@ -85,6 +85,7 @@
         <th>操作</th>
         <th>状态</th>
         <th>备注</th>
+        <th>附加信息</th>
       </tr>
       <tr *ngFor="let history of loanInfo.historys;">
         <td>{{history._creater.name}}</td>
@@ -92,6 +93,17 @@
         <td>{{history._option}}</td>
         <td>{{history._status}}</td>
         <td>{{history.remark}}</td>
+        <td *ngIf="!history.attrs"></td>
+        <td *ngIf="history.attrs">
+          <ul class="overheadInfo">
+            <!-- 因为每个字段有不同的单位，不同的展示方式，所以需要写固定的 -->
+            <li>批贷金额 : {{history.attrs['"批核金额"']}} 元</li>
+            <li>批核期限 : {{history.attrs['"批核期限"']}} 个月</li>
+            <li>批核年化 : {{history.attrs['"批核年化"']*100}}</li>
+            <li>批核月费率 : {{history.attrs['"批核月费率"']*100}}</li>
+            <li>批核还款方式 : {{history.attrs['"批核还款方式"']}}</li>
+          </ul>
+        </td>
       </tr>
     </table>
   </div>
@@ -107,7 +119,7 @@
       </li>
     </ul>
     <div *ngIf="auditResultReason" class="clearfix">
-      <timi-chip-group labeName="原因" [(ngModel)]="auditResultReason" clickFilter="true" placeholder="点击选中,回车添加"></timi-chip-group>
+      <timi-chip-group labeName="原因" [(ngModel)]="auditResultReason" clickFilter="true" placeholder="点击选中,回车添加" (chipsChange)="chipsChange($event)"></timi-chip-group>
     </div>
   </div>
 

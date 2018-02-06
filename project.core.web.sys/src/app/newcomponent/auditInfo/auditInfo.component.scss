@@ -141,6 +141,10 @@
             width:100%;
             th,td{
                 text-align: center;
+                .overheadInfo>li{
+                    padding-left:5px;
+                    text-align:left;
+                }
             }
         }
     } 

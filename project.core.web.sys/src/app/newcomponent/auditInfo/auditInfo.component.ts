@@ -78,7 +78,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     })
 
     // 初审/复审/终审/面签/待放款
-    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
+    if (this.status == 'auditFirstSecond' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
       this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedDeadline: [''],                          //批贷期限
@@ -295,7 +295,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     let id = this.id;
     let _status = this.status;
 
-    if (_status == 'auditFirstRecheck') {  //(初审/复审)
+    if (_status == 'auditFirstSecond') {  //(初审/复审)
       let aduitOption = this.aduitOption;
       let auditStatus = this.auditStatus;
 
@@ -329,7 +329,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         attrs: approveLoanInfoFormAttrs
       };
     }
-    // console.log( postData)
+    console.log( postData)
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
       if (res.code === "0") {
         _self.toastService.creatNewMessage({ message: label + "成功" });

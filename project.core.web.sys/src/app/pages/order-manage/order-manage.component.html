@@ -50,8 +50,8 @@
         <!-- 补充资料  -->
         <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
 
-        <!-- 2.资料审核（初审/复审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstRecheck"></free-auditInfo>
+        <!-- 2.资料审核（初审，复审） -->
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstSecond"></free-auditInfo>
 
         <!-- 资料审核（终审） -->
         <free-auditInfo *ngIf="sidenavKey === 'Audit1'" [id]="AuditFinalId" status="auditFinal"></free-auditInfo>
