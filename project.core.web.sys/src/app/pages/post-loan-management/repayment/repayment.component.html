@@ -6,6 +6,7 @@
   <timi-table [headers]="headers" [data]="datas" [clickRowable]="true"
               [totals]="totals" [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)">
   </timi-table>
+  <p class="count-money"><span>总应还金额：<em>{{totalActualAmount}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalActualAmount}}</em></span></p>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end">
     <div class="row">

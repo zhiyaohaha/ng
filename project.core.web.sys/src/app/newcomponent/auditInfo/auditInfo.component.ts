@@ -36,12 +36,15 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   firstAttachmentActive: boolean = true;  //第一次附件组默认选中样式
 
   readyOnly: boolean = true;  //贷款信息是否是只读
+  uploadUrl: string = "/api/LoanOrder/UploadAttachmentFile"; //附件上传地址
 
   approveLoanInfoForm: any;   //批核/放款---信息表单
   approveLoanInfoFormDislayLabel: string = '批核';  // 展示批核/放款的label
-  auditResultForm: any;   //审核结果表单
-  auditResultReason: any;  //审核结果原因
-  auditResultPass: boolean = false;  //审核是否通过
+  auditStatus: string;   //审核状态
+  aduitOption: string; //审核选项
+  auditResultReason: any;  //审核状态原因
+  process: string; //流程
+  auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
 
   //临时数据代码
   //还款方式 
@@ -49,12 +52,6 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     { text: "吃饭", value: "11", childrens: null },
     { text: "睡觉", value: "12", childrens: null }
   ]
-  //通过与不通过原因 
-  terms2: any = ['我们不同意', "心情不好", "饿了", "还行", "随意", "就这样吧"];
-  terms1: any = ['我们同意', "心情好", "还行", "随意", "就这样吧", "随缘吧"];
-  // terms2: any = [{ label: '我们不同意', status: false }, { label: "心情不好", status: true }, { label: "饿了", status: false }, { label: "还行", status: false }, { label: "随意", status: false }, { label: "就这样吧", status: true }];
-  // terms1: any = [{ label: '我们同意', status: false }, { label: "心情好", status: false }, { label: "还行", status: true }, { label: "随意", status: false }, { label: "就这样吧", status: false }, { label: "随缘吧", status: true }];
-
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
@@ -75,19 +72,18 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       this.loadingService.resolve("loading");
       if (res.data) {
         // console.log(res)
+        this.process = res.data.process;
         this.getLoanInfo(res.data);
       }
     })
 
     // 初审/复审/终审/面签/待放款
     if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
-      this.auditResultForm = this.fb.group({
-        res1: '',                            //审核结果
-        res2: [''],                          //审核原因
-      })
       this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
-        loanApprovedTerm: [''],                              //  批贷期限
+        loanApprovedDeadline: [''],                          //批贷期限
+        loanApprovedYearsRate: [''],                         //批贷年化
+        loanApprovedMonthsRate: [''],                        //批贷月费率
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
         loanTime1: '',                               //放款时间 
         loanTime2: ''
@@ -215,14 +211,52 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   }
 
   //根据审核结果的不同，显示不同结果的原因 
-  setAuidtResult($event) {
-    if ($event.value == '通过') {
-      this.auditResultReason = this.terms1;
+  setAuidtResult(auditOption) {
+    let process = this.process;
+    this.auditStatus = auditOption.status;
+    this.aduitOption = auditOption.option;
+
+    //是否显示批核表单 
+    if (auditOption.name == '通过') {
       this.auditResultPass = true;
-    } else if ($event.value == '不通过') {
-      this.auditResultReason = this.terms2;
+    } else {
       this.auditResultPass = false;
     }
+
+    //根据不同的状态，请求不同的原因 
+    this.loadingService.register("loading");
+    this.orderService.GetAuditOpinion(process, auditOption.status, auditOption.option).subscribe(res => {
+      if (res.code == "0") {
+        // this.auditResultReason = res.data
+        // { label: '我们同意', status: false }
+        let auditResultReason = [];
+        res.data.forEach(element => {
+          auditResultReason.push({ label: element, status: false })
+        });
+        this.auditResultReason = auditResultReason;
+        this.loadingService.resolve("loading");
+      }
+    })
+  }
+
+  //添加，审核结果原因
+  chipsChange(e) {
+    let process = this.process;
+    let content = e[0]['label'];
+    let aduitOption = this.aduitOption;
+    let auditStatus = this.auditStatus;
+    let _self = this;
+
+    this.loadingService.register("loading");
+    this.orderService.PostAddAuditOpinion(process, auditStatus, aduitOption, content).subscribe(res => {
+      this.loadingService.resolve("loading");
+      if (res.code == "0") {
+        super.showToast(_self.toastService, "添加成功");
+      } else {
+        super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      }
+    })
+
   }
 
   //设置附件组(reuiqed字段)是否显示必填。  
@@ -250,41 +284,99 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit(url, label) {
-    console.log(this.approveLoanInfoForm.value)  //批准表单
-    console.log(this.auditResultForm.value)  //审核结果
-    console.log(this.auditResultReason) //审核结果原因集合
+    // console.log(this.approveLoanInfoForm.value)  //批准表单
+    // console.log(this.auditStatus)  //审核状态
+    // console.log(this.aduitOption)  //审核选项
+    // console.log(this.auditResultReason) //审核结果原因集合
+    // console.log(url)
 
-    // let _self = this;
-    // let id = this.id;
-    // let _status = this.status;
-    // let postData = {};
-    // super.openPrompt({ message: "请输入备注", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
-    //   if (val) {
-    //     if (_status == 'audit') {  //资料审核
-    //       postData = {
-    //         id: id,
-    //         description: val
-    //       };
-    //     } else if (_status == 'waitLoan') {  //待放款
-    //       postData = {
-    //         id: id,
-    //         description: val,
-    //         loanApprovedAmount: _self.waitLoanForm.value.loanApprovedAmount,   //批贷金额
-    //         loanApprovedTerm: _self.waitLoanForm.value.loanApprovedTerm,   //  批贷期限
-    //         loanApprovedRepaymentMethod: _self.waitLoanForm.value.loanApprovedRepaymentMethod,   //    批贷还款方式
-    //       };
-    //     }
-    //     // console.log(postData)
-    //     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
-    //       if (res.code === "0") {
-    //         // super.showToast(_self.toastService, label + "成功");
-    //         _self.toastService.creatNewMessage({ message: label + "成功" });
-    //       } else {
-    //         _self.toastService.creatNewMessage({ message: res.message });
-    //       }
-    //     })
-    //   }
-    // })
+    let postData = {}
+    let _self = this;
+    let id = this.id;
+    let _status = this.status;
+
+    if (_status == 'auditFirstRecheck') {  //(初审/复审)
+      let aduitOption = this.aduitOption;
+      let auditStatus = this.auditStatus;
+
+      //审核结果 
+      let auditResultReason = this.auditResultReason;
+      let auditContent = [];
+      auditResultReason.forEach(element => {
+        if (element.status) {
+          auditContent.push(element.label);
+        }
+      });
+
+      //批核表单
+      let approveLoanInfoForm = this.approveLoanInfoForm.value;
+      let approveLoanInfoFormAttrs = {};
+      let attrKeys = ['金额', '期限', '年化', '月费率', '还款方式'];
+      let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
+      for (let i in attrKeys) {
+        if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
+          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = (approveLoanInfoForm[attrValues[i]] / 100);
+        } else {
+          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = approveLoanInfoForm[attrValues[i]];
+        }
+      }
+
+      postData = {
+        id: id,
+        status: auditStatus,
+        description: auditContent,
+        option: aduitOption,
+        attrs: approveLoanInfoFormAttrs
+      };
+    }
+    // console.log( postData)
+    _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
+      if (res.code === "0") {
+        _self.toastService.creatNewMessage({ message: label + "成功" });
+      } else {
+        super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        // _self.toastService.creatNewMessage({ message: res.message });
+      }
+    }, (err) => {
+      super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+    })
+  }
+
+  //根据多文件上传，上传最小数量的限制。 来判断是否可以继续提交 
+  multipleFileUploaderLowerLimit() {
+    if (!this.multipleFileUploaderLowerLimit()) return false;
+    let attachmentGroups = this.loanInfo._attachmentGroups;
+    let BreakException = {};
+    try {
+      attachmentGroups.forEach((element, index) => {
+        let attachments = element['_attachments'];
+        attachments.forEach(element1 => {
+          let currentNum = element1['_files'] ? element1['_files'].length : 0;
+          let lowerLimit = element1['needCount'];
+          if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
+            //提示 
+            let msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+            super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            //展开该附件组
+            element.attachmentsDisplay = true;
+            //,关闭其他附件组
+            attachmentGroups.forEach((e, i) => {
+              if (i !== index) {
+                e.attachmentsDisplay = false;
+              }
+            })
+            //展开该附件项
+            this.firstAttachmentActive = false;
+            element.temporaryData = element1;
+            //停止继续提交
+            throw BreakException;
+          }
+        });
+      });
+    } catch (e) {
+      return false;   //不能继续提交了
+    }
+    return true;  //可以继续提交
   }
 
 }

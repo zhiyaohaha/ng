@@ -96,7 +96,7 @@ export class OrderService {
 
   //获取审核资料信息
   getLoanOrderDetail(id) {
-    return this.baseService.get("/api/LoanOrder/AuditDetail", {
+    return this.baseService.get("/api/LoanOrder/AuditDetail/Audit", {
       id: id
     });
   }
@@ -125,4 +125,21 @@ export class OrderService {
     return this.baseService.post("/api/" + url, data);
   }
 
+  // 查看审核意见
+  GetAuditOpinion(process, status, option) {
+    return this.baseService.get("/api/LoanOrder/GetAuditOpinion", {
+      process: process,
+      status: status,
+      option: option
+    });
+  }
+  //添加审核意见
+  PostAddAuditOpinion(process, status, option, content) {
+    return this.baseService.post("/api/LoanOrder/AddAuditOpinion", {
+      process: process,
+      status: status,
+      option: option,
+      content: content
+    });
+  }
 }

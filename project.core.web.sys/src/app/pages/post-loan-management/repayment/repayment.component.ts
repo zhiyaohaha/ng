@@ -24,6 +24,9 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
   pageSize: number; // 表格每页显示条数
   currentPage: number; // 当前激活页面
 
+  totalAmountPayable = 0; // 总应还金额
+  totalActualAmount = 0; // 总实际还款金额
+
   listparam = {
     index: 0,
     size: 10,
@@ -64,6 +67,8 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
       if (res.code === "0") {
         this.datas = res.data.data;
         this.totals = res.data.total;
+        this.totalAmountPayable = res.data.totalAmountPayable;
+        this.totalActualAmount = res.data.totalActualAmount;
       }
     });
   }
@@ -139,13 +144,18 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "应还滞纳金",
-      name: "amountPayable",
+      name: "",
       pipe: ""
     }, {
       hidden: false,
       label: "实际还款时间",
       name: "actualTime",
       pipe: "HtmlPipe.DateTime"
+    }, {
+      hidden: false,
+      label: "实际还款金额",
+      name: "actualAmount",
+      pipe: ""
     }, {
       hidden: false,
       label: "实还滞纳金",
@@ -163,9 +173,9 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
       pipe: ""
     }, {
       hidden: false,
-      label: "总部代还品质",
-      name: "",
-      pipe: ""
+      label: "总部代还凭证",
+      name: "_paymentVoucher",
+      pipe: "HtmlPipe.Image"
     }, {
       hidden: false,
       label: "总部代还金额",

@@ -26,7 +26,9 @@
     .loan-info li.areasComponent{
         width: 100%;
     }
-    
+    .loan-info-result>li{
+        width:25%;
+    }
     //附件
     .accessory{
         border-bottom-width:0px;
@@ -133,6 +135,16 @@
         box-shadow: 2px 3px 8px #cf000d;
     }
     
+    //操作记录
+    .history{
+        &>table{
+            width:100%;
+            th,td{
+                text-align: center;
+            }
+        }
+    } 
+
     //提交申请按钮 
     .resultBtn{
         text-align: center;

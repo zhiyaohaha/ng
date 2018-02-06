@@ -106,6 +106,8 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           });
       })
     } else {  //首页专用-2
+      let res = JSON.parse(item._xhr.response);
+      this.onPostFileData.emit(res.data[0]);
       item.remove();
     }
   }
@@ -185,6 +187,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         name: "id",
         value: this.uploadId
       }];
+      this.uploader.onBuildItemForm = function (e) {
+        that.loadingService.register("loading");
+      }
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
@@ -221,15 +226,24 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           that.onPostFileData.emit(res.data);
           // that.uploading = false;
         }
+        that.loadingService.resolve("loading");
       };
     } else {  //首页专用-1
+      this.uploader.onBuildItemForm = function (e) {
+        that.loadingService.register("loading");
+      }
       this.uploader.uploadAll();
+
       this.uploader.onSuccessItem = function (e) {
         let data = that.uploader.queue;
         data.forEach(item => {  // 每次都是单个上传
           item["contentType"] = "image/jpeg";
           item["isSuccess"] = false;
         });
+        let res = JSON.parse(e._xhr.response);
+        that.onPostFileData.emit(res.data[0]);
+
+        that.loadingService.resolve("loading");
       }
     }
 
@@ -259,7 +273,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       this.previewService.showPreview(true);
       this.previewService.getUrl(imgSrcArr);
     } else {
-      alert('首页这个不支持预览')
+      // alert('首页这个不支持预览')
     }
   }
 
