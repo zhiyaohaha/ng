@@ -320,6 +320,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
           } else {
             approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number(approveLoanInfoForm[attrValues[i]]);
           }
+        } else {
+          approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = approveLoanInfoForm[attrValues[i]];
         }
       }
 
