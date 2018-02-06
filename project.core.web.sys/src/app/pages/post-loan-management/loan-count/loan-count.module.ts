@@ -12,13 +12,14 @@ import {TimiSelectModule} from "../../../component/timi-select/select.component"
 import {TimiTextareaModule} from "../../../component/timi-textarea/timi-textarea.component";
 import {TimiFileUploaderModule} from "../../../component/timi-ng2-file-uploader/timi-ng2-file-uploader.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { MultipleFileUploaderModule } from "../../../component/multiple-file-uploader/multiple-file-uploader.component";
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     LoanCountRoutingModule,
     SearchFormModule, MdSidenavModule, MdButtonModule, TimiTableModule,
-    TimiInputModule, TimiSelectModule, TimiTextareaModule, TimiFileUploaderModule, CalendarModule
+    TimiInputModule, TimiSelectModule, TimiTextareaModule, TimiFileUploaderModule, CalendarModule,MultipleFileUploaderModule
   ],
   declarations: [LoanCountComponent]
 })

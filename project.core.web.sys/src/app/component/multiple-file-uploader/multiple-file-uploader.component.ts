@@ -106,6 +106,8 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           });
       })
     } else {  //首页专用-2
+      let res = JSON.parse(item._xhr.response);
+      this.onPostFileData.emit(res.data[0]);
       item.remove();
     }
   }
@@ -238,6 +240,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           item["contentType"] = "image/jpeg";
           item["isSuccess"] = false;
         });
+        let res = JSON.parse(e._xhr.response);
+        that.onPostFileData.emit(res.data[0]);
+
         that.loadingService.resolve("loading");
       }
     }
@@ -268,7 +273,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       this.previewService.showPreview(true);
       this.previewService.getUrl(imgSrcArr);
     } else {
-      alert('首页这个不支持预览')
+      // alert('首页这个不支持预览')
     }
   }
 
