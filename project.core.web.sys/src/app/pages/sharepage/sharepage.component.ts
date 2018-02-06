@@ -267,6 +267,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
           super.showToast(this.toastService, res.message);
           if (res.code === "0") {
             this.currentPage = 0;
+            this.listparam.index = 0;
             this.getParamsList(this.listparam);
           }
         });
