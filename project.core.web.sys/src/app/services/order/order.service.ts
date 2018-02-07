@@ -142,4 +142,13 @@ export class OrderService {
       content: content
     });
   }
+
+  //获取指派用户
+  GetAssignUsers(org, process, status) {
+    return this.baseService.get("/api/LoanOrder/GetAssignUsers", {
+      org: org,
+      process: process,
+      status: status
+    });
+  }
 }

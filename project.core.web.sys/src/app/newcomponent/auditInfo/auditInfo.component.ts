@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef, Output, EventEmitter } from "@angular/core";
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { FormBuilder } from "@angular/forms";
@@ -45,16 +45,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   auditResultReason: any;  //审核状态原因
   process: string; //流程
   auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
-
-  //临时数据代码
-  //还款方式 
-  termBindData: any = [
-    { text: "吃饭", value: "11", childrens: null },
-    { text: "睡觉", value: "12", childrens: null }
-  ]
+  assignUsers: any;  //指派人
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
+  @Output() closeRefreshData = new EventEmitter();
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -70,21 +65,32 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     this.loadingService.register("loading");
     this.orderService.getLoanOrderDetail(this.id).subscribe(res => {
       this.loadingService.resolve("loading");
-      if (res.data) {
-        // console.log(res)
-        this.process = res.data.process;
-        this.getLoanInfo(res.data);
+      if (res.code == "0") {
+        let data = res.data;
+        this.process = data.process;
+        this.getLoanInfo(data);
+
+        this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
+          if (res.code == "0") {
+            this.assignUsers = res.data;
+          } else {
+            super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          }
+        })
+      } else {
+        super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
 
     // 初审/复审/终审/面签/待放款
-    if (this.status == 'auditFirstRecheck' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
+    if (this.status == 'auditFirstSecond' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
       this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedDeadline: [''],                          //批贷期限
         loanApprovedYearsRate: [''],                         //批贷年化
         loanApprovedMonthsRate: [''],                        //批贷月费率
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
+        loanApprovedAssignUsers: [''],                       //被指派人
         loanTime1: '',                               //放款时间 
         loanTime2: ''
       })
@@ -242,7 +248,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   //添加，审核结果原因
   chipsChange(e) {
     let process = this.process;
-    let content = e[0]['label'];
+    let content = e[e.length - 1]['label'];
     let aduitOption = this.aduitOption;
     let auditStatus = this.auditStatus;
     let _self = this;
@@ -294,51 +300,78 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     let _self = this;
     let id = this.id;
     let _status = this.status;
+    let aduitOption = this.aduitOption;
+    let auditStatus = this.auditStatus;
+    //审核结果 
+    let auditResultReason = this.auditResultReason;
+    let auditContent = [];
+    auditResultReason.forEach(element => {
+      if (element.status) {
+        auditContent.push(element.label);
+      }
+    });
 
-    if (_status == 'auditFirstRecheck') {  //(初审/复审)
-      let aduitOption = this.aduitOption;
-      let auditStatus = this.auditStatus;
-
-      //审核结果 
-      let auditResultReason = this.auditResultReason;
-      let auditContent = [];
-      auditResultReason.forEach(element => {
-        if (element.status) {
-          auditContent.push(element.label);
-        }
-      });
-
+    if (_status == 'auditFirstSecond' || _status == 'auditFinal') {  //(初审/复审)
       //批核表单
       let approveLoanInfoForm = this.approveLoanInfoForm.value;
       let approveLoanInfoFormAttrs = {};
       let attrKeys = ['金额', '期限', '年化', '月费率', '还款方式'];
       let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
       for (let i in attrKeys) {
-        if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
-          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = (approveLoanInfoForm[attrValues[i]] / 100);
+        if (attrKeys[i] !== "还款方式") {
+          if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
+            approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number((approveLoanInfoForm[attrValues[i]] / 100));
+          } else {
+            approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number(approveLoanInfoForm[attrValues[i]]);
+          }
         } else {
-          approveLoanInfoFormAttrs["\"" + this.approveLoanInfoFormDislayLabel + attrKeys[i] + "\""] = approveLoanInfoForm[attrValues[i]];
+          approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = approveLoanInfoForm[attrValues[i]];
         }
       }
 
+      if (_status == 'auditFirstSecond') {  //(初审/复审)
+        postData = {
+          id: id,
+          status: auditStatus,
+          description: auditContent,
+          option: aduitOption,
+          attrs: approveLoanInfoFormAttrs
+        };
+      } else if (_status == 'auditFinal') {  //终审
+        postData = {
+          id: id,
+          status: auditStatus,
+          description: auditContent,
+          option: aduitOption,
+          attrs: approveLoanInfoFormAttrs,
+          user: approveLoanInfoForm['loanApprovedAssignUsers']
+        };
+      }
+
+    } else if (_status == 'interview') {
       postData = {
         id: id,
         status: auditStatus,
         description: auditContent,
-        option: aduitOption,
-        attrs: approveLoanInfoFormAttrs
+        option: aduitOption
       };
     }
-    // console.log( postData)
+
+    // console.log(postData)
+
+    this.loadingService.register("loading");
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
       if (res.code === "0") {
         _self.toastService.creatNewMessage({ message: label + "成功" });
+        _self.closeRefreshData.emit();
       } else {
         super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         // _self.toastService.creatNewMessage({ message: res.message });
       }
+      _self.loadingService.resolve("loading");
     }, (err) => {
       super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      _self.loadingService.resolve("loading");
     })
   }
 
@@ -350,7 +383,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     try {
       attachmentGroups.forEach((element, index) => {
         let attachments = element['_attachments'];
-        attachments.forEach(element1 => {
+        attachments.forEach((element1, index1) => {
           let currentNum = element1['_files'] ? element1['_files'].length : 0;
           let lowerLimit = element1['needCount'];
           if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
@@ -366,7 +399,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
               }
             })
             //展开该附件项
-            this.firstAttachmentActive = false;
+            if (index1 == 0) {
+              this.firstAttachmentActive = true;
+            } else {
+              this.firstAttachmentActive = false;
+            }
             element.temporaryData = element1;
             //停止继续提交
             throw BreakException;

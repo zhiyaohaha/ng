@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef, EventEmitter, Output } from "@angular/core";
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { FormBuilder } from "@angular/forms";
@@ -40,6 +40,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
+  @Output() closeRefreshData = new EventEmitter();
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -202,15 +203,17 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     // console.log(this.applicationForm)
     this.loadingService.register("loading");
     this.orderService.onSubmitComplementaryData(url, this.applicationForm).subscribe(res => {
-      _self.loadingService.resolve("loading");
       if (res.code === "0") {
         // console.log(res)
-        // _self.toastService.creatNewMessage("申请成功");
         super.showToast(_self.toastService, label + "成功");
+        _self.closeRefreshData.emit();
       } else {
-        // _self.toastService.creatNewMessage(res.message);
-        super.showToast(_self.toastService, res.message);
+        super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
+      _self.loadingService.resolve("loading");
+    }, (err) => {
+      super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      _self.loadingService.resolve("loading");
     })
   }
 
@@ -221,7 +224,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     try {
       attachmentGroups.forEach((element, index) => {
         let attachments = element['_attachments'];
-        attachments.forEach(element1 => {
+        attachments.forEach((element1, index1) => {
           let currentNum = element1['_files'] ? element1['_files'].length : 0;
           let lowerLimit = element1['needCount'];
           if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
@@ -237,7 +240,11 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
               }
             })
             //展开该附件项
-            this.firstAttachmentActive = false;
+            if (index1 == 0) {
+              this.firstAttachmentActive = true;
+            } else {
+              this.firstAttachmentActive = false;
+            }
             element.temporaryData = element1;
             //停止继续提交
             throw BreakException;

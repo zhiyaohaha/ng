@@ -1,4 +1,4 @@
-import {CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
   Component,
   forwardRef,
@@ -10,22 +10,22 @@ import {
   Output,
   ViewContainerRef
 } from "@angular/core";
-import {DomRenderer} from "../../common/dom";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {FileUploader, FileUploadModule} from "ng2-file-upload";
-import {environment} from "../../../environments/environment";
-import {ConvertUtil} from "../../common/convert-util";
-import {strLength} from "../../common/pipe/strLength";
-import {MdProgressBarModule} from "@angular/material";
-import {Http} from "@angular/http";
-import {defaultValue} from "../../common/global.config";
-import {BaseService} from "app/services/base.service";
-import {globalUrl} from "../../common/global.config";
-import {PreviewService} from "app/services/preview/preview.service";
-import {ToastService} from "../toast/toast.service";
-import {TdLoadingService, TdDialogService} from "@covalent/core";
-import {BaseUIComponent} from "../../pages/baseUI.component";
-import {ActivatedRoute} from "@angular/router";
+import { DomRenderer } from "../../common/dom";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { FileUploader, FileUploadModule } from "ng2-file-upload";
+import { environment } from "../../../environments/environment";
+import { ConvertUtil } from "../../common/convert-util";
+import { strLength } from "../../common/pipe/strLength";
+import { MdProgressBarModule } from "@angular/material";
+import { Http } from "@angular/http";
+import { defaultValue } from "../../common/global.config";
+import { BaseService } from "app/services/base.service";
+import { globalUrl } from "../../common/global.config";
+import { PreviewService } from "app/services/preview/preview.service";
+import { ToastService } from "../toast/toast.service";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
+import { ActivatedRoute } from "@angular/router";
 
 export const MULTIPLE_FILE_UPLOADER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -66,14 +66,14 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   private valueChange = (_: any) => { };
 
   constructor(private convertUtil: ConvertUtil,
-              private http: Http,
-              private baseService: BaseService,
-              private previewService: PreviewService,
-              private toastService: ToastService,
-              private loadingService: TdLoadingService,
-              private dialogService: TdDialogService,
-              private viewContainerRef: ViewContainerRef,
-              private routerInfor: ActivatedRoute) {
+    private http: Http,
+    private baseService: BaseService,
+    private previewService: PreviewService,
+    private toastService: ToastService,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef,
+    private routerInfor: ActivatedRoute) {
     super(loadingService, routerInfor);
   }
 
@@ -82,7 +82,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       this.uploader.options.url = environment.apiURL + this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
-      this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {
+      this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, {
         name: "id",
         value: this.uploadId
       }];
@@ -102,15 +102,15 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       let _self = this;
       this.loadingService.register("loading");
       this.removeConfirm(function () {
-        _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", {attachmentId: _self.uploadId, fileId: item.id})
+        _self.baseService.post("/api/LoanOrder/DeleteAttachmentFile ", { attachmentId: _self.uploadId, fileId: item.id })
           .subscribe(res => {
             _self.loadingService.resolve("loading");
             if (res.success === true) {
               item.remove();
               // _self.toastService.creatNewMessage("删除成功");
-              _self.toastService.creatNewMessage({message: "删除成功"});
+              _self.toastService.creatNewMessage({ message: "删除成功" });
             } else {
-              _self.toastService.creatNewMessage({message: res.message});
+              _self.toastService.creatNewMessage({ message: res.message });
             }
           });
       });
@@ -139,9 +139,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
             existingDatas.splice(index, 1);
             _self.onPostFileData.emit(res.data);
             // _self.toastService.creatNewMessage("删除成功");
-            _self.toastService.creatNewMessage({message: "删除成功"});
+            _self.toastService.creatNewMessage({ message: "删除成功" });
           } else {
-            _self.toastService.creatNewMessage({message: res.message});
+            _self.toastService.creatNewMessage({ message: res.message });
           }
         });
     });
@@ -192,24 +192,23 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     // this.uploading = true;
     let data = this.uploader.queue;
     let that = this;
+    that.loadingService.register("loading");
+
     if (this.uploadUrl) {
       this.uploader.options.url = environment.apiURL + this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
       let sign = this.convertUtil.toMd5(timestamp + globalUrl.private_key);
-      this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}, {
+      this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }, {
         name: "id",
         value: this.uploadId
       }];
-      this.uploader.onBuildItemForm = function (e) {
-        that.loadingService.register("loading");
-      };
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
         let res = JSON.parse(e._xhr.response);
         if (res.code === "Fail" || res.code === "UnknownError") {
           // that.toastService.creatNewMessage(res.message);
-          that.toastService.creatNewMessage({message: res.message});
+          that.toastService.creatNewMessage({ message: res.message });
 
           data.forEach((item, index) => {
             if (!item.id) {  //上传失败以后，组件返回的数据里面没有id
@@ -225,7 +224,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
             }
           });
         } else {
-          that.toastService.creatNewMessage({message: "上传成功"});
+          that.toastService.creatNewMessage({ message: "上传成功" });
           let resData = res.data._files[0];
           data.forEach(item => {  // 每次都是单个上传
             if (item.id === resData.id) {
@@ -239,12 +238,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           that.onPostFileData.emit(res.data);
           // that.uploading = false;
         }
-        that.loadingService.resolve("loading");
+
       };
     } else {  //首页专用-1
-      this.uploader.onBuildItemForm = function (e) {
-        that.loadingService.register("loading");
-      };
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
@@ -255,8 +251,6 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         });
         let res = JSON.parse(e._xhr.response);
         that.onPostFileData.emit(res.data[0]);
-
-        that.loadingService.resolve("loading");
       };
     }
 
@@ -271,6 +265,11 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         item.alias = filename;
       }
     });
+
+    //等所有附件上传完成以后 
+    this.uploader.onCompleteAll = function () {
+      that.loadingService.resolve("loading");
+    }
   }
 
 
@@ -310,7 +309,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   renameFile(id, name) {
     let _self = this;
     this.loadingService.register("loading");
-    this.baseService.post("/api/file/rename", {key: id, value: name})
+    this.baseService.post("/api/file/rename", { key: id, value: name })
       .subscribe(res => {
         // console.log(res);
         _self.loadingService.resolve("loading");
@@ -325,7 +324,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   uploadAllFiles() {
     let timestamp = this.convertUtil.timestamp();
     let sign = this.convertUtil.toMd5(timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
-    this.uploader.options.headers = [{name: "timestamp", value: timestamp}, {name: "sign", value: sign}];
+    this.uploader.options.headers = [{ name: "timestamp", value: timestamp }, { name: "sign", value: sign }];
     this.uploader.uploadAll();
     let _self = this;
 
