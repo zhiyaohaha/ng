@@ -95,8 +95,8 @@ export class OrderService {
   }
 
   //获取审核资料信息
-  getLoanOrderDetail(id) {
-    return this.baseService.get("/api/LoanOrder/AuditDetail/Audit", {
+  getLoanOrderDetail(id, status) {
+    return this.baseService.get("/api/LoanOrder/AuditDetail/" + status, {
       id: id
     });
   }
