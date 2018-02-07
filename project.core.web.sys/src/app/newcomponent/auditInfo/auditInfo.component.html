@@ -95,7 +95,7 @@
         <td>{{history.remark}}</td>
         <td *ngIf="!history.attrs"></td>
         <td *ngIf="history.attrs">
-          <ul class="overheadInfo">
+          <ul class="overheadInfo" *ngIf="history._status !== '已放款'">
             <!-- 因为每个字段有不同的单位，不同的展示方式，所以需要写固定的 -->
             <li>批核金额 : {{history.attrs["批核金额"]}} 元</li>
             <li>批核期限 : {{history.attrs["批核期限"]}} 个月</li>
@@ -103,13 +103,22 @@
             <li>批核月费率 : {{history.attrs["批核月费率"]*100}}</li>
             <li>批核还款方式 : {{history.attrs["批核还款方式"]}}</li>
           </ul>
+          <ul class="overheadInfo" *ngIf="history._status == '已放款'">
+            <!-- 因为每个字段有不同的单位，不同的展示方式，所以需要写固定的 -->
+            <li>放款金额 : {{history.attrs["放款金额"]}} 元</li>
+            <li>放款期限 : {{history.attrs["放款期限"]}} 个月</li>
+            <li>放款年化 : {{history.attrs["放款年化"]*100}}</li>
+            <li>放款月费率 : {{history.attrs["放款月费率"]*100}}</li>
+            <li>放款还款方式 : {{history.attrs["放款还款方式"]}}</li>
+            <li>放款时间 : {{history.attrs["放款时间"]}}</li>
+          </ul>
         </td>
       </tr>
     </table>
   </div>
 
   <!-- 审核结果 -->
-  <div class="m-b-20">
+  <div class="m-b-20" *ngIf="status !== 'Loan'">
     <h4>审核结果</h4>
     <ul class="loan-info clearfix loan-info-result">
       <li *ngFor="let auditOption of loanInfo.auditOptions">
@@ -124,7 +133,7 @@
   </div>
 
   <!-- 批核信息 -->
-  <div class="m-b-20" *ngIf="status !== 'interview'?auditResultPass:false">
+  <div class="m-b-20" *ngIf="status !== 'FaceSign'?auditResultPass:false">
     <h4>批核信息</h4>
     <form [formGroup]="approveLoanInfoForm">
       <ul class="loan-info clearfix">
@@ -154,17 +163,17 @@
               [options]="loanInfo.repaymentMethods"></timi-select>
           </div>
         </li>
-        <li *ngIf="status == 'auditFinal'">
+        <li *ngIf="status == 'FinalAudit'">
           <div class="form-group columns1">
             <timi-select formControlName="loanApprovedAssignUsers" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="assignUsers"></timi-select>
           </div>
         </li>
-        <li *ngIf="status == 'waitLoan'">
+        <li *ngIf="status == 'WaitLoan'">
           <div class="form-group columns1">
             <span class="time-picker-label ">放款时间</span>
             <div class="time-picker">
-              <free-calendar formControlName="loanTime1" lang="cn" pholder="选择日期"></free-calendar>
-              <free-calendar formControlName="loanTime2" [timeOnly]="true" pholder="选择时间"></free-calendar>
+              <free-calendar formControlName="loanDate" lang="cn" pholder="选择日期"></free-calendar>
+              <free-calendar formControlName="loanTime" [timeOnly]="true" pholder="选择时间"></free-calendar>
             </div>
           </div>
         </li>
