@@ -47,13 +47,6 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
   assignUsers: any;  //指派人
 
-  //临时数据代码
-  //还款方式 
-  termBindData: any = [
-    { text: "吃饭", value: "11", childrens: null },
-    { text: "睡觉", value: "12", childrens: null }
-  ]
-
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
 
@@ -77,7 +70,11 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         this.getLoanInfo(data);
 
         this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
-          console.log(res)
+          if (res.code == "0") {
+            this.assignUsers = res.data;
+          } else {
+            super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          }
         })
       } else {
         super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
@@ -92,6 +89,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         loanApprovedYearsRate: [''],                         //批贷年化
         loanApprovedMonthsRate: [''],                        //批贷月费率
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
+        loanApprovedAssignUsers: [''],                       //被指派人
         loanTime1: '',                               //放款时间 
         loanTime2: ''
       })
@@ -302,7 +300,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     let id = this.id;
     let _status = this.status;
 
-    if (_status == 'auditFirstSecond') {  //(初审/复审)
+    if (_status == 'auditFirstSecond' || _status == 'auditFinal') {  //(初审/复审)
       let aduitOption = this.aduitOption;
       let auditStatus = this.auditStatus;
 
@@ -332,13 +330,25 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         }
       }
 
-      postData = {
-        id: id,
-        status: auditStatus,
-        description: auditContent,
-        option: aduitOption,
-        attrs: approveLoanInfoFormAttrs
-      };
+      if (_status == 'auditFirstSecond') {  //(初审/复审)
+        postData = {
+          id: id,
+          status: auditStatus,
+          description: auditContent,
+          option: aduitOption,
+          attrs: approveLoanInfoFormAttrs
+        };
+      } else if (_status == 'auditFinal') {  //终审
+        postData = {
+          id: id,
+          status: auditStatus,
+          description: auditContent,
+          option: aduitOption,
+          attrs: approveLoanInfoFormAttrs,
+          user: approveLoanInfoForm['loanApprovedAssignUsers']
+        };
+      }
+
     }
     console.log(postData)
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {

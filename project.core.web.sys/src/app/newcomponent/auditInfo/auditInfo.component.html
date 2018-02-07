@@ -156,7 +156,7 @@
         </li>
         <li *ngIf="status == 'auditFinal'">
           <div class="form-group columns1">
-            <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="termBindData"></timi-select>
+            <timi-select formControlName="loanApprovedAssignUsers" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="assignUsers"></timi-select>
           </div>
         </li>
         <li *ngIf="status == 'waitLoan'">
