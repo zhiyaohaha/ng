@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef, Output, EventEmitter } from "@angular/core";
 import { OrderService } from "app/services/order/order.service";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { FormBuilder } from "@angular/forms";
@@ -49,6 +49,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
+  @Output() closeRefreshData = new EventEmitter();
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -247,7 +248,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   //添加，审核结果原因
   chipsChange(e) {
     let process = this.process;
-    let content = e[0]['label'];
+    let content = e[e.length - 1]['label'];
     let aduitOption = this.aduitOption;
     let auditStatus = this.auditStatus;
     let _self = this;
@@ -299,20 +300,18 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     let _self = this;
     let id = this.id;
     let _status = this.status;
+    let aduitOption = this.aduitOption;
+    let auditStatus = this.auditStatus;
+    //审核结果 
+    let auditResultReason = this.auditResultReason;
+    let auditContent = [];
+    auditResultReason.forEach(element => {
+      if (element.status) {
+        auditContent.push(element.label);
+      }
+    });
 
     if (_status == 'auditFirstSecond' || _status == 'auditFinal') {  //(初审/复审)
-      let aduitOption = this.aduitOption;
-      let auditStatus = this.auditStatus;
-
-      //审核结果 
-      let auditResultReason = this.auditResultReason;
-      let auditContent = [];
-      auditResultReason.forEach(element => {
-        if (element.status) {
-          auditContent.push(element.label);
-        }
-      });
-
       //批核表单
       let approveLoanInfoForm = this.approveLoanInfoForm.value;
       let approveLoanInfoFormAttrs = {};
@@ -349,17 +348,30 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         };
       }
 
+    } else if (_status == 'interview') {
+      postData = {
+        id: id,
+        status: auditStatus,
+        description: auditContent,
+        option: aduitOption
+      };
     }
-    console.log(postData)
+
+    // console.log(postData)
+
+    this.loadingService.register("loading");
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
       if (res.code === "0") {
         _self.toastService.creatNewMessage({ message: label + "成功" });
+        _self.closeRefreshData.emit();
       } else {
         super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         // _self.toastService.creatNewMessage({ message: res.message });
       }
+      _self.loadingService.resolve("loading");
     }, (err) => {
       super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      _self.loadingService.resolve("loading");
     })
   }
 
