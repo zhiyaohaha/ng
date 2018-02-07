@@ -5,12 +5,12 @@
     "\\project.core.web.sys\\src",
     "\\project.core.web.sys\\src\\app",
     "\\project.core.web.sys\\src\\app\\component",
-    "\\project.core.web.sys\\src\\app\\component\\multiple-file-uploader",
+    "\\project.core.web.sys\\src\\app\\component\\calendar",
+    "\\project.core.web.sys\\src\\app\\component\\responsive-model",
     "\\project.core.web.sys\\src\\app\\newcomponent",
-    "\\project.core.web.sys\\src\\app\\newcomponent\\auditInfo",
-    "\\project.core.web.sys\\src\\app\\services",
-    "\\project.core.web.sys\\src\\app\\services\\order"
+    "\\project.core.web.sys\\src\\app\\newcomponent\\application",
+    "\\project.core.web.sys\\src\\app\\newcomponent\\auditInfo"
   ],
-  "SelectedNode": "\\project.core.web.sys\\src\\app\\services\\order\\order.service.ts",
+  "SelectedNode": "\\project.core.web.sys\\src\\app\\newcomponent\\application\\application.component.html",
   "PreviewInSolutionExplorer": false
 }
