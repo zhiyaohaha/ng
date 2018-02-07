@@ -23,7 +23,7 @@ import { MultipleFileUploaderModule } from "../component/multiple-file-uploader/
 import { RegionModule } from "app/component/region/region.component";
 import { MdButtonModule } from '@angular/material';
 import { PermissionsComponent } from './permissions/permissions.component';
-
+import { SharedPipeModule } from "app/component/shared-pipe/shared-pipe.module";
 @NgModule({
     declarations: [
         PreviewComponent,
@@ -33,7 +33,6 @@ import { PermissionsComponent } from './permissions/permissions.component';
         AuditInfoComponent,
         ChartComponent,
         PermissionsComponent,
-
     ],
     imports: [
         FormsModule,
@@ -50,6 +49,7 @@ import { PermissionsComponent } from './permissions/permissions.component';
         MultipleFileUploaderModule,
         RegionModule,
         MdButtonModule,
+        SharedPipeModule
     ],
     exports: [
         PreviewComponent,
