@@ -399,4 +399,9 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.FillInfoId = $event;
   }
 
+  //提交完成以后，关闭侧滑，刷新数据 
+  closeRefreshData() {
+    this.sidenav.close();
+    this.getParamsList(this.listparam);
+  }
 }

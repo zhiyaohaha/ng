@@ -46,24 +46,24 @@
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
         <!-- 1.资料收集  -->
-        <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo"></free-application>
+        <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo" (closeRefreshData)="closeRefreshData()"></free-application>
         <!-- 补充资料  -->
-        <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo"></free-application>
+        <free-application *ngIf="sidenavKey === 'UpdateInfo'" [id]="UpdateInfoId" status="updateInfo" (closeRefreshData)="closeRefreshData()"></free-application>
 
         <!-- 2.资料审核（初审，复审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstSecond"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'Audit'" [id]="AuditId" status="auditFirstSecond" (closeRefreshData)="closeRefreshData()"></free-auditInfo>
 
         <!-- 资料审核（终审） -->
-        <free-auditInfo *ngIf="sidenavKey === 'FaceSign'" [id]="FaceSignId" status="auditFinal"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'FinalAudit'" [id]="FinalAuditId" status="auditFinal" (closeRefreshData)="closeRefreshData()"></free-auditInfo>
 
         <!-- 面签 -->
-        <free-auditInfo *ngIf="sidenavKey === 'Interview'" [id]="InterviewId" status="interview"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'FaceSign'" [id]="FaceSignId" status="interview" (closeRefreshData)="closeRefreshData()"></free-auditInfo>
 
         <!-- 待放款 -->
-        <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'WaitLoan'" [id]="WaitLoanId" status="waitLoan" (closeRefreshData)="closeRefreshData()"></free-auditInfo>
 
         <!-- 放款 -->
-        <free-auditInfo *ngIf="sidenavKey === 'Loan'" [id]="LoanId" status="loan"></free-auditInfo>
+        <free-auditInfo *ngIf="sidenavKey === 'Loan'" [id]="LoanId" status="loan" (closeRefreshData)="closeRefreshData()"></free-auditInfo>
 
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
