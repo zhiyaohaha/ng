@@ -70,20 +70,23 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         this.process = data.process;
         this.getLoanInfo(data);
 
-        this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
-          if (res.code == "0") {
-            this.assignUsers = res.data;
-          } else {
-            super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-          }
-        })
+        if (this.status == 'auditFinal') {    //只有终审才有指派功能
+          this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
+            if (res.code == "0") {
+              this.assignUsers = res.data;
+            } else {
+              super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            }
+          })
+        }
+
       } else {
         super.openAlert({ title: "提示", message: "提交失败", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
 
-    // 初审/复审/终审/面签/待放款
-    if (this.status == 'auditFirstSecond' || this.status == 'auditFinal' || this.status == 'interview' || this.status == 'waitLoan' || this.status == 'loan') {
+    // (初/复审/) 终审 待放款
+    if (this.status !== 'interview' && this.status !== 'loan') {
       this.approveLoanInfoForm = this.fb.group({
         loanApprovedAmount: [''],                            //批贷金额
         loanApprovedDeadline: [''],                          //批贷期限
@@ -91,8 +94,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         loanApprovedMonthsRate: [''],                        //批贷月费率
         loanApprovedRepaymentMethod: [''],                   // 批贷还款方式
         loanApprovedAssignUsers: [''],                       //被指派人
-        loanTime1: '',                               //放款时间 
-        loanTime2: ''
+        loanDate: '',                                        //放款日期
+        loanTime: ''                                         //放款时间
       })
 
       if (this.status == 'waitLoan') {
@@ -223,7 +226,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     this.aduitOption = auditOption.option;
 
     //是否显示批核表单 
-    if (auditOption.name == '通过') {
+    if (auditOption.option == 'ProcessNodeAuditOption.Adopt') {
       this.auditResultPass = true;
     } else {
       this.auditResultPass = false;
@@ -290,12 +293,6 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //提交申请
   onSubmit(url, label) {
-    // console.log(this.approveLoanInfoForm.value)  //批准表单
-    // console.log(this.auditStatus)  //审核状态
-    // console.log(this.aduitOption)  //审核选项
-    // console.log(this.auditResultReason) //审核结果原因集合
-    // console.log(url)
-
     let postData = {}
     let _self = this;
     let id = this.id;
@@ -311,7 +308,14 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       }
     });
 
-    if (_status == 'auditFirstSecond' || _status == 'auditFinal') {  //(初审/复审)
+    postData = {
+      id: id,
+      status: auditStatus,
+      description: auditContent,
+      option: aduitOption,
+    };
+
+    if (_status !== 'interview') {     //(初审/复审) 终审  待放款 放款
       //批核表单
       let approveLoanInfoForm = this.approveLoanInfoForm.value;
       let approveLoanInfoFormAttrs = {};
@@ -329,36 +333,21 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         }
       }
 
-      if (_status == 'auditFirstSecond') {  //(初审/复审)
-        postData = {
-          id: id,
-          status: auditStatus,
-          description: auditContent,
-          option: aduitOption,
-          attrs: approveLoanInfoFormAttrs
-        };
-      } else if (_status == 'auditFinal') {  //终审
-        postData = {
-          id: id,
-          status: auditStatus,
-          description: auditContent,
-          option: aduitOption,
-          attrs: approveLoanInfoFormAttrs,
-          user: approveLoanInfoForm['loanApprovedAssignUsers']
-        };
-      }
 
-    } else if (_status == 'interview') {
-      postData = {
-        id: id,
-        status: auditStatus,
-        description: auditContent,
-        option: aduitOption
-      };
+      if (_status !== 'waitLoan') {
+        postData['attrs'] = approveLoanInfoFormAttrs;   //(初审/复审)
+        if (_status == 'auditFinal') {  //终审
+          postData['user'] = approveLoanInfoForm['loanApprovedAssignUsers'];
+        }
+      } else if (_status == 'waitLoan') {  //待付款
+        let loanTime = approveLoanInfoForm['loanDate'] + " " + approveLoanInfoForm['loanTime'];
+        approveLoanInfoFormAttrs['放款时间'] = loanTime;
+        postData['attrs'] = approveLoanInfoFormAttrs;
+      }
     }
 
-    // console.log(postData)
-
+    console.log(postData)
+    
     this.loadingService.register("loading");
     _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
       if (res.code === "0") {

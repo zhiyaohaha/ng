@@ -109,7 +109,7 @@
   </div>
 
   <!-- 审核结果 -->
-  <div class="m-b-20">
+  <div class="m-b-20" *ngIf="status !== 'loan'">
     <h4>审核结果</h4>
     <ul class="loan-info clearfix loan-info-result">
       <li *ngFor="let auditOption of loanInfo.auditOptions">
@@ -163,8 +163,8 @@
           <div class="form-group columns1">
             <span class="time-picker-label ">放款时间</span>
             <div class="time-picker">
-              <free-calendar formControlName="loanTime1" lang="cn" pholder="选择日期"></free-calendar>
-              <free-calendar formControlName="loanTime2" [timeOnly]="true" pholder="选择时间"></free-calendar>
+              <free-calendar formControlName="loanDate" lang="cn" pholder="选择日期"></free-calendar>
+              <free-calendar formControlName="loanTime" [timeOnly]="true" pholder="选择时间"></free-calendar>
             </div>
           </div>
         </li>
