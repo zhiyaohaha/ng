@@ -7,6 +7,12 @@ import {BaseUIComponent} from "../../baseUI.component";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastService} from "../../../component/toast/toast.service";
 import {ConvertUtil} from "../../../common/convert-util";
+import {FileUploader} from "ng2-file-upload";
+
+export class FileLists {
+  id: string;
+  path: string;
+}
 
 /**
  * 放款统计
@@ -48,6 +54,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   totalLoanApprovedAmount = 0; // 总应还金额
   totalActualAmount = 0; // 总实际还款金额
+
+  fileLists: FileLists[] = []; // 图片列表的数组
+  uploader: FileUploader; // 上传的对象
 
   pagecode: string;
 
@@ -321,7 +330,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       ActualAmount: ["", Validators.required],
       ActualLateFee: ["", Validators.required],
       RepaymentWay: ["", Validators.required],
-      PaymentVoucher: ["", Validators.required],
+      PaymentVoucher: [null, Validators.required],
       Remark: [""]
     });
   }
@@ -364,6 +373,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }
 
     console.log(this.repaymentForm);
+
     if (this.repaymentForm.valid) {
       this.loading.register("loading");
       this.postLoanManagementService.submitRepayment(this.repaymentForm.value)
@@ -407,7 +417,23 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     return this.repaymentForm.controls[name];
   }
 
-  onPostFileData($event){
-      console.log($event)
+  onPostFileData($event) {
+    console.log($event)
+  }
+
+  /**
+   * 返回上传对象
+   * @param $event
+   */
+  uploadObj($event) {
+    this.uploader = $event;
+  }
+
+  /**
+   * 移除上传的某一项
+   * @param $event
+   */
+  removeItem($event) {
+    $event.remove();
   }
 }

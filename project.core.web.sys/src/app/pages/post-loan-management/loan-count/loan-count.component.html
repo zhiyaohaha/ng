@@ -8,7 +8,8 @@
               [activeIndex]="currentPage" (pageEvent)="page($event)"
               (clickRowEvent)="rowClickEvent($event);sidenav.open()">
   </timi-table>
-  <p class="count-money"><span>总应还金额：<em>{{totalLoanApprovedAmount}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalActualAmount}}</em></span></p>
+  <p class="count-money"><span>总应还金额：<em>{{totalLoanApprovedAmount}}</em></span> &nbsp;&nbsp;<span>总实际还款金额：<em>{{totalActualAmount}}</em></span>
+  </p>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end">
     <div class="row">
@@ -101,7 +102,7 @@
                 <td>{{item?.actualLateFee}}</td>
                 <td>{{item?.actualAmount}}</td>
                 <td>
-                  <img src="{{item?._paymentVoucher}}">
+                  <img src="{{item?._paymentVoucher}}" style="width: 25px; height: 25px;">
                 </td>
                 <td>{{item?._user}}</td>
                 <td>{{item?.remark}}</td>
@@ -187,7 +188,23 @@
             <div class="section clearfix">
               <div class="columns2 upfile" style="margin-bottom: 1rem;">
                 <!-- <timi-file-uploader [btnName]="'还款凭证'" formControlName="PaymentVoucher"></timi-file-uploader> -->
-                <multiple-uploader (onPostFileData)="onPostFileData($event)"></multiple-uploader>
+                <!--<multiple-uploader formControlName="PaymentVoucher" (onPostFileData)="onPostFileData($event)"></multiple-uploader>-->
+                <div class="upload-file-wrap">
+                  <div class="label"><label>上传凭证</label></div>
+                  <div class="file-preview">
+                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'"
+                                 (uploadObj)="uploadObj($event)"></file-upload>
+                    <div class="file-item" *ngFor="let item of fileLists">
+                      <img src="{{item.path}}">
+                      <i class="fa fa-close" (click)="removeItem(item)"></i>
+                    </div>
+                    <div class="file-item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
+                      <img src="{{item.base}}">
+                      <md-progress-bar *ngIf="item.isUploading" mode="mode" [value]="item.progress"></md-progress-bar>
+                      <i class="fa fa-close" (click)="removeItem(item)"></i>
+                    </div>
+                  </div>
+                </div>
                 <p class="errors"
                    *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">
                   必填</p>
