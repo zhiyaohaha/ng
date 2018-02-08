@@ -45,7 +45,7 @@
           (onClick)="detailClick($event)"></detail-model>
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
-        <!-- 1.资料收集，补充资料   -->
+        <!-- 1.资料收集（不会有不通过与通过的状态），补充资料   -->
         <free-application *ngIf="sidenavKey === 'Collect'" [id]="CollectId" status="fillInfo" (closeRefreshData)="closeRefreshData()"></free-application>
 
         <!-- 2.资料审核（初审，复审） -->

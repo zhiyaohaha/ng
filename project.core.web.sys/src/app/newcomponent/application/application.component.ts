@@ -149,12 +149,10 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   stausCodeLabel(code) {
     let label;
     switch (code) {
-      case "LoanOrderAttachmentStatus.Audit":
-        label = "待审核";
-        break;
-      case "LoanOrderAttachmentStatus.Uncommitted":
-        label = "待填写";
-        break;
+      case "LoanOrderAttachmentStatus.Audit": label = "待审核"; break;
+      case "LoanOrderAttachmentStatus.Uncommitted": label = "待填写"; break;
+      case "LoanOrderAttachmentStatus.NotPass": label = "不通过"; break;
+      case "LoanOrderAttachmentStatus.Adopt": label = "通过"; break;
     }
     return label;
   }
@@ -190,7 +188,6 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   //提交申请
   onSubmit($event, url, label) {
     if (!this.multipleFileUploaderLowerLimit()) return false;
-    // console.log('可以上传')
     let _self = this;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
@@ -217,7 +214,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     })
   }
 
-  //根据多文件上传，上传最小数量的限制。 来判断是否可以继续提交 
+  //根据多文件上传，上传最小数量的限制  和 是否有'不通过'的状态。 来判断是否可以继续提交 
   multipleFileUploaderLowerLimit() {
     let attachmentGroups = this.loanInfo._attachmentGroups;
     let BreakException = {};
@@ -227,9 +224,18 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
         attachments.forEach((element1, index1) => {
           let currentNum = element1['_files'] ? element1['_files'].length : 0;
           let lowerLimit = element1['needCount'];
-          if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
+
+          //当前附件项下,当前文件的数量 < 规定上传的数量,禁止提交
+          // 是否有不通过状态,如果有则禁止提交(针对补资料页面)（资料收集页面没有不通过状态）
+          if (currentNum < lowerLimit || element1['_status'] == '不通过') {
             //提示 
-            let msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+            let msg;
+            if (currentNum < lowerLimit) {
+              msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+            } else {
+              msg = "附件项\"" + element1['name'] + "\"有不通过项";
+            }
+
             super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
             //展开该附件组
             element.attachmentsDisplay = true;
@@ -249,6 +255,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
             //停止继续提交
             throw BreakException;
           }
+
         });
       });
     } catch (e) {
