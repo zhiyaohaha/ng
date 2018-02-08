@@ -1,77 +1,91 @@
-.shade{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    background-color: rgba(1, 1, 1, .4);
+.shade {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgba(1, 1, 1, .4);
 }
-.closebtn{
-    float: right;
+
+.closebtn {
+  float: right;
 }
-.preBox{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    cursor: move;
-    // transform: translateX(-50%);
-    // transform: translateY(-50%);
+
+.preBox {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  cursor: move; // transform: translateX(-50%);
+  // transform: translateY(-50%);
 }
-.prePic{    
-    width: 100%;
-    height: 100%;
+
+.prePic {
+  width: 100%;
+  height: 100%;
 }
-.preBtn{
-    overflow: hidden;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    margin-left: -95px;
+
+.preBtn {
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -95px;
 }
-.preBtn li{
-    width: 30px;
-    height: 30px;
-    float: left;
-    display: block;
-    border-radius: 50%;
-    background-color: #ffffff;
-    text-align: center;
-    line-height: 30px;
-    margin-right: 10px;
-    cursor: pointer;
+
+.preBtn li {
+  width: 30px;
+  height: 30px;
+  float: left;
+  display: block;
+  border-radius: 50%;
+  background-color: #ffffff;
+  text-align: center;
+  line-height: 30px;
+  margin-right: 10px;
+  cursor: pointer;
 }
-.preBtn li:last-child{
-    margin-right: 0;
+
+.preBtn li:last-child {
+  margin-right: 0;
 }
-.switch{
-    width: 100%;
+
+.fr {
+  width: 10%;
+  height: 10%;
+  position: absolute;
+  top: 45%;
+  right: 5%;
+}
+
+.fl {
+    width: 10%;
     height: 10%;
     position: absolute;
-    top: 50%;
-    overflow: hidden;
-
-}
-.left,.right{
-    display: inline-block;
-    cursor: pointer;
+    top: 45%;
+    left: 5%;
 }
 
-.left{
-    float: left;
-    margin-left: 6%;
-    border-top:20px transparent dashed;
-    border-left:20px transparent dashed;
-    border-bottom:20px transparent dashed;
-    border-right:20px rgba(1, 1, 1, .7) solid;
-    overflow:hidden;
+.left,
+.right {
+  display: inline-block;
+  cursor: pointer;
 }
-.right{
-    float: right;
-    margin-right: 6%;
-    border-top:20px transparent dashed;
-    border-right:20px transparent dashed;
-    border-bottom:20px transparent dashed;
-    border-left:20px rgba(1, 1, 1, .7) solid;
-    overflow:hidden;
+
+.left {
+  float: left;
+  border-top: 50px transparent dashed;
+  border-left: 50px transparent dashed;
+  border-bottom: 50px transparent dashed;
+  border-right: 50px rgba(1, 1, 1, .7) solid;
+  overflow: hidden;
+}
+
+.right {
+  float: right;
+  border-top: 50px transparent dashed;
+  border-right: 50px transparent dashed;
+  border-bottom: 50px transparent dashed;
+  border-left: 50px rgba(1, 1, 1, .7) solid;
+  overflow: hidden;
 }

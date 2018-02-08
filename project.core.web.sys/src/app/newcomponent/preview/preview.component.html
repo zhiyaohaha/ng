@@ -1,7 +1,7 @@
 <div class="shade" (mousewheel)="listenToMousewheel($event)">
   <img src="../../../assets/Images/2.png" alt="关闭按钮" class="closebtn" (click)="closebtn()">
       <div class="preBox" (mousedown)="drag($event,prePic)" #prePic>
-          <img  [src]="picUrl" alt="预览图" class="prePic">
+          <img  [src]="picUrl" class="prePic">
       </div>
   <ul class="preBtn">
     <li (click)="largen()">+</li>
@@ -10,8 +10,14 @@
     <li (click)="turnLeft()">L</li>
     <li (click)="turnRight()">R</li>
   </ul>
-  <div class="switch" *ngIf="isSwitchShow">
+  <!-- <div class="switch" *ngIf="isSwitchShow">
     <i class="left" (click)="pre()"></i>
+    <i class="right" (click)="next()"></i>
+  </div> -->
+  <div class="fl">
+    <i class="left" (click)="pre()"></i>
+  </div>
+  <div class="fr">
     <i class="right" (click)="next()"></i>
   </div>
 </div>

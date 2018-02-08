@@ -69,9 +69,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   }
 
   ngOnInit() {
-    // console.log(2222)
     this.regionService.getData().subscribe(result => {
-      // console.log(this.modifiedData)
+      
       this.setData(result);
       if (!this.multiple) { //非多选的情况下
         this.multipleFalseFun(result);
@@ -111,11 +110,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
           }
         }
       }
-      // console.log(result)
     }
-
     this.result = result;
-    // console.log(this.result, "获取的data数据");
   }
 
   //根据 输入的值，修改view 每个input的checked状态   (同时循环json数据源result和输入数据inputData)
@@ -407,7 +403,6 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   //将返回结果，修改为timi-select 可以直接使用的格式
   multipleFalseFun(res) {
-    // console.log(res)
     let _self = this;
     if (res) {
       res.forEach((item1, index1) => {
@@ -422,8 +417,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         })
 
       })
-      //  console.log(_self.multipleFalseData)
     }
+
   }
 
   //非多选，不使用父组件数据的情况下：     通过这一级的val。设置下一级的数据源
