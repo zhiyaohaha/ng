@@ -6,7 +6,7 @@
         <!-- 一级面板动态组件（附件组）  -->
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
           <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]" [placeholder]="child.ui.placeholder"
-            (blur)="inputBlur($event)">
+            (blur)="inputBlur($event)" (focus)="inputFocus($event)">
           </timi-input>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
@@ -42,7 +42,7 @@
         <!--</div>-->
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
           <timi-chip-group name="{{child.name}}" [(ngModel)]="modelDOMSData[i][child.name]" [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
-            [columns]="child.ui.columns">
+            [columns]="child.ui.columns" (inputFocus)="inputFocus($event)" (blur)="chipBlur()">
           </timi-chip-group>
         </div>
         <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
@@ -106,7 +106,7 @@
 
                   <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                     <timi-input [labelName]="child.ui.label" name="{{child.name}}" [ngModel]="binddataItem[lastdotFun(child.name)]" (ngModelChange)="updateAmount(binddataItem,child.name,$event)"
-                      [placeholder]="child.ui.placeholder" (blur)="inputBlur($event)">
+                      [placeholder]="child.ui.placeholder" (blur)="inputBlur($event)" (focus)="inputFocus($event)">
                     </timi-input>
                   </div>
                   <!-- 二级面板- 静态组件判断 -->
