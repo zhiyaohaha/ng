@@ -23,14 +23,14 @@
     </td>
     <ng-container *ngFor="let value of item">
       <ng-container [ngSwitch]="value.pipe">
-        <!--日期-->
-        <td *ngSwitchCase="'HtmlPipe.Date'" [hidden]="value.hidden">
-          {{value.label | date:"yyyy-MM-dd"}}
-        </td>
-        <!--时间-->
-        <td *ngSwitchCase="'HtmlPipe.DateTime'" [hidden]="value.hidden">
-          {{value.label | date:"yyyy-MM-dd HH:mm:ss"}}
-        </td>
+        <!--&lt;!&ndash;日期&ndash;&gt;-->
+        <!--<td *ngSwitchCase="'HtmlPipe.Date'" [hidden]="value.hidden">-->
+          <!--{{value.label | date:"yyyy-MM-dd"}}-->
+        <!--</td>-->
+        <!--&lt;!&ndash;时间&ndash;&gt;-->
+        <!--<td *ngSwitchCase="'HtmlPipe.DateTime'" [hidden]="value.hidden">-->
+          <!--{{value.label | date:"yyyy-MM-dd HH:mm:ss"}}-->
+        <!--</td>-->
         <!--单图片显示-->
         <td *ngSwitchCase="'HtmlPipe.Image'" [hidden]="value.hidden">
           <img src="{{value.label}}" class="table-img" (click)="previewImg(value.label)">

@@ -1,5 +1,15 @@
 import { CommonModule } from "@angular/common";
-import { Component, forwardRef, HostListener, NgModule, OnInit, Input, EventEmitter, Output, ViewContainerRef } from "@angular/core";
+import {
+  Component,
+  forwardRef,
+  HostListener,
+  NgModule,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ViewContainerRef
+} from "@angular/core";
 import { DomRenderer } from "../../common/dom";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { FileUploader, FileUploadModule } from "ng2-file-upload";
@@ -7,7 +17,7 @@ import { environment } from "../../../environments/environment";
 import { ConvertUtil } from "../../common/convert-util";
 import { strLength } from "../../common/pipe/strLength";
 import { MdProgressBarModule } from "@angular/material";
-import { Http, Headers } from "@angular/http";
+import { Http } from "@angular/http";
 import { defaultValue } from "../../common/global.config";
 import { BaseService } from "app/services/base.service";
 import { globalUrl } from "../../common/global.config";
@@ -53,8 +63,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     // autoUpload: true,
   });
 
-  private valueChange = (_: any) => {
-  };
+  private valueChange = (_: any) => { };
 
   constructor(private convertUtil: ConvertUtil,
     private http: Http,
@@ -104,7 +113,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
               _self.toastService.creatNewMessage({ message: res.message });
             }
           });
-      })
+      });
     } else {  //首页专用-2
       let res = JSON.parse(item._xhr.response);
       this.onPostFileData.emit(res.data[0]);
@@ -145,11 +154,15 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    */
   removeConfirm(back) {
     // let confirmRes = confirm("确认要删除该文件吗?");
-    super.openConfirm({ message: "确认要删除该文件吗?", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (accept: boolean) {
+    super.openConfirm({
+      message: "确认要删除该文件吗?",
+      dialogService: this.dialogService,
+      viewContainerRef: this.viewContainerRef
+    }, function (accept: boolean) {
       if (accept) {
         back();
       }
-    })
+    });
   }
 
   /**
@@ -179,6 +192,8 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     // this.uploading = true;
     let data = this.uploader.queue;
     let that = this;
+    that.loadingService.register("loading");
+
     if (this.uploadUrl) {
       this.uploader.options.url = environment.apiURL + this.uploadUrl;
       let timestamp = this.convertUtil.timestamp();
@@ -187,9 +202,6 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         name: "id",
         value: this.uploadId
       }];
-      this.uploader.onBuildItemForm = function (e) {
-        that.loadingService.register("loading");
-      }
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
@@ -226,12 +238,9 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
           that.onPostFileData.emit(res.data);
           // that.uploading = false;
         }
-        that.loadingService.resolve("loading");
+
       };
     } else {  //首页专用-1
-      this.uploader.onBuildItemForm = function (e) {
-        that.loadingService.register("loading");
-      }
       this.uploader.uploadAll();
 
       this.uploader.onSuccessItem = function (e) {
@@ -242,9 +251,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         });
         let res = JSON.parse(e._xhr.response);
         that.onPostFileData.emit(res.data[0]);
-
-        that.loadingService.resolve("loading");
-      }
+      };
     }
 
     //上传时，临时用于显示的别名
@@ -258,6 +265,11 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         item.alias = filename;
       }
     });
+
+    //等所有附件上传完成以后 
+    this.uploader.onCompleteAll = function () {
+      that.loadingService.resolve("loading");
+    }
   }
 
 
@@ -266,7 +278,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
     if (this.uploadUrl) { //首页专用-4
       let imgSrcArr = [];
       items.forEach(item => {
-        if (item.contentType.substring(0, 5) == 'image') {  //只有图片才能预览
+        if (item.contentType.substring(0, 5) === "image") {  //只有图片才能预览
           imgSrcArr.push(item.path);
         }
       });
@@ -362,7 +374,12 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
       let upperLimitNum = this.upperLimit;           //当前数量
       if (currentNum >= upperLimitNum) {
         e.preventDefault();    //默认事件就是打开文件对话框
-        super.openAlert({ title: "提示", message: "该附件项最多上传" + upperLimitNum + "个附件", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        super.openAlert({
+          title: "提示",
+          message: "该附件项最多上传" + upperLimitNum + "个附件",
+          dialogService: this.dialogService,
+          viewContainerRef: this.viewContainerRef
+        });
       }
     }
   }

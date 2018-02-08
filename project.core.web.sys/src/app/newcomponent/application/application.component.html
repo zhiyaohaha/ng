@@ -47,7 +47,7 @@
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])" [uploaderQueueHidden]="true"
-              [readyOnly]=" status == 'updateInfo' && attachmentGroup._attachments[0]._status !== '不通过'" [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
+              [readyOnly]="attachmentGroup._attachments[0]._status == '通过'" [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
           </div>
           <!-- 附件组非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
@@ -61,7 +61,7 @@
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
                     " (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)" [uploaderQueueHidden]="true"
-              [readyOnly]=" status == 'updateInfo'  && attachmentGroup.temporaryData._status !== '不通过'" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
+              [readyOnly]="attachmentGroup.temporaryData._status == '通过'" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
           </div>
         </div>
       </li>
@@ -69,7 +69,7 @@
   </div>
 
   <div class="resultBtn">
-    <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit($event,btn.url,btn.label)">{{btn.label}}</button>
+    <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit($event,btn.url,btn.label,btn.status)">{{btn.label}}</button>
   </div>
 
 </form>

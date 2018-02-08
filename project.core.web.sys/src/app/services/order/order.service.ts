@@ -82,9 +82,16 @@ export class OrderService {
     });
   }
 
-  //获取贷款信息（补充资料）
+  //获取贷款信息
   getLoanInfo(id) {
     return this.baseService.get("/api/LoanOrder/PullFormDataFromOrderCollection", {
+      id: id
+    });
+  }
+
+  //获取详细页面数据 
+  getLoanDetail(id) {
+    return this.baseService.get("/api/LoanOrder/Detail", {
       id: id
     });
   }
@@ -95,8 +102,8 @@ export class OrderService {
   }
 
   //获取审核资料信息
-  getLoanOrderDetail(id) {
-    return this.baseService.get("/api/LoanOrder/AuditDetail/Audit", {
+  getLoanOrderDetail(id, status) {
+    return this.baseService.get("/api/LoanOrder/AuditDetail/" + status, {
       id: id
     });
   }
@@ -140,6 +147,15 @@ export class OrderService {
       status: status,
       option: option,
       content: content
+    });
+  }
+
+  //获取指派用户
+  GetAssignUsers(org, process, status) {
+    return this.baseService.get("/api/LoanOrder/GetAssignUsers", {
+      org: org,
+      process: process,
+      status: status
     });
   }
 }
