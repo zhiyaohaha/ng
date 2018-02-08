@@ -49,6 +49,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   rowId; // 点击行存下的ID
   repaymentId; // 还款的ID
 
+  repaymentFormRepaymentWay: number; // 还款表单还款类型设置默认值
+  outputData; // 上传凭证
   repaymentForm: FormGroup; // 还款表单
   repaymentPlanForm: FormGroup; // 还款计划表单
 
@@ -320,19 +322,35 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "Repayment";
     if ($event === "all") {
       this.repaymentId = "";
+      this.repaymentForm = this.fb.group({
+        id: [this.repaymentId],
+        ActualTime: ["", Validators.required],
+        ActualAmount: ["", Validators.required],
+        ActualLateFee: ["", Validators.required],
+        RepaymentWay: ["", Validators.required],
+        PaymentVoucher: [null, Validators.required],
+        Remark: [""]
+      });
     } else {
       this.repaymentId = $event.id;
+      this.repaymentFormRepaymentWay = 1; // 还款类型
+      this.fileLists = $event._paymentVoucher.map(item => {
+        return {id: item.id, path: item.path};
+      }); // 上传凭证
+      this.outputData = JSON.parse(JSON.stringify(this.fileLists));
+      this.repaymentForm = this.fb.group({
+        id: [this.repaymentId],
+        ActualTime: [$event.actualTime, Validators.required],
+        ActualAmount: [$event.actualAmount, Validators.required],
+        ActualLateFee: [$event.actualLateFee, Validators.required],
+        RepaymentWay: [$event.repaymentWay, Validators.required],
+        PaymentVoucher: [this.outputData, Validators.required],
+        Remark: [$event.remark]
+      });
     }
     // 还款表单
-    this.repaymentForm = this.fb.group({
-      id: [this.repaymentId],
-      ActualTime: ["", Validators.required],
-      ActualAmount: ["", Validators.required],
-      ActualLateFee: ["", Validators.required],
-      RepaymentWay: ["", Validators.required],
-      PaymentVoucher: [null, Validators.required],
-      Remark: [""]
-    });
+    console.log($event);
+
   }
 
   /**
@@ -382,6 +400,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
           super.showToast(this.toastService, res.message || "状态未知");
           if (res.code === "0") {
             this.sidenavKey = "Detail";
+            this.getRepaymentPlan(this.rowId);
           }
         });
     }
@@ -431,9 +450,14 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   /**
    * 移除上传的某一项
-   * @param $event
+   * @param item
    */
-  removeItem($event) {
-    $event.remove();
+  removeItem(item) {
+    if (this.fileLists.some(f => f.id === item.id)) {
+      this.fileLists = this.fileLists.filter(f => f.id !== item.id);
+    } else {
+      item.remove();
+    }
+    this.outputData = JSON.parse(JSON.stringify(this.fileLists));
   }
 }

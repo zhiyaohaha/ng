@@ -58,13 +58,14 @@ export class FileUpload2Component implements ControlValueAccessor, OnInit {
 
   set inputData(value) {
     if (typeof value === "string") {
-      this.outputData.push(value);
+      this.outputData = value;
     } else if (value instanceof Array) {
       this.outputData = value;
     }
+    this.valueChange(this.outputData);
   }
 
-  @Input() outputData: string[] = []; //输出数据
+  @Input() outputData; //输出数据
 
   @Input() url: string = environment.apiURL + "/api/file/upload"; // 上传地址
   @Input() multiple: boolean; // 是否为多文件上传
@@ -100,6 +101,13 @@ export class FileUpload2Component implements ControlValueAccessor, OnInit {
       //autoUpload: true
     });
     this.uploadObj.emit(this.uploader);
+    if (this.multiple) {
+      if (this.outputData instanceof Array) {
+
+      } else {
+        this.outputData = [];
+      }
+    }
   }
 
   writeValue(obj): void {
@@ -163,23 +171,17 @@ export class FileUpload2Component implements ControlValueAccessor, OnInit {
 
   /**
    * 根据returnType返回不同的类型值
-   * @param {string} key
    * @param {string} data
    */
   switchReturnType(data) {
-    switch (this.returnType) {
-      case "id":
-        this.outputData.push(data.id);
-        break;
-      case "path":
-        this.outputData.push(data.path);
-        break;
-      case "full":
+    if (this.multiple) {
+      if (this.returnType === "id" || this.returnType === "path") {
+        this.outputData.push(data[this.returnType]);
+      } else {
         this.outputData.push(data);
-        break;
-      default:
-        this.outputData.push(data.id);
-        break;
+      }
+    } else {
+      this.outputData = data[this.returnType];
     }
   }
 

@@ -165,7 +165,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   //       this._filter = false;
   //     }
   //   }
-    
+
   // }
 
 
@@ -189,7 +189,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
   }
 
   writeValue(value: any) {
-    value = value ? String(value) : value;
+    // value = value ? String(value) : value;
     if (this.options) {
       this.options.map(r => {
         r.checked = false;
@@ -246,7 +246,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     }
     this.getSelectedValue();
   }
-  
+
   /**
    * 多选时选中或取消某一项
    */
