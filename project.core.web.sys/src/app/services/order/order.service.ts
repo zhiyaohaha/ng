@@ -82,9 +82,16 @@ export class OrderService {
     });
   }
 
-  //获取贷款信息（补充资料）
+  //获取贷款信息
   getLoanInfo(id) {
     return this.baseService.get("/api/LoanOrder/PullFormDataFromOrderCollection", {
+      id: id
+    });
+  }
+
+  //获取详细页面数据 
+  getLoanDetail(id) {
+    return this.baseService.get("/api/LoanOrder/Detail", {
       id: id
     });
   }

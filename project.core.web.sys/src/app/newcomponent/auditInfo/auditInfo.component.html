@@ -5,7 +5,11 @@
   <!-- 录入信息 -->
   <div class="loan">
     <h4>录入信息</h4>
-    <timi-responsive-form [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""></timi-responsive-form>
+    <!-- 新增 -->
+    <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""></timi-responsive-form>
+    <!-- 修改 -->
+    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""
+      [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
   </div>
 
   <!-- 所需附件 -->
@@ -41,14 +45,15 @@
                 <span *ngIf="attachmentGroup._attachments[0].upperLimit">最多上传{{attachmentGroup._attachments[0].upperLimit}}个文件</span>
               </p>
               <div>
-                <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过'">
+                <p class="auditBtn" *ngIf="attachmentGroup._attachments[0]._status !== '通过' && attachmentGroup._attachments[0]._status !== '不通过' && !attachmentGroup._attachments[0].limitAudit">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup._attachments[0].id,i,attachmentGroup._attachments[0])">不通过</span>
                 </p>
               </div>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
-                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly" [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="attachmentGroup._attachments[0].limitWrite
+                    " [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
           </div>
           <!-- 非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
@@ -60,14 +65,14 @@
                 <span *ngIf="attachmentGroup.temporaryData.upperLimit">最多上传{{attachmentGroup.temporaryData.upperLimit}}个文件</span>
               </p>
               <div>
-                <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过'">
+                <p class="auditBtn" *ngIf="attachmentGroup.temporaryData._status !== '通过' &&  attachmentGroup.temporaryData._status !== '不通过' &&  !attachmentGroup.temporaryData.limitAudit ">
                   <span class="free-badge auditBtnPass" (click)="postLoanOrderAdoptAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">通过</span>
                   <span class="free-badge auditBtnNotPass" (click)="postLoanOrderNotPassAttachment(attachmentGroup.temporaryData.id,i,attachmentGroup.temporaryData)">不通过</span>
                 </p>
               </div>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                    " [uploaderQueueHidden]="true" [readyOnly]="readyOnly" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="attachmentGroup.temporaryData.limitWrite" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
           </div>
 
         </div>
@@ -78,6 +83,7 @@
   <!-- 操作记录 -->
   <div class="m-b-20 history">
     <h4>操作记录</h4>
+    <p>当前操作人: {{loanInfo._operator}}</p>
     <table border="1" cellpadding="10">
       <tr>
         <th>操作人</th>
@@ -118,7 +124,7 @@
   </div>
 
   <!-- 审核结果 -->
-  <div class="m-b-20" *ngIf="status !== 'Loan'">
+  <div class="m-b-20" *ngIf="status !== 'Loan' && status !== 'Detail'">
     <h4>审核结果</h4>
     <ul class="loan-info clearfix loan-info-result">
       <li *ngFor="let auditOption of loanInfo.auditOptions">
@@ -182,7 +188,7 @@
   </div>
 
   <div class="resultBtn">
-    <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit(btn.url,btn.label)">{{btn.label}}</button>
+    <button type="button" class="mat-raised-button" *ngFor="let btn of loanInfo.btns" (click)="onSubmit(btn.url,btn.label,btn.type)">{{btn.label}}</button>
   </div>
 
 </div>

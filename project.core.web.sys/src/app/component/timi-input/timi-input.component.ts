@@ -30,7 +30,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
         <div #wrap class="item-control">
           <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" [disabled]="disabledVal"
                  name="{{name}}" value="{{value}}" (blur)="onBlur($event)" spellcheck="false" autocomplete="off"
-                 required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)">
+                 required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)" (focus)="onFocus($event)">
           <span class="item-error-tip">{{errorTips}}</span>
         </div>
       </div>
@@ -64,7 +64,9 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @Input() errorTips: string;
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
-
+  @Output() focus: EventEmitter<any> = new EventEmitter();
+  
+  
   @ViewChild("wrap")
   wrapRef: ElementRef;
 
@@ -124,6 +126,11 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
       this.renderer.addClass(this.wrapRef.nativeElement, "error");
     }
     this.valueChange(this._value);
+  }
+
+  // 失去焦点的事件
+  onFocus(e){
+    this.focus.emit(e);
   }
 
   /*允许拖放*/

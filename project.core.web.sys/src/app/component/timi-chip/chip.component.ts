@@ -108,6 +108,7 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   value: any[] = [];
   _placeholder = "回车添加";
   @Output() blur: EventEmitter<any> = new EventEmitter();
+  @Output() inputFocus: EventEmitter<any> = new EventEmitter();
   @Input() clickFilter: boolean;  //是否启用“点击单个标签,高亮选中该标签”的交互，是否禁用“点击单个标签删除该标签”的交互；
   timiChipActive: any[] = [];  //存储多个标签，是否高亮状态的集合
 
@@ -153,6 +154,7 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   onFocus() {
     this.focus = !this.focus;
     this.setChipClass();
+    this.inputFocus.emit();
   }
 
   onBlur($event) {

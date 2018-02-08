@@ -91,6 +91,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
 
   pagecode: string;
 
+  detailId: string;
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -201,7 +202,8 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.new = false;
     this.sidenavKey = "Detail";
     this.btnType = "edit";
-    this.loadDetailModel({ id: $event.id });
+    // this.loadDetailModel({ id: $event.id });
+    this.detailId = $event.id;
     // this.commonService.getDetailModel({id: $event.row.id})
     //   .subscribe(r => {
     //     this.selectRow = r.data.bindData;
@@ -275,47 +277,47 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   /**
    * 详情组件点击事件
    */
-  detailClick(value) {
-    if (value.name === "HtmlDomCmd.Redirect") {
-      this.sidenavKey = "Form";
-      this.edit = true;
-      if (value.triggerUrl) {
-        let param = {};
-        value.bindParamFields.forEach((item) => {
-          param[item] = this.selectRow[item];
-        });
+  // detailClick(value) {
+  //   if (value.name === "HtmlDomCmd.Redirect") {
+  //     this.sidenavKey = "Form";
+  //     this.edit = true;
+  //     if (value.triggerUrl) {
+  //       let param = {};
+  //       value.bindParamFields.forEach((item) => {
+  //         param[item] = this.selectRow[item];
+  //       });
 
-        if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#(所以要截取一下)
-          let status = value.triggerUrl.substr(1, value.triggerUrl.length);
-          let statusId = status + "Id";
-          this[statusId] = this.selectRow.id;
-          this.setSidenavKey(status);
+  //       if (value.triggerUrl.indexOf("#") !== -1) {  //url里面有#(所以要截取一下)
+  //         let status = value.triggerUrl.substr(1, value.triggerUrl.length);
+  //         let statusId = status + "Id";
+  //         this[statusId] = this.selectRow.id;
+  //         this.setSidenavKey(status);
 
-          // // 补充资料
-          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
-          // // 审核资料
-          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
-          // //待放款
-          // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
-        } else {
-          this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
-            if (res.code === "0") {
-              this.modelDOMS = res.data.doms;
-              this.selectRow = res.data.bindData;
-            }
-          });
-        }
+  //         // // 补充资料
+  //         // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+  //         // // 审核资料
+  //         // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+  //         // //待放款
+  //         // this.setSidenavKey(value.triggerUrl.substr(1, value.triggerUrl.length));
+  //       } else {
+  //         this.baseService.get("/api/" + value.triggerUrl, param).subscribe(res => {
+  //           if (res.code === "0") {
+  //             this.modelDOMS = res.data.doms;
+  //             this.selectRow = res.data.bindData;
+  //           }
+  //         });
+  //       }
 
-      }
-    } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
-        this.toastService.creatNewMessage(res.message);
-      });
-    } else if (value.name === "HtmlDomCmd.Form") {
-      this.sidenavKey = "Form";
-    }
+  //     }
+  //   } else if (value.name === "HtmlDomCmd.API") {
+  //     this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
+  //       this.toastService.creatNewMessage(res.message);
+  //     });
+  //   } else if (value.name === "HtmlDomCmd.Form") {
+  //     this.sidenavKey = "Form";
+  //   }
 
-  }
+  // }
 
   /**
    * 返回详情
@@ -395,13 +397,23 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   //报单，申请贷款以后，跳转到补资料页面
   onGetOrderId($event) {
     console.log($event);
-    this.sidenavKey = "FillInfo";
-    this.FillInfoId = $event;
+    this.sidenavKey = "Collect";
+    this.CollectId = $event;
   }
 
   //提交完成以后，关闭侧滑，刷新数据 
   closeRefreshData() {
     this.sidenav.close();
     this.getParamsList(this.listparam);
+  }
+
+
+  //详情组件点击事件
+  detailClick(e) {
+    let status = e['url'];
+    status = status.substr(1, status.length);
+    let statusId = status + "Id";
+    this[statusId] = e['id'];
+    this.setSidenavKey(status);
   }
 }

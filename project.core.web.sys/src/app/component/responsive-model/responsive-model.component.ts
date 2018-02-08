@@ -21,7 +21,7 @@ import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import { forEach } from "@angular/router/src/utils/collection";
-import { CustomValidatorsDirective } from "../../common/directive/validators.directive";
+
 
 @Component({
   selector: "timi-responsive-form",
@@ -401,7 +401,7 @@ export class ResponsiveModelComponent implements OnInit {
       // }
     })
   ],
-  declarations: [ResponsiveModelComponent, CustomValidatorsDirective],
+  declarations: [ResponsiveModelComponent],
   providers: [],
   exports: [ResponsiveModelComponent]
 })

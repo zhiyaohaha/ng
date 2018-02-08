@@ -287,7 +287,7 @@ export class LoandemandComponent extends BaseUIComponent implements OnInit {
    * 提交表单
    */
   submitMethod($event) {  
-    //this.loading.register("loading");
+    // this.loading.register("loading");
     // if (this.btnType === "new") {
     //   this.sharepageService.saveNewParams($event)
     //     .subscribe(res => {
@@ -326,18 +326,18 @@ export class LoandemandComponent extends BaseUIComponent implements OnInit {
   }
 
   //提交表单的时候需要走多个接口的情况
-  submitMoreURL(param, Urls: any[]) {
-    this.loading.register("loading");
-    Urls.forEach((item) => {
-      this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
-        this.loading.resolve("loading");
-        this.toastService.creatNewMessage(res.message);
-        if (res.code === "0") {
-          this.getParamsList(this.listparam);
-        }
-      });
-    });
-  }
+  // submitMoreURL(param, Urls: any[]) {
+  //   this.loading.register("loading");
+  //   Urls.forEach((item) => {
+  //     this.baseService.post("/api/" + item.triggerUrl, param).subscribe(res => {
+  //       this.loading.resolve("loading");
+  //       this.toastService.creatNewMessage(res.message);
+  //       if (res.code === "0") {
+  //         this.getParamsList(this.listparam);
+  //       }
+  //     });
+  //   });
+  // }
 
   createComponent(menus) {
     this.container.clear();
