@@ -77,6 +77,12 @@
                 <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"></free-region>
               </div>
             </div>
+            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+              <div class="box-item item-label">
+                <label>{{child.ui.label}}</label>
+              </div>
+              <p>{{_modelDOMSData[child.name]}}</p>
+            </div>
 
             <!-- 静态表单二级面板 -->
             <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
