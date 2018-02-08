@@ -102,7 +102,7 @@ export class FileUpload2Component implements ControlValueAccessor, OnInit {
     });
     this.uploadObj.emit(this.uploader);
     if (this.multiple) {
-      if (this.outputData instanceof Array){
+      if (this.outputData instanceof Array) {
 
       } else {
         this.outputData = [];
