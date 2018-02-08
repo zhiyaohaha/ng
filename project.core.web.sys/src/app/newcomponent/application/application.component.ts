@@ -186,8 +186,10 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   }
 
   //提交申请
-  onSubmit($event, url, label) {
-    if (!this.multipleFileUploaderLowerLimit()) return false;
+  onSubmit($event, url, label, status) {
+    if (status == "Audit") {  //点击提交的时候才做附件验证，点击暂存的时候不需要
+      if (!this.multipleFileUploaderLowerLimit()) return false;
+    }
     let _self = this;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
