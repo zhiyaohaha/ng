@@ -397,8 +397,8 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   //报单，申请贷款以后，跳转到补资料页面
   onGetOrderId($event) {
     console.log($event);
-    this.sidenavKey = "FillInfo";
-    this.FillInfoId = $event;
+    this.sidenavKey = "Collect";
+    this.CollectId = $event;
   }
 
   //提交完成以后，关闭侧滑，刷新数据 
