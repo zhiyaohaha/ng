@@ -102,13 +102,23 @@
                 <td>{{item?.actualLateFee}}</td>
                 <td>{{item?.actualAmount}}</td>
                 <td>
-                  <img src="{{item?._paymentVoucher}}" style="width: 25px; height: 25px;">
+                  <ng-container *ngFor="let img of item?._paymentVoucher">
+                    <img src="{{img?.path}}" style="width: 25px; height: 25px;">
+                  </ng-container>
                 </td>
                 <td>{{item?._user}}</td>
                 <td>{{item?.remark}}</td>
                 <td>{{item?.repaymentWay}}</td>
                 <td>
-                  <button md-raised-button (click)="onClickRepayment(item)">还款</button>
+                  <ng-container [ngSwitch]="item.butState">
+                    <button *ngSwitchCase="'1'" md-raised-button (click)="onClickRepayment(item)">还款</button>
+                    <button *ngSwitchCase="'2'" md-raised-button (click)="onClickRepayment(item)">修改</button>
+                  </ng-container>
+                  <ng-container [ngSwitch]="item.IsOverdue">
+                    <span *ngSwitchCase="'1'">未到</span>
+                    <span *ngSwitchCase="'2'">按时还款</span>
+                    <span *ngSwitchCase="'3'">逾期还款</span>
+                  </ng-container>
                 </td>
               </tr>
               </tbody>
@@ -186,28 +196,29 @@
               </div>
             </div>
             <div class="section clearfix">
-              <div class="columns2 upfile" style="margin-bottom: 1rem;">
+              <div class="columns2 upfile">
                 <!-- <timi-file-uploader [btnName]="'还款凭证'" formControlName="PaymentVoucher"></timi-file-uploader> -->
                 <!--<multiple-uploader formControlName="PaymentVoucher" (onPostFileData)="onPostFileData($event)"></multiple-uploader>-->
                 <div class="upload-file-wrap">
                   <div class="label"><label>上传凭证</label></div>
                   <div class="file-preview">
-                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'"
+                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'" [inputData]="outputData"
                                  (uploadObj)="uploadObj($event)"></file-upload>
-                    <div class="file-item" *ngFor="let item of fileLists">
+                    <div class="file-item item-success" *ngFor="let item of fileLists">
                       <img src="{{item.path}}">
                       <i class="fa fa-close" (click)="removeItem(item)"></i>
                     </div>
-                    <div class="file-item" *ngFor="let item of uploader.queue" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
+                    <div class="file-item" *ngFor="let item of uploader.queue"
+                         [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
                       <img src="{{item.base}}">
                       <md-progress-bar *ngIf="item.isUploading" mode="mode" [value]="item.progress"></md-progress-bar>
                       <i class="fa fa-close" (click)="removeItem(item)"></i>
                     </div>
                   </div>
+                  <p class="errors"
+                     *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">
+                    必填</p>
                 </div>
-                <p class="errors"
-                   *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">
-                  必填</p>
               </div>
             </div>
             <div class="section clearfix">
