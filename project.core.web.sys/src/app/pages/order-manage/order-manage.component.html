@@ -41,8 +41,9 @@
     <div class="row">
       <div class="col-lg-12">
         <!--详细模版内容-->
-        <detail-model *ngIf="sidenavKey === 'Detail' && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
-          (onClick)="detailClick($event)"></detail-model>
+        <!-- <detail-model *ngIf="sidenavKey === 'Detail' && selectRow && detailModel" [modelDOMS]="detailModel" [modelDOMSData]="selectRow"
+          (onClick)="detailClick($event)"></detail-model> -->
+        <free-auditInfo *ngIf="sidenavKey === 'Detail'" [id]="detailId" status="Detail" (detailClick)="detailClick($event)"></free-auditInfo>
         <free-declaration *ngIf="sidenavKey === 'Other'" (onPostOrderId)="onGetOrderId($event)"></free-declaration>
 
         <!-- 1.资料收集（不会有不通过与通过的状态），补充资料   -->
