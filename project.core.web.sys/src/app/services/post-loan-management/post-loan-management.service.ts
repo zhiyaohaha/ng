@@ -56,4 +56,22 @@ export class PostLoanManagementService {
   submitCreatePlan(params): Observable<any> {
     return this.baseService.post("/api/LoanOrderRepaymentDetails/uptLoanOrderRepaymentDetails", params);
   }
+
+  /**
+   * 获取本金、滞纳金、违约金、利息
+   * @param params
+   * @returns {Observable<any>}
+   */
+  getPaymentInformation(params): Observable<any> {
+    return this.baseService.get("/api/LoanOrderRepaymentDetails/Calculate", params);
+  }
+
+  /**
+   * 全额还款
+   * @param params
+   * @returns {Observable<any>}
+   */
+  submitAllRepayment(params): Observable<any> {
+    return this.baseService.get("/api/LoanOrderRepaymentDetails/FullRepayment", params);
+  }
 }

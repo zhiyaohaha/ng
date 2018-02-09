@@ -65,7 +65,15 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
       this.loading.resolve("loading");
       if (res.code === "0") {
-        this.datas = res.data.data;
+        this.datas = res.data.data.map(item => {
+          if (item.repaymentWay === 3) {
+            item._paymentVoucher2 = item._paymentVoucher.map(i => i.path);
+          } else {
+            item._paymentVoucher1 = item._paymentVoucher.map(i => i.path);
+          }
+          return item;
+        });
+        console.log(this.datas);
         this.totals = res.data.total;
         this.totalAmountPayable = res.data.totalAmountPayable;
         this.totalActualAmount = res.data.totalActualAmount;
@@ -78,7 +86,10 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   onSearch($event) {
-    console.log($event);
+    this.listparam.filter = $event;
+    this.listparam.index = 0;
+    this.currentPage = 0;
+    this.getLists();
   }
 
   /**
@@ -164,8 +175,8 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "凭证",
-      name: "_paymentVoucher",
-      pipe: "HtmlPipe.Image"
+      name: "_paymentVoucher1",
+      pipe: "HtmlPipe.ImageTag"
     }, {
       hidden: false,
       label: "还款类型",
@@ -174,8 +185,8 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "总部代还凭证",
-      name: "_paymentVoucher",
-      pipe: "HtmlPipe.Image"
+      name: "_paymentVoucher2",
+      pipe: "HtmlPipe.ImageTag"
     }, {
       hidden: false,
       label: "总部代还金额",
@@ -199,6 +210,9 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   page($event) {
-    console.log($event);
+    this.listparam.index = $event.activeIndex;
+    this.listparam.size = $event.pageSize;
+    this.currentPage = $event.activeIndex;
+    this.getLists();
   }
 }
