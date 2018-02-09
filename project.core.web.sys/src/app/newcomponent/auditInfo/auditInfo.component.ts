@@ -46,6 +46,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   process: string; //流程
   auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
   assignUsers: any;  //指派人
+  org: any;
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
@@ -84,17 +85,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
           let data = res.data;
           this.process = data.process;
           this.getLoanInfo(data);
-
-          if (this.status == 'FinalAudit') {    //只有终审才有指派功能
-            this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
-              if (res.code == "0") {
-                this.assignUsers = res.data;
-              } else {
-                super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-              }
-            })
-          }
-
+          this.org = data.org;
         } else {
           super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         }
@@ -245,6 +236,17 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     //是否显示批核表单 
     if (auditOption.option == 'ProcessNodeAuditOption.Adopt') {
       this.auditResultPass = true;
+      let org = this.org;
+      if (this.status == 'FinalAudit') {    //只有终审才有指派功能
+        this.orderService.GetAssignUsers(org, process, auditOption.status).subscribe(res => {
+          if (res.code == "0") {
+            this.assignUsers = res.data;
+          } else {
+            super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          }
+        })
+      }
+
     } else {
       this.auditResultPass = false;
     }

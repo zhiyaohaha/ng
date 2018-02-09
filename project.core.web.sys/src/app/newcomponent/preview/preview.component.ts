@@ -1,5 +1,5 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
-import {PreviewService} from "app/services/preview/preview.service";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { PreviewService } from "app/services/preview/preview.service";
 
 
 @Component({
@@ -14,6 +14,7 @@ export class PreviewComponent implements OnInit {
   @Output() outShowPreview = new EventEmitter<any>();
   @ViewChild("prePic") prePic: ElementRef;
   @Input() fileType: string;
+  @Input() picIndex: number;
 
   closepre: boolean = false; //控制父元素中预览图是否展示
   valueOfScale: number = 1; //控制放大缩小，默认1:1
@@ -22,25 +23,24 @@ export class PreviewComponent implements OnInit {
   picUrl: string; //图片地址
   isSwitchShow: boolean; //是否显示左右切换
 
-  boxWidth:any;
-  boxHeight:any;
-
+  boxWidth: any;
+  boxHeight: any;
 
   constructor(private previewService: PreviewService) {
   }
 
   ngOnInit() {
-    this.picUrl = this.picArray[0];
+    this.picUrl = this.picIndex ? this.picArray[this.picIndex] : this.picArray[0];
     if (this.picArray.length > 1) {
       this.isSwitchShow = true;
     } else {
       this.isSwitchShow = false;
     }
-    
+
   }
   ngAfterViewInit() {
-    this.boxWidth = this.prePic.nativeElement.offsetWidth/2;
-    this.boxHeight = this.prePic.nativeElement.offsetHeight/2;
+    this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+    this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
     this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
     this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
   }
@@ -48,7 +48,7 @@ export class PreviewComponent implements OnInit {
   closebtn() {
     this.previewService.closePreview(false);
   }
-  
+
   //放大功能按钮
   largen() {
     if (this.valueOfScale <= 4) {
@@ -99,10 +99,10 @@ export class PreviewComponent implements OnInit {
     // clientX浏览器左侧到鼠标点击的距离
     // offsetLeft中心块儿到浏览器左侧的距离
     // distanceX鼠标点击中心块到中心块左侧的距离
-    
+
     let distanceX = event.clientX - prePic.offsetLeft;
     let distanceY = event.clientY - prePic.offsetTop;
-    
+
     document.onmousemove = (evt) => {
       let left = evt.clientX - distanceX + this.boxWidth;
       let top = evt.clientY - distanceY + this.boxHeight;
@@ -123,7 +123,7 @@ export class PreviewComponent implements OnInit {
   //根据传入图片数量判断是否添加左右切换效果
   pre() {
     if (this.valueOfSwitch > 0) {
-      this.valueOfSwitch -= 1;
+      this.picIndex -= 1;
       this.picUrl = this.picArray[this.valueOfSwitch];
     } else {
       this.valueOfSwitch = 0;
@@ -133,7 +133,7 @@ export class PreviewComponent implements OnInit {
 
   next() {
     if (this.valueOfSwitch < this.picArray.length - 1) {
-      this.valueOfSwitch += 1;
+      this.picIndex += 1;
       this.picUrl = this.picArray[this.valueOfSwitch];
     } else {
       this.valueOfSwitch = this.picArray.length - 1;

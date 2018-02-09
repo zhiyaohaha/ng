@@ -117,6 +117,8 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     return this._options;
   }
   set options(value: any) {
+    
+
     this.value = "";
     if (!value) {
       return;
@@ -138,10 +140,14 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     this._options = value;
     this.getValue();
 
-    if (this.options.length > 8) {
+    if (this.filter) {
       this.filter = true;
     } else {
-      this.filter = false;
+      if (this._options.length > 8) {
+        this.filter = true;
+      } else {
+        this.filter = false;
+      }
     }
 
   }
