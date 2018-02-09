@@ -15,6 +15,9 @@
   <!-- 所需附件 -->
   <div class="m-b-20">
     <h4>所需附件</h4>
+    <p *ngIf="loanInfo.attachmentsZip">
+      <a [href]="loanInfo.attachmentsZip" download>一键下载</a>
+    </p>
     <ul class="clearfix accessory">
       <li *ngFor="let attachmentGroup of loanInfo._attachmentGroups;let i = index;">
         <div class="accessoryTop" (click)="displayAttachmentGroup(attachmentGroup.attachmentsDisplay,attachmentGroup,loanInfo._attachmentGroups,i)"
