@@ -103,7 +103,8 @@
                 <td>{{item?.actualAmount}}</td>
                 <td>
                   <ng-container *ngFor="let img of item?._paymentVoucher">
-                    <img src="{{img?.path}}" style="width: 25px; height: 25px;">
+                    <img src="{{img?.path}}" style="width: 25px; height: 25px;"
+                         (click)="previewImg(item?._paymentVoucher)">
                   </ng-container>
                 </td>
                 <td>{{item?._user}}</td>
@@ -202,12 +203,85 @@
                 <div class="upload-file-wrap">
                   <div class="label"><label>上传凭证</label></div>
                   <div class="file-preview">
-                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'" [inputData]="outputData"
+                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'"
+                                 [inputData]="inputData"
                                  (uploadObj)="uploadObj($event)"></file-upload>
                     <div class="file-item item-success" *ngFor="let item of fileLists">
                       <img src="{{item.path}}">
                       <i class="fa fa-close" (click)="removeItem(item)"></i>
                     </div>
+                    <div class="file-item" *ngFor="let item of uploader.queue"
+                         [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
+                      <img src="{{item.base}}">
+                      <md-progress-bar *ngIf="item.isUploading" mode="mode" [value]="item.progress"></md-progress-bar>
+                      <i class="fa fa-close" (click)="removeItem(item)"></i>
+                    </div>
+                  </div>
+                  <p class="errors"
+                     *ngIf="getFormControl('PaymentVoucher').dirty && getFormControl('PaymentVoucher').hasError('required')">
+                    必填</p>
+                </div>
+              </div>
+            </div>
+            <div class="section clearfix">
+              <timi-textarea [labelName]="'备注'" formControlName="Remark"></timi-textarea>
+            </div>
+            <div class="section clearfix operateBar">
+              <button md-raised-button (click)="onClickBack()">返回</button>
+              <button md-raised-button type="submit">确定</button>
+            </div>
+          </form>
+        </ng-container>
+        <!--全额还款-->
+        <ng-container *ngSwitchCase="'AllRepayment'">
+          <form [formGroup]="repaymentForm" (ngSubmit)="submitRepayment()">
+            <input type="hidden" formControlName="order">
+            <div class="section clearfix">
+              <div class="form-group columns1">
+                <div class="label"><label>还款日期</label></div>
+                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event)"></free-calendar>
+                <p class="errors"
+                   *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">
+                  必填</p>
+              </div>
+              <div class="form-group columns1">
+                <timi-input [labelName]="'还款金额'" formControlName="ActualAmount"></timi-input>
+                <p class="errors"
+                   *ngIf="getFormControl('ActualAmount').dirty && getFormControl('ActualAmount').hasError('required')">
+                  必填</p>
+              </div>
+              <div class="form-group columns1">
+                <timi-input [labelName]="'滞纳金'" formControlName="ActualLateFee"></timi-input>
+                <p class="errors"
+                   *ngIf="getFormControl('ActualLateFee').dirty && getFormControl('ActualLateFee').hasError('required')">
+                  必填</p>
+              </div>
+              <div class="form-group columns1">
+                <timi-select [freeSelectName]="'还款类型'" [options]="repaymentTypes"
+                             formControlName="RepaymentWay"></timi-select>
+                <p class="errors"
+                   *ngIf="getFormControl('RepaymentWay').dirty && getFormControl('RepaymentWay').hasError('required')">
+                  必填</p>
+              </div>
+            </div>
+            <div class="section clearfix">
+              <div class="form-group columns2">
+                <div class="label"><label>还款信息</label></div>
+                <p class="paymentInformation">
+                  <span>本金：{{paymentInformation?.allMoney}}</span>
+                  <span>滞纳金：{{paymentInformation?.lateFee}}</span>
+                  <span>违约金：{{paymentInformation?.penalty}}</span>
+                  <span>本期应还利息：{{paymentInformation?.interest}}</span>
+                </p>
+              </div>
+            </div>
+            <div class="section clearfix">
+              <div class="columns2 upfile">
+                <div class="upload-file-wrap">
+                  <div class="label"><label>上传凭证</label></div>
+                  <div class="file-preview">
+                    <file-upload formControlName="PaymentVoucher" [multiple]="true" [returnType]="'full'"
+                                 (uploadObj)="uploadObj($event)"></file-upload>
                     <div class="file-item" *ngFor="let item of uploader.queue"
                          [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
                       <img src="{{item.base}}">
