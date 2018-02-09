@@ -463,9 +463,14 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.inputData = JSON.parse(JSON.stringify(this.fileLists));
   }
 
+  /**
+   * 根据日期变更获取还款信息
+   * @param $event
+   */
   onDateChange($event) {
-    console.log($event);
-    this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
+    if ($event.value) {
+      this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
+    }
   }
 
   /**
