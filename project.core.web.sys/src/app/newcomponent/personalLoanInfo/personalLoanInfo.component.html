@@ -82,12 +82,17 @@
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount"></timi-input>
+        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [customValidator]="validatorGather[0]['customValidator']"
+          [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="loanInfo.applyAmount" [submitVerify]="submitVerify"
+          (storeErrData)="storeErrData($event,'applyAmount')"></timi-input>
       </div>
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-select freeSelectName="贷款用途" name="purpose" [(ngModel)]="loanInfo.purpose" [options]="loanInfo.loanUseBindData" pholder="{{'请选择用途'}}"></timi-select>
+        <timi-select freeSelectName="贷款用途" name="purpose" [(ngModel)]="loanInfo.purpose" [options]="loanInfo.loanUseBindData" pholder="{{'请选择用途'}}"
+          [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+          [validatorInputValue]="loanInfo.purpose" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'purpose')"
+          validatorComponentType="select"></timi-select>
       </div>
     </li>
     <li>
