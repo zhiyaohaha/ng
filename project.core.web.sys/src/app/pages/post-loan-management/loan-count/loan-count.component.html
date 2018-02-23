@@ -115,7 +115,7 @@
                     <button *ngSwitchCase="'1'" md-raised-button (click)="onClickRepayment(item)">还款</button>
                     <button *ngSwitchCase="'2'" md-raised-button (click)="onClickRepayment(item)">修改</button>
                   </ng-container>
-                  <ng-container [ngSwitch]="item.IsOverdue">
+                  <ng-container [ngSwitch]="item.isOverdue">
                     <span *ngSwitchCase="'1'">未到</span>
                     <span *ngSwitchCase="'2'">按时还款</span>
                     <span *ngSwitchCase="'3'">逾期还款</span>
@@ -268,7 +268,7 @@
               <div class="form-group columns2">
                 <div class="label"><label>还款信息</label></div>
                 <p class="paymentInformation">
-                  <span>本金：{{paymentInformation?.allMoney}}</span>
+                  <span>本金：{{paymentInformation?.frequency}}</span>
                   <span>滞纳金：{{paymentInformation?.lateFee}}</span>
                   <span>违约金：{{paymentInformation?.penalty}}</span>
                   <span>本期应还利息：{{paymentInformation?.interest}}</span>
