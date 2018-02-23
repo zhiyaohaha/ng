@@ -46,6 +46,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   process: string; //流程
   auditResultPass: boolean = false;  //审核是否通过(审核选择通过以后,才显示批核选项)
   assignUsers: any;  //指派人
+  org: any;
+  auditOptionName: string;  //审核结果名字
 
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
@@ -84,17 +86,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
           let data = res.data;
           this.process = data.process;
           this.getLoanInfo(data);
-
-          if (this.status == 'FinalAudit') {    //只有终审才有指派功能
-            this.orderService.GetAssignUsers(data.org, data.process, data.status).subscribe(res => {
-              if (res.code == "0") {
-                this.assignUsers = res.data;
-              } else {
-                super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-              }
-            })
-          }
-
+          this.org = data.org;
         } else {
           super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         }
@@ -188,17 +180,18 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   //不通过
   postLoanOrderNotPassAttachment(id, i, k) {
     let _self = this;
-    this.loadingService.register("loading");
     super.openPrompt({ message: "请输入不通过原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef }, function (val: string) {
-      _self.loadingService.resolve("loading");
       if (val) {
+        _self.loadingService.register("loading");
         _self.orderService.postLoanOrderNotPassAttachment(id, val).subscribe(res => {
           if (res.code === "0") {
             // super.showToast(_self.toastService, "已通过");
             _self.setStatus(i, k, res.data, val);
             _self.toastService.creatNewMessage({ message: "已拒绝" });
+            _self.loadingService.resolve("loading");
           } else {
             _self.toastService.creatNewMessage({ message: res.message });
+            _self.loadingService.resolve("loading");
           }
         })
       }
@@ -241,10 +234,21 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     let process = this.process;
     this.auditStatus = auditOption.status;
     this.aduitOption = auditOption.option;
-
+    this.auditOptionName = auditOption.name;
     //是否显示批核表单 
     if (auditOption.option == 'ProcessNodeAuditOption.Adopt') {
       this.auditResultPass = true;
+      let org = this.org;
+      if (this.status == 'FinalAudit') {    //只有终审才有指派功能
+        this.orderService.GetAssignUsers(org, process, auditOption.status).subscribe(res => {
+          if (res.code == "0") {
+            this.assignUsers = res.data;
+          } else {
+            super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          }
+        })
+      }
+
     } else {
       this.auditResultPass = false;
     }
@@ -314,6 +318,8 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       let id = this.id;
       this.detailClick.emit({ url: url, id: id });
     } else if (type === "HtmlDomCmd.API") {
+      if (!this.multipleFileUploaderLowerLimit()) return false;
+      // console.log('可以上传')
       let postData = {}
       let _self = this;
       let id = this.id;
@@ -367,7 +373,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         }
       }
 
-      console.log(postData)
+      // console.log(postData)
 
       this.loadingService.register("loading");
       _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
@@ -390,43 +396,107 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
   //根据多文件上传，上传最小数量的限制。 来判断是否可以继续提交 
   multipleFileUploaderLowerLimit() {
-    if (!this.multipleFileUploaderLowerLimit()) return false;
-    let attachmentGroups = this.loanInfo._attachmentGroups;
-    let BreakException = {};
-    try {
-      attachmentGroups.forEach((element, index) => {
-        let attachments = element['_attachments'];
-        attachments.forEach((element1, index1) => {
-          let currentNum = element1['_files'] ? element1['_files'].length : 0;
-          let lowerLimit = element1['needCount'];
-          if (currentNum < lowerLimit) {  //当前附件项下,当前文件的数量 < 规定上传的数量
-            //提示 
-            let msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
-            super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-            //展开该附件组
-            element.attachmentsDisplay = true;
-            //,关闭其他附件组
-            attachmentGroups.forEach((e, i) => {
-              if (i !== index) {
-                e.attachmentsDisplay = false;
+    let aduitOption = this.aduitOption;
+    let aduitOptionName = this.auditOptionName;
+    let status = this.status;
+
+    if (aduitOption) {  //审核结果是必选的   
+      if (aduitOption !== 'ProcessNodeAuditOption.GiveUp') {   //选择用户放弃不用验证
+
+        let attachmentGroups = this.loanInfo._attachmentGroups;
+        let BreakException = {};
+        let notPassNum = 0;
+        try {
+          attachmentGroups.forEach((element, index) => {
+            let attachments = element['_attachments'];
+            attachments.forEach((element1, index1) => {
+              let currentNum = element1['_files'] ? element1['_files'].length : 0;
+              let lowerLimit = element1['needCount'];
+
+              let faceSignPass;
+              let faceSignPassJudge;
+              if (status == 'FaceSign') {  //审核----面签
+                faceSignPass = (aduitOption == 'ProcessNodeAuditOption.Adopt' && element1['limitAudit'] && ((currentNum < lowerLimit) || element1['_status'] !== '待审核'));
+                faceSignPassJudge = element1['limitAudit'];
+              } else {    //审核----非面签
+                faceSignPass = (aduitOption == 'ProcessNodeAuditOption.Adopt' && element1['limitAudit'] && element1['required'] && ((currentNum < lowerLimit) || element1['_status'] !== '待审核'));
+                faceSignPassJudge = element1['limitAudit'] && element1['required'];
               }
-            })
-            //展开该附件项
-            if (index1 == 0) {
-              this.firstAttachmentActive = true;
-            } else {
-              this.firstAttachmentActive = false;
-            }
-            element.temporaryData = element1;
-            //停止继续提交
+
+              //1.审核结果,选择通过时，1)可以审核状态的附件，如果有不通过的选项，则不能继续提交
+              //1.审核结果,选择通过时，2)不能审核的且必填的附件，① 状态不为待审核，则不能继续提交  ② 则当前文件的数量 < 规定上传的数量，不能继续提交
+
+              //2.审核结果,选择不通过/退回时，1)可以审核状态的附件，必须都审核（即审核状态必须为'通过'/'不通过'）,才能提交
+
+              if (
+                (aduitOption == 'ProcessNodeAuditOption.Adopt' && !element1['limitAudit'] && element1['_status'] !== '通过')
+                || faceSignPass
+                || (aduitOption !== 'ProcessNodeAuditOption.Adopt' && !element1['limitAudit'] && element1['_status'] !== '通过' && element1['_status'] !== '不通过')
+              ) {
+                //提示 
+                let msg;
+                if (aduitOption == 'ProcessNodeAuditOption.Adopt') {
+
+                  if (!element1['limitAudit'] && element1['_status'] !== '通过') {
+                    msg = "附件项\"" + element1['name'] + "\"有不通过项";
+                  } else if (faceSignPassJudge) {
+                    if (element1['_status'] !== '待审核') {
+                      msg = "附件项\"" + element1['name'] + "\"有待上传项" + element1['needCount'] + "个文件";
+                    } else if (currentNum < lowerLimit) {
+                      msg = "附件项\"" + element1['name'] + "\"最少上传" + element1['needCount'] + "个文件";
+                    }
+                  }
+
+                } else {
+                  msg = "附件项\"" + element1['name'] + "\"有待审核项";
+                }
+                super.openAlert({ title: "提示", message: msg, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+                //展开该附件组
+                element.attachmentsDisplay = true;
+                //,关闭其他附件组
+                attachmentGroups.forEach((e, i) => {
+                  if (i !== index) {
+                    e.attachmentsDisplay = false;
+                  }
+                })
+                //展开该附件项
+                if (index1 == 0) {
+                  this.firstAttachmentActive = true;
+                } else {
+                  this.firstAttachmentActive = false;
+                }
+                element.temporaryData = element1;
+                //停止继续提交
+                throw BreakException;
+              }
+
+              //2.审核结果,选择不通过/退回时，2)可以审核状态的附件，必须有一个'不通过',才能提交
+              if (aduitOption !== 'ProcessNodeAuditOption.Adopt' && !element1['limitAudit'] && element1['_status'] == '不通过') {
+                notPassNum++;
+              }
+
+            });
+          });
+
+          //2.审核结果,选择不通过/退回时，2)可以审核状态的附件，没有'不通过'状态,则不能提交
+          if (aduitOption !== 'ProcessNodeAuditOption.Adopt' && notPassNum == 0) {
+            super.openAlert({ title: "提示", message: aduitOptionName + '时，至少应有一个不通过', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
             throw BreakException;
           }
-        });
-      });
-    } catch (e) {
-      return false;   //不能继续提交了
+
+
+        } catch (e) {
+          return false;   //不能继续提交了
+        }
+        return true;  //可以继续提交
+
+      } else {
+        return true;    //选择用户放弃不用验证
+      }
+    } else {
+      super.openAlert({ title: "提示", message: "请选择审核结果", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      return false;   //没有选择审核结果，不能继续提交了
     }
-    return true;  //可以继续提交
   }
 
 }

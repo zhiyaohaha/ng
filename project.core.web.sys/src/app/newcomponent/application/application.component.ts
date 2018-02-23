@@ -8,6 +8,7 @@ import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
 
+
 @Component({
   selector: "free-application",
   templateUrl: "./application.component.html",
@@ -41,6 +42,10 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   @Input() id: string;
   @Input() status: string;  //用于区分当前侧滑状态
   @Output() closeRefreshData = new EventEmitter();
+  manualVerificationForm: boolean = false;  //手动验证动态表单
+  errData: any;
+  submitParams: any;  //记录提交按钮的数据
+  errDataSuccess: any = [];
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -182,38 +187,90 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   //动态表单数据
   onSubmitParams($event) {
     // console.log($event);
-    this.applyFormPostData = $event;
+    this.loanInfo.applyFormData = $event;
+  }
+
+  //接收动态模板的验证信息 
+  resiveErroeData(errData, templateState) {
+    let errDataSuccess = this.errDataSuccess;
+    //验证静态表单
+    //验证动态表单
+
+    for (let i in errData) {
+      if (errData[i]) {
+        setTimeout(() => {
+          super.openAlert({ title: "提示", message: '请填写完整相关信息', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          this.manualVerificationForm = false;
+        }, 0)
+        return false;   //如果有错误，则停止提交
+      }
+    }
+
+    if (errDataSuccess.indexOf(templateState) == -1) {
+      errDataSuccess.push(templateState);
+    }
+    if (errDataSuccess.length !== 2) { return false };  //只有静态模板和动态模板都通过的时候，才能继续提交。
+
+
+    //验证附件 
+    setTimeout(() => {
+      if (!this.multipleFileUploaderLowerLimit()) {
+        setTimeout(() => {
+          this.manualVerificationForm = false;
+        }, 0)
+        return false;
+      };
+
+      //可以提交
+      this.onSubmitPostData();
+    }, 0)
   }
 
   //提交申请
   onSubmit($event, url, label, status) {
-    if (status == "Audit") {  //点击提交的时候才做附件验证，点击暂存的时候不需要
-      if (!this.multipleFileUploaderLowerLimit()) return false;
+    this.submitParams = { url: url, label: label };
+    if (status == "Audit") {    //点击提交的时候才做附件验证，点击暂存的时候不需要验证
+      this.manualVerificationForm = true;
+    } else {
+      this.onSubmitPostData();  //直接提交
     }
+  }
+
+  onSubmitPostData() {
+
     let _self = this;
+    let submitParams = this.submitParams;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
       applyAmount: this.loanInfo.applyAmount,     //申请金额
       applyTerm: this.loanInfo.applyTerm,       //申请期限
       applyAdCode: this.loanInfo.applyAdCode,     //申请地区
       purpose: this.loanInfo.purpose,         //贷款用途
-      applyFormData: this.applyFormPostData,   //申请表（表单模版数据）
+      applyFormData: this.loanInfo.applyFormData,   //申请表（表单模版数据）
     };
+
     // console.log(this.applicationForm)
+
     this.loadingService.register("loading");
-    this.orderService.onSubmitComplementaryData(url, this.applicationForm).subscribe(res => {
+    this.orderService.onSubmitComplementaryData(submitParams['url'], this.applicationForm).subscribe(res => {
       if (res.code === "0") {
-        // console.log(res)
-        super.showToast(_self.toastService, label + "成功");
+        super.showToast(_self.toastService, submitParams['label'] + "成功");
         _self.closeRefreshData.emit();
       } else {
         super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
       _self.loadingService.resolve("loading");
+      setTimeout(() => {
+        _self.manualVerificationForm = false;
+      }, 0)
     }, (err) => {
       super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       _self.loadingService.resolve("loading");
+      setTimeout(() => {
+        _self.manualVerificationForm = false;
+      }, 0)
     })
+
   }
 
   //根据多文件上传，上传最小数量的限制  和 是否有'不通过'的状态。 来判断是否可以继续提交 

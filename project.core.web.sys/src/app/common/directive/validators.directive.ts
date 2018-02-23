@@ -93,7 +93,7 @@ export class CustomValidatorsDirective implements OnInit {
     let validatorRequired = this.validatorRequired;
     let customValidator = this.customValidator;
 
-    if (validatorValue == '' || validatorValue == undefined || validatorValue == null || validatorValue.length == 0) {  //无输入值
+    if (validatorValue === '' || validatorValue == undefined || validatorValue == null || validatorValue.length == 0) {  //无输入值
 
       //判断是否是必填
       if (validatorRequired) {

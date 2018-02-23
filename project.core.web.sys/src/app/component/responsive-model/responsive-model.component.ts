@@ -68,6 +68,17 @@ export class ResponsiveModelComponent implements OnInit {
   @Output() ngSubmit: EventEmitter<any> = new EventEmitter();
 
   submitVerify: boolean = false;   //是否开始组件统一验证（提交时开启）
+  eventListenerSubmit: boolean = false; //是否，(使用提交按钮，通过监听组件事件提交表单数据)
+  @Output() submitErrorData: EventEmitter<any> = new EventEmitter();
+  @Input()
+  set manualVerificationForm(value) {  //手动验证
+    if (value) {
+      //验证：点击提交，开始统一验证所有组件。 
+      this.submitVerify = true;
+      this.submitErrorData.emit(this._errData);
+    }
+  }
+
 
   @ViewChild("form") formDiv: ElementRef;
 
@@ -89,14 +100,16 @@ export class ResponsiveModelComponent implements OnInit {
    */
   onSubmit($event, cmds?: any) {
 
-    //验证：点击提交，开始统一验证所有组件。 
-    this.submitVerify = true;
+    if (!this.eventListenerSubmit) {   //不使用提交按钮，通过监听组件事件提交表单数据时，不需要统一验证所有组件 
+      //验证：点击提交，开始统一验证所有组件。 
+      this.submitVerify = true;
 
-    //验证：如果有验证错误信息，则停止提交
-    let errData = this._errData;
-    for (let i in errData) {
-      if (errData[i]) {
-        return false;   //如果有错误，则停止提交
+      //验证：如果有验证错误信息，则停止提交
+      let errData = this._errData;
+      for (let i in errData) {
+        if (errData[i]) {
+          return false;   //如果有错误，则停止提交
+        }
       }
     }
 
@@ -266,12 +279,12 @@ export class ResponsiveModelComponent implements OnInit {
    */
   commitData() {
     if (!this.submitBtnNeed) {  //不需要提交按钮
+      this.eventListenerSubmit = true;
       if (this.btnType == 'new') {
         this.onSubmit(this._modelDOMSData);
       } else {
         this.onSubmit(this.modelDOMSData);
       }
-
     }
   }
 

@@ -8,6 +8,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {ToastService} from "../../../component/toast/toast.service";
 import {ConvertUtil} from "../../../common/convert-util";
 import {FileUploader} from "ng2-file-upload";
+import {PreviewService} from "../../../services/preview/preview.service";
 
 export class FileLists {
   id: string;
@@ -49,8 +50,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   rowId; // 点击行存下的ID
   repaymentId; // 还款的ID
 
-  repaymentFormRepaymentWay: number; // 还款表单还款类型设置默认值
-  outputData; // 上传凭证
+  inputData; // 上传凭证
   repaymentForm: FormGroup; // 还款表单
   repaymentPlanForm: FormGroup; // 还款计划表单
 
@@ -59,6 +59,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   fileLists: FileLists[] = []; // 图片列表的数组
   uploader: FileUploader; // 上传的对象
+  paymentInformation; // 还款信息
 
   pagecode: string;
 
@@ -69,7 +70,8 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private postLoanManagementService: PostLoanManagementService,
               private fnUtil: FnUtil,
-              private convertUtil: ConvertUtil) {
+              private convertUtil: ConvertUtil,
+              private previewService: PreviewService) {
     super(loading, activatedRoute);
   }
 
@@ -100,7 +102,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.pageSize = paginationInfo.pageSize;
     this.currentPage = paginationInfo.currentPage;
 
-    this.listparam.index = this.pageSize;
+    this.listparam.index = this.currentPage;
     this.listparam.size = this.pageSize;
     if (this.orgId) {
       this.listparam.filter = this.convertUtil.toJsonStr({orgId: this.orgId});
@@ -120,7 +122,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
       this.loading.resolve("loading");
       if (res.code === "0") {
-        this.datas = res.data.Lending;
+        this.datas = res.data.lending;
         this.totals = res.data.total;
         this.totalLoanApprovedAmount = res.data.totalLoanApprovedAmount;
         this.totalActualAmount = res.data.totalActualAmount;
@@ -319,11 +321,11 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   onClickRepayment($event) {
-    this.sidenavKey = "Repayment";
     if ($event === "all") {
+      this.sidenavKey = "AllRepayment";
       this.repaymentId = "";
       this.repaymentForm = this.fb.group({
-        id: [this.repaymentId],
+        order: [this.rowId],
         ActualTime: ["", Validators.required],
         ActualAmount: ["", Validators.required],
         ActualLateFee: ["", Validators.required],
@@ -332,19 +334,19 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
         Remark: [""]
       });
     } else {
+      this.sidenavKey = "Repayment";
       this.repaymentId = $event.id;
-      this.repaymentFormRepaymentWay = 1; // 还款类型
       this.fileLists = $event._paymentVoucher.map(item => {
         return {id: item.id, path: item.path};
       }); // 上传凭证
-      this.outputData = JSON.parse(JSON.stringify(this.fileLists));
+      this.inputData = JSON.parse(JSON.stringify(this.fileLists));
       this.repaymentForm = this.fb.group({
         id: [this.repaymentId],
         ActualTime: [$event.actualTime, Validators.required],
         ActualAmount: [$event.actualAmount, Validators.required],
         ActualLateFee: [$event.actualLateFee, Validators.required],
         RepaymentWay: [$event.repaymentWay, Validators.required],
-        PaymentVoucher: [this.outputData, Validators.required],
+        PaymentVoucher: [this.inputData, Validators.required],
         Remark: [$event.remark]
       });
     }
@@ -437,7 +439,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   }
 
   onPostFileData($event) {
-    console.log($event)
+    console.log($event);
   }
 
   /**
@@ -458,6 +460,40 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     } else {
       item.remove();
     }
-    this.outputData = JSON.parse(JSON.stringify(this.fileLists));
+    this.inputData = JSON.parse(JSON.stringify(this.fileLists));
+  }
+
+  onDateChange($event) {
+    console.log($event);
+    this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
+  }
+
+  /**
+   * 获取还款信息 本金、滞纳金、违约金、利息
+   * @param params
+   */
+  getPaymentInformation(params) {
+    this.postLoanManagementService.getPaymentInformation(params)
+      .subscribe(res => {
+        if (res.code === "0") {
+          this.paymentInformation = res.data;
+        }
+      });
+  }
+
+
+  /**
+   * 预览图片
+   * @param data
+   */
+  previewImg(data) {
+    let arr = [];
+    if (typeof data === "string") {
+      arr.push(data);
+    } else {
+      arr = data.map(item => item.path);
+    }
+    this.previewService.imgUrls = arr;
+    this.previewService.showPreview(true);
   }
 }
