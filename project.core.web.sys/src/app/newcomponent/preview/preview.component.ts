@@ -38,10 +38,12 @@ export class PreviewComponent implements OnInit {
     console.log(this.picArray);
   }
   ngAfterViewInit() {
-    this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
-    this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
-    this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-    this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 
   closebtn() {
@@ -127,6 +129,12 @@ export class PreviewComponent implements OnInit {
       this.picIndex = 0;
       this.picUrl = this.picArray[this.picIndex];
     }
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 
   next() {
@@ -137,6 +145,11 @@ export class PreviewComponent implements OnInit {
       this.picIndex = this.picArray.length - 1;
       this.picUrl = this.picArray[this.picIndex];
     }
-
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 }
