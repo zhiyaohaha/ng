@@ -13,8 +13,7 @@ export class PreviewComponent implements OnInit {
   @Input() picArray: string[];
   @Output() outShowPreview = new EventEmitter<any>();
   @ViewChild("prePic") prePic: ElementRef;
-  @Input() fileType: string;
-  @Input() picIndex: number;
+  @Input() picIndex: number; //用于接收点击的是第几个图片，多图预览的时候使用
 
   closepre: boolean = false; //控制父元素中预览图是否展示
   valueOfScale: number = 1; //控制放大缩小，默认1:1
@@ -36,7 +35,7 @@ export class PreviewComponent implements OnInit {
     } else {
       this.isSwitchShow = false;
     }
-
+    console.log(this.picArray);
   }
   ngAfterViewInit() {
     this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
@@ -116,28 +115,27 @@ export class PreviewComponent implements OnInit {
       document.onmouseup = null;
 
     };
-
     return false;
   }
 
   //根据传入图片数量判断是否添加左右切换效果
   pre() {
-    if (this.valueOfSwitch > 0) {
+    if (this.picIndex > 0) {
       this.picIndex -= 1;
-      this.picUrl = this.picArray[this.valueOfSwitch];
+      this.picUrl = this.picArray[this.picIndex];
     } else {
-      this.valueOfSwitch = 0;
-      this.picUrl = this.picArray[this.valueOfSwitch];
+      this.picIndex = 0;
+      this.picUrl = this.picArray[this.picIndex];
     }
   }
 
   next() {
-    if (this.valueOfSwitch < this.picArray.length - 1) {
+    if (this.picIndex < this.picArray.length - 1) {
       this.picIndex += 1;
-      this.picUrl = this.picArray[this.valueOfSwitch];
+      this.picUrl = this.picArray[this.picIndex];
     } else {
-      this.valueOfSwitch = this.picArray.length - 1;
-      this.picUrl = this.picArray[this.valueOfSwitch];
+      this.picIndex = this.picArray.length - 1;
+      this.picUrl = this.picArray[this.picIndex];
     }
 
   }

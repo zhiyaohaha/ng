@@ -14,10 +14,10 @@
     <i class="left" (click)="pre()"></i>
     <i class="right" (click)="next()"></i>
   </div> -->
-  <div class="fl">
+  <div class="fl" *ngIf="isSwitchShow">
     <i class="left" (click)="pre()"></i>
   </div>
-  <div class="fr">
+  <div class="fr" *ngIf="isSwitchShow">
     <i class="right" (click)="next()"></i>
   </div>
 </div>
