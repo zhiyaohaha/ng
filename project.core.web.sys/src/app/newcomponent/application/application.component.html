@@ -1,17 +1,18 @@
 <form *ngIf="loanInfo">
 
   <!-- 个人信息和贷款信息 -->
-  <free-personalLoanInfo [loanInfo]="loanInfo"></free-personalLoanInfo>
+  <free-personalLoanInfo [loanInfo]="loanInfo" [manualVerificationForm]="manualVerificationForm" (submitErrorData)="resiveErroeData($event,'static')"></free-personalLoanInfo>
 
   <!-- 录入信息 -->
   <div class="loan" *ngIf="loanInfo._applyFormTemplate">
     <h4>录入信息</h4>
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)"></timi-responsive-form>
+      (ngSubmit)="onSubmitParams($event,'dynamic')" [manualVerificationForm]="manualVerificationForm" (submitErrorData)="resiveErroeData($event)"></timi-responsive-form>
     <!-- 修改 -->
     <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="edit" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
+      (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData" [manualVerificationForm]="manualVerificationForm"
+      (submitErrorData)="resiveErroeData($event,'dynamic')"></timi-responsive-form>
   </div>
 
   <!-- 所需附件 -->
