@@ -24,7 +24,7 @@
     <!-- 手动上传过程中 -->
     <!-- 'item-success':!uploadUrl 首页专用-3 -->
     <div *ngIf="uploader.queue">
-      <li class="item" *ngFor="let item of uploader.queue;let kk=index;" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
+      <li class="item" *ngFor="let item of uploader.queue;let kk = index;" [ngClass]="{'item-hidden':item.isSuccess,'item-error':item.isError,'item-success':!uploadUrl}">
         <div class="preview-box">
           <img *ngIf="checkContentType(item.contentType,'image')" [src]="item.base" alt="{{item.name}}" class="prePic" (click)="toShow(uploader.queue,kk)">
           <video *ngIf="checkContentType(item.contentType,'video')" [src]="item.path" controls="controls" width="100" height="91">

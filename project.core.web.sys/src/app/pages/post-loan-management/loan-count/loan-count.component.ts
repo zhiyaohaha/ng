@@ -336,7 +336,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     } else {
       this.sidenavKey = "Repayment";
       this.repaymentId = $event.id;
-      this.fileLists = $event._paymentVoucher && $event._paymentVoucher.map(item => {
+      this.fileLists = $event._paymentVoucher.map(item => {
         return {id: item.id, path: item.path};
       }); // 上传凭证
       this.inputData = JSON.parse(JSON.stringify(this.fileLists));
@@ -455,7 +455,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
    * @param item
    */
   removeItem(item) {
-    if (this.fileLists && this.fileLists.some(f => f.id === item.id)) {
+    if (this.fileLists.some(f => f.id === item.id)) {
       this.fileLists = this.fileLists.filter(f => f.id !== item.id);
     } else {
       item.remove();
@@ -463,14 +463,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.inputData = JSON.parse(JSON.stringify(this.fileLists));
   }
 
-  /**
-   * 根据日期变更获取还款信息
-   * @param $event
-   */
   onDateChange($event) {
-    if ($event.value) {
-      this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
-    }
+    console.log($event);
+    this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
   }
 
   /**

@@ -274,6 +274,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
 
 
   toShow(items, index) {
+    // console.log(items);
     if (this.uploadUrl) { //首页专用-4
       let imgSrcArr = [];
       items.forEach(item => {

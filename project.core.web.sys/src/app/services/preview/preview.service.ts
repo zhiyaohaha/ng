@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 export class PreviewService {
 
   isShowPreview: boolean;
-  imgUrls: string[]
-  currentIndex:number;
+  imgUrls: string[];
+  currentIndex: number;
   constructor() { }
 
   showPreview(event: boolean) {
@@ -17,7 +17,7 @@ export class PreviewService {
   getUrl(imgUrls: string[]) {
     this.imgUrls = imgUrls;
   }
-  getIndex(index:number){
+  getIndex(index: number) {
     this.currentIndex = index;
   }
 }

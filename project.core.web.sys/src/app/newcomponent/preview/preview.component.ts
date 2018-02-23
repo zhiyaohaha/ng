@@ -13,6 +13,7 @@ export class PreviewComponent implements OnInit {
   @Input() picArray: string[];
   @Output() outShowPreview = new EventEmitter<any>();
   @ViewChild("prePic") prePic: ElementRef;
+  @Input() fileType: string;
   @Input() picIndex: number; //用于接收点击的是第几个图片，多图预览的时候使用
 
   closepre: boolean = false; //控制父元素中预览图是否展示
@@ -22,6 +23,7 @@ export class PreviewComponent implements OnInit {
   picUrl: string; //图片地址
   isSwitchShow: boolean; //是否显示左右切换
 
+
   boxWidth: any;
   boxHeight: any;
 
@@ -30,6 +32,7 @@ export class PreviewComponent implements OnInit {
 
   ngOnInit() {
     this.picUrl = this.picIndex ? this.picArray[this.picIndex] : this.picArray[0];
+    console.log(this.picIndex);
     if (this.picArray.length > 1) {
       this.isSwitchShow = true;
     } else {
@@ -38,10 +41,12 @@ export class PreviewComponent implements OnInit {
     console.log(this.picArray);
   }
   ngAfterViewInit() {
-    this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
-    this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
-    this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-    this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 
   closebtn() {
@@ -89,7 +94,6 @@ export class PreviewComponent implements OnInit {
     } else if (event.deltaY < 0) {
       this.shrink();
     }
-
   }
 
   //拖拽图片
@@ -113,7 +117,6 @@ export class PreviewComponent implements OnInit {
     document.onmouseup = function () {
       document.onmousemove = null;
       document.onmouseup = null;
-
     };
     return false;
   }
@@ -127,6 +130,12 @@ export class PreviewComponent implements OnInit {
       this.picIndex = 0;
       this.picUrl = this.picArray[this.picIndex];
     }
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 
   next() {
@@ -137,6 +146,11 @@ export class PreviewComponent implements OnInit {
       this.picIndex = this.picArray.length - 1;
       this.picUrl = this.picArray[this.picIndex];
     }
-
+    setTimeout(()=>{
+      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    },0)
   }
 }
