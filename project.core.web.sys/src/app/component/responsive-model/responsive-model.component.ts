@@ -86,6 +86,9 @@ export class ResponsiveModelComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.btnType !== 'new' && !this.eventListenerSubmit) {  //不使用提交按钮的状态下，表单从新增转换成修改时，进行统一验证。
+      this.submitVerify = true;
+    }
   }
 
   /**
