@@ -13,7 +13,6 @@ export class PreviewComponent implements OnInit {
   @Input() picArray: string[];
   @Output() outShowPreview = new EventEmitter<any>();
   @ViewChild("prePic") prePic: ElementRef;
-  //@Input() fileType: string;
   @Input() picIndex: number; //用于接收点击的是第几个图片，多图预览的时候使用
 
   closepre: boolean = false; //控制父元素中预览图是否展示

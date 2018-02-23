@@ -273,8 +273,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   }
 
 
-  toShow(items) {
-    // console.log(items);
+  toShow(items, index) {
     if (this.uploadUrl) { //首页专用-4
       let imgSrcArr = [];
       items.forEach(item => {
@@ -283,6 +282,7 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         }
       });
       this.previewService.showPreview(true);
+      this.previewService.getIndex(index);
       this.previewService.getUrl(imgSrcArr);
     } else {
       // alert('首页这个不支持预览')
