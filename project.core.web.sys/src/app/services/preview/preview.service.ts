@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class PreviewService {
 
   isShowPreview: boolean;
-  imgUrls: string[]
+  imgUrls: string[];
   fileType:string;
   constructor() { }
 
@@ -20,4 +20,5 @@ export class PreviewService {
   getType(fileType:string) {
     this.fileType = fileType;
   }
+  
 }
