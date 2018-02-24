@@ -56,7 +56,7 @@
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup._attachments[0].id" [existingDatas]="attachmentGroup._attachments[0]._files
                     " [uploaderQueueHidden]="true" [readyOnly]="attachmentGroup._attachments[0].limitWrite
-                    " [upperLimit]="attachmentGroup._attachments[0].upperLimit"></multiple-uploader>
+                    " [upperLimit]="attachmentGroup._attachments[0].upperLimit" (onPostFileData)="onPostFileData($event,i,attachmentGroup._attachments[0])"></multiple-uploader>
           </div>
           <!-- 非初始化状态,已经操作了 -->
           <div class="accessoryBottomBottom" *ngIf="attachmentGroup.temporaryData">
@@ -75,7 +75,8 @@
               </div>
             </div>
             <multiple-uploader [url]="uploadUrl" [id]="attachmentGroup.temporaryData.id" [existingDatas]="attachmentGroup.temporaryData._files
-                    " [uploaderQueueHidden]="true" [readyOnly]="attachmentGroup.temporaryData.limitWrite" [upperLimit]="attachmentGroup.temporaryData.upperLimit"></multiple-uploader>
+                    " [uploaderQueueHidden]="true" [readyOnly]="attachmentGroup.temporaryData.limitWrite" [upperLimit]="attachmentGroup.temporaryData.upperLimit"
+              (onPostFileData)="onPostFileData($event,i,attachmentGroup.temporaryData)"></multiple-uploader>
           </div>
 
         </div>
