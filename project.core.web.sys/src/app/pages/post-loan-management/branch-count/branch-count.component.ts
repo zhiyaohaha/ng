@@ -26,7 +26,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
   currentPage: number; // 当前激活页面
 
   totalLoanApprovedAmount = 0; // 总应还金额
-  totalActualAmount  = 0; // 总实际还款金额
+  totalActualAmount = 0; // 总实际还款金额
 
   listparam = {
     index: 0,
@@ -73,7 +73,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
         this.datas = res.data.orgList;
         this.totals = res.data.total;
         this.totalLoanApprovedAmount = res.data.totalLoanApprovedAmount;
-        this.totalActualAmount  = res.data.totalActualAmount ;
+        this.totalActualAmount = res.data.totalActualAmount;
       }
     });
   }
@@ -189,6 +189,8 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   page($event) {
-    console.log($event);
+    this.listparam.index = $event.activeIndex;
+    this.listparam.size = $event.pageSize;
+    this.getLists();
   }
 }

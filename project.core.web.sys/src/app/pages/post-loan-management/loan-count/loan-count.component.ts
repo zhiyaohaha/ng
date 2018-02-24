@@ -227,7 +227,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     }, {
       hidden: false,
       label: "年化",
-      name: "yearRate",
+      name: "loanYearRate",
       pipe: ""
     }, {
       hidden: false,
@@ -381,7 +381,6 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
 
   /**
    * 确定还款
-   * @param $event
    */
   submitRepayment() {
 
@@ -392,11 +391,33 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       }
     }
 
-    console.log(this.repaymentForm);
-
     if (this.repaymentForm.valid) {
       this.loading.register("loading");
       this.postLoanManagementService.submitRepayment(this.repaymentForm.value)
+        .subscribe(res => {
+          this.loading.resolve("loading");
+          super.showToast(this.toastService, res.message || "状态未知");
+          if (res.code === "0") {
+            this.sidenavKey = "Detail";
+            this.getRepaymentPlan(this.rowId);
+          }
+        });
+    }
+  }
+
+  /**
+   * 全额还款
+   */
+  submitAllRepayment() {
+    // 校验输入值
+    for (const i in this.repaymentForm.controls) {
+      if (this.repaymentForm.controls[i]) {
+        this.repaymentForm.controls[i].markAsDirty();
+      }
+    }
+
+    if (this.repaymentForm.valid) {
+      this.postLoanManagementService.submitAllRepayment(this.repaymentForm.value)
         .subscribe(res => {
           this.loading.resolve("loading");
           super.showToast(this.toastService, res.message || "状态未知");

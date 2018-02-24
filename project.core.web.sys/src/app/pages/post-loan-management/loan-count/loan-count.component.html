@@ -109,7 +109,13 @@
                 </td>
                 <td>{{item?._user}}</td>
                 <td>{{item?.remark}}</td>
-                <td>{{item?.repaymentWay}}</td>
+                <td>
+                  <ng-container [ngSwitch]="item?.repaymentWay">
+                    <span *ngSwitchCase="'1'">客户还款</span>
+                    <span *ngSwitchCase="'2'">渠道商代还</span>
+                    <span *ngSwitchCase="'3'">总部代还</span>
+                  </ng-container>
+                </td>
                 <td>
                   <ng-container [ngSwitch]="item.butState">
                     <button *ngSwitchCase="'1'" md-raised-button (click)="onClickRepayment(item)">还款</button>
@@ -118,9 +124,8 @@
                   </ng-container>
                   <ng-container *ngIf="item.butState === 2">
                     <ng-container [ngSwitch]="item.isOverdue">
-                      <span *ngSwitchCase="'1'">未到</span>
-                      <span *ngSwitchCase="'2'">按时还款</span>
-                      <span *ngSwitchCase="'3'">逾期还款</span>
+                      <span *ngSwitchCase="'1'">按时还款</span>
+                      <span *ngSwitchCase="'2'">逾期还款</span>
                     </ng-container>
                   </ng-container>
                 </td>
@@ -237,7 +242,7 @@
         </ng-container>
         <!--全额还款-->
         <ng-container *ngSwitchCase="'AllRepayment'">
-          <form [formGroup]="repaymentForm" (ngSubmit)="submitRepayment()">
+          <form [formGroup]="repaymentForm" (ngSubmit)="submitAllRepayment()">
             <input type="hidden" formControlName="order">
             <div class="section clearfix">
               <div class="form-group columns1">
@@ -271,7 +276,7 @@
               <div class="form-group columns2">
                 <div class="label"><label>还款信息</label></div>
                 <p class="paymentInformation">
-                  <span>本金：{{paymentInformation?.frequency}}</span>
+                  <span>本金：{{paymentInformation?.principal}}</span>
                   <span>滞纳金：{{paymentInformation?.lateFee}}</span>
                   <span>违约金：{{paymentInformation?.penalty}}</span>
                   <span>本期应还利息：{{paymentInformation?.interest}}</span>

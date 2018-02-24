@@ -48,7 +48,7 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
     this.pageSize = paginationInfo.pageSize;
     this.currentPage = paginationInfo.currentPage;
 
-    this.listparam.index = this.pageSize;
+    this.listparam.index = this.currentPage;
     this.listparam.size = this.pageSize;
 
     this.initSearch();
