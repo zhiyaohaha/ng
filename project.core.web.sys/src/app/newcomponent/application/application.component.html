@@ -8,10 +8,10 @@
     <h4>录入信息</h4>
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="new" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)" [manualVerificationForm]="manualVerificationForm" (submitErrorData)="resiveErroeData($event,'dynamic')"></timi-responsive-form>
+      (ngSubmit)="onSubmitParamsNew($event)" [manualVerificationForm]="manualVerificationForm" (submitErrorData)="resiveErroeData($event,'dynamic')"></timi-responsive-form>
     <!-- 修改 -->
     <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyFormTemplate.doms" btnType="edit" submitBtnNeed=""
-      (ngSubmit)="onSubmitParams($event)" [modelDOMSData]="loanInfo.applyFormData" [manualVerificationForm]="manualVerificationForm"
+      (ngSubmit)="onSubmitParamsEdit($event)" [modelDOMSData]="loanInfo.applyFormData" [manualVerificationForm]="manualVerificationForm"
       (submitErrorData)="resiveErroeData($event,'dynamic')"></timi-responsive-form>
   </div>
 

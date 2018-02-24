@@ -47,6 +47,9 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   submitParams: any;  //记录提交按钮的数据
   errDataSuccess: any = [];
 
+  loanInfoApplyFormData: any;
+  loanInfoApplyFormDataStatus: string;
+
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     private toastService: ToastService,
@@ -184,10 +187,16 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     return false;
   }
 
-  //动态表单数据
-  onSubmitParams($event) {
-    // console.log($event);
+  //动态表单数据（新增状态下）
+  onSubmitParamsNew($event) {
+    this.loanInfoApplyFormData = $event;
+    this.loanInfoApplyFormDataStatus = 'new';
+  }
+
+  //动态表单数据(修改状态下)
+  onSubmitParamsEdit($event) {
     this.loanInfo.applyFormData = $event;
+    this.loanInfoApplyFormDataStatus = 'edit';
   }
 
   //接收动态模板的验证信息 
@@ -240,16 +249,15 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
 
     let _self = this;
     let submitParams = this.submitParams;
+    let loanInfoApplyFormDataStatus = this.loanInfoApplyFormDataStatus;
     this.applicationForm = {
       id: this.id,              //订单唯一标识
       applyAmount: this.loanInfo.applyAmount,     //申请金额
       applyTerm: this.loanInfo.applyTerm,       //申请期限
       applyAdCode: this.loanInfo.applyAdCode,     //申请地区
       purpose: this.loanInfo.purpose,         //贷款用途
-      applyFormData: this.loanInfo.applyFormData,   //申请表（表单模版数据）
+      applyFormData: loanInfoApplyFormDataStatus == 'new' ? this.loanInfoApplyFormData : this.loanInfo.applyFormData
     };
-
-    // console.log(this.applicationForm)
 
     this.loadingService.register("loading");
     this.orderService.onSubmitComplementaryData(submitParams['url'], this.applicationForm).subscribe(res => {
