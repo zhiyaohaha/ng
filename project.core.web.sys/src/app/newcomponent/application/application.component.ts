@@ -256,9 +256,9 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
       applyTerm: this.loanInfo.applyTerm,       //申请期限
       applyAdCode: this.loanInfo.applyAdCode,     //申请地区
       purpose: this.loanInfo.purpose,         //贷款用途
-      applyFormData: loanInfoApplyFormDataStatus == 'new' ? this.loanInfoApplyFormData : this.loanInfo.applyFormData
+      applyFormData: loanInfoApplyFormDataStatus == 'new' ? this.loanInfoApplyFormData : this.loanInfo.applyFormData       //申请表（表单模版数据）
     };
-
+    // console.log(this.applicationForm);
     this.loadingService.register("loading");
     this.orderService.onSubmitComplementaryData(submitParams['url'], this.applicationForm).subscribe(res => {
       if (res.code === "0") {
