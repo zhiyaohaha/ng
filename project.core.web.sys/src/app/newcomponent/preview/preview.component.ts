@@ -41,12 +41,14 @@ export class PreviewComponent implements OnInit {
     console.log(this.picArray);
   }
   ngAfterViewInit() {
-    setTimeout(()=>{
-      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
-      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
-      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
-    },0)
+    // setTimeout(()=>{
+    //   if(this.prePic){
+    //     this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
+    //     this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
+    //     this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
+    //     this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
+    //   }
+    // },0)
   }
 
   closebtn() {
@@ -57,7 +59,8 @@ export class PreviewComponent implements OnInit {
   largen() {
     if (this.valueOfScale <= 4) {
       this.valueOfScale += 0.1;
-      this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+      this.prePic.nativeElement.style.transformOrigin = 'center';
+      this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale}) translate(-50%,-50%)`;
     }
   }
 
@@ -65,7 +68,7 @@ export class PreviewComponent implements OnInit {
   shrink() {
     if (this.valueOfScale >= 0.7) {
       this.valueOfScale -= 0.1;
-      this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+      this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale}) translate(-50%,-50%)`;
     }
   }
 
@@ -84,7 +87,7 @@ export class PreviewComponent implements OnInit {
   //还原缩放比1:1
   restore() {
     this.valueOfScale = 1;
-    this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+    this.prePic.nativeElement.style.transform = `rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale}) translate(-50%,-50%)`;
   }
 
   //滚动放大缩小图片
@@ -107,8 +110,8 @@ export class PreviewComponent implements OnInit {
     let distanceY = event.clientY - prePic.offsetTop;
 
     document.onmousemove = (evt) => {
-      let left = evt.clientX - distanceX + this.boxWidth;
-      let top = evt.clientY - distanceY + this.boxHeight;
+      let left = evt.clientX - distanceX;
+      let top = evt.clientY - distanceY;
 
       prePic.style.left = left + "px";
       prePic.style.top = top + "px";
@@ -122,35 +125,27 @@ export class PreviewComponent implements OnInit {
   }
 
   //根据传入图片数量判断是否添加左右切换效果
-  pre() {
+  pre(prePic) {
     if (this.picIndex > 0) {
       this.picIndex -= 1;
       this.picUrl = this.picArray[this.picIndex];
+      prePic.style.left = '50%';
+      prePic.style.top = '50%';
     } else {
       this.picIndex = 0;
       this.picUrl = this.picArray[this.picIndex];
     }
-    setTimeout(()=>{
-      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
-      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
-      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
-    },0)
   }
 
-  next() {
+  next(prePic) {
     if (this.picIndex < this.picArray.length - 1) {
       this.picIndex += 1;
       this.picUrl = this.picArray[this.picIndex];
+      prePic.style.left = '50%';
+      prePic.style.top = '50%';
     } else {
       this.picIndex = this.picArray.length - 1;
       this.picUrl = this.picArray[this.picIndex];
     }
-    setTimeout(()=>{
-      this.boxWidth = this.prePic.nativeElement.offsetWidth / 2;
-      this.boxHeight = this.prePic.nativeElement.offsetHeight / 2;
-      this.prePic.nativeElement.style.marginLeft = `-${this.boxWidth}px`;
-      this.prePic.nativeElement.style.marginTop = `-${this.boxHeight}px`;
-    },0)
   }
 }

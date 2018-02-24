@@ -16,7 +16,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  cursor: move; 
+  cursor: move;
+  transform: translate(-50%,-50%);
 }
 
 
@@ -46,19 +47,17 @@
 }
 
 .fr {
-  width: 10%;
-  height: 10%;
   position: absolute;
-  top: 45%;
+  top: 50%;
   right: 5%;
+  margin-top: -50px;
 }
 
 .fl {
-    width: 10%;
-    height: 10%;
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 5%;
+    margin-top: -50px;
 }
 
 .left,
