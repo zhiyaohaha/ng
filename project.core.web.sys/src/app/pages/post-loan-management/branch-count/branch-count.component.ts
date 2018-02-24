@@ -56,8 +56,8 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
 
     this.initSearch();
     this.initHeaders();
-    this.datas = [{id: "123123", a: 111111}];
-    this.totals = 1;
+    this.datas = [];
+    this.totals = 0;
 
     this.getLists();
   }
@@ -70,7 +70,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
     this.postLoanManagementService.getLists(this.listparam).subscribe(res => {
       this.loading.resolve("loading");
       if (res.code === "0") {
-        this.datas = res.data.Business;
+        this.datas = res.data.orgList;
         this.totals = res.data.total;
         this.totalLoanApprovedAmount = res.data.totalLoanApprovedAmount;
         this.totalActualAmount  = res.data.totalActualAmount ;
