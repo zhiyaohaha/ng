@@ -72,6 +72,6 @@ export class PostLoanManagementService {
    * @returns {Observable<any>}
    */
   submitAllRepayment(params): Observable<any> {
-    return this.baseService.get("/api/LoanOrderRepaymentDetails/FullRepayment", params);
+    return this.baseService.post("/api/LoanOrderRepaymentDetails/FullRepayment", params);
   }
 }
