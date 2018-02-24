@@ -76,6 +76,8 @@ export class ResponsiveModelComponent implements OnInit {
       //验证：点击提交，开始统一验证所有组件。 
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
+    } else {
+      this.submitVerify = false;
     }
   }
 
@@ -313,7 +315,19 @@ export class ResponsiveModelComponent implements OnInit {
    * @memberof ResponsiveModelComponent
    */
   storeErrData(e, key) {
-    this._errData[key] = e;
+    //对三级联动地区组件的特殊处理 
+    if (Array.isArray(e)) {
+      for (const key1 in e) {
+        if (e[key1] == '必选') {
+          this._errData[key] = '必选';
+          return false;
+        }
+      }
+      this._errData[key] = "";
+
+    } else {
+      this._errData[key] = e;
+    }
   }
 
 }

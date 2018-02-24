@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef, Input } from "@angular/core";
+import { NgModule, Component, OnInit, AfterViewInit, ViewChildren, QueryList, forwardRef, Input, EventEmitter, Output } from "@angular/core";
 import { RegionService } from "../../services/region/region.service";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { TimiSelectModule } from "../timi-select/select.component";
 import { FormsModule } from '@angular/forms';
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 
 export const REGION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -62,6 +63,25 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   // 之前是根据传入的数据是否为空，来判断是否父组件传递的数据的。（如果传递的数据不为空，就使用父组件传递的数据）
   @Input() applyBindDataSwitch: boolean = false;   //是否使用父组件传递的text和value数据(即使传递的数据是null)
 
+  _errData = []; //错误信息集合
+  validatorGather: any = [  //验证信息集合
+    {
+      validatorRequired: true,
+      customValidator: []
+    },
+  ];
+  submitVerify: boolean = false;
+  @Output() submitErrorData: EventEmitter<any> = new EventEmitter();
+  @Input()
+  set manualVerificationForm(value) {  //手动验证
+    if (value) {
+      //验证：点击提交，开始统一验证所有组件。 
+      this.submitVerify = true;
+      this.submitErrorData.emit(this._errData);
+    }
+  }
+  @Input() verificate: string;
+
   private valueChange = (_: any) => {
   };
 
@@ -70,7 +90,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   ngOnInit() {
     this.regionService.getData().subscribe(result => {
-      
+
       this.setData(result);
       if (!this.multiple) { //非多选的情况下
         this.multipleFalseFun(result);
@@ -507,10 +527,22 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   setPholder(level) {
     return (level == '1' ? '省' : (level == '2' ? '市' : '区'));
   }
+
+  /**
+ * 记录，验证错误信息
+ * 
+ * @param {any} e 
+ * @param {any} key 
+ * @memberof ResponsiveModelComponent
+ */
+  storeErrData(e, key) {
+    this._errData[key] = e;
+  }
+
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, TimiSelectModule],
+  imports: [CommonModule, FormsModule, TimiSelectModule, SharedPipeModule],
   declarations: [RegionComponent],
   exports: [RegionComponent]
 })

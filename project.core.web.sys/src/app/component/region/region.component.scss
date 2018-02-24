@@ -54,3 +54,20 @@ ul{
     }
 }
 
+.multipleAddress{
+  .selectThree{
+    position: relative;
+  }
+  .errComponent{
+    height:auto;
+  }
+  .errBorder{
+    left:0px;
+    margin-left:0px;
+    top:31px;
+    &:nth-child(1){
+      left:15px;
+    }
+  }
+}
+

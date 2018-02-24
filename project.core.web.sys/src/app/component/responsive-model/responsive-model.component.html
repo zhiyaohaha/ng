@@ -73,7 +73,11 @@
               <div class="box-item item-label">
                 <label>{{child.ui.label}}</label>
               </div>
-              <div class="box-item item-control-wrapper">
+              <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
+                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"
+                  [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)" verificate="true"></free-region>
+              </div>
+              <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
                 <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"></free-region>
               </div>
             </div>
@@ -156,8 +160,12 @@
                     <div class="box-item item-label">
                       <label>{{grandson.ui.label}}</label>
                     </div>
-                    <div class="box-item item-control-wrapper">
+                    <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
                       <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"></free-region>
+                    </div>
+                    <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
+                      <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"
+                        [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)" verificate="true"></free-region>
                     </div>
                   </div>
                 </ng-container>
@@ -252,9 +260,14 @@
               <div class="box-item item-label">
                 <label>{{child.ui.label}}</label>
               </div>
-              <div class="box-item item-control-wrapper">
+              <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
                 <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
                   (click)="commitData()"></free-region>
+              </div>
+              <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
+                <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
+                  (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)"
+                  verificate="true"></free-region>
               </div>
             </div>
             <div class="form-group tac columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
@@ -345,9 +358,14 @@
                     <div class="box-item item-label">
                       <label>{{grandson.ui.label}}</label>
                     </div>
-                    <div class="box-item item-control-wrapper">
+                    <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
                       <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
                         (click)="commitData()"></free-region>
+                    </div>
+                    <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
+                      <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
+                        (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)"
+                        verificate="true"></free-region>
                     </div>
                   </div>
                   <div class="form-group tac columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
