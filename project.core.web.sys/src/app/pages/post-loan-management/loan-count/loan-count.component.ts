@@ -290,7 +290,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   getOrderDetail(id) {
     this.postLoanManagementService.getOrderDetail({id: id})
       .subscribe(res => {
-        this.orderDetail = res.data;
+        this.orderDetail = res.data[0];
       });
   }
 
@@ -336,7 +336,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     } else {
       this.sidenavKey = "Repayment";
       this.repaymentId = $event.id;
-      this.fileLists = $event._paymentVoucher.map(item => {
+      this.fileLists = $event._paymentVoucher && $event._paymentVoucher.map(item => {
         return {id: item.id, path: item.path};
       }); // 上传凭证
       this.inputData = JSON.parse(JSON.stringify(this.fileLists));
