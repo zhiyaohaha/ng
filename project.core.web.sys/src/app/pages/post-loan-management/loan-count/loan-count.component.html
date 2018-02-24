@@ -28,15 +28,15 @@
             </div>
             <div class="form-group columns1">
               <div class="label">机构</div>
-              <div class="span"></div>
+              <div class="span">{{orderDetail?.orgType}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">产品</div>
-              <div class="span">{{orderDetail?._product?.name}}</div>
+              <div class="span">{{orderDetail?._productName}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">营业部</div>
-              <div class="span">{{orderDetail?.orgName?.name}}</div>
+              <div class="span">{{orderDetail?.orgName}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">客户</div>
@@ -52,15 +52,15 @@
             </div>
             <div class="form-group columns1">
               <div class="label">年化</div>
-              <div class="span">{{orderDetail?._rate?.yearRate}}</div>
+              <div class="span">{{orderDetail?.loanApprovedYearRate}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">放贷时间</div>
-              <div class="span">{{orderDetail?.loanDate | date:"yyyy-MM-dd HH:mm:ss"}}</div>
+              <div class="span">{{orderDetail?.loanDate}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">月费率</div>
-              <div class="span">{{orderDetail?._rate?.monthRate}}</div>
+              <div class="span">{{orderDetail?.loanApprovedMonthRate}}</div>
             </div>
             <div class="form-group columns1">
               <div class="label">期数</div>
@@ -95,10 +95,10 @@
               </thead>
               <tbody>
               <tr *ngFor="let item of repaymentPlan">
-                <td>{{item?.plannedTime | date:"yyyy-MM-dd"}}</td>
+                <td>{{item?.plannedTime}}</td>
                 <td>{{item?.interest}}</td>
-                <td>{{item?.interest}}</td>
-                <td>{{item?.actualTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                <td>{{item?.amountPayable}}</td>
+                <td>{{item?.actualTime}}</td>
                 <td>{{item?.actualLateFee}}</td>
                 <td>{{item?.actualAmount}}</td>
                 <td>

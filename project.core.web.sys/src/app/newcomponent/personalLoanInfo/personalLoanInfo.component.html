@@ -97,7 +97,10 @@
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"></timi-select>
+        <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"
+          [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+          [validatorInputValue]="loanInfo.applyTerm === 0 ? null : loanInfo.applyTerm" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyTerm')"
+          validatorComponentType="select"></timi-select>
       </div>
     </li>
     <li class="areasComponent">
