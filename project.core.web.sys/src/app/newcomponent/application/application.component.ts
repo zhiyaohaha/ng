@@ -205,24 +205,22 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     //验证静态表单
     //验证动态表单
 
-    for (let i in errData) {
-      if (errData[i]) {
-        setTimeout(() => {
+    setTimeout(() => {
+      for (let i in errData) {
+        if (errData[i]) {
           super.openAlert({ title: "提示", message: '请填写完整相关信息', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
           this.manualVerificationForm = false;
-        }, 0)
-        return false;   //如果有错误，则停止提交
+          return false;   //如果有错误，则停止提交
+        }
       }
-    }
 
-    if (errDataSuccess.indexOf(templateState) == -1) {
-      errDataSuccess.push(templateState);
-    }
-    if (errDataSuccess.length !== 2) { return false };  //只有静态模板和动态模板都通过的时候，才能继续提交。
+      if (errDataSuccess.indexOf(templateState) == -1) {
+        errDataSuccess.push(templateState);
+      }
+      if (errDataSuccess.length !== 2) { return false };  //只有静态模板和动态模板都通过的时候，才能继续提交。
 
 
-    //验证附件 
-    setTimeout(() => {
+      //验证附件 
       if (!this.multipleFileUploaderLowerLimit()) {
         setTimeout(() => {
           this.manualVerificationForm = false;
