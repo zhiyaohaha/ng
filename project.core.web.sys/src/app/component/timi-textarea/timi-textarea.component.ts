@@ -54,11 +54,9 @@ export class TimiTextareaComponent implements ControlValueAccessor, AfterViewIni
   }
 
   ngOnInit() {
-      this.er.nativeElement.classList.add("ng-pristine-custom");  //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
   }
 
   onBlur($event) {  
-    $event.path[4].className =  $event.path[4].className.replace("ng-pristine-custom ","")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.value = $event.target.value;
     this.blur.emit($event);
   }

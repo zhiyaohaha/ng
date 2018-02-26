@@ -124,7 +124,6 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
   }
 
   ngOnInit() {
-    this.er.nativeElement.classList.add("ng-pristine-custom");  //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.setChipClass();
   }
 
@@ -159,7 +158,6 @@ export class TimiChipGroupComponent extends BaseUIComponent implements ControlVa
 
   onBlur($event) {
     this.blur.emit(this.chips);
-    $event.path[3].className = $event.path[3].className.replace("ng-pristine-custom ", "")   //为了解决，此组件初始化状态下是‘ng-dirty’。而不是‘ng-pristine’
     this.focus = !this.focus;
     this.setChipClass();
   }

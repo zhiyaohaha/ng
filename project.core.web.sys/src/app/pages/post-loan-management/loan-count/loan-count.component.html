@@ -82,6 +82,8 @@
               <tr>
                 <th>计划还款时间</th>
                 <th>利息</th>
+                <th>滞纳金</th>
+                <th>违约金</th>
                 <th>应还金额</th>
                 <th>实际还款时间</th>
                 <th>实还滞纳金</th>
@@ -97,6 +99,8 @@
               <tr *ngFor="let item of repaymentPlan">
                 <td>{{item?.plannedTime}}</td>
                 <td>{{item?.interest}}</td>
+                <td>{{item?.lateFee}}</td>
+                <td>{{item?.penalty}}</td>
                 <td>{{item?.amountPayable}}</td>
                 <td>{{item?.actualTime}}</td>
                 <td>{{item?.actualLateFee}}</td>
@@ -109,7 +113,13 @@
                 </td>
                 <td>{{item?._user}}</td>
                 <td>{{item?.remark}}</td>
-                <td>{{item?.repaymentWay}}</td>
+                <td>
+                  <ng-container [ngSwitch]="item?.repaymentWay">
+                    <span *ngSwitchCase="'1'">客户还款</span>
+                    <span *ngSwitchCase="'2'">渠道商代还</span>
+                    <span *ngSwitchCase="'3'">总部代还</span>
+                  </ng-container>
+                </td>
                 <td>
                   <ng-container [ngSwitch]="item.butState">
                     <button *ngSwitchCase="'1'" md-raised-button (click)="onClickRepayment(item)">还款</button>
@@ -118,9 +128,8 @@
                   </ng-container>
                   <ng-container *ngIf="item.butState === 2">
                     <ng-container [ngSwitch]="item.isOverdue">
-                      <span *ngSwitchCase="'1'">未到</span>
-                      <span *ngSwitchCase="'2'">按时还款</span>
-                      <span *ngSwitchCase="'3'">逾期还款</span>
+                      <span *ngSwitchCase="'1'">按时还款</span>
+                      <span *ngSwitchCase="'2'">逾期还款</span>
                     </ng-container>
                   </ng-container>
                 </td>
@@ -174,7 +183,7 @@
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>
-                <free-calendar lang="cn" formControlName="ActualTime"></free-calendar>
+                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event, '2')"></free-calendar>
                 <p class="errors"
                    *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">
                   必填</p>
@@ -197,6 +206,15 @@
                 <p class="errors"
                    *ngIf="getFormControl('RepaymentWay').dirty && getFormControl('RepaymentWay').hasError('required')">
                   必填</p>
+              </div>
+              <div class="section clearfix">
+                <div class="form-group columns2">
+                  <div class="label"><label>还款信息</label></div>
+                  <p class="paymentInformation">
+                    <span>应还金额：{{paymentInformation?.allMoney}}</span>
+                    <span>滞纳金：{{paymentInformation?.lateFee}}</span>
+                  </p>
+                </div>
               </div>
             </div>
             <div class="section clearfix">
@@ -237,12 +255,12 @@
         </ng-container>
         <!--全额还款-->
         <ng-container *ngSwitchCase="'AllRepayment'">
-          <form [formGroup]="repaymentForm" (ngSubmit)="submitRepayment()">
+          <form [formGroup]="repaymentForm" (ngSubmit)="submitAllRepayment()">
             <input type="hidden" formControlName="order">
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>
-                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event)"></free-calendar>
+                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event, '1')"></free-calendar>
                 <p class="errors"
                    *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">
                   必填</p>
@@ -271,7 +289,7 @@
               <div class="form-group columns2">
                 <div class="label"><label>还款信息</label></div>
                 <p class="paymentInformation">
-                  <span>本金：{{paymentInformation?.frequency}}</span>
+                  <span>本金：{{paymentInformation?.principal}}</span>
                   <span>滞纳金：{{paymentInformation?.lateFee}}</span>
                   <span>违约金：{{paymentInformation?.penalty}}</span>
                   <span>本期应还利息：{{paymentInformation?.interest}}</span>
@@ -300,6 +318,10 @@
             </div>
             <div class="section clearfix">
               <timi-textarea [labelName]="'备注'" formControlName="Remark"></timi-textarea>
+              <p class="errors"
+                 *ngIf="getFormControl('Remark').dirty && getFormControl('Remark').hasError('required')"
+                  style="position: relative;left: 120px;">
+                必填</p>
             </div>
             <div class="section clearfix operateBar">
               <button md-raised-button (click)="onClickBack()">返回</button>

@@ -110,7 +110,7 @@
         </div>
         <div class="box-item item-control-wrapper">
           <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
-            [applyBindDataSwitch]="applyBindDataSwitch"></free-region>
+            [applyBindDataSwitch]="applyBindDataSwitch" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,'applyAdCode')" verificate="true"></free-region>
         </div>
       </div>
     </li>

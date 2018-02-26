@@ -48,11 +48,19 @@ export class ResponsiveModelComponent implements OnInit {
   @Input() //模版
   set modelDOMS(value) {
     this._modelDOMS = value;
-    value.forEach(item => {
-      item.childrens.forEach(i => {
-        this._modelDOMSData[i.name] = i.value;
+    if (value) {
+      value.forEach(item => {
+        item.childrens.forEach(i => {
+          if (i.childrens) {
+            i.childrens.forEach(iChild => {
+              this._modelDOMSData[iChild.name] = iChild.value;
+            })
+          } else {
+            this._modelDOMSData[i.name] = i.value;
+          }
+        });
       });
-    });
+    }
   }
 
   get modelDOMS() {
@@ -76,6 +84,8 @@ export class ResponsiveModelComponent implements OnInit {
       //验证：点击提交，开始统一验证所有组件。 
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
+    } else {
+      this.submitVerify = false;
     }
   }
 
@@ -209,14 +219,15 @@ export class ResponsiveModelComponent implements OnInit {
           if (r.code === "0") {
 
             //附件组和附件项执行此处代码，其它联动select组件，不执行此代码
-            if (r.data[0] && r.data[0]['_attachments']) {
-              if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
-              } else {                                                       //新增页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
+            if (r.data) {
+              if (r.data[0] && r.data[0]['_attachments']) {
+                if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
+                  this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
+                } else {                                                       //新增页面
+                  this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
+                }
               }
             }
-
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });
@@ -313,7 +324,19 @@ export class ResponsiveModelComponent implements OnInit {
    * @memberof ResponsiveModelComponent
    */
   storeErrData(e, key) {
-    this._errData[key] = e;
+    //对三级联动地区组件的特殊处理 
+    if (Array.isArray(e)) {
+      for (const key1 in e) {
+        if (e[key1] == '必选') {
+          this._errData[key] = '必选';
+          return false;
+        }
+      }
+      this._errData[key] = "";
+
+    } else {
+      this._errData[key] = e;
+    }
   }
 
 }

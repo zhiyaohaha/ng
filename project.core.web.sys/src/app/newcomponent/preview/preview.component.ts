@@ -57,7 +57,7 @@ export class PreviewComponent implements OnInit {
   largen() {
     if (this.valueOfScale <= 4) {
       this.valueOfScale += 0.1;
-      this.prePic.nativeElement.style.transform = `translate(-50%,-50%) rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+      this.prePic.nativeElement.style.transform = this.setTranform(this.valueOfrotate, this.valueOfScale);
     }
   }
 
@@ -65,26 +65,30 @@ export class PreviewComponent implements OnInit {
   shrink() {
     if (this.valueOfScale >= 0.7) {
       this.valueOfScale -= 0.1;
-      this.prePic.nativeElement.style.transform = `translate(-50%,-50%) rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+      this.prePic.nativeElement.style.transform = this.setTranform(this.valueOfrotate, this.valueOfScale);
     }
   }
 
   //向左旋转按钮
   turnLeft() {
     this.valueOfrotate += 90;
-    this.prePic.nativeElement.style.transform = `translate(-50%,-50%) rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+    this.prePic.nativeElement.style.transform = this.setTranform(this.valueOfrotate, this.valueOfScale);
   }
 
   //向右旋转按钮
   turnRight() {
     this.valueOfrotate -= 90;
-    this.prePic.nativeElement.style.transform = `translate(-50%,-50%) rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+    this.prePic.nativeElement.style.transform = this.setTranform(this.valueOfrotate, this.valueOfScale);
   }
 
   //还原缩放比1:1
   restore() {
     this.valueOfScale = 1;
-    this.prePic.nativeElement.style.transform = `translate(-50%,-50%) rotate(${this.valueOfrotate}deg) scale(${this.valueOfScale})`;
+    this.prePic.nativeElement.style.transform = this.setTranform(this.valueOfrotate, this.valueOfScale);
+  }
+
+  setTranform(valueOfrotate, valueOfScale) {
+    return `translate(-50%,-50%) rotate(${valueOfrotate}deg) scale(${valueOfScale})`;
   }
 
   //滚动放大缩小图片
@@ -130,7 +134,7 @@ export class PreviewComponent implements OnInit {
       this.valueOfScale = 1;
       prePic.style.left = '50%';
       prePic.style.top = '50%';
-      prePic.style.transform = `rotate(0deg) translate(-50%,-50%) scale(1)`;
+      prePic.style.transform = `translate(-50%,-50%) rotate(0deg) scale(1)`;
     } else {
       this.picIndex = 0;
       this.picUrl = this.picArray[this.picIndex];
@@ -145,7 +149,7 @@ export class PreviewComponent implements OnInit {
       this.valueOfScale = 1;
       prePic.style.left = '50%';
       prePic.style.top = '50%';
-      prePic.style.transform = `rotate(0deg) translate(-50%,-50%) scale(1)`;
+      prePic.style.transform = `translate(-50%,-50%) rotate(0deg) scale(1)`;
     } else {
       this.picIndex = this.picArray.length - 1;
       this.picUrl = this.picArray[this.picIndex];
