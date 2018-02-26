@@ -29,9 +29,9 @@
 <script language="Javascript">
   document.onkeydown = function (ev) {
     const event = window.event || ev;
-    if ((window.event.altKey) &&
-      ((window.event.keyCode === 37) || //屏蔽   Alt+   方向键   ←
-        (window.event.keyCode === 39))) //屏蔽   Alt+   方向键   →
+    if ((event.altKey) &&
+      ((event.keyCode === 37) || //屏蔽   Alt+   方向键   ←
+        (event.keyCode === 39))) //屏蔽   Alt+   方向键   →
     {
       event.returnValue = false;
     }
