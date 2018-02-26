@@ -48,11 +48,13 @@ export class ResponsiveModelComponent implements OnInit {
   @Input() //模版
   set modelDOMS(value) {
     this._modelDOMS = value;
-    value.forEach(item => {
-      item.childrens.forEach(i => {
-        this._modelDOMSData[i.name] = i.value;
+    if (value) {
+      value.forEach(item => {
+        item.childrens.forEach(i => {
+          this._modelDOMSData[i.name] = i.value;
+        });
       });
-    });
+    }
   }
 
   get modelDOMS() {
