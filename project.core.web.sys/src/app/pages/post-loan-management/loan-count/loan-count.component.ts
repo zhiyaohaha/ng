@@ -331,7 +331,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
         ActualLateFee: ["", Validators.required],
         RepaymentWay: ["", Validators.required],
         PaymentVoucher: [null, Validators.required],
-        Remark: [""]
+        Remark: ["", Validators.required]
       });
     } else {
       this.sidenavKey = "Repayment";
@@ -484,9 +484,13 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.inputData = JSON.parse(JSON.stringify(this.fileLists));
   }
 
-  onDateChange($event) {
-    console.log($event);
-    this.getPaymentInformation({order: this.rowId, actualTime: $event.value});
+  /**
+   * 日期触发事件
+   * @param $event
+   * @param type 1 全额还款 2 单笔还款
+   */
+  onDateChange($event, type) {
+    this.getPaymentInformation({order: this.rowId, actualTime: $event.value, isAdvance: type, id: this.repaymentId});
   }
 
   /**
@@ -498,6 +502,10 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
       .subscribe(res => {
         if (res.code === "0") {
           this.paymentInformation = res.data;
+          this.repaymentForm.patchValue({
+            ActualAmount: this.paymentInformation.allMoney,
+            ActualLateFee: this.paymentInformation.lateFee
+          });
         }
       });
   }

@@ -82,6 +82,8 @@
               <tr>
                 <th>计划还款时间</th>
                 <th>利息</th>
+                <th>滞纳金</th>
+                <th>违约金</th>
                 <th>应还金额</th>
                 <th>实际还款时间</th>
                 <th>实还滞纳金</th>
@@ -97,6 +99,8 @@
               <tr *ngFor="let item of repaymentPlan">
                 <td>{{item?.plannedTime}}</td>
                 <td>{{item?.interest}}</td>
+                <td>{{item?.lateFee}}</td>
+                <td>{{item?.penalty}}</td>
                 <td>{{item?.amountPayable}}</td>
                 <td>{{item?.actualTime}}</td>
                 <td>{{item?.actualLateFee}}</td>
@@ -179,7 +183,7 @@
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>
-                <free-calendar lang="cn" formControlName="ActualTime"></free-calendar>
+                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event, '2')"></free-calendar>
                 <p class="errors"
                    *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">
                   必填</p>
@@ -202,6 +206,15 @@
                 <p class="errors"
                    *ngIf="getFormControl('RepaymentWay').dirty && getFormControl('RepaymentWay').hasError('required')">
                   必填</p>
+              </div>
+              <div class="section clearfix">
+                <div class="form-group columns2">
+                  <div class="label"><label>还款信息</label></div>
+                  <p class="paymentInformation">
+                    <span>应还金额：{{paymentInformation?.allMoney}}</span>
+                    <span>滞纳金：{{paymentInformation?.lateFee}}</span>
+                  </p>
+                </div>
               </div>
             </div>
             <div class="section clearfix">
@@ -247,7 +260,7 @@
             <div class="section clearfix">
               <div class="form-group columns1">
                 <div class="label"><label>还款日期</label></div>
-                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event)"></free-calendar>
+                <free-calendar lang="cn" formControlName="ActualTime" (onChange)="onDateChange($event, '1')"></free-calendar>
                 <p class="errors"
                    *ngIf="getFormControl('ActualTime').dirty && getFormControl('ActualTime').hasError('required')">
                   必填</p>
@@ -305,6 +318,10 @@
             </div>
             <div class="section clearfix">
               <timi-textarea [labelName]="'备注'" formControlName="Remark"></timi-textarea>
+              <p class="errors"
+                 *ngIf="getFormControl('Remark').dirty && getFormControl('Remark').hasError('required')"
+                  style="position: relative;left: 120px;">
+                必填</p>
             </div>
             <div class="section clearfix operateBar">
               <button md-raised-button (click)="onClickBack()">返回</button>
