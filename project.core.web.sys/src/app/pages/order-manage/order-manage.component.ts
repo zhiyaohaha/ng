@@ -30,13 +30,14 @@ import { NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { CommonService } from "app/services/common/common.service";
 import { BaseUIComponent } from "../baseUI.component";
+import { OrderService } from "../../services/order/order.service";
 
 @Component({
   selector: "app-order-manage",
   templateUrl: "./order-manage.component.html",
   styleUrls: ["./order-manage.component.scss"],
   animations: [fadeIn],
-  providers: [TdLoadingService, CommonService]
+  providers: [TdLoadingService, CommonService, OrderService]
 })
 export class OrderManageComponent extends BaseUIComponent implements OnInit {
   [x: string]: any;
@@ -89,9 +90,15 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
 
-  pagecode: string;
+  pagecode: string; //跳路由
 
-  detailId: string;
+  detailId: string;  //点击行时的详情id
+
+  ids: any; //指派的时候传递的id数组
+
+  assignData: any; //传给指派组件的展示数据
+
+  selectArray: Array<any> = []; //选择订单的id数组
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -103,7 +110,8 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     private el: ElementRef,
     private baseService: BaseService,
     private loading: TdLoadingService,
-    private commonService: CommonService) {
+    private commonService: CommonService,
+    private orderService: OrderService) {
     super(loading, routerInfor);
 
     /**
@@ -210,6 +218,12 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     //     this.detailModel = r.data.doms;
     //   });
   }
+  /**
+   * 勾选行
+   */
+  rowCheckedEvent(e) {
+    this.ids = e;
+  }
 
   /**
    * 获取模版
@@ -226,6 +240,35 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.edit = true;
     this.btnType = "new";
     this.sidenavKey = "Other";
+  }
+  /**
+   * 指派
+   */
+  assign() {
+    let str = '';
+    this.sidenavKey = "Assign";
+    if (this.ids) {
+      for (let i = 0; i < this.ids.length; i++) {
+        this.selectArray.push(this.ids[i].id);
+      }
+      str = this.selectArray.join(",");
+    }
+    if(this.selectArray.length>0){
+      this.orderService.getAssign(str).subscribe(res => {
+        if (res.success) {
+          this.sidenav.open();
+          this.getAssign(res);
+        } else {
+          alert(res.message);
+        }
+      })
+    }else{
+      alert("请选择订单");
+    }
+    
+  }
+  getAssign(res) {
+    this.assignData = res.data;
   }
 
   // //-资料收集
@@ -249,7 +292,12 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   //   this.sidenavKey = sidenavKey;
   // }
 
-  //设置侧滑模板 
+  /**
+   * 
+   * 
+   * @param {any} sidenavKey 
+   * @memberof OrderManageComponent
+   */
   setSidenavKey(sidenavKey) {
     this.selectRow = "";
     this.sidenavKey = sidenavKey;
@@ -341,6 +389,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     this.detail = false;
     this.edit = false;
     this.selectRow = null;
+    this.selectArray = [];
   }
 
   /**

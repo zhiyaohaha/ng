@@ -5,6 +5,9 @@
     <button md-raised-button class="add-button" (click)="newAdd();sidenav.open()">
       报单
     </button>
+    <button md-raised-button class="add-button" (click)="assign()">
+      指派
+    </button>
     <!--1 临时入口按钮 -->
     <!-- <button md-raised-button color="deepblue" class="add-button" (click)="setSidenavKey('FillInfo');FillInfoId='5a6974c7ac52db1898da86cf';sidenav.open()">
       资料收集
@@ -34,7 +37,7 @@
   <!--</app-table>-->
 
   <timi-table [headers]="columns" [data]="filteredData" [selectable]="true" [clickRowable]="true" [totals]="filteredTotal"
-    [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()">
+    [pageSize]="pageSize" [activeIndex]="currentPage" (pageEvent)="page($event)" (clickRowEvent)="rowClickEvent($event);sidenav.open()" (checkeRowEvent)="rowCheckedEvent($event)">
   </timi-table>
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
@@ -67,6 +70,8 @@
         <!--响应详情模板内容不同按钮点击事件的表单-->
         <timi-responsive-form *ngIf="sidenavKey === 'Form' && modelDOMS && selectRow" [modelDOMS]="modelDOMS" [modelDOMSData]="selectRow"
           (ngSubmit)="submitMethod($event)"></timi-responsive-form>
+        <!-- 指派 -->
+        <free-assign *ngIf="sidenavKey === 'Assign' && assignData" [detailData]="assignData" [ids]="selectArray"></free-assign>
       </div>
     </div>
   </md-sidenav>
