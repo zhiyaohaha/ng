@@ -5,7 +5,7 @@
     <button md-raised-button class="add-button" (click)="newAdd();sidenav.open()">
       报单
     </button>
-    <button md-raised-button class="add-button" (click)="assign()">
+    <button md-raised-button class="add-button" (click)="assign()" *ngIf="showBtn">
       指派
     </button>
     <!--1 临时入口按钮 -->
