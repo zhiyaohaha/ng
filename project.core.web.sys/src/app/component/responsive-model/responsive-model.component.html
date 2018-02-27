@@ -217,7 +217,7 @@
               <timi-select name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                 pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                 [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)"
-                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]"
+                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData"
                 [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)" validatorComponentType="select"></timi-select>
             </div>
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
@@ -315,7 +315,7 @@
                       pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData" [columns]="grandson.ui.columns"
                       [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'" [filter]="grandson.ui.filter"
                       (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies"
-                      [validatorInputValue]="modelDOMSData[grandson.name]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"
+                      [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"
                       validatorComponentType="select"></timi-select>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">

@@ -24,27 +24,6 @@ export class OrderService {
     return this.baseService.post("/api/LoanOrder/CheckIdCardReal", { "idCard": idCard, "product": product })
   }
 
-  //获取验证码
-  // getCodeInfo(mobilePhone) {
-  //   return this.baseService.post("/api/SMS/SendVerifyCode", {
-  //     "code": "LoanOrderFourRealVerifyCode",
-  //     "mobilePhone": mobilePhone
-  //   });
-  // }
-
-  //四要素认证
-  // getInfo(verifyCode, idCard, bankCard, mobilePhone, idCardPositiveImage, idCardOppositeImage, photo) {
-  //   return this.baseService.post("/api/LoanOrder/FourReal", {
-  //     "verifyCode": verifyCode,
-  //     "idCard": idCard,
-  //     "bankCard": bankCard,
-  //     "mobilePhone": mobilePhone,
-  //     "idCardPositiveImage": idCardPositiveImage,
-  //     "idCardOppositeImage": idCardOppositeImage,
-  //     "photo": photo
-  //   });
-  // }
-
   //五要素认证,返回实名认证ID
   getInfo(idCard, bank, bankCard, mobilePhone, idCardPositiveImage, idCardOppositeImage, photo) {
     return this.baseService.post("/api/LoanOrder/FiveReal", {
@@ -156,6 +135,19 @@ export class OrderService {
       org: org,
       process: process,
       status: status
+    });
+  }
+
+  //指派的时候获取的数据
+  getAssign(ids) {
+    return this.baseService.get("/api/LoanOrder/GetAssignInfo", { ids: ids });
+  }
+
+  //指派人提交接口
+  onSubmitAssign(user,ids){
+    return this.baseService.post("/api/LoanOrder/SetAssign",{
+      user:user,
+      ids:ids
     });
   }
 }

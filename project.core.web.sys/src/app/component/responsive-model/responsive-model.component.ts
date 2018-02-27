@@ -51,7 +51,13 @@ export class ResponsiveModelComponent implements OnInit {
     if (value) {
       value.forEach(item => {
         item.childrens.forEach(i => {
-          this._modelDOMSData[i.name] = i.value;
+          if (i.childrens) {
+            i.childrens.forEach(iChild => {
+              this._modelDOMSData[iChild.name] = iChild.value;
+            })
+          } else {
+            this._modelDOMSData[i.name] = i.value;
+          }
         });
       });
     }
@@ -213,14 +219,15 @@ export class ResponsiveModelComponent implements OnInit {
           if (r.code === "0") {
 
             //附件组和附件项执行此处代码，其它联动select组件，不执行此代码
-            if (r.data[0] && r.data[0]['_attachments']) {
-              if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
-              } else {                                                       //新增页面
-                this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
+            if (r.data) {
+              if (r.data[0] && r.data[0]['_attachments']) {
+                if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
+                  this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
+                } else {                                                       //新增页面
+                  this.judgeSetChangeData(r.data, option[i].triggerDom, "add");
+                }
               }
             }
-
             this.setSelectOptions(option[i].triggerDom, r.data);
           }
         });

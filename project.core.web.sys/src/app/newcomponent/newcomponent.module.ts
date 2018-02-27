@@ -24,6 +24,7 @@ import { RegionModule } from "app/component/region/region.component";
 import { MdButtonModule } from '@angular/material';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { SharedPipeModule } from "app/component/shared-pipe/shared-pipe.module";
+import { AssignComponent } from './assign/assign.component';
 @NgModule({
     declarations: [
         PreviewComponent,
@@ -33,6 +34,7 @@ import { SharedPipeModule } from "app/component/shared-pipe/shared-pipe.module";
         AuditInfoComponent,
         ChartComponent,
         PermissionsComponent,
+        AssignComponent,
     ],
     imports: [
         FormsModule,
@@ -59,6 +61,7 @@ import { SharedPipeModule } from "app/component/shared-pipe/shared-pipe.module";
         AuditInfoComponent,
         ChartComponent,
         PermissionsComponent,
+        AssignComponent
     ],
     providers: [],
 })

@@ -1,0 +1,26 @@
+<p>
+  选择{{detailData.checkedCount}}项,共{{detailData.assignCount}}项可指派
+</p>
+<table class="detail">
+  <tr>
+    <th>姓名</th>
+    <th>产品</th>
+    <th>状态</th>
+    <th>所属公司</th>
+    <th>操作人</th>
+  </tr>
+  <tr *ngFor="let item of detailData.orders">
+    <td>{{item?.name}}</td>
+    <td>{{item?.productName}}</td>
+    <td>{{item?._status}}</td>
+    <td>{{item?.orgName}}</td>
+    <td>{{item?._user}}</td>
+  </tr>
+</table>
+<div>
+  <span>指派给：</span>
+  <timi-select pholder="{{'请选择指派人选'}}" [options]="detailData.users" (onChange)="getPerson($event)" class="select"></timi-select>
+  <button md-raised-button class="add-button" (click)="onSubmit()">
+    确定
+  </button>
+</div>
