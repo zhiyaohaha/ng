@@ -82,6 +82,7 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
   //贷款信息
   getLoanInfo(res) {
     this.loanInfo = res;
+    this.loanInfo.applyTerm = this.loanInfo.applyTerm.toString();  // 后台返回的类型是number，option里面的value是string
   }
 
   //点击单个附件项的时候，传递当前附件项数据  （切换附件项）

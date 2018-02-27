@@ -99,7 +99,7 @@
 
     <!-- + 在父组件传递的数据为空，但是需要继续使用该空数据的情况下： -->
     <div *ngIf="!loginerBindAreas && applyBindDataSwitch" class="selectThree">
-      <timi-select pholder="{{'请选择市'}}" multipleForUse="true"></timi-select>
+      <timi-select pholder="{{'请选择省份'}}" multipleForUse="true"></timi-select>
       <timi-select pholder="{{'请选择市'}}" multipleForUse="true"></timi-select>
       <timi-select pholder="{{'请选择区县'}}" multipleForUse="true"></timi-select>
     </div>
@@ -187,7 +187,7 @@
 
     <!-- + 在父组件传递的数据为空，但是需要继续使用该空数据的情况下： -->
     <div *ngIf="!loginerBindAreas && applyBindDataSwitch" class="selectThree">
-      <timi-select pholder="{{'请选择市'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
+      <timi-select pholder="{{'请选择省份'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
         [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
         (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
       <timi-select pholder="{{'请选择市'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"

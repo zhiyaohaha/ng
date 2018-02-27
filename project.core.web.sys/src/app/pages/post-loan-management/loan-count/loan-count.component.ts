@@ -37,7 +37,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
   listparam = {
     index: 0,
     size: 10,
-    filter: ""
+    filters: ""
   };
 
   sidenavKey: string; // Detail 详细 CreatePlan 生成还款计划  Repayment 还款
@@ -105,7 +105,7 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     this.listparam.index = this.currentPage;
     this.listparam.size = this.pageSize;
     if (this.orgId) {
-      this.listparam.filter = this.convertUtil.toJsonStr({orgId: this.orgId});
+      this.listparam.filters = this.convertUtil.toJsonStr({orgId: this.orgId});
     }
 
     this.initSearch();
@@ -139,9 +139,9 @@ export class LoanCountComponent extends BaseUIComponent implements OnInit {
     if (this.orgId) {
       let obj = this.convertUtil.toJSON($event);
       obj["orgId"] = this.orgId;
-      this.listparam.filter = this.convertUtil.toJsonStr(obj);
+      this.listparam.filters = this.convertUtil.toJsonStr(obj);
     } else {
-      this.listparam.filter = $event;
+      this.listparam.filters = $event;
     }
     this.getLists();
   }

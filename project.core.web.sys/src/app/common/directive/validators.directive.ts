@@ -107,7 +107,10 @@ export class CustomValidatorsDirective implements OnInit {
       // console.log('有值')
 
       if (status == 'validator-required') {  //验证输入值(必填+正则)
-        this.verifyInputValueValidatorRequired(validatorValue, customValidator);
+        setTimeout(() => {
+          this.verifyInputValueValidatorRequired(validatorValue, this.customValidator);
+        }, 0)
+
       } else if (status == 'required') {   //验证输入值(必填)
         this.storeErrData.emit('');
         this.errorTipsDisplay('', false);

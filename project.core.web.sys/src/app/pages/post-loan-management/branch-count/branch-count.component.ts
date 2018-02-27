@@ -31,7 +31,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
   listparam = {
     index: 0,
     size: 10,
-    filter: ""
+    filters: ""
   };
   pagecode: string;
 
@@ -83,7 +83,7 @@ export class BranchCountComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   onSearch($event) {
-    this.listparam.filter = this.convertUtil.toJsonStr($event);
+    this.listparam.filters = $event;
     this.getLists();
   }
 
