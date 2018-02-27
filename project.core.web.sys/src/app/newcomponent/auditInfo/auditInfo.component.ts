@@ -369,7 +369,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         description: auditContent,
         option: aduitOption,
       };
-
+      
       if (_status !== 'FaceSign') {     //(初审/复审) 终审  待放款 放款
         //批核表单
         let approveLoanInfoForm = this.approveLoanInfoForm.value;
@@ -430,6 +430,12 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
     if (aduitOption) {  //审核结果是必选的   
       if (aduitOption !== 'ProcessNodeAuditOption.GiveUp') {   //选择用户放弃不用验证
+
+        if (aduitOption !== 'ProcessNodeAuditOption.Adopt') {  //除了'通过'，其它选项原因都是必填 
+          if (this.aduitReason() === false) { //验证是否选择审核原因
+            return false;
+          }
+        }
 
         let attachmentGroups = this.loanInfo._attachmentGroups;
         let BreakException = {};
@@ -519,6 +525,9 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         return true;  //可以继续提交
 
       } else {
+        if (this.aduitReason() === false) { //验证是否选择审核原因
+          return false;
+        }
         return true;    //选择用户放弃不用验证
       }
     } else {
@@ -527,5 +536,19 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     }
   }
 
+  //审核原因验证，（除了通过，其它选项原因都是必填 ） 
+  aduitReason() {
+    let auditResultReason = this.auditResultReason;
+    let auditContent = [];
+    auditResultReason.forEach(element => {
+      if (element.status) {
+        auditContent.push(element.label);
+      }
+    });
+    if (!auditContent || auditContent.length == 0) {
+      super.openAlert({ title: "提示", message: "请选择审核原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      return false;   //没有选择审核原因，不能继续提交了
+    }
+  }
 }
 
