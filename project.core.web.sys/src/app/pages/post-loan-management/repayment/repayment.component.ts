@@ -30,7 +30,7 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
   listparam = {
     index: 0,
     size: 10,
-    filter: ""
+    filters: ""
   };
   pagecode: string;
 
@@ -86,7 +86,7 @@ export class RepaymentComponent extends BaseUIComponent implements OnInit {
    * @param $event
    */
   onSearch($event) {
-    this.listparam.filter = $event;
+    this.listparam.filters = $event;
     this.listparam.index = 0;
     this.currentPage = 0;
     this.getLists();
