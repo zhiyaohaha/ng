@@ -197,10 +197,10 @@
             <div class="time-picker">
               <free-calendar formControlName="loanDate" lang="cn" pholder="选择日期" [(ngModel)]="loanDate" [customValidator]="validatorGather[1]['customValidator']"
                 [validatorRequired]="validatorGather[1]['validatorRequired']" [validatorInputValue]="loanDate" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,'loanDate')" validatorComponentType="free-calendar"></free-calendar>
+                (storeErrData)="storeErrData($event,'loanDate')" validatorComponentType="free-calendar-date"></free-calendar>
               <free-calendar formControlName="loanTime" [timeOnly]="true" pholder="选择时间" [(ngModel)]="loanTime" [customValidator]="validatorGather[1]['customValidator']"
                 [validatorRequired]="validatorGather[1]['validatorRequired']" [validatorInputValue]="loanTime" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,'loanTime')" validatorComponentType="free-calendar"></free-calendar>
+                (storeErrData)="storeErrData($event,'loanTime')" validatorComponentType="free-calendar-time"></free-calendar>
             </div>
           </div>
         </li>
