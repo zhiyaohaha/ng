@@ -54,12 +54,11 @@ button {
   padding: 0 16px;
   border-radius: 2px;
 }
+.special{
+  cursor: not-allowed;
+  background-color: #d9d9d9;
+}
 
-// .declaration {
-//   position: relative;
-//   height: 234px;
-//   overflow: auto;
-// }
 .declaration .search {
   border-radius: 5px;
 }
@@ -294,6 +293,7 @@ button {
     }
   }
   .authentication {
+    
     timi-input {
       .form-item .item-control-wrapper {
         width: 280px;

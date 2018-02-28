@@ -80,7 +80,7 @@
         <span class="right red" *ngIf="showCodeError">{{errorCode}}</span>
       </li>
       <div class="authenticationBtn" *ngIf="showCertification==2">
-        <button type="button" (click)="startVerify()">开始认证</button>
+        <button type="button" (click)="startVerify()" [disabled]="showBtn" [class.special]="showBtn">开始认证</button>
       </div>
     </ul>
   </div>
