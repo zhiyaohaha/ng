@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <strong>人员列表</strong>
+      <input type="text" (change)="searchUserList($event)">
+      <user-list [data]="tree" (onNodeSelect)="onNodeSelect($event)"></user-list>
+    </div>
+    <div class="col-lg-10">
+      <div class="person-info">
+        <div class="form-group">
+          <div class="label">姓名</div>
+          <div class="span">{{userInfo?.name}}</div>
+        </div>
+        <div class="form-group">
+          <div class="label">职业类别</div>
+          <div class="span">{{userInfo?.role}}</div>
+        </div>
+        <div class="form-group">
+          <div class="label">职业级别</div>
+          <div class="span">{{userInfo?.job}}</div>
+        </div>
+        <div class="form-group">
+          <div class="label">所在组织</div>
+          <div class="span">{{userInfo?.org}}</div>
+        </div>
+        <div class="form-group">
+          <div class="label">所在分组</div>
+          <div class="span">{{userInfo?.groups}}</div>
+        </div>
+        <div class="form-group">
+          <div class="label">日期</div>
+          <div class="span">
+            <ul class="weekday">
+              <li *ngFor="let item of weekdays" [ngClass]="{'active': item.active}" (click)="setWeekday(item)">{{item.label}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <timi-input [labelName]="'组织'" [placeholder]="'关键字'" (change)="searchOrgs($event)"></timi-input>
+      </div>
+      <div style="margin-left: 120px;">
+        <!--<user-list [data]="userInfo?.orgs"></user-list>-->
+        <group-list *ngFor="let item of userInfo?.orgs" [data]="item"></group-list>
+        <button md-raised-button class="submit-btn" (click)="submit()">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
