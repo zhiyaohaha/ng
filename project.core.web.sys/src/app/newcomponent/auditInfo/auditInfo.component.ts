@@ -11,7 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "free-auditInfo",
   templateUrl: "./auditInfo.component.html",
-  styleUrls: ["./auditInfo.component.scss"],
+  styleUrls: ["./auditInfo.component.scss", "../../common/directive/validators.directive.scss"],
   providers: [OrderService],
   animations: [
     trigger("selectState", [
@@ -53,6 +53,22 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   @Input() status: string;  //用于区分当前侧滑状态
   @Output() closeRefreshData = new EventEmitter();
   @Output() detailClick = new EventEmitter();
+
+  _errData = []; //错误信息集合
+  validatorGather: any = [  //验证信息集合
+    {
+      validatorRequired: true,
+      customValidator: [
+        { message: "请输入正确的金额", name: "金额", regular: "^(([1-9]\\d{0,9})|0)(\\.\\d{1,4})?$" },
+        { message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }
+      ]
+    },
+    {
+      validatorRequired: true,
+      customValidator: []
+    },
+  ];
+  submitVerify: boolean = false;
 
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
@@ -369,7 +385,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         description: auditContent,
         option: aduitOption,
       };
-
+      // console.log(postData)
       if (_status !== 'FaceSign') {     //(初审/复审) 终审  待放款 放款
         //批核表单
         let approveLoanInfoForm = this.approveLoanInfoForm.value;
@@ -431,6 +447,16 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     if (aduitOption) {  //审核结果是必选的   
       if (aduitOption !== 'ProcessNodeAuditOption.GiveUp') {   //选择用户放弃不用验证
 
+        //1. 验证审核结果原因是否选择 
+        if (aduitOption !== 'ProcessNodeAuditOption.Adopt') {  //除了'通过'，其它选项原因都是必填 
+          if (this.aduitReason() === false) { //验证是否选择审核原因
+            return false;
+          }
+        }
+
+
+        //2. 验证附件审核结果 
+        
         let attachmentGroups = this.loanInfo._attachmentGroups;
         let BreakException = {};
         let notPassNum = 0;
@@ -516,14 +542,71 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         } catch (e) {
           return false;   //不能继续提交了
         }
-        return true;  //可以继续提交
+
+
+        //3. 验证审核表单 (只有审核结果为通过的时候，才有审核表单)
+        if (aduitOption == 'ProcessNodeAuditOption.Adopt') {
+          this.submitVerify = true;
+          let errData = this._errData;
+          for (let i in errData) {
+            if (errData[i]) {
+              super.openAlert({ title: "提示", message: '请填写完整相关信息', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+              return false;   //如果有错误，则停止提交
+            }
+          }
+        }
+
+        return true;  //4. 可以继续提交
 
       } else {
+        if (this.aduitReason() === false) { //验证是否选择审核原因
+          return false;
+        }
         return true;    //选择用户放弃不用验证
       }
     } else {
       super.openAlert({ title: "提示", message: "请选择审核结果", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       return false;   //没有选择审核结果，不能继续提交了
+    }
+  }
+
+  //审核原因验证，（除了通过，其它选项原因都是必填 ） 
+  aduitReason() {
+    let auditResultReason = this.auditResultReason;
+    let auditContent = [];
+    auditResultReason.forEach(element => {
+      if (element.status) {
+        auditContent.push(element.label);
+      }
+    });
+    if (!auditContent || auditContent.length == 0) {
+      super.openAlert({ title: "提示", message: "请选择审核原因", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      return false;   //没有选择审核原因，不能继续提交了
+    }
+  }
+
+
+  /**
+   * 记录，验证错误信息
+   * 
+   * @param {any} e 
+   * @param {any} key 
+   * @memberof ResponsiveModelComponent
+   */
+  storeErrData(e, key) {
+    //对三级联动地区组件的特殊处理 
+    if (Array.isArray(e)) {
+      for (const key1 in e) {
+
+        if (e[key1] == '必选') {
+          this._errData[key] = '必选';
+          return false;
+        }
+      }
+      this._errData[key] = "";
+
+    } else {
+      this._errData[key] = e;
     }
   }
 

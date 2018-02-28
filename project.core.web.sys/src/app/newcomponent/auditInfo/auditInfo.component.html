@@ -149,41 +149,58 @@
       <ul class="loan-info clearfix">
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}金额" formControlName="loanApprovedAmount"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}金额" formControlName="loanApprovedAmount" [(ngModel)]="loanApprovedAmount"
+              [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+              [validatorInputValue]="loanApprovedAmount" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedAmount')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}期限" formControlName="loanApprovedDeadline"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}期限" formControlName="loanApprovedDeadline" [(ngModel)]="loanApprovedDeadline"
+              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [validatorInputValue]="loanApprovedDeadline" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedDeadline')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}年化" formControlName="loanApprovedYearsRate"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}年化" formControlName="loanApprovedYearsRate" [(ngModel)]="loanApprovedYearsRate"
+              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [validatorInputValue]="loanApprovedYearsRate" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedYearsRate')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
-            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}月费率" formControlName="loanApprovedMonthsRate"></timi-input>
+            <timi-input labelName="{{approveLoanInfoFormDislayLabel}}月费率" formControlName="loanApprovedMonthsRate" [(ngModel)]="loanApprovedMonthsRate"
+              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [validatorInputValue]="loanApprovedMonthsRate" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedMonthsRate')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
             <timi-select formControlName="loanApprovedRepaymentMethod" freeSelectName="{{approveLoanInfoFormDislayLabel}}还款方式" pholder="{{'请选择还款方式'}}"
-              [options]="loanInfo.repaymentMethods"></timi-select>
+              [options]="loanInfo.repaymentMethods" [(ngModel)]="loanApprovedRepaymentMethod" [customValidator]="validatorGather[1]['customValidator']"
+              [validatorRequired]="validatorGather[1]['validatorRequired']" [validatorInputValue]="loanApprovedRepaymentMethod"
+              [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedRepaymentMethod')" validatorComponentType="select"></timi-select>
           </div>
         </li>
         <li *ngIf="status == 'FinalAudit'">
           <div class="form-group columns1">
-            <timi-select formControlName="loanApprovedAssignUsers" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="assignUsers"></timi-select>
+            <timi-select formControlName="loanApprovedAssignUsers" freeSelectName="指派" pholder="{{'请选择被指派人'}}" [options]="assignUsers"
+              [(ngModel)]="loanApprovedAssignUsers" [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [validatorInputValue]="loanApprovedAssignUsers" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedAssignUsers')"
+              validatorComponentType="select"></timi-select>
           </div>
         </li>
         <li *ngIf="status == 'WaitLoan'">
           <div class="form-group columns1">
             <span class="time-picker-label ">放款时间</span>
             <div class="time-picker">
-              <free-calendar formControlName="loanDate" lang="cn" pholder="选择日期"></free-calendar>
-              <free-calendar formControlName="loanTime" [timeOnly]="true" pholder="选择时间"></free-calendar>
+              <free-calendar formControlName="loanDate" lang="cn" pholder="选择日期" [(ngModel)]="loanDate" [customValidator]="validatorGather[1]['customValidator']"
+                [validatorRequired]="validatorGather[1]['validatorRequired']" [validatorInputValue]="loanDate" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,'loanDate')" validatorComponentType="select"></free-calendar>
+              <free-calendar formControlName="loanTime" [timeOnly]="true" pholder="选择时间" [(ngModel)]="loanTime" [customValidator]="validatorGather[1]['customValidator']"
+                [validatorRequired]="validatorGather[1]['validatorRequired']" [validatorInputValue]="loanTime" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,'loanTime')" validatorComponentType="select"></free-calendar>
             </div>
           </div>
         </li>
