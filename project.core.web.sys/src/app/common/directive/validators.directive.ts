@@ -60,10 +60,17 @@ export class CustomValidatorsDirective implements OnInit {
   }
   //select 
   @HostListener('onChange', ['$event']) onChangeSelect(e) {
-    // console.log(e)
-    // console.log('select')
-    this.firstEnterView = false;
-    this.verifyInputValue(e, "required", '必选');
+    //日历组件，在刚刚加载的时候就触发了onchange事件，所以要区分一下
+    if (!e['year']) {  //日历在刚刚加载触发onchange事件的时候，不触发验证事件。
+      this.firstEnterView = false;
+      this.verifyInputValue(e, "required", '必选');
+    } else {  //日历在修改以后，再次触发onchange会,触发验证事件
+      if (e['value']) {
+        this.firstEnterView = false;
+        this.verifyInputValue(e, "required", '必选');
+      }
+    }
+
   }
   //timi-file-uploader
   @HostListener('success', ['$event']) onChangeFileUpload(e) {
@@ -155,6 +162,7 @@ export class CustomValidatorsDirective implements OnInit {
    * @memberof CustomValidatorsDirective
    */
   errorTipsDisplay(msg, errTipsDisplay) {
+    console.log(errTipsDisplay)
     if (errTipsDisplay) {  //显示
       //组件和errtips的共同父类样式
       let _self = this;
@@ -205,6 +213,7 @@ export class CustomValidatorsDirective implements OnInit {
       case "file-uploader": componentParentClass = "errBorderParentFileUpLoad"; break;
       case "textarea": componentParentClass = "errBorderParentTextArea"; break;
       case "tags": componentParentClass = "errBorderParentTags"; break;
+      case "free-calendar": componentParentClass = "errBorderParentCalendar"; break;
       default: componentParentClass = "errBorderParent"; break;  //例如input
     }
     // console.log(componentParentClass)

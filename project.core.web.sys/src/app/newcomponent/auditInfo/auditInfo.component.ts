@@ -456,7 +456,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
 
         //2. 验证附件审核结果 
-        
+       
         let attachmentGroups = this.loanInfo._attachmentGroups;
         let BreakException = {};
         let notPassNum = 0;

@@ -1,5 +1,5 @@
 :host /deep/ {
-    .errBorderParent,.errBorderParentFileUpLoad,.errBorderParentTags,.errBorderParentTextArea,.errBorderParentSelect{
+    .errBorderParent,.errBorderParentFileUpLoad,.errBorderParentTags,.errBorderParentTextArea,.errBorderParentSelect,.errBorderParentCalendar{
         position: relative;
     }
     .errBorderParentFileUpLoad {
@@ -19,10 +19,17 @@
     .errBorderParentTextArea {
         margin-bottom:18px;
     }
+    .errBorderParentCalendar{
+        .errBorder {
+            top:30px;
+            left:0;
+            margin-left:0px;
+        }
+    }
 
     .errComponent {
         height:550px;
-        input, .free-select, .item-textarea {
+        input, .free-select, .item-textarea ,.free-select-input {
             border-color: #cf000d !important;
         }
         .timi-chip-input {
