@@ -67,6 +67,17 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       validatorRequired: true,
       customValidator: []
     },
+    {
+      validatorRequired: true,
+      customValidator: [{ message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }]
+    },
+    {
+      validatorRequired: true,
+      customValidator: [
+        { message: "请输入正确的利率", name: "利率", regular: "^(([1-9]\\d{0,2})|0)(\\.\\d{1,4})?$" },
+        { message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }
+      ]
+    },
   ];
   submitVerify: boolean = false;
 
@@ -385,54 +396,54 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         description: auditContent,
         option: aduitOption,
       };
-      // console.log(postData)
-      if (_status !== 'FaceSign') {     //(初审/复审) 终审  待放款 放款
-        //批核表单
-        let approveLoanInfoForm = this.approveLoanInfoForm.value;
-        let approveLoanInfoFormAttrs = {};
-        let attrKeys = ['金额', '期限', '年化', '月费率', '还款方式'];
-        let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
-        for (let i in attrKeys) {
-          if (attrKeys[i] !== "还款方式") {
-            if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
-              approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number((approveLoanInfoForm[attrValues[i]] / 100));
-            } else {
-              approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number(approveLoanInfoForm[attrValues[i]]);
-            }
-          } else {
-            approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = approveLoanInfoForm[attrValues[i]];
-          }
-        }
+      console.log(postData)
+      // if (_status !== 'FaceSign') {     //(初审/复审) 终审  待放款 放款
+      //   //批核表单
+      //   let approveLoanInfoForm = this.approveLoanInfoForm.value;
+      //   let approveLoanInfoFormAttrs = {};
+      //   let attrKeys = ['金额', '期限', '年化', '月费率', '还款方式'];
+      //   let attrValues = ['loanApprovedAmount', 'loanApprovedDeadline', 'loanApprovedYearsRate', 'loanApprovedMonthsRate', 'loanApprovedRepaymentMethod'];
+      //   for (let i in attrKeys) {
+      //     if (attrKeys[i] !== "还款方式") {
+      //       if (attrKeys[i] == "年化" || attrKeys[i] == "月费率") {
+      //         approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number((approveLoanInfoForm[attrValues[i]] / 100));
+      //       } else {
+      //         approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = Number(approveLoanInfoForm[attrValues[i]]);
+      //       }
+      //     } else {
+      //       approveLoanInfoFormAttrs[this.approveLoanInfoFormDislayLabel + attrKeys[i]] = approveLoanInfoForm[attrValues[i]];
+      //     }
+      //   }
 
 
-        if (_status !== 'WaitLoan') {
-          postData['attrs'] = approveLoanInfoFormAttrs;   //(初审/复审)
-          if (_status == 'FinalAudit') {  //终审
-            postData['user'] = approveLoanInfoForm['loanApprovedAssignUsers'];
-          }
-        } else if (_status == 'WaitLoan') {  //待付款
-          let loanTime = approveLoanInfoForm['loanDate'] + " " + approveLoanInfoForm['loanTime'];
-          approveLoanInfoFormAttrs['放款时间'] = loanTime;
-          postData['attrs'] = approveLoanInfoFormAttrs;
-        }
-      }
+      //   if (_status !== 'WaitLoan') {
+      //     postData['attrs'] = approveLoanInfoFormAttrs;   //(初审/复审)
+      //     if (_status == 'FinalAudit') {  //终审
+      //       postData['user'] = approveLoanInfoForm['loanApprovedAssignUsers'];
+      //     }
+      //   } else if (_status == 'WaitLoan') {  //待付款
+      //     let loanTime = approveLoanInfoForm['loanDate'] + " " + approveLoanInfoForm['loanTime'];
+      //     approveLoanInfoFormAttrs['放款时间'] = loanTime;
+      //     postData['attrs'] = approveLoanInfoFormAttrs;
+      //   }
+      // }
 
-      // console.log(postData)
+      // // console.log(postData)
 
-      this.loadingService.register("loading");
-      _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
-        if (res.code === "0") {
-          _self.toastService.creatNewMessage({ message: label + "成功" });
-          _self.closeRefreshData.emit();
-        } else {
-          super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-          // _self.toastService.creatNewMessage({ message: res.message });
-        }
-        _self.loadingService.resolve("loading");
-      }, (err) => {
-        super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-        _self.loadingService.resolve("loading");
-      })
+      // this.loadingService.register("loading");
+      // _self.orderService.onSubmitAuditData(url, postData).subscribe(res => {
+      //   if (res.code === "0") {
+      //     _self.toastService.creatNewMessage({ message: label + "成功" });
+      //     _self.closeRefreshData.emit();
+      //   } else {
+      //     super.openAlert({ title: "提示", message: label + "失败,原因是：" + res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      //     // _self.toastService.creatNewMessage({ message: res.message });
+      //   }
+      //   _self.loadingService.resolve("loading");
+      // }, (err) => {
+      //   super.openAlert({ title: "提示", message: err, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      //   _self.loadingService.resolve("loading");
+      // })
     } else if (type === "HtmlDomCmd.Form") {
       // 
     }
@@ -456,7 +467,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
 
         //2. 验证附件审核结果 
-       
+        /*
         let attachmentGroups = this.loanInfo._attachmentGroups;
         let BreakException = {};
         let notPassNum = 0;
@@ -542,7 +553,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         } catch (e) {
           return false;   //不能继续提交了
         }
-
+*/
 
         //3. 验证审核表单 (只有审核结果为通过的时候，才有审核表单)
         if (aduitOption == 'ProcessNodeAuditOption.Adopt') {

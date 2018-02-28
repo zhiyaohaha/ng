@@ -157,21 +157,21 @@
         <li>
           <div class="form-group columns1">
             <timi-input labelName="{{approveLoanInfoFormDislayLabel}}期限" formControlName="loanApprovedDeadline" [(ngModel)]="loanApprovedDeadline"
-              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [customValidator]="validatorGather[2]['customValidator']" [validatorRequired]="validatorGather[2]['validatorRequired']"
               [validatorInputValue]="loanApprovedDeadline" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedDeadline')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
             <timi-input labelName="{{approveLoanInfoFormDislayLabel}}年化" formControlName="loanApprovedYearsRate" [(ngModel)]="loanApprovedYearsRate"
-              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [customValidator]="validatorGather[3]['customValidator']" [validatorRequired]="validatorGather[3]['validatorRequired']"
               [validatorInputValue]="loanApprovedYearsRate" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedYearsRate')"></timi-input>
           </div>
         </li>
         <li>
           <div class="form-group columns1">
             <timi-input labelName="{{approveLoanInfoFormDislayLabel}}月费率" formControlName="loanApprovedMonthsRate" [(ngModel)]="loanApprovedMonthsRate"
-              [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+              [customValidator]="validatorGather[3]['customValidator']" [validatorRequired]="validatorGather[3]['validatorRequired']"
               [validatorInputValue]="loanApprovedMonthsRate" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'loanApprovedMonthsRate')"></timi-input>
           </div>
         </li>
