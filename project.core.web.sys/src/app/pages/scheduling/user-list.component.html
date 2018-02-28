@@ -1,0 +1,13 @@
+<ul>
+  <!--<li *ngFor="let item of data">-->
+    <!--<div (click)="toggle(item)" [ngClass]="{active: !item.childrens && item.active}">-->
+      <!--<span class="fa fa-fw" [ngClass]="{'fa-caret-right': !item.active, 'fa-caret-down': item.active}"-->
+            <!--*ngIf="item.childrens"></span>-->
+      <!--{{item.name}}-->
+    <!--</div>-->
+    <!--<ng-template [ngIf]="item.childrens">-->
+      <!--<user-list [data]="item.childrens" [hidden]="!item.active"></user-list>-->
+    <!--</ng-template>-->
+  <!--</li>-->
+  <user-list-item *ngFor="let item of data" [data]="item"></user-list-item>
+</ul>
