@@ -105,7 +105,7 @@
         <td>{{history.remark}}</td>
         <td *ngIf="!history.attrs"></td>
         <td *ngIf="history.attrs">
-          <ul class="overheadInfo" *ngIf="history._status !== '已放款'">
+          <ul class="overheadInfo" *ngIf="history._status !== '已放款' && history._status !== '待放款'">
             <!-- 因为每个字段有不同的单位，不同的展示方式，所以需要写固定的 -->
             <li>批核金额 : {{history.attrs["批核金额"]}} 元</li>
             <li>批核期限 : {{history.attrs["批核期限"]}} 个月</li>
@@ -113,7 +113,7 @@
             <li>批核月费率 : {{history.attrs["批核月费率"]*100}}</li>
             <li>批核还款方式 : {{history.attrs["批核还款方式"]}}</li>
           </ul>
-          <ul class="overheadInfo" *ngIf="history._status == '已放款'">
+          <ul class="overheadInfo" *ngIf="history._status == '已放款' || history._status == '待放款'">
             <!-- 因为每个字段有不同的单位，不同的展示方式，所以需要写固定的 -->
             <li>放款金额 : {{history.attrs["放款金额"]}} 元</li>
             <li>放款期限 : {{history.attrs["放款期限"]}} 个月</li>
