@@ -1,5 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
+import { BaseUIComponent } from '../../pages/baseUI.component';
+import { TdLoadingService } from '@covalent/core';
+import { ActivatedRoute } from '@angular/router';
+import { ToastService } from '../../component/toast/toast.service';
 
 @Component({
   selector: 'free-declaration',
@@ -7,7 +11,7 @@ import { OrderService } from "app/services/order/order.service";
   styleUrls: ['./declaration.component.scss'],
   providers: [OrderService]
 })
-export class DeclarationComponent implements OnInit {
+export class DeclarationComponent extends BaseUIComponent implements OnInit {
 
 
   //新增部分
@@ -48,9 +52,16 @@ export class DeclarationComponent implements OnInit {
 
   bank: string;//开户行
 
+  showBtn: boolean = true;//设置disabled
+
   @Output() onPostOrderId = new EventEmitter();  //发送最新上传的文件数据
 
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService,
+              private loading: TdLoadingService,
+              private routerInfor: ActivatedRoute,
+              private toastService: ToastService) {
+    super(loading, routerInfor);
+   }
 
   ngOnInit() {
     this.orderService.getType().subscribe(res => {
@@ -162,28 +173,40 @@ export class DeclarationComponent implements OnInit {
   onCertification() {
     this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
-      if (res.data) {
-        this.personRealId = res.data.id;
+      //super.showToast(this.toastService, res.message);
+      if (res.success) {
+        this.showBtn = false;
+        super.showToast(this.toastService, '验证码已发送，请注意查收!!');
+        if (res.data) {
+          this.personRealId = res.data.id;
+        }
+      }else{
+        super.showToast(this.toastService, res.message);
       }
-      //this.showPersonData = res.success;
     })
   }
 
   //开始认证
   startVerify() {
     this.orderService.sendCode(this.personRealId, this.phoneCode).subscribe(res => {
+      console.log(res);
       this.showPersonData = res.success;
       this.personData = res.data;
-      console.log(res);
-      console.log(res.data.id);
+      if(res.success){
+        super.showToast(this.toastService, '认证成功，请进行下一步!');
+      }else{
+        super.showToast(this.toastService, res.message);
+      }
     })
   }
 
   //申请贷款
   onSubmit() {
     this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {
-      console.log(res);
-      this.onPostOrderId.emit(res.data.id);
+      if(res.success){
+        super.showToast(this.toastService, '申请贷款已成功!');
+        this.onPostOrderId.emit(res.data.id);
+      }
     })
   }
   //搜索产品

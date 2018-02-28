@@ -100,6 +100,8 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
 
   selectArray: Array<any> = []; //选择订单的id数组
 
+  showBtn: boolean; //判断是否有LoanMgr.OrderMgr.Assign权限
+
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
     private converUtil: ConvertUtil,
@@ -111,7 +113,7 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
     private baseService: BaseService,
     private loading: TdLoadingService,
     private commonService: CommonService,
-    private orderService: OrderService) {
+    private orderService: OrderService, ) {
     super(loading, routerInfor);
 
     /**
@@ -147,7 +149,12 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    console.log(this.authorities);
+    for(let i = 0; i<this.authorities.length;i++){
+      if (this.authorities[i] ==='LoanMgr.OrderMgr.Assign'){
+        this.showBtn = true;
+      }
+    }
   }
 
   /**
@@ -253,19 +260,19 @@ export class OrderManageComponent extends BaseUIComponent implements OnInit {
       }
       str = this.selectArray.join(",");
     }
-    if(this.selectArray.length>0){
+    if (this.selectArray.length > 0) {
       this.orderService.getAssign(str).subscribe(res => {
         if (res.success) {
           this.sidenav.open();
           this.getAssign(res);
         } else {
-          alert(res.message);
+          super.showToast(this.toastService, res.message);
         }
       })
-    }else{
-      alert("请选择订单");
+    } else {
+      super.showToast(this.toastService, '请选择订单');
     }
-    
+
   }
   getAssign(res) {
     this.assignData = res.data;
