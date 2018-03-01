@@ -76,6 +76,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   set manualVerificationForm(value) {  //手动验证
     if (value) {
       //验证：点击提交，开始统一验证所有组件。 
+      // console.log(this._errData);
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
     }
@@ -87,6 +88,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   constructor(private regionService: RegionService) {
   }
+
 
   ngOnInit() {
     this.regionService.getData().subscribe(result => {
@@ -347,12 +349,11 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   writeValue(obj: any): void {
 
     //修改状态 
-
+    console.log(obj)
     if (obj) {
       //多选
       if (this.multiple) {
-        this.multipleFalseModifiedState = false;
-
+        
         this.modifiedData = obj;
         let inputData = this.inputData;
         // console.log(inputData)
@@ -387,6 +388,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         }
       }
 
+    }else if(obj !== null){
+      this.multipleFalseModifiedState = false;
     }
 
   }
