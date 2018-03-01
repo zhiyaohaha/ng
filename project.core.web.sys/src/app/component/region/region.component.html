@@ -112,20 +112,19 @@
       <!-- 修改状态下，还原父组件传递的所有code数据(要等text和value数据绑定以后，才能绑定code) -->
       <div *ngIf="multipleFalseModifiedState">
         <div *ngIf="multipleFalseModifiedData" class="selectThreeJson">
-
-          <div *ngIf="multipleFalseData?.length > 0">
+          <div>
             <timi-select [(ngModel)]="multipleFalseModifiedData[0]" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"
               multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
               [validatorInputValue]="multipleFalseModifiedData[0]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataProvince')"
               validatorComponentType="select"></timi-select>
           </div>
-          <div *ngIf="multipleFalseCityData?.length > 0">
+          <div>
             <timi-select [(ngModel)]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择市'}}" (onChange)="changeMultipleFalseData($event,2)"
               multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
               [validatorInputValue]="multipleFalseModifiedData[1]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataCity')"
               validatorComponentType="select"></timi-select>
           </div>
-          <div *ngIf="multipleFalseModifiedWait?multipleFalseCountyData?.length > 0:true">
+          <div>
             <timi-select [(ngModel)]="multipleFalseModifiedData[2]" [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)"
               multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
               [validatorInputValue]="multipleFalseModifiedData[2]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataCountry')"
