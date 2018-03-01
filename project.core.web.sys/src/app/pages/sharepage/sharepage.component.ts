@@ -216,11 +216,16 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    * 详情组件点击事件
    */
   detailClick(value) {
+    console.log(value);
     this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
       if (r.code === "0") {
         this.modalDOMS = r.data.doms;
       }
     });
+    this.baseService.get("/api/" + value.triggerUrl, {id: this.selectRow.id})
+      .subscribe(res => {
+        this.modalDOMS = res.data.doms;
+      });
     if (value.name === "HtmlDomCmd.Redirect") {
       if (value.triggerUrl === "#SetFunction") {
         this.sidenavKey = "SetFunction";

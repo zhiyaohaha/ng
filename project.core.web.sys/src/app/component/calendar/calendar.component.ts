@@ -97,7 +97,7 @@ export class CalendarSelectorComponent {
       <div class="free-select-input" [class.free-select-timeonly]="timeOnly"
            (click)="onClick()" *ngIf="!inline">
         <input type="text" placeholder="{{pholder}}" #target (input)="onInputChange(target.value)"
-               value="{{value}}" [readonly]="readonly">
+               value="{{value}}" [readonly]="readonly" (blur)="blurInput(target.value)">
       </div>
       <div class="free-calendar-wrapper" *ngIf="inline || opened"
            [@selectState]="'in'" [style.width]="width">
@@ -250,6 +250,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() defaultDate: string;
   @Input() showTime: boolean;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() blur: EventEmitter<any> = new EventEmitter();
   _locale = {
     dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -774,6 +775,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit, OnDestro
 
   ngOnDestroy() {
     this.offDocumentClickListener();
+  }
+
+  blurInput($event){
+    this.blur.emit($event);
   }
 }
 @NgModule({

@@ -1,0 +1,10 @@
+:host /deep/ {
+    ul {
+      li ul {
+        padding-left: 1rem;
+      }
+    }
+}
+ul {
+  cursor: pointer;
+}

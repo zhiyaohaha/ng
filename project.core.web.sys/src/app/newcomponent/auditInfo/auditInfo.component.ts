@@ -67,6 +67,17 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
       validatorRequired: true,
       customValidator: []
     },
+    {
+      validatorRequired: true,
+      customValidator: [{ message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }]
+    },
+    {
+      validatorRequired: true,
+      customValidator: [
+        { message: "请输入正确的利率", name: "利率", regular: "^(([1-9]\\d{0,2})|0)(\\.\\d{1,4})?$" },
+        { message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }
+      ]
+    },
   ];
   submitVerify: boolean = false;
 
