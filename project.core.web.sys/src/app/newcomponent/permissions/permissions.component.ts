@@ -4,6 +4,7 @@ import { BaseUIComponent } from "app/pages/baseUI.component";
 import { TdLoadingService } from "@covalent/core";
 import { ActivatedRoute } from "@angular/router";
 import { ToastService } from "app/component/toast/toast.service";
+import { FnUtil } from "../../common/fn-util";
 
 @Component({
   selector: "free-permissions",
@@ -19,18 +20,30 @@ export class PermissionsComponent extends BaseUIComponent implements OnInit {
 
 
   codes: Array<string> = []; //选择的code字符串数组
+  permissions: Array<any> = [];//权限数组
+  showBtn: boolean;//根据权限判断是否展示设置按钮
+
 
   constructor(
     private permissionsService: PermissionsService,
     private loading: TdLoadingService,
     private routerInfor: ActivatedRoute,
-    private toastService: ToastService) {
+    private toastService: ToastService,
+    private fnUtil: FnUtil) {
     super(loading, routerInfor);
   }
 
   ngOnInit() {
     this.getMenus(this.id, this.from);
+    console.log(this.fnUtil.getFunctions());
+    this.permissions = this.fnUtil.getFunctions();
+    for (let i = 0; i < this.permissions.length; i++) {
+      if (this.permissions.filter(p => p.indexOf("SetFunctions")>-1)) {
+        this.showBtn = true;
+      }
+    }
   }
+
 
   /**
    * 获取权限数
@@ -145,10 +158,9 @@ export class PermissionsComponent extends BaseUIComponent implements OnInit {
   //传递数据
   onSubmit() {
     this.permissionsService.setPermissions(this.id, this.codes).subscribe(res => {
-      if(res.success){
+      if (res.success) {
         super.showToast(this.toastService, res.message);
       }
-      console.log(res);
     });
   }
 }
