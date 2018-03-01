@@ -457,10 +457,20 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       res.forEach((item1, index1) => {
         if (item1.value == code) {
           if (level == '1') {
-            _self.multipleFalseCityData = item1.childrens;
-            _self.multipleFalseCountyData = [];
+            if (code) {
+              _self.multipleFalseCityData = item1.childrens;
+              _self.multipleFalseCountyData = [];
+            } else {  //选择“请选择”选项
+              _self.multipleFalseCityData = [];
+              _self.multipleFalseCountyData = [];
+            }
+
           } else if (level == '2') {
-            _self.multipleFalseCountyData = item1.childrens;
+            if (code) {
+              _self.multipleFalseCountyData = item1.childrens;
+            } else {
+              _self.multipleFalseCountyData = [];
+            }
           }
           return false;
         }
