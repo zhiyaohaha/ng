@@ -123,20 +123,6 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     if (!value) {
       return;
     }
-    // if(this.pholder == "请选择省份"){
-    //   console.log(!this.multiple)
-    //   console.log(value.length > 0)
-    //   console.log(value[0].text)
-    //   console.log(value[0].text !== "请选择")
-    //   console.log(!this.multiple && value.length > 0 && value[0].text !== "请选择")
-    // }
-    // if(this.pholder == "请选择市"){
-    //   console.log(!this.multiple)
-    //   console.log(value.length > 0)
-    //   console.log(value[0].text)
-    //   console.log(value[0].text !== "请选择")
-    //     console.log(!this.multiple && value.length > 0 && value[0].text !== "请选择")
-    // }
     if (!this.multiple && value.length > 0 && value[0].text !== "请选择") {
       value.unshift({ text: "请选择", value: null, childrens: null });
     } else if (this.multiple && this._selected) {
@@ -337,8 +323,11 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
         //   this.value = this.selected.text;
         // }
       } else {
-        let selected = this.options.filter(r => r.value === this.selected.value)[0];
-        console.log(selected);
+        //值是number类型，text的value是string类型。所以不合适用全等
+        //this.selected 有时候直接是值，没有value属性
+        let selectedValue = this.selected.value ? this.selected.value : this.selected;
+        let selected = this.options.filter(r => r.value == selectedValue)[0];
+        // console.log(selected);
         if (selected) {
           this.value = selected.text;
         } else {

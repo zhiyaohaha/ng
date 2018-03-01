@@ -137,7 +137,7 @@
 
       <!-- 新增状态下 -->
       <div *ngIf="!multipleFalseModifiedState" class="selectThree">
-        <timi-select [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)" multipleForUse="true"
+        <timi-select *ngIf="multipleFalseData?.length > 0" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)" multipleForUse="true"
           [filter]="true" [(ngModel)]="mFMFalseProvince" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
           [validatorInputValue]="mFMFalseProvince" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseProvince')"
           validatorComponentType="select"></timi-select>
