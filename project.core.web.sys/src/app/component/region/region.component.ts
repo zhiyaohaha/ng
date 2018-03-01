@@ -351,6 +351,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     if (obj) {
       //多选
       if (this.multiple) {
+        this.multipleFalseModifiedState = false;
+
         this.modifiedData = obj;
         let inputData = this.inputData;
         // console.log(inputData)
