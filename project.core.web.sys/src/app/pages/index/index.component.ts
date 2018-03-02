@@ -63,17 +63,6 @@ export class IndexComponent implements OnInit, AfterViewInit, OnDestroy {
     this.icon = "laptop";
     this.menuItem = [{"name": "首页"}, {"name": ""}];
     this.dropdownItem = [{
-      "name": "TGCode",
-      "icon": "user"
-    }, {
-      "name": "帮助",
-      "icon": "question-circle",
-      "routerLink": "/main/getting-started"
-    }, {
-      "name": "系统消息",
-      "icon": "bell-o",
-      "routerLink": "/main/changelog"
-    }, {
       "name": "登出",
       "icon": "sign-out",
       "url": "/login"
