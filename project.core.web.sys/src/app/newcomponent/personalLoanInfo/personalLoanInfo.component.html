@@ -109,7 +109,7 @@
           <label>贷款地区：</label>
         </div>
         <div class="box-item item-control-wrapper">
-          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode === null ? '':loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
+          <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
             [applyBindDataSwitch]="applyBindDataSwitch" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,'applyAdCode')" verificate="true"></free-region>
         </div>
       </div>

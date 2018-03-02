@@ -388,7 +388,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         }
       }
 
-    } else if (obj !== null) {
+    } else  {
       this.multipleFalseModifiedState = false;
     }
 
@@ -486,10 +486,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   //非多选，使用父组件数据的情况下：     通过父组件传递的数据，获取第二级和第三级地区数据
   getThridAreaSelect($event, level) {
     //每次修改发送当前id到父组件
-    if (level !== 1) {
-      this.valueChange($event);
-    }
-    
+    this.valueChange($event);    
 
     let _self = this;
     //请求下一级地区数据（区县没有下一级数据）
