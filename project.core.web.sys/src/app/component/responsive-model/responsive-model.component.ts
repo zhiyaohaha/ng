@@ -214,7 +214,8 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
             let postKey;
             postKey = receiveKey.split(".");
             //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
-            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
+            // config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
+            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? (this.modelDOMSData[receiveKey] ? this.modelDOMSData[receiveKey] : this.modelDOMSData[postKey[0]][postKey[1]]) : this.modelDOMSData[postKey[0]]);
           } else {          //key 的形式是正常的形式。eg：id
             config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
           }
