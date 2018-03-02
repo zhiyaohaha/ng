@@ -76,6 +76,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   set manualVerificationForm(value) {  //手动验证
     if (value) {
       //验证：点击提交，开始统一验证所有组件。 
+      // console.log(this._errData);
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
     }
@@ -87,6 +88,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   constructor(private regionService: RegionService) {
   }
+
 
   ngOnInit() {
     this.regionService.getData().subscribe(result => {
@@ -351,6 +353,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     if (obj) {
       //多选
       if (this.multiple) {
+
         this.modifiedData = obj;
         let inputData = this.inputData;
         // console.log(inputData)
@@ -385,6 +388,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         }
       }
 
+    } else  {
+      this.multipleFalseModifiedState = false;
     }
 
   }
@@ -481,7 +486,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   //非多选，使用父组件数据的情况下：     通过父组件传递的数据，获取第二级和第三级地区数据
   getThridAreaSelect($event, level) {
     //每次修改发送当前id到父组件
-    this.valueChange($event);
+    this.valueChange($event);    
 
     let _self = this;
     //请求下一级地区数据（区县没有下一级数据）

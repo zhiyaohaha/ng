@@ -173,9 +173,11 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   }
   //发送验证码
   onCertification() {
+    this.loading.register("loading");
     this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
       //super.showToast(this.toastService, res.message);
+      this.loading.resolve("loading");
       if (res.success) {
         this.showBtn = false;
         super.showToast(this.toastService, '验证码已发送，请注意查收!!');
@@ -191,7 +193,9 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
 
   //开始认证
   startVerify() {
+    this.loading.register("loading");
     this.orderService.sendCode(this.personRealId, this.phoneCode).subscribe(res => {
+      this.loading.resolve("loading");
       console.log(res);
       this.showPersonData = res.success;
       this.personData = res.data;
@@ -206,7 +210,9 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
 
   //申请贷款
   onSubmit() {
+    this.loading.register("loading");
     this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {
+      this.loading.resolve("loading");
       if (res.success) {
         super.showToast(this.toastService, '申请贷款已成功!');
         this.onPostOrderId.emit(res.data.id);

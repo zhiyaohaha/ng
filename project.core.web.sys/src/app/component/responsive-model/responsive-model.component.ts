@@ -21,7 +21,7 @@ import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import { forEach } from "@angular/router/src/utils/collection";
-
+import {CalendarModule} from "../calendar/calendar.component";
 
 @Component({
   selector: "timi-responsive-form",
@@ -361,6 +361,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiSelectModule,
     DynamicDomsModule,
     RegionModule,
+    CalendarModule, 
     // NewComponentModule,
     SharedPipeModule,
     UEditorModule.forRoot({

@@ -87,6 +87,14 @@
               </div>
               <p>{{_modelDOMSData[child.name]}}</p>
             </div>
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Date'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+              <div class="box-item item-label">
+                <label>{{child.ui.label}}</label>
+              </div>
+              <free-calendar name="{{child.name}}" lang="cn" pholder="选择日期" [(ngModel)]="_modelDOMSData[child.name]" [customValidator]="child.verifies"
+                [validatorRequired]="child.ui.required" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
+            </div>
 
             <!-- 静态表单二级面板 -->
             <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
@@ -280,6 +288,14 @@
                 <label>{{child.ui.label}}</label>
               </div>
               <p>{{modelDOMSData[child.name]}}</p>
+            </div>
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Date'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+              <div class="box-item item-label">
+                <label>{{child.ui.label}}</label>
+              </div>
+              <free-calendar name="{{child.name}}" lang="cn" pholder="选择日期" [(ngModel)]="modelDOMSData[child.name]" [customValidator]="child.verifies"
+                [validatorRequired]="child.ui.required" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
             </div>
 
             <!-- 静态表单二级面板 -->
