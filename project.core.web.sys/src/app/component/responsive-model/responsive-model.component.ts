@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild, ViewContainerRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule } from "@angular/material";
@@ -21,15 +21,17 @@ import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import { forEach } from "@angular/router/src/utils/collection";
-import {CalendarModule} from "../calendar/calendar.component";
-
+import { CalendarModule } from "../calendar/calendar.component";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
   styleUrls: ["./responsive-model.component.scss", "../../common/directive/validators.directive.scss"],
 })
 
-export class ResponsiveModelComponent implements OnInit {
+export class ResponsiveModelComponent extends BaseUIComponent implements OnInit {
   config = {
     toolbars: [["bold", "italic", "underline", "removeformat", "indent", "paragraph", "Fontsize", "forecolor", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "Undo", "Redo"]],
     autoClearinitialContent: true,
@@ -92,7 +94,13 @@ export class ResponsiveModelComponent implements OnInit {
 
   @ViewChild("form") formDiv: ElementRef;
 
-  constructor(private baseService: BaseService, private er: ElementRef) {
+  constructor(private baseService: BaseService,
+    private er: ElementRef,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef,
+    private routerInfor: ActivatedRoute) {
+    super(loadingService, routerInfor);
   }
 
   ngOnInit() {
@@ -121,6 +129,7 @@ export class ResponsiveModelComponent implements OnInit {
       let errData = this._errData;
       for (let i in errData) {
         if (errData[i]) {
+          super.openAlert({ title: "提示", message: '请填写完整相关信息', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
           return false;   //如果有错误，则停止提交
         }
       }
@@ -361,7 +370,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiSelectModule,
     DynamicDomsModule,
     RegionModule,
-    CalendarModule, 
+    CalendarModule,
     // NewComponentModule,
     SharedPipeModule,
     UEditorModule.forRoot({
