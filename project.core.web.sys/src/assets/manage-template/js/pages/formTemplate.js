@@ -8,6 +8,7 @@ var activeId = "";
 var DOMvalue; //拖动的DOM元素值
 var bindTitle; //绑定标题
 var bindField; //绑定字段
+var bindPipe; //绑定管道
 
 var collection; //数据源
 
@@ -64,6 +65,15 @@ $.ajax({
 
             //展示类型
             bindSelect(res.data.doms, "请选择展示类型", "displayType");
+
+            //管道
+            var bindPipeOptioins = `<option value="">文本</option>`;
+            for (var i = 0; i < res.data.pipes.length; i++) {
+                bindPipeOptioins += `<option value="${res.data.pipes[i].value}">${res.data.pipes[i].text}</option>`;
+            }
+            $("#bindPipe").append(bindPipeOptioins);
+            
+
             var html = "";
             res.data.doms.forEach(function(el){
                 html += `<div class="nowrap" data-value="${el.value}">${el.text}</div>`;
@@ -696,6 +706,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
         $("#bindTarget").val(objData[id].bindTarget);  //新建表单时
     }
 
+    $("#bindPipe").val(objData[id].ui.pipe);
     $("#bindPlaceholder").val(objData[id].ui.placeholder);
     // $("#bindAttr").val(objData[id].bindAttr);
     // $("#bindCss").val(objData[id].bindCss);
@@ -1535,7 +1546,7 @@ function save(){
                 "hidden": $('#bindHide').is(':checked'),
                 "required": $('#bindRequired').is(':checked'),
                 "multiple": $('#bindMulti').is(':checked'),
-                
+                "pipe": $("#bindPipe").val()  
             },
             "verifies":saveVerifies(),
             "description": $("#bindDescription").val()
