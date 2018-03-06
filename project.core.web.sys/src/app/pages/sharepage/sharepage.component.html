@@ -32,7 +32,12 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'SetFunction'" class="special">
-          <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>   
+          <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'other'">
+          <timi-responsive-form *ngIf="modalDOMS && selectRow" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" (backClick)="backClick()"
+                                (ngSubmit)="submitMethod($event)"></timi-responsive-form>
         </ng-container>
       </div>
     </div>

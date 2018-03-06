@@ -217,20 +217,24 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
    */
   detailClick(value) {
     console.log(value);
-    this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
-      if (r.code === "0") {
-        this.modalDOMS = r.data.doms;
-      }
-    });
-    this.baseService.get("/api/" + value.triggerUrl, {id: this.selectRow.id})
-      .subscribe(res => {
-        this.modalDOMS = res.data.doms;
-      });
     if (value.name === "HtmlDomCmd.Redirect") {
       if (value.triggerUrl === "#SetFunction") {
         this.sidenavKey = "SetFunction";
-      } else {
+      } else if (value.triggerUrl === "#FormUpdateTemplate") {
+        this.sharepageService.editParamsModal({id: this.selectRow.id}).subscribe(r => {
+          if (r.code === "0") {
+            this.modalDOMS = r.data.doms;
+          }
+        });
         this.sidenavKey = "Edit";
+      } else {
+        this.baseService.get("/api/" + value.triggerUrl, {id: this.selectRow.id})
+          .subscribe(res => {
+            if (res.code === "0") {
+              this.modalDOMS = res.data.doms;
+            }
+          });
+        this.sidenavKey = "other";
       }
     } else if (value.name === "HtmlDomCmd.API") {
       this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
@@ -279,6 +283,15 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
         });
     } else if (this.sidenavKey === "Edit") {
       this.sharepageService.saveEditParams($event)
+        .subscribe(res => {
+          this.loadingService.resolve("loading");
+          super.showToast(this.toastService, res.message);
+          if (res.code === "0") {
+            this.getParamsList(this.listparam);
+          }
+        });
+    } else if (this.sidenavKey === "other") {
+      this.baseService.post("/api/" + $event.cmds[0].triggerUrl, $event.data)
         .subscribe(res => {
           this.loadingService.resolve("loading");
           super.showToast(this.toastService, res.message);
