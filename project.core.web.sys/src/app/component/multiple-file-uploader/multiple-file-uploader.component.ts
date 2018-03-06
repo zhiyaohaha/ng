@@ -202,44 +202,60 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         name: "id",
         value: this.uploadId
       }];
-      this.uploader.uploadAll();
 
-      this.uploader.onSuccessItem = function (e) {
-        let res = JSON.parse(e._xhr.response);
-        if (res.code === "Fail" || res.code === "UnknownError") {
-          // that.toastService.creatNewMessage(res.message);
-          that.toastService.creatNewMessage({ message: res.message });
+      let queue = this.uploader.queue;
+      let upperLimitNum = this.upperLimit;           //最大数量
+      if (queue.length <= upperLimitNum) {           //不能一次性上传，大于超限数量的图片
+        // console.log('可以提交')
+        this.uploader.uploadAll();
 
-          data.forEach((item, index) => {
-            if (!item.id) {  //上传失败以后，组件返回的数据里面没有id
-              item.isSuccess = false;
-              item.isError = true;
-            }
-            if (item._xhr) {
-              let queueRes = JSON.parse(item._xhr.response);
-              //清除有重复文件的提交记录
-              if (queueRes.code === "Fail" || queueRes.code === "UnknownError") {
-                data.splice(index, 1);
+        this.uploader.onSuccessItem = function (e) {
+          let res = JSON.parse(e._xhr.response);
+          if (res.code === "Fail" || res.code === "UnknownError") {
+            // that.toastService.creatNewMessage(res.message);
+            that.toastService.creatNewMessage({ message: res.message });
+
+            data.forEach((item, index) => {
+              if (!item.id) {  //上传失败以后，组件返回的数据里面没有id
+                item.isSuccess = false;
+                item.isError = true;
               }
-            }
-          });
-        } else {
-          that.toastService.creatNewMessage({ message: "上传成功" });
-          let resData = res.data._files[0];
-          data.forEach(item => {  // 每次都是单个上传
-            if (item.id === resData.id) {
-              item["contentType"] = resData.contentType;
-              item["path"] = resData.path;  //文件路径
-              item["thumbnail"] = resData.thumbnail;  //文件图标
-            }
-          });
-          // console.log(res);
-          // console.log(res.data);
-          that.onPostFileData.emit(res.data);
-          // that.uploading = false;
-        }
+              if (item._xhr) {
+                let queueRes = JSON.parse(item._xhr.response);
+                //清除有重复文件的提交记录
+                if (queueRes.code === "Fail" || queueRes.code === "UnknownError") {
+                  data.splice(index, 1);
+                }
+              }
+            });
+          } else {
+            that.toastService.creatNewMessage({ message: "上传成功" });
+            let resData = res.data._files[0];
+            data.forEach(item => {  // 每次都是单个上传
+              if (item.id === resData.id) {
+                item["contentType"] = resData.contentType;
+                item["path"] = resData.path;  //文件路径
+                item["thumbnail"] = resData.thumbnail;  //文件图标
+              }
+            });
+            // console.log(res);
+            // console.log(res.data);
+            that.onPostFileData.emit(res.data);
+            // that.uploading = false;
+          }
 
-      };
+        };
+      } else {
+        super.openAlert({
+          title: "提示",
+          message: "该附件项最多上传" + upperLimitNum + "个附件",
+          dialogService: this.dialogService,
+          viewContainerRef: this.viewContainerRef
+        });
+        that.loadingService.resolve("loading");
+        this.uploader.queue = [];
+        return false;
+      }
     } else {  //首页专用-1
       this.uploader.uploadAll();
 
@@ -371,8 +387,8 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
   //根据最大上传数量和当前上传的附件数量，判断，是否可以继续上传。
   clickUpload(e) {
     if (this.existingDatas) {
-      let currentNum = this.existingDatas.length;    //最大上传数量
-      let upperLimitNum = this.upperLimit;           //当前数量
+      let currentNum = this.existingDatas.length;    //当前数量
+      let upperLimitNum = this.upperLimit;           //最大上传数量
       if (currentNum >= upperLimitNum) {
         e.preventDefault();    //默认事件就是打开文件对话框
         super.openAlert({
