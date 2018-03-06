@@ -87,12 +87,14 @@ export class PersonalLoanInfoComponent implements OnInit {
       // console.log('不符合范围')   //不符合金额区间，则手动设置正则表达式失效。
       this.validatorGather[0]['customValidator'] = [
         { message: "请输入范围为" + amount_min + " - " + amount_max + "的金额数", name: "金额", regular: "^[a-z]?$" },
+        { message: "请输入大于0的整数", name: "只能输入大于0的整数", regular: "^\\+?[1-9]\\d*$" },
         { message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }
       ];
 
     } else {
       // console.log('符合范围')
       this.validatorGather[0]['customValidator'] = [
+        { message: "请输入大于0的整数", name: "只能输入大于0的整数", regular: "^\\+?[1-9]\\d*$" },
         { message: "请输入数字", name: "只能输入数字", regular: "^\\d+(\\.\\d+)?$" }
       ]
     }
