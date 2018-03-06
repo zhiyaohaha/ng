@@ -10,7 +10,7 @@
               <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
                 <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
                   (blur)="commitData()" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
-                  [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-input>
+                  [submitVerify]="submitVerify" [unitPipe]="child.ui.pipe" (storeErrData)="storeErrData($event,child.name)"></timi-input>
               </div>
               <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                 <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -95,7 +95,7 @@
                   [validatorRequired]="child.ui.required" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
                   (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
               </div>
-  
+
               <!-- 静态表单二级面板 -->
               <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
                 <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
@@ -104,7 +104,7 @@
                     <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
                       <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
                         [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
-                        [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
+                        [submitVerify]="submitVerify" [unitPipe]="grandson.ui.pipe" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
                     </div>
                     <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                       <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
@@ -179,8 +179,8 @@
                   </ng-container>
                 </ng-container>
               </div>
-  
-  
+
+
             </ng-container>
           </ng-container>
         </div>
@@ -297,7 +297,7 @@
                   [validatorRequired]="child.ui.required" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
                   (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
               </div>
-  
+
               <!-- 静态表单二级面板 -->
               <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
                 <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
@@ -392,7 +392,7 @@
                   </ng-container>
                 </ng-container>
               </div>
-  
+
             </ng-container>
           </ng-container>
         </div>
@@ -402,7 +402,7 @@
         </div>
       </ng-container>
     </ng-template>
-  
+
     <div *ngIf="submitBtnNeed">
       <div style="text-align: center;padding: 20px;" [ngSwitch]="btnType">
         <ng-container *ngSwitchCase="'new'">
@@ -417,5 +417,5 @@
         </ng-container>
       </div>
     </div>
-  
+
   </form>
