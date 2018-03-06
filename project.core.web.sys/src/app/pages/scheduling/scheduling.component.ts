@@ -17,6 +17,7 @@ export class SchedulingComponent extends BaseUIComponent implements OnInit {
   treeUsers: UserListModel[]; // 左侧搜索人员
   activeId: string; // 左侧搜索激活ID
   userInfo; // 右侧人员信息
+  selectedOrgs: string[]; // 右侧选中的组织
   weekdays = [
     {active: false, value: 1, label: "一"},
     {active: false, value: 2, label: "二"},
@@ -71,6 +72,9 @@ export class SchedulingComponent extends BaseUIComponent implements OnInit {
                 item.active = false;
               }
             });
+            if (!keywords) {
+              this.selectedOrgs = this.getOrgs(this.userInfo.orgs);
+            }
           }
         }
       );
@@ -92,9 +96,12 @@ export class SchedulingComponent extends BaseUIComponent implements OnInit {
 
   // 设置员工日期
   setWeekday($event) {
-    $event.active = !$event.active;
-    this.userInfo.weekdays = this.weekdays.filter(item => item.active)
-      .map(item => item.value);
+    if (this.activeId) {
+      $event.active = !$event.active;
+      this.userInfo.weekdays = this.weekdays.filter(item => item.active)
+        .map(item => item.value);
+      this.submit();
+    }
   }
 
   // 获取组织
@@ -111,11 +118,19 @@ export class SchedulingComponent extends BaseUIComponent implements OnInit {
     return arr;
   }
 
-
+  // 改变组织选中情况
+  changeOrgsSelected($event) {
+    let index = this.selectedOrgs.indexOf($event.id);
+    if (index > -1) {
+      this.selectedOrgs.splice(index, 1);
+    } else {
+      this.selectedOrgs.push($event.id);
+    }
+    this.submit();
+  }
 
   // 提交人员信息
   submit() {
-    console.log(this.userInfo);
     let data = {
       user: "",
       weekdays: [],
@@ -123,7 +138,8 @@ export class SchedulingComponent extends BaseUIComponent implements OnInit {
     };
     data.user = this.userInfo.id;
     data.weekdays = this.userInfo.weekdays;
-    data.orgs = this.getOrgs(this.userInfo.orgs);
+    // data.orgs = this.getOrgs(this.userInfo.orgs);
+    data.orgs = this.selectedOrgs;
     this.baseService.post("/api/Scheduling/Set", data)
       .subscribe(
         res => {
@@ -212,6 +228,7 @@ export class UserListModel {
   styles: [`
     .active {
       color: red;
+      font-weight: 600;
     }`]
 })
 
@@ -246,9 +263,9 @@ export class UserListItemComponent {
     </li>
   `,
   styles: [`
-  .child-ul {
-    margin-left: 1.4rem;
-  }
+    .child-ul {
+      margin-left: 1.4rem;
+    }
   `]
 })
 
@@ -256,12 +273,13 @@ export class GroupListComponent {
 
   @Input() data: UserListModel;
 
-  constructor(@Inject(forwardRef(() => SchedulingComponent)) public schedulingComponent: SchedulingComponent) {}
+  constructor(@Inject(forwardRef(() => SchedulingComponent)) public schedulingComponent: SchedulingComponent) {
+  }
 
   onChange($event) {
     this.data.active = !this.data.active;
     console.log(this.data);
-    this.schedulingComponent.submit();
+    this.schedulingComponent.changeOrgsSelected(this.data);
   }
 
 }
