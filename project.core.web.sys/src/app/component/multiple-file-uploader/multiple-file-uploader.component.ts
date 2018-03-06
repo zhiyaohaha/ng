@@ -203,10 +203,20 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
         value: this.uploadId
       }];
 
-      let queue = this.uploader.queue;
+      let currentNum = this.uploader.queue.length;   //当前需要上传的图片数量
       let upperLimitNum = this.upperLimit;           //最大数量
-      if (queue.length <= upperLimitNum) {           //不能一次性上传，大于超限数量的图片
-        // console.log('可以提交')
+
+      let fileNum;
+      if (this.existingDatas === null) {
+        fileNum = currentNum
+      } else {
+        let yetNum = this.existingDatas.length;       //已经有的图片数量
+        fileNum = currentNum + yetNum;
+      }
+
+
+      if (fileNum <= upperLimitNum) {           //不能一次性上传，大于超限数量的图片
+        console.log('可以提交')
         this.uploader.uploadAll();
 
         this.uploader.onSuccessItem = function (e) {
