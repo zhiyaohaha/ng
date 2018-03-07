@@ -318,3 +318,28 @@ html { overflow: hidden; }
     display:none;
 }
 
+
+/* 事件 */
+#tabEvent  {
+    border-bottom:1px solid #989898;
+    margin-bottom:10px;
+}
+#tabEvent .levelFa{
+    top:0px;
+    left: 75%;
+}
+#tabEvent .eventInput{
+    width:29% !important; 
+}
+#tabEvent .eventLevel2 {
+    width:94%;
+    border:1px solid #C1C1C1;
+    padding-top: 10px;
+    padding-left: 2px;
+    margin-bottom:10px;
+    display: inline-block;
+}
+#tabEvent .eventLevelJudge{
+    width:130px !important; 
+}
+

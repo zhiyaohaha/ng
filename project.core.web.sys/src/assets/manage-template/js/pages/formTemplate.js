@@ -15,6 +15,7 @@ var collection; //数据源
 var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
 var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
 var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions 触发dom下拉选项
+var eventcmdFormDom = `<option value="">请选择触发Dom</option>`; //cmdOptions 触发dom下拉选项
 var verifyData; //验证数据
 var verifyOPtions  = `<option value="">请选择名称</option>`;  //验证名称-下拉选项
 
@@ -59,6 +60,9 @@ $.ajax({
 
             //命令栏-触发dom
             $(".cmdFormDom").html(cmdFormDom);
+            
+            //事件---绑定dom
+            $(".eventcmdFormDom").html(eventcmdFormDom);
 
             //平台
             bindSelect(res.data.platforms, "请选择平台", "templatePlatform");
@@ -503,6 +507,9 @@ function dragCreateDom_PanelBody(domval,that,editData){ //（一级和二级）�
     if(editData.name && editData.ui.label)  {
        cmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
        $(".cmdFormDom").html(cmdFormDom);
+
+       eventcmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
+       $(".eventcmdFormDom").html(eventcmdFormDom);
     }
     objData[id] = editData;
 }
@@ -1514,6 +1521,7 @@ $(".additional").on("click", ".addnotes", function(){
             </div>`);
             bindVertifyEvent();
     }
+    
      $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 
      setChildScrollHeight()
