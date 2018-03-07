@@ -13,7 +13,7 @@ import {
   ViewChild
 } from "@angular/core";
 import {DomRenderer} from "../../common/dom";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,7 +29,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
       <div class="box-item item-control-wrapper">
         <div #wrap class="item-control">
           <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" [disabled]="disabledVal"
-                 name="{{name}}" value="{{value}}" (blur)="onBlur($event)" (change)="onChange($event)"
+                 name="{{name}}" [(ngModel)]="displayValue" (blur)="onBlur($event)" (change)="onChange($event)"
                  spellcheck="false" autocomplete="off" [ngStyle]="{'width': inputWidth}"
                  required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)" (focus)="onFocus($event)">
           <span class="unit">{{unit}}</span>
@@ -50,10 +50,12 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   set value(value) {
     this._value = value;
-    this.valueChange(this.returnValue(this._value));
+    this.displayValue = this.returnDisplayValue(value);
+    this.valueChange(value);
   }
 
   _value;
+  displayValue; // input显示的值
   @Input() type: string = "text";
   @Input() labelWidth: string;
   @Input() labelName: string;
@@ -65,15 +67,18 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @Input() require: boolean;
   @Input() pattern: string;
   @Input() errorTips: string;
+
   @Input() // 单位的管道
   set unitPipe(value) {
     this.inputWidth = value ? "" : "100%";
     this.unit = this.switchUnit(value);
     this._unitPipe = value;
   }
+
   get unitPipe() {
     return this._unitPipe;
   }
+
   _unitPipe: string;
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
@@ -105,6 +110,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
    */
   onBlur($event) {
     $event.isChange = this.isChange($event);
+    $event.target.value = this.returnValue(this.displayValue);
     let regexp: any;
     switch (this.pattern) {
       case "tel":
@@ -183,7 +189,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
    */
   switchUnit(value: string): string {
     let text = "";
-    switch (value){
+    switch (value) {
       case "HtmlPipe.M2":
         text = "m²";
         break;
@@ -239,10 +245,22 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
     return text;
   }
 
+  returnDisplayValue(value: any): any {
+    if (this.unitPipe === "HtmlPipe.InterestRate") {
+      return value * 100;
+    } else if (this.unitPipe === "HtmlPipe.TenThousandKM") {
+      return value / 10000;
+    } else if (this.unitPipe === "HtmlPipe.TenThousandElement") {
+      return value / 10000;
+    } else {
+      return value;
+    }
+  }
+
   writeValue(obj: any): void {
     // this.value = obj || '';
     if (obj == null || obj === undefined) {
-      this.value = "";
+      this._value = "";
     } else {
       this.value = obj;
     }
@@ -261,7 +279,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   declarations: [TimiInputComponent],
   exports: [TimiInputComponent]
 })
