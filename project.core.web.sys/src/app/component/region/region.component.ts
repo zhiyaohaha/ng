@@ -83,6 +83,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   }
   @Input() verificate: string;
 
+  @Input() type: string = '3';   // type = 2时，使用富有的二级联动（暂时只有新增状态）
+
   private valueChange = (_: any) => {
   };
 
@@ -91,8 +93,13 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
 
   ngOnInit() {
-    this.regionService.getData().subscribe(result => {
-
+    let json_name;
+    if (this.type == '2') {
+      json_name = 'fuyouAreas';
+    } else {
+      json_name = 'areas';
+    }
+    this.regionService.getData(json_name).subscribe(result => {
       this.setData(result);
       if (!this.multiple) { //非多选的情况下
         this.multipleFalseFun(result);
@@ -106,13 +113,23 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   //获取数据并处理
   setData(result) {
-    if (!this.modifiedData) {  //新增状态下
-      for (let i = 0; i < result.length; i++) {
-        result[i].checked = false;
-        for (let j = 0; j < result[i].c.length; j++) {
-          result[i].c[j].checked = false;
-          for (let l = 0; l < result[i].c[j].c.length; l++) {
-            result[i].c[j].c[l].checked = false;
+    console.log(this.modifiedData)
+    if (!this.modifiedData || this.modifiedData.length == 0) {  //新增状态下
+      if (this.type == '2') {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
+          }
+        }
+      } else {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
+            for (let l = 0; l < result[i].c[j].c.length; l++) {
+              result[i].c[j].c[l].checked = false;
+            }
           }
         }
       }
@@ -388,7 +405,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         }
       }
 
-    } else  {
+    } else {
       this.multipleFalseModifiedState = false;
     }
 
@@ -430,18 +447,30 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   multipleFalseFun(res) {
     let _self = this;
     if (res) {
-      res.forEach((item1, index1) => {
-        _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
+      if (this.type == '2') {
+        res.forEach((item1, index1) => {
+          _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
 
-        _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
-          _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
-
-          _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3, index3) => {
-            _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = { 'text': item3.b, 'value': item3.a };
+          _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
+            _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
           })
-        })
 
-      })
+        })
+      } else {
+        res.forEach((item1, index1) => {
+          _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
+
+          _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
+            _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
+
+            _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3, index3) => {
+              _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = { 'text': item3.b, 'value': item3.a };
+            })
+          })
+
+        })
+      }
+
     }
 
   }
@@ -486,7 +515,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   //非多选，使用父组件数据的情况下：     通过父组件传递的数据，获取第二级和第三级地区数据
   getThridAreaSelect($event, level) {
     //每次修改发送当前id到父组件
-    this.valueChange($event);    
+    this.valueChange($event);
 
     let _self = this;
     //请求下一级地区数据（区县没有下一级数据）
