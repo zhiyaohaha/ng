@@ -114,10 +114,10 @@ li {
     width: 153px !important;
 }
 
-#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group{
+#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group,#eventPart>.form-inline>.form-group{
     width:100%;
 }
-#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control{
+#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control,#eventPart>.form-inline>.form-group>.form-control{
     width:100%;
 }
 
@@ -320,16 +320,18 @@ html { overflow: hidden; }
 
 
 /* 事件 */
-#tabEvent  {
-    border-bottom:1px solid #989898;
+#tabEvent  .row{
     margin-bottom:10px;
 }
+#tabEvent  .form-inline{
+    border-bottom:1px solid #666;
+} 
 #tabEvent .levelFa{
     top:0px;
     left: 75%;
 }
 #tabEvent .eventInput{
-    width:29% !important; 
+    width:26% !important; 
 }
 #tabEvent .eventLevel2 {
     width:94%;

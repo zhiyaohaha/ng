@@ -729,6 +729,14 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
     $("#bindDescription").val(objData[id].description);
     $('#defaultValue').val(objData[id].value)
     bindVertifyData(objData[id].verifies)
+
+    //单个控件 的 事件功能还原
+    if(objData[id].events && objData[id].events.length >0){
+        bindEvents(1,objData[id].events);
+    } else{
+        bindEvents(0,null);
+    }
+
     return false;
 })
 
@@ -1520,6 +1528,119 @@ $(".additional").on("click", ".addnotes", function(){
                 <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
             </div>`);
             bindVertifyEvent();
+    }else if (name === "eventLevel3Add"){
+        $(this).parent().parent().parent().append(`
+            <div class="form-group">
+                <select class="form-control input-sm m-b-10  eventLevelJudge eventLogicalOperator">
+                    <option value="LogicalOperator.&&">并且</option>
+                    <option value="LogicalOperator.||">或者</option>
+                    <option value="LogicalOperator.&&!">并且不</option>
+                    <option value="LogicalOperator.||!">或者不</option>
+                </select>
+            </div>
+            <div class="formTemplate-wrap">
+                <div class="form-group">
+                    <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control input-sm m-b-10 relationOperator">
+                        <option value="RelationOperator.=">=</option>
+                        <option value="RelationOperator.>">></option>
+                        <option value="RelationOperator.<"><</option>
+                        <option value="RelationOperator.>=">>=</option>
+                        <option value="RelationOperator.<="><=</option>
+                    </select>
+                </div>
+                <div class="form-group  eventInput">
+                    <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                </div>
+                <div class="form-group">
+                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                </div>
+            </div>`
+        );
+    }else if (name === "eventLevel2Add"){
+        $(this).parent().append(`
+            <div class="form-group ">
+                <select class="form-control input-sm m-b-10  eventLevelJudge eventLogicalOperator">
+                    <option value="LogicalOperator.&&">并且</option>
+                    <option value="LogicalOperator.||">或者</option>
+                    <option value="LogicalOperator.&&!">并且不</option>
+                    <option value="LogicalOperator.||!">或者不</option>
+                </select>
+            </div>
+            <div class="eventLevel2 ">
+                <div class="triggerWhereGroup">
+                    <div class="formTemplate-wrap">
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 relationOperator">
+                                <option value="RelationOperator.=">=</option>
+                                <option value="RelationOperator.>">></option>
+                                <option value="RelationOperator.<"><</option>
+                                <option value="RelationOperator.>=">>=</option>
+                                <option value="RelationOperator.<="><=</option>
+                            </select>
+                        </div>
+                        <div class="form-group  eventInput">
+                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <i class="fa fa-plus-circle addnotes" data-name="eventLevel2Add" aria-hidden="true"></i>
+        `);
+    }else if (name === "eventLevel1Add"){
+        $(this).parent().parent().parent().append(`
+            <div class="form-inline">
+                <div class="form-group tiggerEvent">
+                    <label for="">触发事件：</label>
+                    <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                    <br>
+                    <select class="form-control input-sm m-b-10 ">
+                        <option value="HtmlDomEventType.Display">显示</option>
+                    </select>
+                </div>
+
+                <div class="triggerCondition">
+                    <div class="triggerWhereGroup">
+                        <label for="">触发条件：</label>
+                    </div>    
+                    <div class="eventLevel2Parent">
+                        <div class="eventLevel2 ">
+                            <div class="triggerWhereGroup">
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 relationOperator">
+                                            <option value="RelationOperator.=">=</option>
+                                            <option value="RelationOperator.>">></option>
+                                            <option value="RelationOperator.<"><</option>
+                                            <option value="RelationOperator.>=">>=</option>
+                                            <option value="RelationOperator.<="><=</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  eventInput">
+                                        <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel2Add" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        `);
     }
     
      $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
@@ -1530,6 +1651,13 @@ $(".additional").on("click", ".addnotes", function(){
 $(".additional").on("click", ".delnotes", function(){
     if($(this).data("name") === "cmds" ||$(this).data("name") ===  "verify"){
         $(this).parent().remove();
+    }else if($(this).data("name") === "eventLevel2Add"){
+        $(this).prev('.eventLevel2').remove();
+        $(this).next('.form-group ').remove();
+        $(this).remove();
+    }else if($(this).data("name") === "eventLevel3Add"){
+        $(this).parent().parent().next('.form-group').remove();
+        $(this).parent().parent().remove();
     }else{
         $(this).parent().parent().remove();
     }  
@@ -1544,6 +1672,7 @@ function save(){
             "bindTarget": $("#bindTarget").val(),
             "cmds": saveCmds(),
             "value":$('#defaultValue').val(),
+            "events":saveEvents(),
             ui: {
                 "label": $("#bindTitle").val(),
                 "displayType": $("#displayType").val(),
@@ -1559,7 +1688,7 @@ function save(){
             "verifies":saveVerifies(),
             "description": $("#bindDescription").val()
         }
-        
+        // console.log(objData[activeId]);
         //命令栏-触发dom
         //只有在'有标题，有绑定值的情况下'，才能添加'触发dom的选项'
         if(objData[activeId].name && objData[activeId].ui.label)  
@@ -1578,6 +1707,9 @@ function save(){
             if(cmdFormDomOptionsAdd){
                 cmdFormDom += `<option value="${objData[activeId].name}">${objData[activeId].ui.label}</option>`;
                 $(".cmdFormDom").html(cmdFormDom);  
+
+                eventcmdFormDom += `<option value="${objData[activeId].name}">${objData[activeId].ui.label}</option>`;
+                $(".eventcmdFormDom").html(eventcmdFormDom); 
             }
 
         }
@@ -1803,3 +1935,256 @@ function setChildScrollHeight(){
     $("#fixedDivCenter").height(height); 
     $("#fixedDivRight").height(height);
 }
+
+//保存事件选项 功能
+function saveEvents(){
+    var arr = [];
+    $("#eventPart").find(".form-inline").each(function(){
+        var _self = $(this);
+        var canSave = false;  //用来判断是否可以存储
+
+        var bracketsChild = [];
+        _self.find('.eventLevel2Parent').children().each(function(){
+            var _self2 = $(this);
+            if(_self2.hasClass('eventLevel2')){  //二级操作项
+                var bracketsGrandson = [];
+                _self2.find('.triggerWhereGroup').children().each(function(){
+                    var _self3 = $(this);
+                    if(_self3.hasClass('formTemplate-wrap')){  //三级表达式
+                        var selfDom = _self3.find("select.eventcmdFormDom").val();
+                        var selfVal = _self3.find(".eventInput>input").val();
+
+                        if(selfDom && selfVal){
+                            canSave = true;   //操作数选择以后，并且val有值的情况下，才存储
+                        }
+                        bracketsGrandson.push({
+                            "type":"ConditionType.RelationalExpression",
+                            "relations":{
+                                "dom": selfDom,
+                                "relations": _self3.find("select.relationOperator").val(),
+                                "value": selfVal
+                            },
+                            "logic": null
+                        });
+                    }else if(_self3.hasClass('form-group')){  //三级操作符
+                        bracketsGrandson.push({
+                            "type":"ConditionType.LogicalOperator",
+                            "relations": null,
+                            "logic": _self3.find(".eventLogicalOperator").val()
+                        });
+                    }
+                })
+                bracketsChild.push({
+                    "type":"ConditionType.()",
+                    "relationsLogic":bracketsGrandson,
+                    "logic":null
+                });
+            }else if(_self2.hasClass('form-group')){  //二级操作符
+                bracketsChild.push({
+                    "type":"ConditionType.LogicalOperator",
+                    "relationsLogic": null,
+                    "logic": _self2.find(".eventLogicalOperator").val()
+                });
+            }
+        })
+
+        if(canSave){
+            var type = _self.find(".tiggerEvent>select").val();
+            arr.push({
+                'type':type,
+                'bracketsLogic':bracketsChild
+            }
+        )}
+        // console.log(arr)
+    })
+    return arr;
+} 
+
+//还原事件 选择功能
+function bindEvents(type,data){
+    //0 表示无需绑定，直接还原
+    //1  表示需要绑定 
+    if(type == 0){
+        $("#eventPart").html(
+            `<div class="form-inline">
+                <div class="form-group tiggerEvent">
+                    <label for="">触发事件：</label>
+                    <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                    <br>
+                    <select class="form-control input-sm m-b-10 ">
+                        <option value="HtmlDomEventType.Display">显示</option>
+                    </select>
+                </div>
+
+                <div class="triggerCondition">
+                    <div class="triggerWhereGroup">
+                        <label for="">触发条件：</label>
+                    </div>    
+                    <div class="eventLevel2Parent">
+                        <div class="eventLevel2 ">
+                            <div class="triggerWhereGroup">
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 relationOperator">
+                                            <option value="RelationOperator.=">=</option>
+                                            <option value="RelationOperator.>">></option>
+                                            <option value="RelationOperator.<"><</option>
+                                            <option value="RelationOperator.>=">>=</option>
+                                            <option value="RelationOperator.<="><=</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  eventInput">
+                                        <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel2Add" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+            </div>`
+        ); 
+    }else{
+        $("#eventPart").html('');
+        data.forEach(function(dt1,index1){
+            var level2Dom = `                      
+                <div class="eventLevel2">
+                    <div class="triggerWhereGroup">
+                        <div class="formTemplate-wrap">
+                            <div class="form-group">
+                                <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm m-b-10 relationOperator">
+                                    <option value="RelationOperator.=">=</option>
+                                    <option value="RelationOperator.>">></option>
+                                    <option value="RelationOperator.<"><</option>
+                                    <option value="RelationOperator.>=">>=</option>
+                                    <option value="RelationOperator.<="><=</option>
+                                </select>
+                            </div>
+                            <div class="form-group  eventInput">
+                                <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa fa-plus-circle addnotes" data-name="eventLevel2Add" aria-hidden="true"></i>`;
+
+            
+            //二级还原(括号 与 操作符 级别)
+            if(dt1['bracketsLogic'] && dt1['bracketsLogic'].length > 0){
+                level2Dom = "";
+                dt1['bracketsLogic'].forEach(function(dt2,index2){
+                     
+                     if(dt2.type == "ConditionType.()"){
+                        var level3Dom = "";
+                        // 三级还原 （括号里面） （括号里面一定有表达式）
+                        if(dt2['relationsLogic'] && dt2['relationsLogic'].length > 0){
+                            dt2['relationsLogic'].forEach(function(dt3,index3){
+                                if(dt3.type == "ConditionType.RelationalExpression"){   //三级还原 （括号里面 表达式）
+                                    var relations = dt3.relations;
+                                    level3Dom += `
+                                        <div class="formTemplate-wrap formTemplate-wrap-${index1}-${index2}-${index3}">
+                                            <div class="form-group">
+                                                <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control input-sm m-b-10 relationOperator">
+                                                    <option value="RelationOperator.=">=</option>
+                                                    <option value="RelationOperator.>">></option>
+                                                    <option value="RelationOperator.<"><</option>
+                                                    <option value="RelationOperator.>=">>=</option>
+                                                    <option value="RelationOperator.<="><=</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group  eventInput">
+                                                <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value" value="${relations.value}">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            $(".formTemplate-wrap-${index1}-${index2}-${index3} .eventcmdFormDom").val('${relations.dom}');
+                                            $(".formTemplate-wrap-${index1}-${index2}-${index3} .relationOperator").val('${relations.relations}');
+                                        </script>
+                                        `;
+                                }else if(dt3.type == "ConditionType.LogicalOperator"){  //三级还原 （括号里面 操作符）
+                                    level3Dom += `
+                                        <div class="form-group form-group-${index1}-${index2}-${index3}">
+                                            <select class="form-control input-sm m-b-10  eventLevelJudge eventLogicalOperator">
+                                                <option value="LogicalOperator.&&">并且</option>
+                                                <option value="LogicalOperator.||">或者</option>
+                                                <option value="LogicalOperator.&&!">并且不</option>
+                                                <option value="LogicalOperator.||!">或者不</option>
+                                            </select>
+                                        </div>
+                                        <script>
+                                            $(".form-group-${index1}-${index2}-${index3}>.eventLogicalOperator").val('${dt3.logic}');
+                                        </script>
+                                    `;
+                                }
+                            })
+                        }
+                        level2Dom += `
+                        <div class="eventLevel2 ">
+                            <div class="triggerWhereGroup">
+                                ${level3Dom}
+                            </div>
+                        </div>`;
+
+                     }else  if(dt2.type == "ConditionType.LogicalOperator"){
+                        level2Dom += `
+                        <div class="form-group form-group-${index1}-${index2}">
+                            <select class="form-control input-sm m-b-10  eventLevelJudge eventLogicalOperator">
+                                <option value="LogicalOperator.&&">并且</option>
+                                <option value="LogicalOperator.||">或者</option>
+                                <option value="LogicalOperator.&&!">并且不</option>
+                                <option value="LogicalOperator.||!">或者不</option>
+                            </select>
+                        </div>
+                        <script>
+                            $(".form-group-${index1}-${index2}>.eventLogicalOperator").val('${dt2.logic}');
+                        </script>
+                        `;
+                     }
+                })
+            }
+
+            //一级还原 
+            $("#eventPart").append(
+                `<div class="form-inline">
+                    <div class="form-group tiggerEvent">
+                        <label for="">触发事件：</label>
+                        <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                        <br>
+                        <select class="form-control input-sm m-b-10 ">
+                            <option value="HtmlDomEventType.Display">显示</option>
+                        </select>
+                    </div>
+    
+                    <div class="triggerCondition">
+                        <div class="triggerWhereGroup">
+                            <label for="">触发条件：</label>
+                        </div>    
+                        <div class="eventLevel2Parent">
+                               ${level2Dom}
+                        </div>
+                    </div>
+    
+                </div>`
+            ); 
+        })
+    }
+} 
