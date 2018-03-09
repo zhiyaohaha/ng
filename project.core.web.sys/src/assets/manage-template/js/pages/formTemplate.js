@@ -2116,7 +2116,6 @@ function bindEvents(type,data){
                                             </div>
                                         </div>
                                         <script>
-                                        console.log('${relations.relations}')
                                             $(".formTemplate-wrap-${index1}-${index2}-${index3} .eventcmdFormDom").val('${relations.dom}');
                                             $(".formTemplate-wrap-${index1}-${index2}-${index3} .relationOperator").val('${relations.relations}');
                                         </script>
@@ -2140,7 +2139,9 @@ function bindEvents(type,data){
                         }
                         level2Dom += `
                         <div class="eventLevel2 ">
-                            ${level3Dom}
+                            <div class="triggerWhereGroup">
+                                ${level3Dom}
+                            </div>
                         </div>`;
 
                      }else  if(dt2.type == "ConditionType.LogicalOperator"){
