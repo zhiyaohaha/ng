@@ -1,85 +1,8 @@
 <div [@fadeInState]="'active'">
-    <h1 class="aaaa">工作台首页内容</h1>
-    <a fButton icon="home" size="big" color="green" circle>default</a>
-    <router-outlet></router-outlet>
-    <a [routerLink]="['/main/personal']" fButton size="big" color="green" circle>个人中心</a>
+  <h1 class="aaaa">工作台首页内容</h1>
 
-    <div class="container">
-        <!-- <div class="beforeDrop" ng2FileDrop [ngClass]="{dropping: isDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropOver($event)" [uploader]="uploader">
-            <p>点击或拖拽上传</p>
-            <input type="file" class="ng2-file-select" ng2FileSelect [uploader]="uploader" />
-        </div> -->
-        <!--<div class="upload-file-wrap">-->
-        <!--<h2>Upload a File</h2>-->
-        <!--<ul>-->
-        <!--<li *ngFor="let item of uploader.queue;let i = index;" class="file-item">-->
-        <!--<div class="row">-->
-        <!--<div class="col-sm-2">-->
-        <!--<img src="{{item.base}}" alt="" class="thumbnail">-->
-        <!--</div>-->
-        <!--<div class="col-sm-8">-->
-        <!--<span>{{item.file.name | strlength}}</span>-->
-        <!--<div class="item-progress">-->
-        <!--<md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-sm-2">-->
-        <!--<i class="fa fa-trash" (click)="removeItem(item)"></i>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--<div class="row">-->
-        <!--<div class="col-sm-2">-->
-        <!--<i class="fa fa-cloud-upload deepblue">-->
-        <!--<input type="file" ng2FileSelect [uploader]="uploader" multiple style="opacity:0;">-->
-        <!--</i>-->
-        <!--</div>-->
-        <!--<div class="col-sm-10 upload-btn">-->
-        <!--<button md-button (click)="uploadAllFiles()" [disabled]="!uploader.getNotUploadedItems().length">上传</button>-->
-        <!--<button md-button (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">取消</button>-->
-        <!--<button md-button (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">移除</button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
+  <div class="container">
+  </div>
+  <router-outlet></router-outlet>
 
-        <!--<div class="upload-wrap">-->
-        <!--<ul>-->
-        <!--<li class="item" *ngFor="let item of uploader.queue" [ngClass]="{'item-success':item.isSuccess}" [ngClass]="{'item-error':ite.isError}">-->
-        <!--<div class="preview-box">-->
-        <!--<img src="{{item.base}}" alt="{{item.file.name}}">-->
-        <!--</div>-->
-        <!--<div class="item-name">-->
-        <!--<input class="item-alias" value="{{item.file.name}}" (blur)="onBlur($event,item)" id="{{item?.id}}">-->
-        <!--</div>-->
-        <!--<div class="item-progress" *ngIf="item.isUploading">-->
-        <!--<md-progress-bar mode="mode" [value]="item.progress"></md-progress-bar>-->
-        <!--</div>-->
-        <!--<i class="fa fa-close" (click)="removeItem(item)"></i>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
-
-        <br>
-        <br>
-        <!-- 此处插件只能上传图片（此处上传api结果，没有返回contentType） -->
-        <multiple-uploader></multiple-uploader>
-
-        <!--<ueditor [(ngModel)]="aa" [loadingTip]="'加载中……'" [config]="config"></ueditor>-->
-
-        <br>
-        <br>
-        <md-select placeholder="Favorite food" floatPlaceholder="never">
-            <md-option *ngFor="let food of foods" [value]="food.value">
-                {{ food.viewValue }}
-            </md-option>
-        </md-select>
-
-        <!-- <div>
-            <md-progress-bar mode="mode" [value]="uploader.progress"></md-progress-bar>
-        </div> -->
-    </div>
-    <div class="container">
-        <button md-raised-button (click)="sendMsg()">发送消息</button>
-    </div>
 </div>

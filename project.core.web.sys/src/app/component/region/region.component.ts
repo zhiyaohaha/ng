@@ -76,11 +76,14 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   set manualVerificationForm(value) {  //手动验证
     if (value) {
       //验证：点击提交，开始统一验证所有组件。 
+      // console.log(this._errData);
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
     }
   }
   @Input() verificate: string;
+
+  @Input() type: string = '3';   // type = 2时，使用富有的二级联动（暂时只有新增状态）
 
   private valueChange = (_: any) => {
   };
@@ -88,9 +91,15 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   constructor(private regionService: RegionService) {
   }
 
-  ngOnInit() {
-    this.regionService.getData().subscribe(result => {
 
+  ngOnInit() {
+    let json_name;
+    if (this.type == '2') {
+      json_name = 'fuyouAreas';
+    } else {
+      json_name = 'areas';
+    }
+    this.regionService.getData(json_name).subscribe(result => {
       this.setData(result);
       if (!this.multiple) { //非多选的情况下
         this.multipleFalseFun(result);
@@ -104,13 +113,23 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   //获取数据并处理
   setData(result) {
-    if (!this.modifiedData) {  //新增状态下
-      for (let i = 0; i < result.length; i++) {
-        result[i].checked = false;
-        for (let j = 0; j < result[i].c.length; j++) {
-          result[i].c[j].checked = false;
-          for (let l = 0; l < result[i].c[j].c.length; l++) {
-            result[i].c[j].c[l].checked = false;
+    console.log(this.modifiedData)
+    if (!this.modifiedData || this.modifiedData.length == 0) {  //新增状态下
+      if (this.type == '2') {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
+          }
+        }
+      } else {
+        for (let i = 0; i < result.length; i++) {
+          result[i].checked = false;
+          for (let j = 0; j < result[i].c.length; j++) {
+            result[i].c[j].checked = false;
+            for (let l = 0; l < result[i].c[j].c.length; l++) {
+              result[i].c[j].c[l].checked = false;
+            }
           }
         }
       }
@@ -351,6 +370,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
     if (obj) {
       //多选
       if (this.multiple) {
+
         this.modifiedData = obj;
         let inputData = this.inputData;
         // console.log(inputData)
@@ -385,6 +405,8 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
         }
       }
 
+    } else {
+      this.multipleFalseModifiedState = false;
     }
 
   }
@@ -425,18 +447,30 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
   multipleFalseFun(res) {
     let _self = this;
     if (res) {
-      res.forEach((item1, index1) => {
-        _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
+      if (this.type == '2') {
+        res.forEach((item1, index1) => {
+          _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
 
-        _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
-          _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
-
-          _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3, index3) => {
-            _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = { 'text': item3.b, 'value': item3.a };
+          _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
+            _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
           })
-        })
 
-      })
+        })
+      } else {
+        res.forEach((item1, index1) => {
+          _self.multipleFalseData[index1] = { 'text': item1.b, 'value': item1.a, 'childrens': item1.c };
+
+          _self.multipleFalseData[index1]['childrens'].forEach((item2, index2) => {
+            _self.multipleFalseData[index1]['childrens'][index2] = { 'text': item2.b, 'value': item2.a, 'childrens': item2.c };
+
+            _self.multipleFalseData[index1]['childrens'][index2]['childrens'].forEach((item3, index3) => {
+              _self.multipleFalseData[index1]['childrens'][index2]['childrens'][index3] = { 'text': item3.b, 'value': item3.a };
+            })
+          })
+
+        })
+      }
+
     }
 
   }
@@ -457,10 +491,20 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
       res.forEach((item1, index1) => {
         if (item1.value == code) {
           if (level == '1') {
-            _self.multipleFalseCityData = item1.childrens;
-            _self.multipleFalseCountyData = [];
+            if (code) {
+              _self.multipleFalseCityData = item1.childrens;
+              _self.multipleFalseCountyData = [];
+            } else {  //选择“请选择”选项
+              _self.multipleFalseCityData = [];
+              _self.multipleFalseCountyData = [];
+            }
+
           } else if (level == '2') {
-            _self.multipleFalseCountyData = item1.childrens;
+            if (code) {
+              _self.multipleFalseCountyData = item1.childrens;
+            } else {
+              _self.multipleFalseCountyData = [];
+            }
           }
           return false;
         }

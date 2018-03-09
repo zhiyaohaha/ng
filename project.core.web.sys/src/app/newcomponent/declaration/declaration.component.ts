@@ -1,7 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewContainerRef } from '@angular/core';
 import { OrderService } from "app/services/order/order.service";
 import { BaseUIComponent } from '../../pages/baseUI.component';
-import { TdLoadingService } from '@covalent/core';
+import { TdLoadingService, TdDialogService } from '@covalent/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../component/toast/toast.service';
 
@@ -57,11 +57,13 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   @Output() onPostOrderId = new EventEmitter();  //发送最新上传的文件数据
 
   constructor(private orderService: OrderService,
-              private loading: TdLoadingService,
-              private routerInfor: ActivatedRoute,
-              private toastService: ToastService) {
+    private loading: TdLoadingService,
+    private routerInfor: ActivatedRoute,
+    private toastService: ToastService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef) {
     super(loading, routerInfor);
-   }
+  }
 
   ngOnInit() {
     this.orderService.getType().subscribe(res => {
@@ -171,41 +173,51 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   }
   //发送验证码
   onCertification() {
+    this.loading.register("loading");
     this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
       console.log(res);
       //super.showToast(this.toastService, res.message);
+      this.loading.resolve("loading");
       if (res.success) {
         this.showBtn = false;
         super.showToast(this.toastService, '验证码已发送，请注意查收!!');
         if (res.data) {
           this.personRealId = res.data.id;
         }
-      }else{
-        super.showToast(this.toastService, res.message);
+      } else {
+        super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        // super.showToast(this.toastService, res.message);
       }
     })
   }
 
   //开始认证
   startVerify() {
+    this.loading.register("loading");
     this.orderService.sendCode(this.personRealId, this.phoneCode).subscribe(res => {
+      this.loading.resolve("loading");
       console.log(res);
       this.showPersonData = res.success;
       this.personData = res.data;
-      if(res.success){
+      if (res.success) {
         super.showToast(this.toastService, '认证成功，请进行下一步!');
-      }else{
-        super.showToast(this.toastService, res.message);
+      } else {
+        // super.showToast(this.toastService, res.message);
+        super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
   }
 
   //申请贷款
   onSubmit() {
+    this.loading.register("loading");
     this.orderService.onSubmitLoan(this.personRealId, this.productId).subscribe(res => {
-      if(res.success){
+      this.loading.resolve("loading");
+      if (res.success) {
         super.showToast(this.toastService, '申请贷款已成功!');
         this.onPostOrderId.emit(res.data.id);
+      } else {
+        super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
   }

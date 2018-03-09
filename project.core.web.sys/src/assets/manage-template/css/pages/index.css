@@ -114,10 +114,10 @@ li {
     width: 153px !important;
 }
 
-#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group{
+#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group,#tiggerEvent>.form-inline>.form-group{
     width:100%;
 }
-#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control{
+#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control,#tiggerEvent>.form-inline>.form-group>.form-control{
     width:100%;
 }
 
@@ -316,5 +316,32 @@ html { overflow: hidden; }
 }
 .verifyLineNone{
     display:none;
+}
+
+
+/* 事件 */
+#tabEvent  .row{
+    margin-bottom:10px;
+}
+#tabEvent  .form-inline{
+    border-bottom:1px solid #666;
+} 
+#tabEvent .levelFa{
+    top:0px;
+    left: 75%;
+}
+#tabEvent .eventInput{
+    width:26% !important; 
+}
+#tabEvent .eventLevel2 {
+    width:94%;
+    border:1px solid #C1C1C1;
+    padding-top: 10px;
+    padding-left: 2px;
+    margin-bottom:10px;
+    display: inline-block;
+}
+#tabEvent .eventLevelJudge{
+    width:130px !important; 
 }
 

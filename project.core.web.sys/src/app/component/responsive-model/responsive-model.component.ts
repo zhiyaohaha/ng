@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output, ElementRef, ViewChild, ViewContainerRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MdButtonModule, MdDatepickerModule, MdInputModule, MdSelectModule } from "@angular/material";
@@ -21,15 +21,17 @@ import { globalUrl } from "../../common/global.config";
 import { Md5 } from "ts-md5/dist/md5";
 import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
 import { forEach } from "@angular/router/src/utils/collection";
-
-
+import { CalendarModule } from "../calendar/calendar.component";
+import { TdLoadingService, TdDialogService } from "@covalent/core";
+import { BaseUIComponent } from "../../pages/baseUI.component";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
   styleUrls: ["./responsive-model.component.scss", "../../common/directive/validators.directive.scss"],
 })
 
-export class ResponsiveModelComponent implements OnInit {
+export class ResponsiveModelComponent extends BaseUIComponent implements OnInit {
   config = {
     toolbars: [["bold", "italic", "underline", "removeformat", "indent", "paragraph", "Fontsize", "forecolor", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "Undo", "Redo"]],
     autoClearinitialContent: true,
@@ -54,7 +56,7 @@ export class ResponsiveModelComponent implements OnInit {
           if (i.childrens) {
             i.childrens.forEach(iChild => {
               this._modelDOMSData[iChild.name] = iChild.value;
-            })
+            });
           } else {
             this._modelDOMSData[i.name] = i.value;
           }
@@ -81,7 +83,7 @@ export class ResponsiveModelComponent implements OnInit {
   @Input()
   set manualVerificationForm(value) {  //手动验证
     if (value) {
-      //验证：点击提交，开始统一验证所有组件。 
+      //验证：点击提交，开始统一验证所有组件。
       this.submitVerify = true;
       this.submitErrorData.emit(this._errData);
     } else {
@@ -92,7 +94,13 @@ export class ResponsiveModelComponent implements OnInit {
 
   @ViewChild("form") formDiv: ElementRef;
 
-  constructor(private baseService: BaseService, private er: ElementRef) {
+  constructor(private baseService: BaseService,
+    private er: ElementRef,
+    private loadingService: TdLoadingService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef,
+    private routerInfor: ActivatedRoute) {
+    super(loadingService, routerInfor);
   }
 
   ngOnInit() {
@@ -113,14 +121,15 @@ export class ResponsiveModelComponent implements OnInit {
    */
   onSubmit($event, cmds?: any) {
 
-    if (!this.eventListenerSubmit) {   //不使用提交按钮，通过监听组件事件提交表单数据时，不需要统一验证所有组件 
-      //验证：点击提交，开始统一验证所有组件。 
+    if (!this.eventListenerSubmit) {   //不使用提交按钮，通过监听组件事件提交表单数据时，不需要统一验证所有组件
+      //验证：点击提交，开始统一验证所有组件。
       this.submitVerify = true;
 
       //验证：如果有验证错误信息，则停止提交
       let errData = this._errData;
       for (let i in errData) {
         if (errData[i]) {
+          super.openAlert({ title: "提示", message: "请填写完整相关信息", dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
           return false;   //如果有错误，则停止提交
         }
       }
@@ -159,10 +168,10 @@ export class ResponsiveModelComponent implements OnInit {
 
   /**
    * 通过basic.logo 获取 basic._logo的值
-   * 
-   * @param {any} value 
-   * @param {any} data 
-   * @returns 
+   *
+   * @param {any} value
+   * @param {any} data
+   * @returns
    * @memberof ResponsiveModelComponent
    */
   displayLogoFun(value, data) {
@@ -205,7 +214,8 @@ export class ResponsiveModelComponent implements OnInit {
             let postKey;
             postKey = receiveKey.split(".");
             //增加产品时， 贷款类型，勾选以后再取消， this.modelDOMSData为空。
-            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
+            // config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? this.modelDOMSData[postKey[0]][postKey[1]] : this.modelDOMSData[postKey[0]]);
+            config[receiveKey] = this._modelDOMSData[receiveKey] || (this.modelDOMSData[postKey[0]] ? (this.modelDOMSData[receiveKey] ? this.modelDOMSData[receiveKey] : this.modelDOMSData[postKey[0]][postKey[1]]) : this.modelDOMSData[postKey[0]]);
           } else {          //key 的形式是正常的形式。eg：id
             config[receiveKey] = this._modelDOMSData[receiveKey] || this.modelDOMSData[receiveKey];
           }
@@ -220,7 +230,7 @@ export class ResponsiveModelComponent implements OnInit {
 
             //附件组和附件项执行此处代码，其它联动select组件，不执行此代码
             if (r.data) {
-              if (r.data[0] && r.data[0]['_attachments']) {
+              if (r.data[0] && r.data[0]["_attachments"]) {
                 if (this.modelDOMSData[option[i].triggerDom] !== undefined) {      // 修改页面
                   this.judgeSetChangeData(r.data, option[i].triggerDom, "edit");
                 } else {                                                       //新增页面
@@ -239,10 +249,10 @@ export class ResponsiveModelComponent implements OnInit {
 
   /**
    * 附件组联动附件项，附件项传递数据到附件组预览。
-   * 
-   * @param {any} res 
-   * @param {any} key 
-   * @param {any} status 
+   *
+   * @param {any} res
+   * @param {any} key
+   * @param {any} status
    * @memberof ResponsiveModelComponent
    */
   judgeSetChangeData(res, key, status) {
@@ -251,7 +261,7 @@ export class ResponsiveModelComponent implements OnInit {
     //for循环：如果某一附件组下面，没有附件项勾选，则不显示该附件组
     for (let k = res.length - 1; k >= 0; k--) {
       for (const j in res[k]) {  //依据于数据结构的写法
-        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则不保存父项。  
+        if (Array.isArray(res[k][j]) && res[k][j].length > 0) {    //有子项，才展现父项。 不勾选子项，则不保存父项。
           if (!this.inArray(res[k], data)) {
             data.unshift(res[k]);
           }
@@ -288,13 +298,13 @@ export class ResponsiveModelComponent implements OnInit {
 
   /**
    * 不使用 提交按钮，通过监听组件事件提交表单数据
-   * 
+   *
    * @memberof ResponsiveModelComponent
    */
   commitData() {
     if (!this.submitBtnNeed) {  //不需要提交按钮
       this.eventListenerSubmit = true;
-      if (this.btnType == 'new') {
+      if (this.btnType === "new") {
         this.onSubmit(this._modelDOMSData);
       } else {
         this.onSubmit(this.modelDOMSData);
@@ -318,17 +328,17 @@ export class ResponsiveModelComponent implements OnInit {
 
   /**
    * 记录，验证错误信息
-   * 
-   * @param {any} e 
-   * @param {any} key 
+   *
+   * @param {any} e
+   * @param {any} key
    * @memberof ResponsiveModelComponent
    */
   storeErrData(e, key) {
-    //对三级联动地区组件的特殊处理 
+    //对三级联动地区组件的特殊处理
     if (Array.isArray(e)) {
       for (const key1 in e) {
-        if (e[key1] == '必选') {
-          this._errData[key] = '必选';
+        if (e[key1] === "必选") {
+          this._errData[key] = "必选";
           return false;
         }
       }
@@ -361,6 +371,7 @@ export class ResponsiveModelComponent implements OnInit {
     TimiSelectModule,
     DynamicDomsModule,
     RegionModule,
+    CalendarModule,
     // NewComponentModule,
     SharedPipeModule,
     UEditorModule.forRoot({

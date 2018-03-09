@@ -8,12 +8,14 @@ var activeId = "";
 var DOMvalue; //拖动的DOM元素值
 var bindTitle; //绑定标题
 var bindField; //绑定字段
+var bindPipe; //绑定管道
 
 var collection; //数据源
 
 var cmdOptions = `<option value="">请选择命令名称</option>`; //cmdOptions下拉选项
 var cmdFormTemplateOption = `<option value="">请选择表单模板</option>`; //表单模板下拉框
 var cmdFormDom = `<option value="">请选择触发的Dom</option>`; //cmdOptions 触发dom下拉选项
+var eventcmdFormDom = `<option value="">请选择触发Dom</option>`; //cmdOptions 触发dom下拉选项
 var verifyData; //验证数据
 var verifyOPtions  = `<option value="">请选择名称</option>`;  //验证名称-下拉选项
 
@@ -58,12 +60,24 @@ $.ajax({
 
             //命令栏-触发dom
             $(".cmdFormDom").html(cmdFormDom);
+            
+            //事件---绑定dom
+            $(".eventcmdFormDom").html(eventcmdFormDom);
 
             //平台
             bindSelect(res.data.platforms, "请选择平台", "templatePlatform");
 
             //展示类型
             bindSelect(res.data.doms, "请选择展示类型", "displayType");
+
+            //管道
+            var bindPipeOptioins = `<option value="">文本</option>`;
+            for (var i = 0; i < res.data.pipes.length; i++) {
+                bindPipeOptioins += `<option value="${res.data.pipes[i].value}">${res.data.pipes[i].text}</option>`;
+            }
+            $("#bindPipe").append(bindPipeOptioins);
+            
+
             var html = "";
             res.data.doms.forEach(function(el){
                 html += `<div class="nowrap" data-value="${el.value}">${el.text}</div>`;
@@ -493,6 +507,9 @@ function dragCreateDom_PanelBody(domval,that,editData){ //（一级和二级）�
     if(editData.name && editData.ui.label)  {
        cmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
        $(".cmdFormDom").html(cmdFormDom);
+
+       eventcmdFormDom += `<option value="${editData.name}">${editData.ui.label}</option>`;
+       $(".eventcmdFormDom").html(eventcmdFormDom);
     }
     objData[id] = editData;
 }
@@ -696,6 +713,7 @@ $(document).on("click", ".element-wrap, .dom-panel", function(){
         $("#bindTarget").val(objData[id].bindTarget);  //新建表单时
     }
 
+    $("#bindPipe").val(objData[id].ui.pipe);
     $("#bindPlaceholder").val(objData[id].ui.placeholder);
     // $("#bindAttr").val(objData[id].bindAttr);
     // $("#bindCss").val(objData[id].bindCss);
@@ -1502,7 +1520,336 @@ $(".additional").on("click", ".addnotes", function(){
                 <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
             </div>`);
             bindVertifyEvent();
+    }else if (name === "eventLevel3Add"){
+        $(this).parent().parent().parent().append(`
+            <div class="formTemplate-wrap">
+                <div class="form-group">
+                    <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control input-sm m-b-10">
+                        <option value="">=</option>
+                        <option value="">></option>
+                        <option value=""><</option>
+                        <option value="">>=</option>
+                        <option value=""><=</option>
+                    </select>
+                </div>
+                <div class="form-group  eventInput">
+                    <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                </div>
+                <div class="form-group">
+                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                </div>
+            </div>`
+        );
+    }else if (name === "eventLevel2AddSecond"){
+        $(this).parent().append(`
+            <div class="eventLevel2">
+                <div class="triggerWhereGroup">
+                    <div class="formTemplate-wrap">
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10">
+                                <option value="">=</option>
+                                <option value="">></option>
+                                <option value=""><</option>
+                                <option value="">>=</option>
+                                <option value=""><=</option>
+                            </select>
+                        </div>
+                        <div class="form-group  eventInput">
+                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddSecond" aria-hidden="true"></i>
+        `);
+    }else if (name === "eventLevel2AddFirst"){   
+        $(this).parent().append(`
+           <div class="eventLevel2">
+                <div class="triggerWhereGroup">
+                    <div class="formTemplate-wrap">
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10">
+                                <option value="">=</option>
+                                <option value="">></option>
+                                <option value=""><</option>
+                                <option value="">>=</option>
+                                <option value=""><=</option> 
+                            </select>
+                        </div>
+                        <div class="form-group  eventInput">
+                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select class="form-control input-sm m-b-10 eventLevelJudge">
+                        <option value="">或者</option>
+                        <option value="">并且</option>
+                        <option value="">并且不</option>
+                        <option value="">或者不</option>
+                    </select>
+                </div>
+                <div class="triggerWhereGroup">
+                    <div class="formTemplate-wrap">
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10">
+                                <option value="">=</option>
+                                <option value="">></option>
+                                <option value=""><</option>
+                                <option value="">>=</option>
+                                <option value=""><=</option>
+                            </select>
+                        </div>
+                        <div class="form-group  eventInput">
+                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddFirst" aria-hidden="true"></i>`
+        );
+    }else if (name === "eventLevel1Add"){
+        $(this).parent().parent().parent().append(`
+            <div class="triggerCondition">
+                <div class="triggerWhereGroup">
+                    <label for="">触发条件：</label>
+                    <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                </div>
+
+                <div class="eventLevel2Parent">
+                    <div class="eventLevel2">
+                        <div class="triggerWhereGroup">
+                            <div class="formTemplate-wrap">
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10">
+                                        <option value="">=</option>
+                                        <option value="">></option>
+                                        <option value=""><</option>
+                                        <option value="">>=</option>
+                                        <option value=""><=</option>
+                                    </select>
+                                </div>
+                                <div class="form-group  eventInput">
+                                    <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-sm m-b-10 eventLevelJudge">
+                                <option value="">或者</option>
+                                <option value="">并且</option>
+                                <option value="">并且不</option>
+                                <option value="">或者不</option>
+                            </select>
+                        </div>
+                        <div class="triggerWhereGroup">
+                            <div class="formTemplate-wrap">
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10">
+                                        <option value="">=</option>
+                                        <option value="">></option>
+                                        <option value=""><</option>
+                                        <option value="">>=</option>
+                                        <option value=""><=</option>
+                                    </select>
+                                </div>
+                                <div class="form-group  eventInput">
+                                    <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddFirst" aria-hidden="true"></i>
+                </div>
+
+                <div class="form-group ">
+                    <select class="form-control input-sm m-b-10  eventLevelJudge ">
+                        <option value="">并且</option>
+                        <option value="">或者</option>
+                        <option value="">并且不</option>
+                        <option value="">或者不</option>
+                    </select>
+                </div>
+
+                <div class="eventLevel2Parent">
+                    <div class="eventLevel2">
+                        <div class="triggerWhereGroup">
+                            <div class="formTemplate-wrap">
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control input-sm m-b-10">
+                                        <option value="">=</option>
+                                        <option value="">></option>
+                                        <option value=""><</option>
+                                        <option value="">>=</option>
+                                        <option value=""><=</option>
+                                    </select>
+                                </div>
+                                <div class="form-group  eventInput">
+                                    <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddSecond" aria-hidden="true"></i>
+                </div>
+            </div>`
+        );
+    }else if (name === "eventLevel0Add"){
+        $(this).parent().parent().parent().append(`
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="">触发事件：</label>
+                    <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel0Add" aria-hidden="true"></i>
+                    <br>
+                    <select class="form-control input-sm m-b-10">
+                        <option value="">显示</option>
+                    </select>
+                </div>
+
+                <div class="triggerCondition">
+                    <div class="triggerWhereGroup">
+                        <label for="">触发条件：</label>
+                        <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="eventLevel2Parent">
+                        <div class="eventLevel2">
+                            <div class="triggerWhereGroup">
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10">
+                                            <option value="">=</option>
+                                            <option value="">></option>
+                                            <option value=""><</option>
+                                            <option value="">>=</option>
+                                            <option value=""><=</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  eventInput">
+                                        <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm m-b-10 eventLevelJudge">
+                                    <option value="">或者</option>
+                                    <option value="">并且</option>
+                                    <option value="">并且不</option>
+                                    <option value="">或者不</option>
+                                </select>
+                            </div>
+                            <div class="triggerWhereGroup">
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10">
+                                            <option value="">=</option>
+                                            <option value="">></option>
+                                            <option value=""><</option>
+                                            <option value="">>=</option>
+                                            <option value=""><=</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  eventInput">
+                                        <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddFirst" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="form-group ">
+                        <select class="form-control input-sm m-b-10  eventLevelJudge ">
+                            <option value="">并且</option>
+                            <option value="">或者</option>
+                            <option value="">并且不</option>
+                            <option value="">或者不</option>
+                        </select>
+                    </div>
+
+                    <div class="eventLevel2Parent">
+                        <div class="eventLevel2">
+                            <div class="triggerWhereGroup">
+                                <div class="formTemplate-wrap">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control input-sm m-b-10">
+                                            <option value="">=</option>
+                                            <option value="">></option>
+                                            <option value=""><</option>
+                                            <option value="">>=</option>
+                                            <option value=""><=</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  eventInput">
+                                        <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddSecond" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>`
+        );
     }
+    
      $(this).removeClass("fa-plus-circle addnotes").addClass("fa-minus-circle delnotes");
 
      setChildScrollHeight()
@@ -1511,6 +1858,9 @@ $(".additional").on("click", ".addnotes", function(){
 $(".additional").on("click", ".delnotes", function(){
     if($(this).data("name") === "cmds" ||$(this).data("name") ===  "verify"){
         $(this).parent().remove();
+    }else if($(this).data("name") === "eventLevel2AddFirst" || $(this).data("name") ===  "eventLevel2AddSecond"){
+        $(this).prev('.eventLevel2').remove();
+        $(this).remove();
     }else{
         $(this).parent().parent().remove();
     }  
@@ -1535,7 +1885,7 @@ function save(){
                 "hidden": $('#bindHide').is(':checked'),
                 "required": $('#bindRequired').is(':checked'),
                 "multiple": $('#bindMulti').is(':checked'),
-                
+                "pipe": $("#bindPipe").val()  
             },
             "verifies":saveVerifies(),
             "description": $("#bindDescription").val()

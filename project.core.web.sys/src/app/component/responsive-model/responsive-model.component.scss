@@ -53,4 +53,13 @@
   .free-region-parent{
     margin-bottom:20px;
   } 
+
+  //日历组件 
+  .errBorderParentCalendarDate{
+    height:31px;
+    .errBorder{
+      top: 31px !important;
+      left: 120px !important;
+    }
+  }
 }

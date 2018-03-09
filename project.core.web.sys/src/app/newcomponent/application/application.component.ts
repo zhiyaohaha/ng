@@ -207,6 +207,10 @@ export class ApplicationComponent extends BaseUIComponent implements OnInit {
     //验证动态表单
 
     setTimeout(() => {
+      if (this.loanInfo.applyAdCode) {
+        errData['applyAdCode'] = "";
+      }
+
       for (let i in errData) {
         if (errData[i]) {
           super.openAlert({ title: "提示", message: '请填写完整相关信息', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });

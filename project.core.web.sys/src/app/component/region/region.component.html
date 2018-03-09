@@ -53,7 +53,7 @@
               multipleForUse="true"></timi-select>
           </div>
           <div *ngIf="multipleFalseCityData?.length > 0">
-            <timi-select [ngModel]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData($event,2)"
+            <timi-select [ngModel]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择市'}}" (onChange)="changeMultipleFalseData($event,2)"
               multipleForUse="true"></timi-select>
           </div>
           <div *ngIf="multipleFalseModifiedWait?multipleFalseCountyData?.length > 0:true">
@@ -65,10 +65,10 @@
       </div>
 
       <!-- 新增状态下 -->
-      <div *ngIf="!multipleFalseModifiedState" class="selectThree">
+      <div *ngIf="multipleFalseModifiedState   ===   false" class="selectThree">
         <timi-select [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)" multipleForUse="true"
           [filter]="true"></timi-select>
-        <timi-select [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData($event,2)" multipleForUse="true"></timi-select>
+        <timi-select [options]="multipleFalseCityData" pholder="{{'请选择市'}}" (onChange)="changeMultipleFalseData($event,2)" multipleForUse="true"></timi-select>
         <timi-select [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)" multipleForUse="true"></timi-select>
       </div>
 
@@ -89,7 +89,7 @@
       </div>
 
       <!-- 新增状态下 -->
-      <div *ngIf="!multipleFalseModifiedState" class="selectThree">
+      <div *ngIf="multipleFalseModifiedState  ===   false" class="selectThree">
         <timi-select [options]="loginerBindAreas['']" pholder="{{'请选择省份'}}" (onChange)="getThridAreaSelect($event,1)" multipleForUse="true"></timi-select>
         <timi-select [options]="areaCities" pholder="{{'请选择市'}}" (onChange)="getThridAreaSelect($event,2)" multipleForUse="true"></timi-select>
         <timi-select [options]="areaCounties" pholder="{{'请选择区县'}}" (onChange)="getThridAreaSelect($event,3)" multipleForUse="true"></timi-select>
@@ -106,97 +106,115 @@
   </div>
   <!-- 有验证 -->
   <div *ngIf="verificate">
-    <!-- 非多选时，使用本地json数据  (例如现居住地址) -->
-    <div *ngIf="!loginerBindAreas && !applyBindDataSwitch">
+    <div *ngIf="type == '2'"  class="selectThree">
+      <timi-select *ngIf="multipleFalseData?.length > 0" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"
+        multipleForUse="true" [filter]="true" [(ngModel)]="mFMFalseProvince" [customValidator]="validatorGather[0]['customValidator']"
+        [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="mFMFalseProvince" [submitVerify]="submitVerify"
+        (storeErrData)="storeErrData($event,'mFMFalseProvince')" validatorComponentType="select"></timi-select>
+      <timi-select [options]="multipleFalseCityData" pholder="{{'请选择地区'}}" (onChange)="changeMultipleFalseData($event,2)" multipleForUse="true"
+        [(ngModel)]="mFMFalseCity" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+        [validatorInputValue]="mFMFalseCity" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseCity')"
+        validatorComponentType="select"></timi-select>
+    </div>
+    <div *ngIf="type == '3'">
+      <!-- 非多选时，使用本地json数据  (例如现居住地址) -->
+      <div *ngIf="!loginerBindAreas && !applyBindDataSwitch">
 
-      <!-- 修改状态下，还原父组件传递的所有code数据(要等text和value数据绑定以后，才能绑定code) -->
-      <div *ngIf="multipleFalseModifiedState">
-        <div *ngIf="multipleFalseModifiedData" class="selectThreeJson">
+        <!-- 修改状态下，还原父组件传递的所有code数据(要等text和value数据绑定以后，才能绑定code) -->
+        <div *ngIf="multipleFalseModifiedState">
+          <div *ngIf="multipleFalseModifiedData" class="selectThreeJson">
+            <div>
+              <timi-select [(ngModel)]="multipleFalseModifiedData[0]" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"
+                multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+                [validatorInputValue]="multipleFalseModifiedData[0]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataProvince')"
+                validatorComponentType="select"></timi-select>
+            </div>
+            <div>
+              <timi-select [(ngModel)]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择市'}}" (onChange)="changeMultipleFalseData($event,2)"
+                multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+                [validatorInputValue]="multipleFalseModifiedData[1]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataCity')"
+                validatorComponentType="select"></timi-select>
+            </div>
+            <div>
+              <timi-select [(ngModel)]="multipleFalseModifiedData[2]" [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)"
+                multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+                [validatorInputValue]="multipleFalseModifiedData[2]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedDataCountry')"
+                validatorComponentType="select"></timi-select>
+            </div>
 
-          <div *ngIf="multipleFalseData?.length > 0">
-            <timi-select [ngModel]="multipleFalseModifiedData[0]" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"
-              multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-              [validatorInputValue]="multipleFalseModifiedData[0]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCountry')"
-              validatorComponentType="select"></timi-select>
           </div>
-          <div *ngIf="multipleFalseCityData?.length > 0">
-            <timi-select [ngModel]="multipleFalseModifiedData[1]" [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData($event,2)"
-              multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-              [validatorInputValue]="multipleFalseModifiedData[1]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCountry')"
-              validatorComponentType="select"></timi-select>
-          </div>
-          <div *ngIf="multipleFalseModifiedWait?multipleFalseCountyData?.length > 0:true">
-            <timi-select [ngModel]="multipleFalseModifiedData[2]" [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)"
-              multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-              [validatorInputValue]="multipleFalseModifiedData[2]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCountry')"
-              validatorComponentType="select"></timi-select>
-          </div>
+        </div>
+
+        <!-- 新增状态下 -->
+        <div *ngIf="multipleFalseModifiedState ===   false" class="selectThree">
+          <timi-select *ngIf="multipleFalseData?.length > 0" [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)"
+            multipleForUse="true" [filter]="true" [(ngModel)]="mFMFalseProvince" [customValidator]="validatorGather[0]['customValidator']"
+            [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="mFMFalseProvince" [submitVerify]="submitVerify"
+            (storeErrData)="storeErrData($event,'mFMFalseProvince')" validatorComponentType="select"></timi-select>
+          <timi-select [options]="multipleFalseCityData" pholder="{{'请选择市'}}" (onChange)="changeMultipleFalseData($event,2)" multipleForUse="true"
+            [(ngModel)]="mFMFalseCity" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+            [validatorInputValue]="mFMFalseCity" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseCity')"
+            validatorComponentType="select"></timi-select>
+          <timi-select [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)" multipleForUse="true"
+            [(ngModel)]="mFMFalseCountry" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+            [validatorInputValue]="mFMFalseCountry" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseCountry')"
+            validatorComponentType="select"></timi-select>
+        </div>
+
+      </div>
+
+
+      <!-- 非多选时，使用父组件传递的省级text/value数据 [ngModel]="key" (例如贷款地区)-->
+      <div *ngIf="loginerBindAreas">
+
+        <!-- 修改状态下，还原父组件传递的所有code数据 -->
+        <div *ngIf="multipleFalseModifiedState">
+          <ul class="regionUL">
+            <li *ngFor='let key of getKeys(loginerBindAreas);let i = index;'>
+              <timi-select [ngModel]="key" [options]="loginerBindAreas[key]" pholder="请选择{{setPholder(i+1)}}" (click)="changeTrue = true"
+                (onChange)="changeTrue?getThridAreaSelect($event,i+1):''" multipleForUse="true" [customValidator]="validatorGather[0]['customValidator']"
+                [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="key" [submitVerify]="submitVerify"
+                (storeErrData)="storeErrData($event,'key'+i)" validatorComponentType="select"></timi-select>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 新增状态下 -->
+        <div *ngIf="multipleFalseModifiedState ===   false" class="selectThree">
+          <timi-select [options]="loginerBindAreas['']" pholder="{{'请选择省份'}}" (onChange)="getThridAreaSelect($event,1)" multipleForUse="true"
+            [(ngModel)]="multipleFalseModifiedFalseProvince" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+            [validatorInputValue]="multipleFalseModifiedFalseProvince" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseProvince')"
+            validatorComponentType="select"></timi-select>
+
+
+          <timi-select [options]="areaCities" pholder="{{'请选择市'}}" (onChange)="getThridAreaSelect($event,2)" multipleForUse="true"
+            [(ngModel)]="multipleFalseModifiedFalseCity" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+            [validatorInputValue]="multipleFalseModifiedFalseCity" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCity')"
+            validatorComponentType="select"></timi-select>
+
+          <timi-select [options]="areaCounties" pholder="{{'请选择区县'}}" (onChange)="getThridAreaSelect($event,3)" multipleForUse="true"
+            [(ngModel)]="multipleFalseModifiedFalseCountry" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+            [validatorInputValue]="multipleFalseModifiedFalseCountry" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCountry')"
+            validatorComponentType="select"></timi-select>
 
         </div>
+
       </div>
 
-      <!-- 新增状态下 -->
-      <div *ngIf="!multipleFalseModifiedState" class="selectThree">
-        <timi-select [options]="multipleFalseData" pholder="{{'请选择省份'}}" (onChange)="changeMultipleFalseData($event,1)" multipleForUse="true"
-          [filter]="true" [(ngModel)]="mFMFalseProvince" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="mFMFalseProvince" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseProvince')"
-          validatorComponentType="select"></timi-select>
-        <timi-select [options]="multipleFalseCityData" pholder="{{'请选择城市'}}" (onChange)="changeMultipleFalseData($event,2)" multipleForUse="true"
-          [(ngModel)]="mFMFalseCity" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="mFMFalseCity" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseCity')"
-          validatorComponentType="select"></timi-select>
-        <timi-select [options]="multipleFalseCountyData" pholder="{{'请选择区县'}}" (onChange)="changeMultipleFalseData($event,3)" multipleForUse="true"
-          [(ngModel)]="mFMFalseCountry" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="mFMFalseCountry" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'mFMFalseCountry')"
-          validatorComponentType="select"></timi-select>
+      <!-- + 在父组件传递的数据为空，但是需要继续使用该空数据的情况下： -->
+      <div *ngIf="!loginerBindAreas && applyBindDataSwitch" class="selectThree">
+        <timi-select pholder="{{'请选择省份'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
+          [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
+          (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
+        <timi-select pholder="{{'请选择市'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
+          [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
+          (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
+        <timi-select pholder="{{'请选择区县'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
+          [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
+          (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
       </div>
-
     </div>
 
-
-    <!-- 非多选时，使用父组件传递的省级text/value数据 [ngModel]="key" (例如贷款地区)-->
-    <div *ngIf="loginerBindAreas">
-
-      <!-- 修改状态下，还原父组件传递的所有code数据 -->
-      <div *ngIf="multipleFalseModifiedState">
-        <ul class="regionUL">
-          <li *ngFor='let key of getKeys(loginerBindAreas);let i = index;'>
-            <timi-select [ngModel]="key" [options]="loginerBindAreas[key]" pholder="请选择{{setPholder(i+1)}}" (click)="changeTrue = true"
-              (onChange)="changeTrue?getThridAreaSelect($event,i+1):''" multipleForUse="true"></timi-select>
-          </li>
-        </ul>
-      </div>
-
-      <!-- 新增状态下 -->
-      <div *ngIf="!multipleFalseModifiedState" class="selectThree">
-        <timi-select [options]="loginerBindAreas['']" pholder="{{'请选择省份'}}" (onChange)="getThridAreaSelect($event,1)" multipleForUse="true"
-          [(ngModel)]="multipleFalseModifiedFalseProvince" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="multipleFalseModifiedFalseProvince" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseProvince')"
-          validatorComponentType="select"></timi-select>
-        <timi-select [options]="areaCities" pholder="{{'请选择市'}}" (onChange)="getThridAreaSelect($event,2)" multipleForUse="true"
-          [(ngModel)]="multipleFalseModifiedFalseCity" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="multipleFalseModifiedFalseCity" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCity')"
-          validatorComponentType="select"></timi-select>
-        <timi-select [options]="areaCounties" pholder="{{'请选择区县'}}" (onChange)="getThridAreaSelect($event,3)" multipleForUse="true"
-          [(ngModel)]="multipleFalseModifiedFalseCountry" [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="multipleFalseModifiedFalseCountry" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'multipleFalseModifiedFalseCountry')"
-          validatorComponentType="select"></timi-select>
-      </div>
-
-    </div>
-
-    <!-- + 在父组件传递的数据为空，但是需要继续使用该空数据的情况下： -->
-    <div *ngIf="!loginerBindAreas && applyBindDataSwitch" class="selectThree">
-      <timi-select pholder="{{'请选择省份'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
-        [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
-        (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
-      <timi-select pholder="{{'请选择市'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
-        [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
-        (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
-      <timi-select pholder="{{'请选择区县'}}" multipleForUse="true" [(ngModel)]="dataNullCountry" [customValidator]="validatorGather[0]['customValidator']"
-        [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="dataNullCountry" [submitVerify]="submitVerify"
-        (storeErrData)="storeErrData($event,'dataNullCountry')" validatorComponentType="select"></timi-select>
-    </div>
   </div>
 
 </div>

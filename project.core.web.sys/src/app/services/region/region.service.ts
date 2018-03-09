@@ -10,8 +10,8 @@ export class RegionService {
 
   constructor(private http: Http, private baseService: BaseService) { }
 
-  getData() {
-    return this.http.get('../../assets/areas.json')
+  getData(json_name) {
+    return this.http.get('../../assets/' + json_name + '.json')
       .map(rsp => rsp.json())
   }
 

@@ -12,6 +12,7 @@
 </head>
 <body>
     <section class="container-fluid">
+        <!-- 头部 -->
         <div class="row form-inline form-base-info" id="fixedDivTop">
             <div class="col-sm-3"></div>
             <div class="col-sm-3">
@@ -35,6 +36,7 @@
             </div>
         </div>
         <div class="row">
+            <!-- 左侧部分 -->
             <div class="col-sm-2" style="margin-top:-47px;">
                 <div style="text-align:center;" style="margin-top:-47px;">
                     <button class="btn btn-default lists" data-name="formDom">DOM列表</button>
@@ -49,6 +51,7 @@
                     </div>
                 </div>
             </div>
+            <!-- 中间部分 -->
             <div class="col-sm-7  fixedDivCenter" id="fixedDivCenter">
                 <div class="col-sm-12 m-b-10" id="formDomTarget"></div>
                 <div class="form-horizontal">
@@ -71,12 +74,14 @@
                     </div>
                 </div>
             </div>
+            <!-- 右侧 -->
             <div class="col-sm-3 fixedDivRight" id="fixedDivRight">
                 <ul id="rightTab" class="nav nav-tabs">
                     <li class="active"> <a href="#tabBasis" data-toggle="tab">基础</a></li>
                     <li><a href="#tabOrder" data-toggle="tab">命令</a></li>
                     <li><a href="#tabVerify" data-toggle="tab">验证</a></li>
                     <li><a href="#tabAdvanced" data-toggle="tab">高级</a></li>
+                    <li><a href="#tabEvent" data-toggle="tab">事件</a></li>
                 </ul>
                 <div  class="tab-content">
                     <div class="tab-pane fade in active" id="tabBasis">
@@ -89,6 +94,8 @@
                             <label for="displayType">展示类型：</label>
                             <select class="form-control input-sm m-b-10" id="displayType" disabled>
                             </select>
+                            <label for="bindTarget">绑定管道：</label>
+                            <select class="form-control input-sm m-b-10" id="bindPipe"></select>
                             <label for="bindPlaceholder">占位符：</label>
                             <input class="form-control input-sm m-b-10" type="text" placeholder="占位符" id="bindPlaceholder">
                             <div class="row">
@@ -218,6 +225,124 @@
                                         </div>
                                     </div>
                                     <i class="fa fa-plus-circle addnotes" data-name="verify" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="tab-pane fade" id="tabEvent">
+                        <div class="row">
+                            <div class="col-sm-12 additional" id="tiggerEvent">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label for="">触发事件：</label>
+                                        <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel0Add" aria-hidden="true"></i>
+                                        <br>
+                                         <select class="form-control input-sm m-b-10">
+                                             <option value="">显示</option>
+                                         </select>
+                                    </div>
+
+                                    <div class="triggerCondition">
+                                        <div class="triggerWhereGroup">
+                                            <label for="">触发条件：</label>
+                                            <i class="fa fa-plus-circle addnotes levelFa" data-name="eventLevel1Add" aria-hidden="true"></i>
+                                        </div>
+    
+                                        <div class="eventLevel2Parent">
+                                            <div class="eventLevel2">
+                                                <div class="triggerWhereGroup">
+                                                    <div class="formTemplate-wrap">
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10 eventcmdFormDom"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10">
+                                                                <option value="">=</option>
+                                                                <option value="">></option>
+                                                                <option value=""><</option>
+                                                                <option value="">>=</option>
+                                                                <option value=""><=</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group  eventInput">
+                                                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="form-control input-sm m-b-10 eventLevelJudge">
+                                                        <option value="">或者</option>
+                                                        <option value="">并且</option>
+                                                        <option value="">并且不</option>
+                                                        <option value="">或者不</option>
+                                                    </select>
+                                                </div>
+                                                <div class="triggerWhereGroup">
+                                                    <div class="formTemplate-wrap">
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10 eventcmdFormDom"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10">
+                                                                <option value="">=</option>
+                                                                <option value="">></option>
+                                                                <option value=""><</option>
+                                                                <option value="">>=</option>
+                                                                <option value=""><=</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group  eventInput">
+                                                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddFirst" aria-hidden="true"></i>
+                                        </div>
+    
+                                        <div class="form-group ">
+                                            <select class="form-control input-sm m-b-10  eventLevelJudge ">
+                                                <option value="">并且</option>
+                                                <option value="">或者</option>
+                                                <option value="">并且不</option>
+                                                <option value="">或者不</option>
+                                            </select>
+                                        </div>
+    
+                                        <div class="eventLevel2Parent">
+                                            <div class="eventLevel2">
+                                                <div class="triggerWhereGroup">
+                                                    <div class="formTemplate-wrap">
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10 eventcmdFormDom"></select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm m-b-10">
+                                                                <option value="">=</option>
+                                                                <option value="">></option>
+                                                                <option value=""><</option>
+                                                                <option value="">>=</option>
+                                                                <option value=""><=</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group  eventInput">
+                                                            <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <i class="fa fa-plus-circle addnotes" data-name="eventLevel2AddSecond" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div> 

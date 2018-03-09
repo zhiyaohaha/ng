@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { IndexComponent } from "./index.component";
 import {BranchCountModule} from "../post-loan-management/branch-count/branch-count.module";
 import {RepaymentModule} from "../post-loan-management/repayment/repayment.module";
+import {SchedulingModule} from "../scheduling/scheduling.module";
 
 const childRoutes: Routes = [
   { path: "dashboard", loadChildren: "../main/main.module#MainModule" },
@@ -32,6 +33,8 @@ const childRoutes: Routes = [
     path: "OrgStructure.GroupMgr/:pageCode",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
   },
+  // OA管理
+  { path: "OAMgr.Scheduling/:pageCode", loadChildren: "../scheduling/scheduling.module#SchedulingModule"},
   { path: "LoanMgr.OrderMgr/:pageCode", loadChildren: "../order-manage/order-manage.module#OrderManageModule" },
   { path: "SpreadLevelManage/:pageCode", loadChildren: "../promote/promote.module#PromoteModule" },
   { path: "LoanDemand/:pageCode", loadChildren: "../loandemand/loandemand.module#LoandemandModule" },

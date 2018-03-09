@@ -22,7 +22,7 @@
     .item-input {
       position: relative;
       padding: 4px 7px;
-      width: 100%;
+      width: calc(100% - 50px);
       height: 28px;
       line-height: 1.5;
       background-color: #fff;

@@ -16,5 +16,5 @@
       </li>
     </ul>
   </div>
-  <button md-raised-button class="fix-button" (click)="onSubmit()">确定</button>
+  <button md-raised-button class="fix-button" (click)="onSubmit()" *ngIf="showBtn">确定</button>
 </div>

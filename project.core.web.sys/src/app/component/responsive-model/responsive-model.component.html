@@ -1,405 +1,421 @@
 <form #form="ngForm">
-  <!--添加-->
-  <ng-container *ngIf="btnType === 'new';else elseblock;">
-    <ng-container *ngFor="let item of modelDOMS;">
-      <!-- 静态表单 -->
-      <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
-        <h4 class="">{{item.ui.label}}</h4>
-        <ng-container *ngFor="let child of item.childrens">
-          <ng-container [ngSwitch]="child.ui.displayType">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
-                (blur)="commitData()" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
-                [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-input>
-            </div>
-            <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-              <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
-                [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
-              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label"
-                [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
-              这个功能还没实现 O(∩_∩)O~
-            </div>
-            <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
-              placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label" [placeholder]="child.ui.placeholder"
-                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
-                [submitVerify]="submitVerify" validatorComponentType="textarea" (storeErrData)="storeErrData($event,child.name)"></timi-textarea>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-              <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
-                [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                (onChange)="selectChange($event, child.cmds)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
-                validatorComponentType="select" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,child.name)"></timi-select>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
-              <md-input-container>
-                <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                <md-datepicker #picker></md-datepicker>
-              </md-input-container>
-              &nbsp;&nbsp;--&nbsp;&nbsp;
-              <md-input-container>
-                <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                <md-datepicker #picker2></md-datepicker>
-              </md-input-container>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-              <div>
-                <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [btnName]="child.ui.label" [src]="_modelDOMSData['_'+child.name]"
-                  [columns]="child.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required"
-                  [customValidator]="child.verifies" validatorComponentType="file-uploader" [validatorInputValue]="_modelDOMSData[child.name]"
-                  [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-file-uploader>
+    <!--添加-->
+    <ng-container *ngIf="btnType === 'new';else elseblock;">
+      <ng-container *ngFor="let item of modelDOMS;">
+        <!-- 静态表单 -->
+        <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
+          <h4 class="">{{item.ui.label}}</h4>
+          <ng-container *ngFor="let child of item.childrens">
+            <ng-container [ngSwitch]="child.ui.displayType">
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
+                  (blur)="commitData()" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                  [submitVerify]="submitVerify" [unitPipe]="child.ui.pipe" (storeErrData)="storeErrData($event,child.name)"></timi-input>
               </div>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-              <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
-                [columns]="child.ui.columns" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
-                [submitVerify]="submitVerify" validatorComponentType="tags" (storeErrData)="storeErrData($event,child.name)"></timi-chip-group>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
+              <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                  [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
+                <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label"
+                  [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
               </div>
-              <div class="box-item item-control-wrapper">
-                <ueditor name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
+                这个功能还没实现 O(∩_∩)O~
               </div>
-            </div>
-            <div class="form-group columns{{child.ui.columns}} free-region-parent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
+              <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
+                placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label" [placeholder]="child.ui.placeholder"
+                  [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                  [submitVerify]="submitVerify" validatorComponentType="textarea" (storeErrData)="storeErrData($event,child.name)"></timi-textarea>
               </div>
-              <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
-                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"
-                  [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)" verificate="true"></free-region>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
+                  [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
+                  (onChange)="selectChange($event, child.cmds)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
+                  validatorComponentType="select" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)"></timi-select>
               </div>
-              <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
-                <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"></free-region>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                  <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                  <md-datepicker #picker></md-datepicker>
+                </md-input-container>
+                &nbsp;&nbsp;--&nbsp;&nbsp;
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                  <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                  <md-datepicker #picker2></md-datepicker>
+                </md-input-container>
               </div>
-            </div>
-            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                <div>
+                  <timi-file-uploader name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [btnName]="child.ui.label" [src]="_modelDOMSData['_'+child.name]"
+                    [columns]="child.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required"
+                    [customValidator]="child.verifies" validatorComponentType="file-uploader" [validatorInputValue]="_modelDOMSData[child.name]"
+                    [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"></timi-file-uploader>
+                </div>
               </div>
-              <p>{{_modelDOMSData[child.name]}}</p>
-            </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                <timi-chip-group name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" [labeName]="child.ui.label"
+                  [columns]="child.ui.columns" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
+                  [submitVerify]="submitVerify" validatorComponentType="tags" (storeErrData)="storeErrData($event,child.name)"></timi-chip-group>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <div class="box-item item-control-wrapper">
+                  <ueditor name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+                </div>
+              </div>
+              <div class="form-group columns{{child.ui.columns}} free-region-parent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
+                  <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"
+                    [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)" verificate="true"></free-region>
+                </div>
+                <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
+                  <free-region name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [multiple]="child.ui.multiple" (click)="commitData()"></free-region>
+                </div>
+              </div>
+              <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <p>{{_modelDOMSData[child.name]}}</p>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Date'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <free-calendar name="{{child.name}}" lang="cn" pholder="选择日期" [(ngModel)]="_modelDOMSData[child.name]" [customValidator]="child.verifies"
+                  [validatorRequired]="child.ui.required" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
+              </div>
 
-            <!-- 静态表单二级面板 -->
-            <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
-              <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
-              <ng-container *ngFor="let grandson of child.childrens">
-                <ng-container [ngSwitch]="grandson.ui.displayType">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
-                    <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
-                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
-                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                    <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
-                      [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"></timi-checkbox>
-                    <timi-checkbox *ngIf="!grandson.ui.multiple" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label"
-                      [checkboxs]="grandson.ui.label" [columns]="grandson.ui.columns"></timi-checkbox>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
-                    这个功能还没实现 O(∩_∩)O~
-                  </div>
-                  <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
-                    placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
-                    <timi-textarea name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder"
-                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
-                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-                    <timi-select name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" pholder="{{grandson.ui.placeholder || '请选择'}}"
-                      [options]="grandson.bindData" [columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'"
-                      [filter]="grandson.ui.filter" (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required"
-                      [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
-                      (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="select"></timi-select>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
-                    <md-input-container>
-                      <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                      <md-datepicker #picker></md-datepicker>
-                    </md-input-container>
-                    &nbsp;&nbsp;--&nbsp;&nbsp;
-                    <md-input-container>
-                      <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                      <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                      <md-datepicker #picker2></md-datepicker>
-                    </md-input-container>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-                    <div>
-                      <timi-file-uploader name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [btnName]="grandson.ui.label" [src]="_modelDOMSData['_'+grandson.name]"
-                        [columns]="grandson.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
+              <!-- 静态表单二级面板 -->
+              <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
+                <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
+                <ng-container *ngFor="let grandson of child.childrens">
+                  <ng-container [ngSwitch]="grandson.ui.displayType">
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                      <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
+                        [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
+                        [submitVerify]="submitVerify" [unitPipe]="grandson.ui.pipe" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                      <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
+                        [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"></timi-checkbox>
+                      <timi-checkbox *ngIf="!grandson.ui.multiple" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label"
+                        [checkboxs]="grandson.ui.label" [columns]="grandson.ui.columns"></timi-checkbox>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
+                      这个功能还没实现 O(∩_∩)O~
+                    </div>
+                    <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
+                      placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                      <timi-textarea name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder"
+                        [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
+                        [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                      <timi-select name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" pholder="{{grandson.ui.placeholder || '请选择'}}"
+                        [options]="grandson.bindData" [columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'"
+                        [filter]="grandson.ui.filter" (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required"
                         [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
-                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
+                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="select"></timi-select>
                     </div>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                    <timi-chip-group name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
-                      [labeName]="grandson.ui.label" [columns]="grandson.ui.columns" [validatorRequired]="grandson.ui.required"
-                      [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
-                      (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-                    <div class="box-item item-label">
-                      <label>{{grandson.ui.label}}</label>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                        <md-datepicker #picker></md-datepicker>
+                      </md-input-container>
+                      &nbsp;&nbsp;--&nbsp;&nbsp;
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                        <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                        <md-datepicker #picker2></md-datepicker>
+                      </md-input-container>
                     </div>
-                    <div class="box-item item-control-wrapper">
-                      <ueditor name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                      <div>
+                        <timi-file-uploader name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [btnName]="grandson.ui.label" [src]="_modelDOMSData['_'+grandson.name]"
+                          [columns]="grandson.ui.columns" (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
+                          [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                          (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
-                    <div class="box-item item-label">
-                      <label>{{grandson.ui.label}}</label>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                      <timi-chip-group name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
+                        [labeName]="grandson.ui.label" [columns]="grandson.ui.columns" [validatorRequired]="grandson.ui.required"
+                        [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
                     </div>
-                    <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"></free-region>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
+                      <div class="box-item item-label">
+                        <label>{{grandson.ui.label}}</label>
+                      </div>
+                      <div class="box-item item-control-wrapper">
+                        <ueditor name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+                      </div>
                     </div>
-                    <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"
-                        [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)" verificate="true"></free-region>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+                      <div class="box-item item-label">
+                        <label>{{grandson.ui.label}}</label>
+                      </div>
+                      <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
+                        <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"></free-region>
+                      </div>
+                      <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
+                        <free-region name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" (click)="commitData()"
+                          [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)" verificate="true"></free-region>
+                      </div>
                     </div>
-                  </div>
+                  </ng-container>
                 </ng-container>
-              </ng-container>
-            </div>
+              </div>
 
 
+            </ng-container>
           </ng-container>
+        </div>
+        <!-- 动态态表单 -->
+        <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
+          <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
+        </div>
+      </ng-container>
+    </ng-container>
+    <!--修改-->
+    <ng-template #elseblock>
+      <ng-container *ngFor="let item of modelDOMS;">
+        <!-- 静态表单 -->
+        <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
+          <h4>{{item.ui.label}}</h4>
+          <ng-container *ngFor="let child of item.childrens">
+            <ng-container [ngSwitch]="child.ui.displayType">
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <timi-input [labelName]="child.ui.label" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
+                  [value]="modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" (blur)="commitData()" [validatorRequired]="child.ui.required"
+                  [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)"></timi-input>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData"
+                  [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
+                <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [labelName]="child.ui.label"
+                  [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
+                这个功能还没实现 O(∩_∩)O~
+              </div>
+              <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
+                placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <timi-textarea name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
+                  [labelName]="child.ui.label" [placeholder]="child.ui.placeholder" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
+                  [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)" validatorComponentType="textarea"></timi-textarea>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                <timi-select name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
+                  pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
+                  [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)"
+                  [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData"
+                  [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)" validatorComponentType="select"></timi-select>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                  <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                  <md-datepicker #picker></md-datepicker>
+                </md-input-container>
+                &nbsp;&nbsp;--&nbsp;&nbsp;
+                <md-input-container>
+                  <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                  <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                  <md-datepicker #picker2></md-datepicker>
+                </md-input-container>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                <div>
+                  <timi-file-uploader name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
+                    [btnName]="child.ui.label" [src]="displayLogoFun(child.name,modelDOMSData)" [columns]="child.ui.columns"
+                    (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
+                    [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"
+                    validatorComponentType="file-uploader"></timi-file-uploader>
+                </div>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                <timi-chip-group name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
+                  [placeholder]="child.ui.placeholder" [labeName]="child.ui.label" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
+                  [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)" validatorComponentType="tags"></timi-chip-group>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <div class="box-item item-control-wrapper">
+                  <ueditor name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+                </div>
+              </div>
+              <div class="form-group columns{{child.ui.columns}} free-region-parent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
+                  <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
+                    (click)="commitData()"></free-region>
+                </div>
+                <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
+                  <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
+                    (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)"
+                    verificate="true"></free-region>
+                </div>
+              </div>
+              <div class="form-group tac columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
+                <ng-container *ngFor="let btn of child.childrens;">
+                  <button md-raised-button (click)="onSubmit(form.value,btn.cmds)">{{btn.ui.label}}</button>
+                </ng-container>
+              </div>
+              <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <p>{{modelDOMSData[child.name]}}</p>
+              </div>
+              <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Date'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+                <div class="box-item item-label">
+                  <label>{{child.ui.label}}</label>
+                </div>
+                <free-calendar name="{{child.name}}" lang="cn" pholder="选择日期" [(ngModel)]="modelDOMSData[child.name]" [customValidator]="child.verifies"
+                  [validatorRequired]="child.ui.required" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
+                  (storeErrData)="storeErrData($event,child.name)" validatorComponentType="free-calendar-date" (blur)="commitData()"></free-calendar>
+              </div>
+
+              <!-- 静态表单二级面板 -->
+              <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
+                <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
+                <ng-container *ngFor="let grandson of child.childrens">
+                  <ng-container [ngSwitch]="grandson.ui.displayType">
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                      <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
+                        [(ngModel)]="modelDOMSData[grandson.name]" [value]="modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
+                        [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData"
+                        [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                      <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
+                        [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"></timi-checkbox>
+                      <timi-checkbox *ngIf="!grandson.ui.multiple" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
+                        [labelName]="grandson.ui.label" [checkboxs]="grandson.ui.label" [columns]="grandson.ui.columns"></timi-checkbox>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
+                      这个功能还没实现 O(∩_∩)O~
+                    </div>
+                    <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"
+                      placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                      <timi-textarea name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
+                        [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder" [columns]="grandson.ui.columns"
+                        [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData"
+                        [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                      <timi-select name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
+                        pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData" [columns]="grandson.ui.columns"
+                        [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'" [filter]="grandson.ui.filter"
+                        (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies"
+                        [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"
+                        validatorComponentType="select"></timi-select>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
+                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                        <md-datepicker #picker></md-datepicker>
+                      </md-input-container>
+                      &nbsp;&nbsp;--&nbsp;&nbsp;
+                      <md-input-container>
+                        <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
+                        <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
+                        <md-datepicker #picker2></md-datepicker>
+                      </md-input-container>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
+                      <div>
+                        <timi-file-uploader name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
+                          [btnName]="grandson.ui.label" [src]="displayLogoFun(grandson.name,modelDOMSData)" [columns]="grandson.ui.columns"
+                          (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
+                          [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
+                          (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
+                      </div>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
+                      <timi-chip-group name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
+                        [placeholder]="grandson.ui.placeholder" [labeName]="grandson.ui.label" [columns]="grandson.ui.columns"
+                        [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
+                        [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
+                      <div class="box-item item-label">
+                        <label>{{grandson.ui.label}}</label>
+                      </div>
+                      <div class="box-item item-control-wrapper">
+                        <ueditor name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
+                      </div>
+                    </div>
+                    <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
+                      <div class="box-item item-label">
+                        <label>{{grandson.ui.label}}</label>
+                      </div>
+                      <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
+                        <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
+                          (click)="commitData()"></free-region>
+                      </div>
+                      <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
+                        <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
+                          (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)"
+                          verificate="true"></free-region>
+                      </div>
+                    </div>
+                    <div class="form-group tac columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
+                      <ng-container *ngFor="let btn of grandson.grandsonrens;">
+                        <button md-raised-button (click)="onSubmit(form.value,btn.cmds)">{{btn.ui.label}}</button>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+
+            </ng-container>
+          </ng-container>
+        </div>
+        <!-- 动态态表单 -->
+        <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
+          <dynamic-doms [modelDOMS]="item" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
+        </div>
+      </ng-container>
+    </ng-template>
+
+    <div *ngIf="submitBtnNeed">
+      <div style="text-align: center;padding: 20px;" [ngSwitch]="btnType">
+        <ng-container *ngSwitchCase="'new'">
+          <button md-raised-button (click)="onSubmit(form.value)">确定</button>
+        </ng-container>
+        <ng-container *ngSwitchCase="'edit'">
+          <button md-raised-button (click)="back()">返回</button>
+          <button md-raised-button (click)="onSubmit(form.value)">确定修改</button>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <button md-raised-button (click)="onSubmit(form.value)">{{btnValue}}</button>
         </ng-container>
       </div>
-      <!-- 动态态表单 -->
-      <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
-        <dynamic-doms [modelDOMS]="item" [(ngModel)]="_modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
-      </div>
-    </ng-container>
-  </ng-container>
-  <!--修改-->
-  <ng-template #elseblock>
-    <ng-container *ngFor="let item of modelDOMS;">
-      <!-- 静态表单 -->
-      <div class="panel clearfix" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && !item.ui.multiple">
-        <h4>{{item.ui.label}}</h4>
-        <ng-container *ngFor="let child of item.childrens">
-          <ng-container [ngSwitch]="child.ui.displayType">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <timi-input [labelName]="child.ui.label" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [value]="modelDOMSData[child.name]" [placeholder]="child.ui.placeholder" (blur)="commitData()" [validatorRequired]="child.ui.required"
-                [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,child.name)"></timi-input>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-              <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData"
-                [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"></timi-checkbox>
-              <timi-checkbox *ngIf="!child.ui.multiple" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [labelName]="child.ui.label"
-                [checkboxs]="child.ui.label" [columns]="child.ui.columns"></timi-checkbox>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
-              这个功能还没实现 O(∩_∩)O~
-            </div>
-            <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
-              placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <timi-textarea name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [labelName]="child.ui.label" [placeholder]="child.ui.placeholder" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
-                [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="textarea"></timi-textarea>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-              <timi-select name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
-                [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter" (onChange)="selectChange($event, child.cmds)"
-                [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="child.name | ergodicJson : modelDOMSData"
-                [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)" validatorComponentType="select"></timi-select>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'daterange'">
-              <md-input-container>
-                <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                <md-datepicker #picker></md-datepicker>
-              </md-input-container>
-              &nbsp;&nbsp;--&nbsp;&nbsp;
-              <md-input-container>
-                <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                <md-datepicker #picker2></md-datepicker>
-              </md-input-container>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-              <div>
-                <timi-file-uploader name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                  [btnName]="child.ui.label" [src]="displayLogoFun(child.name,modelDOMSData)" [columns]="child.ui.columns"
-                  (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
-                  [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,child.name)"
-                  validatorComponentType="file-uploader"></timi-file-uploader>
-              </div>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-              <timi-chip-group name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
-                [placeholder]="child.ui.placeholder" [labeName]="child.ui.label" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
-                [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
-                (storeErrData)="storeErrData($event,child.name)" validatorComponentType="tags"></timi-chip-group>
-            </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
-              </div>
-              <div class="box-item item-control-wrapper">
-                <ueditor name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
-              </div>
-            </div>
-            <div class="form-group columns{{child.ui.columns}} free-region-parent" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
-              </div>
-              <div class="box-item item-control-wrapper" *ngIf="!child.ui.required">
-                <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
-                  (click)="commitData()"></free-region>
-              </div>
-              <div class="box-item item-control-wrapper" *ngIf="child.ui.required">
-                <free-region name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]" [multiple]="child.ui.multiple" [inputData]="child.bindData"
-                  (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,child.name)"
-                  verificate="true"></free-region>
-              </div>
-            </div>
-            <div class="form-group tac columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
-              <ng-container *ngFor="let btn of child.childrens;">
-                <button md-raised-button (click)="onSubmit(form.value,btn.cmds)">{{btn.ui.label}}</button>
-              </ng-container>
-            </div>
-            <div class="form-group columns{{child.ui.columns}} errBorderParent" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
-              <div class="box-item item-label">
-                <label>{{child.ui.label}}</label>
-              </div>
-              <p>{{modelDOMSData[child.name]}}</p>
-            </div>
-
-            <!-- 静态表单二级面板 -->
-            <div class="panel clearfix" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'blcok'}" *ngIf="child.ui.displayType === 'HtmlDomDisplayType.Panel' && !child.ui.multiple">
-              <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
-              <ng-container *ngFor="let grandson of child.childrens">
-                <ng-container [ngSwitch]="grandson.ui.displayType">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
-                    <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
-                      [(ngModel)]="modelDOMSData[grandson.name]" [value]="modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
-                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
-                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
-                    <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
-                      [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"></timi-checkbox>
-                    <timi-checkbox *ngIf="!grandson.ui.multiple" name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData"
-                      [labelName]="grandson.ui.label" [checkboxs]="grandson.ui.label" [columns]="grandson.ui.columns"></timi-checkbox>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Radio'">
-                    这个功能还没实现 O(∩_∩)O~
-                  </div>
-                  <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"
-                    placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
-                    <timi-textarea name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
-                      [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder" [columns]="grandson.ui.columns"
-                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
-                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
-                    <timi-select name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
-                      pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData" [columns]="grandson.ui.columns"
-                      [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'" [filter]="grandson.ui.filter"
-                      (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies"
-                      [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)"
-                      validatorComponentType="select"></timi-select>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
-                    <md-input-container>
-                      <input mdInput [mdDatepicker]="picker" placeholder="起始时间">
-                      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-                      <md-datepicker #picker></md-datepicker>
-                    </md-input-container>
-                    &nbsp;&nbsp;--&nbsp;&nbsp;
-                    <md-input-container>
-                      <input mdInput [mdDatepicker]="picker2" placeholder="截至时间">
-                      <md-datepicker-toggle mdSuffix [for]="picker2"></md-datepicker-toggle>
-                      <md-datepicker #picker2></md-datepicker>
-                    </md-input-container>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Upload'">
-                    <div>
-                      <timi-file-uploader name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
-                        [btnName]="grandson.ui.label" [src]="displayLogoFun(grandson.name,modelDOMSData)" [columns]="grandson.ui.columns"
-                        (success)="uploaded($event)" (files)="selected($event)" [validatorRequired]="grandson.ui.required"
-                        [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
-                        (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="file-uploader"></timi-file-uploader>
-                    </div>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Tags'">
-                    <timi-chip-group name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
-                      [placeholder]="grandson.ui.placeholder" [labeName]="grandson.ui.label" [columns]="grandson.ui.columns"
-                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="modelDOMSData[grandson.name]"
-                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="tags"></timi-chip-group>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.RichText'">
-                    <div class="box-item item-label">
-                      <label>{{grandson.ui.label}}</label>
-                    </div>
-                    <div class="box-item item-control-wrapper">
-                      <ueditor name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [loadingTip]="'加载中……'" [config]="config"></ueditor>
-                    </div>
-                  </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.AddressSelect'">
-                    <div class="box-item item-label">
-                      <label>{{grandson.ui.label}}</label>
-                    </div>
-                    <div class="box-item item-control-wrapper" *ngIf="!grandson.ui.required">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
-                        (click)="commitData()"></free-region>
-                    </div>
-                    <div class="box-item item-control-wrapper" *ngIf="grandson.ui.required">
-                      <free-region name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]" [multiple]="grandson.ui.multiple" [inputData]="grandson.bindData"
-                        (click)="commitData()" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,grandson.name)"
-                        verificate="true"></free-region>
-                    </div>
-                  </div>
-                  <div class="form-group tac columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.ButtonRegion'">
-                    <ng-container *ngFor="let btn of grandson.grandsonrens;">
-                      <button md-raised-button (click)="onSubmit(form.value,btn.cmds)">{{btn.ui.label}}</button>
-                    </ng-container>
-                  </div>
-                </ng-container>
-              </ng-container>
-            </div>
-
-          </ng-container>
-        </ng-container>
-      </div>
-      <!-- 动态态表单 -->
-      <div class="panel" [ngStyle]="{'display': item.ui.hidden ? 'none' : 'blcok'}" *ngIf="item.ui.displayType === 'HtmlDomDisplayType.Panel' && item.ui.multiple">
-        <dynamic-doms [modelDOMS]="item" [(ngModel)]="modelDOMSData[item.name]" name="{{item.name}}" [custom]="item.ui.attrs? item.ui.attrs[0] :''"></dynamic-doms>
-      </div>
-    </ng-container>
-  </ng-template>
-
-  <div *ngIf="submitBtnNeed">
-    <div style="text-align: center;padding: 20px;" [ngSwitch]="btnType">
-      <ng-container *ngSwitchCase="'new'">
-        <button md-raised-button (click)="onSubmit(form.value)">确定</button>
-      </ng-container>
-      <ng-container *ngSwitchCase="'edit'">
-        <button md-raised-button (click)="back()">返回</button>
-        <button md-raised-button (click)="onSubmit(form.value)">确定修改</button>
-      </ng-container>
-      <ng-container *ngSwitchDefault>
-        <button md-raised-button (click)="onSubmit(form.value)">{{btnValue}}</button>
-      </ng-container>
     </div>
-  </div>
 
-</form>
+  </form>
