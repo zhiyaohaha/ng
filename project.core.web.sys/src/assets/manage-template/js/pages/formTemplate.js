@@ -1535,12 +1535,12 @@ $(".additional").on("click", ".addnotes", function(){
                     <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
                 </div>
                 <div class="form-group">
-                    <select class="form-control input-sm m-b-10">
-                        <option value="">=</option>
-                        <option value="">></option>
-                        <option value=""><</option>
-                        <option value="">>=</option>
-                        <option value=""><=</option>
+                    <select class="form-control input-sm m-b-10 relationOperator">
+                        <option value="=">=</option>
+                        <option value=">">></option>
+                        <option value="<"><</option>
+                        <option value=">=">>=</option>
+                        <option value="<="><=</option>
                     </select>
                 </div>
                 <div class="form-group  eventInput">
@@ -1561,19 +1561,19 @@ $(".additional").on("click", ".addnotes", function(){
                     <option value="||!">或者不</option>
                 </select>
             </div>
-            <div class="eventLevel2 bracketsChildsSecond">
+            <div class="eventLevel2 ">
                 <div class="triggerWhereGroup">
                     <div class="formTemplate-wrap">
                         <div class="form-group">
                             <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control input-sm m-b-10">
-                                <option value="">=</option>
-                                <option value="">></option>
-                                <option value=""><</option>
-                                <option value="">>=</option>
-                                <option value=""><=</option>
+                            <select class="form-control input-sm m-b-10 relationOperator">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                                <option value=">=">>=</option>
+                                <option value="<="><=</option>
                             </select>
                         </div>
                         <div class="form-group  eventInput">
@@ -1604,19 +1604,19 @@ $(".additional").on("click", ".addnotes", function(){
                         <label for="">触发条件：</label>
                     </div>    
                     <div class="eventLevel2Parent">
-                        <div class="eventLevel2 bracketsChildsSecond">
+                        <div class="eventLevel2 ">
                             <div class="triggerWhereGroup">
                                 <div class="formTemplate-wrap">
                                     <div class="form-group">
-                                        <select class="form-control input-sm m-b-10 eventcmdFormDom"></select>
+                                        <select class="form-control input-sm m-b-10 eventcmdFormDom">${eventcmdFormDom}</select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control input-sm m-b-10">
-                                            <option value="">=</option>
-                                            <option value="">></option>
-                                            <option value=""><</option>
-                                            <option value="">>=</option>
-                                            <option value=""><=</option>
+                                        <select class="form-control input-sm m-b-10 relationOperator">
+                                            <option value="=">=</option>
+                                            <option value=">">></option>
+                                            <option value="<"><</option>
+                                            <option value=">=">>=</option>
+                                            <option value="<="><=</option>
                                         </select>
                                     </div>
                                     <div class="form-group  eventInput">
@@ -1664,6 +1664,7 @@ function save(){
             "bindTarget": $("#bindTarget").val(),
             "cmds": saveCmds(),
             "value":$('#defaultValue').val(),
+            "events":saveEvents(),
             ui: {
                 "label": $("#bindTitle").val(),
                 "displayType": $("#displayType").val(),
@@ -1679,7 +1680,7 @@ function save(){
             "verifies":saveVerifies(),
             "description": $("#bindDescription").val()
         }
-
+        // console.log(objData[activeId]);
         //命令栏-触发dom
         //只有在'有标题，有绑定值的情况下'，才能添加'触发dom的选项'
         if(objData[activeId].name && objData[activeId].ui.label)  
@@ -1923,3 +1924,67 @@ function setChildScrollHeight(){
     $("#fixedDivCenter").height(height); 
     $("#fixedDivRight").height(height);
 }
+
+//保存事件选项 功能
+function saveEvents(){
+    var arr = [];
+    $("#eventPart").find(".form-inline").each(function(){
+        var _self = $(this);
+        var canSave = false;  //用来判断是否可以存储
+
+        var bracketsChild = [];
+        _self.find('.eventLevel2Parent').children().each(function(){
+            var _self2 = $(this);
+            if(_self2.hasClass('eventLevel2')){  //二级操作项
+                var bracketsGrandson = [];
+                _self2.find('.triggerWhereGroup').children().each(function(){
+                    var _self3 = $(this);
+                    if(_self3.hasClass('formTemplate-wrap')){  //三级表达式
+                        var selfDom = _self3.find("select.eventcmdFormDom").val();
+                        var selfVal = _self3.find(".eventInput>input").val();
+
+                        if(selfDom && selfVal){
+                            canSave = true;   //操作数选择以后，并且val有值的情况下，才存储
+                        }
+                        bracketsGrandson.push({
+                            "type":"ConditionType.RelationalExpression",
+                            "relations":{
+                                "dom": selfDom,
+                                "relations":"RelationOperator." +  _self3.find("select.relationOperator").val(),
+                                "value": selfVal
+                            },
+                            "logic": null
+                        });
+                    }else if(_self3.hasClass('form-group')){  //三级操作符
+                        bracketsGrandson.push({
+                            "type":"ConditionType.LogicalOperator",
+                            "relations": null,
+                            "logic":"LogicalOperator." + _self3.find(".eventLogicalOperator").val()
+                        });
+                    }
+                })
+                bracketsChild.push({
+                    "type":"ConditionType.()",
+                    "relationsLogic":bracketsGrandson,
+                    "logic":null
+                });
+            }else if(_self2.hasClass('form-group')){  //二级操作符
+                bracketsChild.push({
+                    "type":"ConditionType.LogicalOperator",
+                    "relationsLogic": null,
+                    "logic":"LogicalOperator." + _self2.find(".eventLogicalOperator").val()
+                });
+            }
+        })
+
+        if(canSave){
+            var type = _self.find(".tiggerEvent>select").val();
+            arr.push({
+                'type':type,
+                'bracketsLogic':bracketsChild
+            }
+        )}
+        // console.log(arr)
+    })
+    return arr;
+} 
