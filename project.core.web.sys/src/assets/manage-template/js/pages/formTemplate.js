@@ -1699,6 +1699,9 @@ function save(){
             if(cmdFormDomOptionsAdd){
                 cmdFormDom += `<option value="${objData[activeId].name}">${objData[activeId].ui.label}</option>`;
                 $(".cmdFormDom").html(cmdFormDom);  
+
+                eventcmdFormDom += `<option value="${objData[activeId].name}">${objData[activeId].ui.label}</option>`;
+                $(".eventcmdFormDom").html(eventcmdFormDom); 
             }
 
         }
