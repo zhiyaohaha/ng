@@ -144,10 +144,42 @@ export class OrderService {
   }
 
   //指派人提交接口
-  onSubmitAssign(user,ids){
-    return this.baseService.post("/api/LoanOrder/SetAssign",{
-      user:user,
-      ids:ids
+  onSubmitAssign(user, ids) {
+    return this.baseService.post("/api/LoanOrder/SetAssign", {
+      user: user,
+      ids: ids
     });
+  }
+
+  //需求改动后的接口
+  //选择产品的时候验证是否需要实名
+  getRealName(id) {
+    return this.baseService.get("/api/LoanOrder/Step1CheckProductNeedReal", { id: id })
+  }
+  //需要实名，进行认证合一的接口
+  getRealPic(productId, realRecord) {
+    return this.baseService.post("/api/LoanOrder/Step2PhotoCardSameOCR", {
+      product: productId,
+      realRecord: realRecord
+    })
+  }
+  //获取富友地区二级联动
+  // getArea() {
+  //   return this.baseService.get("/api/ThirdAPI/Fuiou/GetAdCodes");
+  // }
+  //富有的五要素实名认证
+  infoReal(product, realRecord) {
+    return this.baseService.post("/api/LoanOrder/Step3FiveReal", {
+      product: product,
+      realRecord: realRecord
+    })
+  }
+  //校验短信验证码接口
+  realCode(product, id, verifyCode) {
+    return this.baseService.post("/api/LoanOrder/Step4VerifyCode", {
+      product: product,
+      id: id,
+      verifyCode: verifyCode
+    })
   }
 }
