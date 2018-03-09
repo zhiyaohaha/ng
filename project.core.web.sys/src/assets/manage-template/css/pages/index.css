@@ -114,10 +114,10 @@ li {
     width: 153px !important;
 }
 
-#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group,#tiggerEvent>.form-inline>.form-group{
+#cmdsGroup>.form-inline>.form-group,#verifyGroup>.form-inline>.form-group,#eventPart>.form-inline>.form-group{
     width:100%;
 }
-#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control,#tiggerEvent>.form-inline>.form-group>.form-control{
+#cmdsGroup>.form-inline>.form-group>.form-control,#verifyGroup>.form-inline>.form-group>.form-control,#eventPart>.form-inline>.form-group>.form-control{
     width:100%;
 }
 
