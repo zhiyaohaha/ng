@@ -227,34 +227,38 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
    * 根据管道返回计算过后的值
    */
   returnValue(value: any): any {
-    let text;
-    switch (this.unitPipe) {
-      case "HtmlPipe.InterestRate":
-        text = value / 100;
-        break;
-      case "HtmlPipe.TenThousandKM":
-        text = value * 10000;
-        break;
-      case "HtmlPipe.TenThousandElement":
-        text = value * 10000;
-        break;
-      default:
-        text = value;
-        break;
-    }
-    return text;
+    // let text;
+    // switch (this.unitPipe) {
+    //   case "HtmlPipe.InterestRate":
+    //     text = value / 100;
+    //     break;
+    //   case "HtmlPipe.TenThousandKM":
+    //     text = value * 10000;
+    //     break;
+    //   case "HtmlPipe.TenThousandElement":
+    //     text = value * 10000;
+    //     break;
+    //   default:
+    //     text = value;
+    //     break;
+    // }
+    // return text;
+
+    return value;
   }
 
   returnDisplayValue(value: any): any {
-    if (this.unitPipe === "HtmlPipe.InterestRate") {
-      return value * 100;
-    } else if (this.unitPipe === "HtmlPipe.TenThousandKM") {
-      return value / 10000;
-    } else if (this.unitPipe === "HtmlPipe.TenThousandElement") {
-      return value / 10000;
-    } else {
-      return value;
-    }
+    // if (this.unitPipe === "HtmlPipe.InterestRate") {
+    //   return value * 100;
+    // } else if (this.unitPipe === "HtmlPipe.TenThousandKM") {
+    //   return value / 10000;
+    // } else if (this.unitPipe === "HtmlPipe.TenThousandElement") {
+    //   return value / 10000;
+    // } else {
+    //   return value;
+    // }
+
+    return value;
   }
 
   writeValue(obj: any): void {
