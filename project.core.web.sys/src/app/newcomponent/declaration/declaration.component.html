@@ -1,4 +1,4 @@
-<div >
+<div>
   <div class="declaration">
     <div class="searchBox">
 
@@ -14,7 +14,7 @@
       </ul>
 
     </div>
-    
+
     <div class="productsBox">
       <ul class="products" [class.ulActive]="addPadding">
         <li *ngFor="let product of productDetail;let i = index" (click)="changeStyle(product,i)" [class.liActive]="product.checked">
@@ -42,7 +42,7 @@
     </div>
 
   </div>
-  
+
   <!-- 修改部分 -->
 
   <div class="real" *ngIf="showCertification==1">
@@ -75,7 +75,7 @@
       <button type="button" (click)="onSubmit()">申请贷款</button>
     </div> -->
   </div>
-  
+
 
 
   <div class="authentication" *ngIf="true">
@@ -105,8 +105,12 @@
         <span class="right red" *ngIf="showPhoneError">{{errorPhone}}</span>
       </li>
       <li>
-        <span class="left">所属地区：</span>
-        <free-region class="right" [(ngModel)]="abc" type="2"  verificate="true"></free-region>
+        <div class="box-item item-label">
+          <label>所属地区：</label>
+        </div>
+        <div class="box-item item-control-wrapper">
+          <free-region class="right" [(ngModel)]="abc" type="2" verificate="true"></free-region>
+        </div>
       </li>
       <div class="authenticationBtn">
         <button type="button" (click)="startVerify()">认证</button>
@@ -121,7 +125,7 @@
       </div>
     </ul>
 
-      <!-- <li>
+    <!-- <li>
         <span class="left">开户行：</span>
         <timi-select pholder="{{'请选择开户行'}}" [options]="bankData" multipleForUse="showCertification==2" class="right" (onChange)="getBank($event)"></timi-select>
       </li>
@@ -146,9 +150,9 @@
       <div class="authenticationBtn">
         <button type="button" (click)="startVerify()" [disabled]="showBtn" [class.special]="showBtn">开始认证</button>
       </div> -->
-    
+
   </div>
 
-  
+
 
 </div>
