@@ -163,10 +163,6 @@ export class OrderService {
       realRecord: realRecord
     })
   }
-  //获取富友地区二级联动
-  // getArea() {
-  //   return this.baseService.get("/api/ThirdAPI/Fuiou/GetAdCodes");
-  // }
   //富有的五要素实名认证
   infoReal(product, realRecord) {
     return this.baseService.post("/api/LoanOrder/Step3FiveReal", {
@@ -180,6 +176,15 @@ export class OrderService {
       product: product,
       id: id,
       verifyCode: verifyCode
+    })
+  }
+  //不需要认证合一和实名绑卡时候的接口
+  toDeclaration(product, name, idCard, mobilePhone){
+    return this.baseService.post("/api/LoanOrder/Step2SimpleRecord",{
+      product: product,
+      name: name,
+      idCard: idCard,
+      mobilePhone: mobilePhone
     })
   }
 }
