@@ -1,10 +1,8 @@
-<div class="panel" [ngStyle]="{'display': modelDOMS.ui.hidden ? 'none' : 'blcok'}"
-     *ngIf="modelDOMS.ui.displayType === 'HtmlDomDisplayType.Panel' && !modelDOMS.ui.multiple">
+<div class="panel" [ngStyle]="{'display': modelDOMS.ui.hidden ? 'none' : 'blcok'}" *ngIf="modelDOMS.ui.displayType === 'HtmlDomDisplayType.Panel' && !modelDOMS.ui.multiple">
   <ng-container *ngFor="let child of modelDOMS.childrens">
     <ng-container [ngSwitch]="child.ui.displayType">
 
-      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'"
-           [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Image'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
         <div class="label">{{child.ui.label}}</div>
 
         <div class="img-wrap span" (click)="toShow($event)">
@@ -17,27 +15,23 @@
         </div>
       </div>
 
-      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-           [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
         <div class="label">{{child.ui.label}}</div>
         <ng-container [ngSwitch]="child.ui.pipe">
-          <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData |
-            date:"yyyy-MM-dd HH:mm:ss"}}
+          <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | ergodicJson : modelDOMSData | date:"yyyy-MM-dd HH:mm:ss"}}
           </div>
-          <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData |
-            date:"yyyy-MM-dd"}}
+          <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | ergodicJson : modelDOMSData | date:"yyyy-MM-dd"}}
           </div>
           <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord : modelDOMSData}}</div>
           <!--<div class="span" *ngSwitchDefault>{{child.name.slice(child.name.indexOf(".") + 1) | ergodicJson :-->
-            <!--modelDOMSData}}-->
+          <!--modelDOMSData}}-->
           <!--</div>-->
 
           <!--2018年1月25日修改结构 tcl-->
           <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
         </ng-container>
       </div>
-      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
-           [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+      <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
         <div class="label">{{child.ui.label}}</div>
         <div class="span" *ngIf="isArray(modelDOMSData[child.name]);else elseblock;">
           <p *ngFor="let item of modelDOMSData[child.name]">{{item}}</p>
@@ -50,27 +44,22 @@
   </ng-container>
 </div>
 
-<div class="panel" [ngStyle]="{'display': modelDOMS.ui.hidden ? 'none' : 'blcok'}"
-     *ngIf="modelDOMS.ui.displayType === 'HtmlDomDisplayType.Panel' && modelDOMS.ui.multiple">
+<div class="panel" [ngStyle]="{'display': modelDOMS.ui.hidden ? 'none' : 'blcok'}" *ngIf="modelDOMS.ui.displayType === 'HtmlDomDisplayType.Panel' && modelDOMS.ui.multiple">
   <ng-container *ngFor="let data of modelDOMS.name | lastdot : modelDOMSData">
     <ng-container *ngFor="let child of modelDOMS.childrens">
       <ng-container [ngSwitch]="child.ui.displayType">
-        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'"
-             [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticText'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
           <div class="label">{{child.ui.label}}</div>
           <ng-container [ngSwitch]="child.ui.pipe">
-            <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | lastdot : data |
-              date:"yyyy-MM-dd HH:mm:ss"}}
+            <div class="span" *ngSwitchCase="'HtmlPipe.DateTime'">{{child.name | lastdot : data | date:"yyyy-MM-dd HH:mm:ss"}}
             </div>
-            <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | lastdot : data |
-              date:"yyyy-MM-dd"}}
+            <div class="span" *ngSwitchCase="'HtmlPipe.Date'">{{child.name | lastdot : data | date:"yyyy-MM-dd"}}
             </div>
             <div class="span" *ngSwitchCase="'HtmlPipe.BoolYesNo'">{{child.name | booleanToWord : data}}</div>
             <div class="span" *ngSwitchDefault>{{child.name | lastdot : data}}</div>
           </ng-container>
         </div>
-        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'"
-             [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+        <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
           <div class="label">{{child.ui.label}}</div>
           <div class="span" *ngIf="isArray(data[child.name]);else elseblock;">
             <p *ngFor="let item of data[child.name]">{{item}}</p>
