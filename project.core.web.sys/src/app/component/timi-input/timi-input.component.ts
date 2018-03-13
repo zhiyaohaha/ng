@@ -214,7 +214,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
       case "HtmlPipe.TenThousandKM":
         text = "万公里";
         break;
-      case "":
+      case "HtmlPipe.Month":
         text = "月";
         break;
       default:
