@@ -57,9 +57,6 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   //新增部分
   showResult: boolean = false;
 
-  areaArray: Array<any> = []; //富有地区数组
-
-  //新增
   area: any;
   errorPhone: string;//电话号码的错误内容
   showIdError: boolean;//控制显示身份证错误信息
@@ -68,6 +65,7 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   showCode: boolean = false; //显示验证码部分
   errorPic: string;//开始认证上面的报错展示信息
   showPicError: boolean;//控制显示上传图片的报错信息
+  personName: string;//用户姓名
 
   @Output() onPostOrderId = new EventEmitter();  //发送最新上传的文件数据
 
@@ -122,7 +120,9 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
     if (product.checked) {
       this.addPadding = true;
       this.orderService.getRealName(this.productId).subscribe(res => {
+        console.log(res)
         if (res.data.needReal === false) {
+          this.showCertification = 2;
           console.log('不需要实名');
         } else {
           console.log('需要实名');
@@ -145,21 +145,21 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
     this.photo = e.id;
   }
   //发送验证码
-  onCertification() {
-    this.loading.register("loading");
-    this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
-      this.loading.resolve("loading");
-      if (res.success) {
-        this.showBtn = false;
-        super.showToast(this.toastService, '验证码已发送，请注意查收!!');
-        if (res.data) {
-          this.personRealId = res.data.id;
-        }
-      } else {
-        super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
-      }
-    })
-  }
+  // onCertification() {
+  //   this.loading.register("loading");
+  //   this.orderService.getInfo(this.idCard, this.bank, this.bankCard, this.phoneNum, this.idCardPositiveImage, this.idCardOppositeImage, this.photo).subscribe(res => {
+  //     this.loading.resolve("loading");
+  //     if (res.success) {
+  //       this.showBtn = false;
+  //       super.showToast(this.toastService, '验证码已发送，请注意查收!!');
+  //       if (res.data) {
+  //         this.personRealId = res.data.id;
+  //       }
+  //     } else {
+  //       super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+  //     }
+  //   })
+  // }
 
 
 
@@ -211,6 +211,7 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
         "idCardOppositeImage": this.idCardOppositeImage,
         "photo": this.photo
       }).subscribe(res => {
+        console.log(res);
         this.loading.resolve("loading");
         if (res.success) {
           this.showPicError = false;
@@ -294,26 +295,57 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
             //false时 返回认证id  显示验证码部分
             this.showCode = true;
           }
-        }else{
+        } else {
           super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
         }
       })
-    }else{
+    } else {
       //信息填写不全，报错提示
       super.openAlert({ title: "提示", message: '信息填写不全，请重新填写！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
     }
-    
+
   }
   //提交验证码
   sendCode() {
     this.orderService.realCode(this.productId, this.realId, this.phoneCode).subscribe(res => {
-      if(res.success){
+      if (res.success) {
         super.showToast(this.toastService, '实名认证已成功，请进行下一步！');
         this.onPostOrderId.emit(res.data.id);
-      }else{
-        super.showToast(this.toastService, '验证码输入错误，请重新输入！');
+      } else {
+        super.openAlert({ title: "提示", message: res.message?res.message:'未知错误，请稍后再试！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
       }
     })
   }
-
+  //获取身份证号码
+  authentication(e, person) {
+    let regexp = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/i;
+    this.idCard = person.value;
+    if (regexp.test(this.idCard)) {
+      this.showIdError = false;
+      this.errorCard = '';
+    } else {
+      this.showIdError = true;
+      this.errorCard = '身份证号码不正确！';
+    }
+  }
+  // 获取名字
+  getName(e, name) {
+    this.personName =name.value;
+    console.log(this.personName);
+  }
+  //选择产品不需要实名时的提交按钮
+  onSubmit(){
+    if(this.personName && this.idCard && this.phoneNum){
+      this.orderService.toDeclaration(this.productId,this.personName,this.idCard,this.phoneNum).subscribe(res=>{
+        console.log(res);
+        if(res.success){
+          this.onPostOrderId.emit(res.data.id);
+        }else{
+          super.openAlert({ title: "提示", message: res.message ? res.message : '未知错误，请稍后再试！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        }
+      })
+    }else{
+      super.openAlert({ title: "提示", message: '未填写完整信息，请补全信息！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+    }
+  }
 }

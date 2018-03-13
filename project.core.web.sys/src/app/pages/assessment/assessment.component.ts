@@ -155,7 +155,7 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    alert(1);
+    console.log(1);
   }
 
   /**
