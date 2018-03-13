@@ -1,4 +1,4 @@
-import {CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
   AfterViewInit,
   Component,
@@ -12,8 +12,8 @@ import {
   Renderer2,
   ViewChild
 } from "@angular/core";
-import {DomRenderer} from "../../common/dom";
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { DomRenderer } from "../../common/dom";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 export const TIMI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,7 +29,7 @@ export const TIMI_INPUT_VALUE_ACCESSOR: any = {
       <div class="box-item item-control-wrapper">
         <div #wrap class="item-control">
           <input #input class="item-input" type="{{type}}" placeholder="{{placeholder}}" [disabled]="disabledVal"
-                 name="{{name}}" [(ngModel)]="displayValue" (blur)="onBlur($event)" (change)="onChange($event)"
+                 name="{{name}}" value="{{value}}" (blur)="onBlur($event)"
                  spellcheck="false" autocomplete="off" [ngStyle]="{'width': inputWidth}"
                  required="{{require}}" (dragover)="allowDrop($event)" (drop)="drop($event)" (focus)="onFocus($event)">
           <span class="unit">{{unit}}</span>
@@ -50,12 +50,10 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 
   set value(value) {
     this._value = value;
-    this.displayValue = this.returnDisplayValue(value);
-    this.valueChange(value);
+    this.valueChange(this._value);
   }
 
   _value;
-  displayValue; // input显示的值
   @Input() type: string = "text";
   @Input() labelWidth: string;
   @Input() labelName: string;
@@ -67,23 +65,20 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
   @Input() require: boolean;
   @Input() pattern: string;
   @Input() errorTips: string;
-
   @Input() // 单位的管道
   set unitPipe(value) {
     this.inputWidth = value ? "" : "100%";
     this.unit = this.switchUnit(value);
     this._unitPipe = value;
   }
-
   get unitPipe() {
     return this._unitPipe;
   }
-
   _unitPipe: string;
 
   @Output() blur: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
-  @Output() change: EventEmitter<any> = new EventEmitter();
+
 
 
   @ViewChild("wrap")
@@ -110,7 +105,6 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
    */
   onBlur($event) {
     $event.isChange = this.isChange($event);
-    $event.target.value = this.returnValue(this.displayValue);
     let regexp: any;
     switch (this.pattern) {
       case "tel":
@@ -154,10 +148,6 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
     this.focus.emit(e);
   }
 
-  // change
-  onChange($event) {
-    this.change.emit($event);
-  }
 
   /*允许拖放*/
   allowDrop($event) {
@@ -223,48 +213,11 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
     return text;
   }
 
-  /**
-   * 根据管道返回计算过后的值
-   */
-  returnValue(value: any): any {
-    // let text;
-    // switch (this.unitPipe) {
-    //   case "HtmlPipe.InterestRate":
-    //     text = value / 100;
-    //     break;
-    //   case "HtmlPipe.TenThousandKM":
-    //     text = value * 10000;
-    //     break;
-    //   case "HtmlPipe.TenThousandElement":
-    //     text = value * 10000;
-    //     break;
-    //   default:
-    //     text = value;
-    //     break;
-    // }
-    // return text;
-
-    return value;
-  }
-
-  returnDisplayValue(value: any): any {
-    // if (this.unitPipe === "HtmlPipe.InterestRate") {
-    //   return value * 100;
-    // } else if (this.unitPipe === "HtmlPipe.TenThousandKM") {
-    //   return value / 10000;
-    // } else if (this.unitPipe === "HtmlPipe.TenThousandElement") {
-    //   return value / 10000;
-    // } else {
-    //   return value;
-    // }
-
-    return value;
-  }
 
   writeValue(obj: any): void {
     // this.value = obj || '';
     if (obj == null || obj === undefined) {
-      this._value = "";
+      this.value = "";
     } else {
       this.value = obj;
     }
@@ -283,7 +236,7 @@ export class TimiInputComponent implements ControlValueAccessor, AfterViewInit, 
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   declarations: [TimiInputComponent],
   exports: [TimiInputComponent]
 })

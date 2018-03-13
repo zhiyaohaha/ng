@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Input, NgModule, OnInit, Output} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {MdButtonModule} from "@angular/material";
-import {ButtonModule} from "../button/button.directive";
-import {defaultValue} from "../../common/global.config";
-import {FnUtil} from "../../common/fn-util";
-import {NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions} from "../ngx-gallery";
-import {NewComponentModule} from "../../newcomponent/newcomponent.module";
-import {PreviewService} from "../../services/preview/preview.service";
-import {SharedPipeModule} from "../shared-pipe/shared-pipe.module";
-import {CovalentDataTableModule} from "@covalent/core";
-import {TimiTableModule} from "../timi-table/timi-table.component";
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { MdButtonModule } from "@angular/material";
+import { ButtonModule } from "../button/button.directive";
+import { defaultValue } from "../../common/global.config";
+import { FnUtil } from "../../common/fn-util";
+import { NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from "../ngx-gallery";
+import { NewComponentModule } from "../../newcomponent/newcomponent.module";
+import { PreviewService } from "../../services/preview/preview.service";
+import { SharedPipeModule } from "../shared-pipe/shared-pipe.module";
+import { CovalentDataTableModule } from "@covalent/core";
+import { TimiTableModule } from "../timi-table/timi-table.component";
 
 @Component({
   selector: "detail-model",
@@ -95,7 +95,7 @@ export class DetailModelComponent implements OnInit {
         thumbnails: this.imgUrls.length > 1,
         previewZoom: true
       },
-      {"breakpoint": 500, "width": "100%", "height": "200px"}
+      { "breakpoint": 500, "width": "100%", "height": "200px" }
     ];
   }
 
