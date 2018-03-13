@@ -84,7 +84,8 @@
       <div class="form-group columns1">
         <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [ngModel]="loanInfo.applyAmount" (ngModelChange)="applyAmountChange($event)"
           [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
-          [validatorInputValue]="loanInfo.applyAmount" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyAmount')"></timi-input>
+          [validatorInputValue]="loanInfo.applyAmount" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyAmount')"
+          unitPipe='HtmlPipe.Element'></timi-input>
       </div>
     </li>
     <li>
