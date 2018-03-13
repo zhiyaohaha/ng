@@ -33,13 +33,17 @@ const childRoutes: Routes = [
     path: "OrgStructure.GroupMgr/:pageCode",
     loadChildren: "../main-parameter-manage/main-parameter-manage.module#MainParameterManageModule"
   },
-  // OA管理
+
+  // 三级分销
   { path: "OAMgr.Scheduling/:pageCode", loadChildren: "../scheduling/scheduling.module#SchedulingModule"},
   { path: "LoanMgr.OrderMgr/:pageCode", loadChildren: "../order-manage/order-manage.module#OrderManageModule" },
   { path: "SpreadLevelManage/:pageCode", loadChildren: "../promote/promote.module#PromoteModule" },
   { path: "LoanDemand/:pageCode", loadChildren: "../loandemand/loandemand.module#LoandemandModule" },
   { path: "CapitalRakeBackManage/:pageCode", loadChildren: "../commission/commission.module#CommissionModule" },
   { path: "DataStatistics/:pageCode", loadChildren: "../statistics/statistics.module#StatisticsModule" },
+  // 工具（房价评估）
+  { path: "Artificial/:pageCode", loadChildren: "../assessment/assessment.module#AssessmentModule"},
+  { path: "OnLine/:pageCode", loadChildren: "../online-assessment/online-assessment.module#OnlineAssessmentModule"},
   // 贷后管理
   {path: "LoanCount/:pageCode", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
   {path: "LoanCount/:pageCode/:orgId", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
