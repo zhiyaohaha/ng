@@ -25,6 +25,7 @@ import { MdButtonModule } from '@angular/material';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { SharedPipeModule } from "app/component/shared-pipe/shared-pipe.module";
 import { AssignComponent } from './assign/assign.component';
+import { DetailModelModule } from "../component/detail-model/detail-model.component";
 @NgModule({
     declarations: [
         PreviewComponent,
@@ -51,7 +52,8 @@ import { AssignComponent } from './assign/assign.component';
         MultipleFileUploaderModule,
         RegionModule,
         MdButtonModule,
-        SharedPipeModule
+        SharedPipeModule,
+        DetailModelModule
     ],
     exports: [
         PreviewComponent,

@@ -159,7 +159,7 @@ export class DetailUnitComponent implements OnInit {
     FormsModule,
     ButtonModule,
     MdButtonModule,
-    NewComponentModule,
+    // NewComponentModule,
     NgxGalleryModule, SharedPipeModule,
     CovalentDataTableModule, TimiTableModule
   ],
