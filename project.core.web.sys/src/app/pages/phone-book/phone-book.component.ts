@@ -267,46 +267,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     });
   }
 
-  //删除通话记录数据
-  // deleteRocord() {
-  //   let id = this.checkRocord.join(",");
-  //   super.openConfirm({
-  //     dialogService: this.dialogService,
-  //     message: "确定要删除选中的记录吗？"
-  //   }, (accept) => {
-  //     if (accept) {
-  //       this.phoneBookService.deleteRocords(id).subscribe(res => {
-  //         if (res.success === true) {
-  //           this.checkRocord = [];
-  //           this.phoneBookService.getRecord(this.personId, this.recordActiveIndex, this.recordPageSize).subscribe(r => {
-  //             this.getRecordData(r.data);
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-  
-  //删除通讯录
-  // deleteDetail() {
-  //   let id = this.checkDetail.join(",");
-  //   super.openConfirm({
-  //     dialogService: this.dialogService,
-  //     message: "确定要删除选中的记录吗？",
-  //   }, (accept) => {
-  //     if (accept) {
-  //       this.phoneBookService.deleteDetails(id).subscribe(res => {
-  //         if (res.success === true) {
-  //           this.checkDetail = [];
-  //           this.phoneBookService.getAddressBook(this.personId, this.addressActiveIndex, this.addressPageSize).subscribe(r => {
-  //             this.getAddressData(r.data);
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
   //删除行
   deleteRows() {
     super.openConfirm({
@@ -336,46 +296,6 @@ export class PhoneBookComponent extends BaseUIComponent implements OnInit {
     }
     this.rowId = arr.join(",");
   }
-
-  //全选
-  // checkedAll(e) {
-  //   this.recordCheck = !this.recordCheck;
-  //   if (e.srcElement.checked == true) {
-  //     for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
-  //       let isInarray = this.inArray(this.recordData.phoneBookDetails[i].id, this.checkRocord);
-  //       if (!isInarray) {
-  //         this.checkRocord.push(this.recordData.phoneBookDetails[i].id);
-  //       }
-  //     }
-  //   } else if (e.srcElement.checked == false) {
-  //     for (let i = 0; i < this.recordData.phoneBookDetails.length; i++) {
-  //       this.removeByValue(this.checkRocord, this.recordData.phoneBookDetails[i].id)
-  //     }
-  //   }
-  //   console.log(this.checkRocord);
-  // }
-
-  //选择行通话记录
-  // checkedRocord(e, item) {
-  //   let isInarray = this.inArray(item.id, this.checkRocord);
-  //   if (e.srcElement.checked === true && !isInarray) {
-  //     this.checkRocord.push(item.id);
-  //   } else if (e.srcElement.checked === false && isInarray) {
-  //     this.removeByValue(this.checkRocord, item.id);
-  //   }
-  // }
-
-  //选择行通讯录
-  // checkedDetail(e, item) {
-  //   let isInarray = this.inArray(item.id, this.checkDetail);
-  //   if (e.srcElement.checked === true && !isInarray) {
-  //     this.checkDetail.push(item.id);
-  //   } else if (e.srcElement.checked === false && isInarray) {
-  //     this.removeByValue(this.checkDetail, item.id);
-  //   }
-  //   console.log(this.checkDetail);
-  // }
-
 
   //删除数组中的特定值
   removeByValue(arr, value) {

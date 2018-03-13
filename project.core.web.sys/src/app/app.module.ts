@@ -34,8 +34,6 @@ import { RegionService } from "app/services/region/region.service";
 
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -60,7 +60,7 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   areaArray: Array<any> = []; //富有地区数组
 
   //新增
-  abc: any;
+  area: any;
   errorPhone: string;//电话号码的错误内容
   showIdError: boolean;//控制显示身份证错误信息
   showPhoneError: boolean;//控制显示电话号码错误信息
@@ -277,12 +277,12 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   }
   // 发送验证码并验证
   startVerify() {
-    if (this.bank && this.abc && this.bankCard && this.phoneNum) {
+    if (this.bank && this.area && this.bankCard && this.phoneNum) {
       //此时信息才已填写完全
       this.orderService.infoReal(this.productId, {
         'id': this.realId,
         'fuiouBank': this.bank,
-        'fuiouBankArea': this.abc,
+        'fuiouBankArea': this.area,
         'bankCard': this.bankCard,
         'mobilePhone': this.phoneNum,
       }).subscribe(res => {
