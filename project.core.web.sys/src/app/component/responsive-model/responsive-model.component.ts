@@ -90,7 +90,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
       this.submitVerify = false;
     }
   }
-  inputPipeDisposeArray: any = []; //存储有管道的，值需要处理的，input控件的pipe(是一个临时数据)。
+  inputKeyDisposeArray: any = []; //存储有管道的，值需要处理的，input控件的key(是一个临时数据)。
   inputDisposeArray: any = [];   //存储有管道的，值需要处理的，input控件的key和pipe。
   @ViewChild("form") formDiv: ElementRef;
 
@@ -136,6 +136,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
     }
 
     //对，有管道且有处理需求的input 的值，进行处理
+    // console.log(this.inputDisposeArray);
     if (this.inputDisposeArray.length > 0) {
       this.inputDisposeArray.forEach(element => {
         if (element.pipe === "HtmlPipe.InterestRate") {  //利率
@@ -372,9 +373,9 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
    */
   addDispose(pipe, key) {
     if (pipe && (pipe === "HtmlPipe.InterestRate" || pipe === "HtmlPipe.TenThousandKM" || pipe === "HtmlPipe.TenThousandElement")) {
-      let pipeArray = this.inputPipeDisposeArray;  //this.inputPipeDisposeArray
-      if (pipeArray.indexOf(pipe) == -1) {
-        pipeArray.push(pipe);
+      let pipeArray = this.inputKeyDisposeArray;  //this.inputKeyDisposeArray
+      if (pipeArray.indexOf(key) == -1) {
+        pipeArray.push(key);
         this.inputDisposeArray.push({ 'key': key, 'pipe': pipe });
 
         setTimeout(() => {
