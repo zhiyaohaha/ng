@@ -90,8 +90,8 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
       this.submitVerify = false;
     }
   }
-
-
+  inputPipeDisposeArray: any = []; //存储有管道的，值需要处理的，input控件的pipe(是一个临时数据)。
+  inputDisposeArray: any = [];   //存储有管道的，值需要处理的，input控件的key和pipe。
   @ViewChild("form") formDiv: ElementRef;
 
   constructor(private baseService: BaseService,
@@ -133,6 +133,19 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
           return false;   //如果有错误，则停止提交
         }
       }
+    }
+
+    //对，有管道且有处理需求的input 的值，进行处理
+    if (this.inputDisposeArray.length > 0) {
+      this.inputDisposeArray.forEach(element => {
+        if (element.pipe === "HtmlPipe.InterestRate") {  //利率
+          $event[element.key] /= 100;
+        } else if (element.pipe === "HtmlPipe.TenThousandKM") {  //万公里
+          $event[element.key] *= 10000;
+        } else if (element.pipe === "HtmlPipe.TenThousandElement") {  //万元
+          $event[element.key] *= 10000;
+        }
+      });
     }
 
     //没有错误，可以继续提交
@@ -346,6 +359,37 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
 
     } else {
       this._errData[key] = e;
+    }
+  }
+
+
+  /**
+   * 将需要特殊处理的有管道的input控件，的key存储起来，
+   * 
+   * @param {any} pipe 
+   * @param {any} key
+   * @memberof ResponsiveModelComponent
+   */
+  addDispose(pipe, key) {
+    if (pipe && (pipe === "HtmlPipe.InterestRate" || pipe === "HtmlPipe.TenThousandKM" || pipe === "HtmlPipe.TenThousandElement")) {
+      let pipeArray = this.inputPipeDisposeArray;  //this.inputPipeDisposeArray
+      if (pipeArray.indexOf(pipe) == -1) {
+        pipeArray.push(pipe);
+        this.inputDisposeArray.push({ 'key': key, 'pipe': pipe });
+
+        setTimeout(() => {
+          if (this.btnType !== 'new') {  //修改状态下
+            if (pipe === "HtmlPipe.InterestRate") {
+              this.modelDOMSData[key] *= 100;
+            } else if (pipe === "HtmlPipe.TenThousandKM") {
+              this.modelDOMSData[key] /= 10000;
+            } else if (pipe === "HtmlPipe.TenThousandElement") {
+              this.modelDOMSData[key] /= 10000;
+            }
+          }
+        }, 0);
+
+      }
     }
   }
 
