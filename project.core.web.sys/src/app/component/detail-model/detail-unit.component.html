@@ -28,7 +28,40 @@
           <!--</div>-->
 
           <!--2018年1月25日修改结构 tcl-->
+          <!-- <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div> -->
+          <div class="span" *ngSwitchCase="'HtmlPipe.TenThousandKM'">{{(child.name | ergodicJson : modelDOMSData)/10000}}
+            <span class="unit"> 万公里</span>
+          </div>
+
+          <div class="span" *ngSwitchCase="'HtmlPipe.M2'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> m²</span>
+          </div>
+          <div class="span" *ngSwitchCase="'HtmlPipe.Day'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> 天</span>
+          </div>
+          <div class="span" *ngSwitchCase="'HtmlPipe.InterestRate'">{{(child.name | ergodicJson : modelDOMSData)*100}}
+            <span class="unit"> %</span>
+          </div>
+
+          <div class="span" *ngSwitchCase="'HtmlPipe.Individual'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> 个</span>
+          </div>
+          <div class="span" *ngSwitchCase="'HtmlPipe.Element'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> 元</span>
+          </div>
+          <div class="span" *ngSwitchCase="'HtmlPipe.TenThousandElement'">{{(child.name | ergodicJson : modelDOMSData)/10000}}
+            <span class="unit"> 万元</span>
+          </div>
+
+          <div class="span" *ngSwitchCase="'HtmlPipe.Age'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> 岁</span>
+          </div>
+          <div class="span" *ngSwitchCase="'HtmlPipe.Month'">{{child.name | ergodicJson : modelDOMSData}}
+            <span class="unit"> 月</span>
+          </div>
+
           <div class="span" *ngSwitchDefault>{{child.name | ergodicJson : modelDOMSData}}</div>
+
         </ng-container>
       </div>
       <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.StaticTextArea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">

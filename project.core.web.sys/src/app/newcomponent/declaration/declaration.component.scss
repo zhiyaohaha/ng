@@ -283,6 +283,14 @@ button {
         width: 280px;
       }
     }
+    .selectThree{
+      & > timi-select{
+        width:48.7% !important;
+      }
+      & > timi-select:nth-child(2){
+        margin-right:0px !important; 
+      }
+    }
   }
 }
 .specialBtn{

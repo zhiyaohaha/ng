@@ -8,8 +8,10 @@
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""></timi-responsive-form>
     <!-- 修改 -->
-    <timi-responsive-form *ngIf="loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit" submitBtnNeed=""
-      [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
+    <timi-responsive-form *ngIf="loanInfo.applyFormData && !readyOnly" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="edit"
+      submitBtnNeed="" [modelDOMSData]="loanInfo.applyFormData"></timi-responsive-form>
+    <!-- 详情页面 -->
+    <detail-model *ngIf="loanInfo.applyFormData && readyOnly" [modelDOMS]="loanInfo._applyDetailTemplate.doms" [modelDOMSData]="loanInfo.applyFormData"></detail-model>
   </div>
 
   <!-- 所需附件 -->

@@ -82,9 +82,10 @@
     </li>
     <li>
       <div class="form-group columns1">
-        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [ngModel]="loanInfo.applyAmount" (ngModelChange)="applyAmountChange($event)" [customValidator]="validatorGather[0]['customValidator']"
-          [validatorRequired]="validatorGather[0]['validatorRequired']" [validatorInputValue]="loanInfo.applyAmount" [submitVerify]="submitVerify"
-          (storeErrData)="storeErrData($event,'applyAmount')"></timi-input>
+        <timi-input labelName="贷款金额" name="applyAmount" [(ngModel)]="loanInfo.applyAmount" [ngModel]="loanInfo.applyAmount" (ngModelChange)="applyAmountChange($event)"
+          [customValidator]="validatorGather[0]['customValidator']" [validatorRequired]="validatorGather[0]['validatorRequired']"
+          [validatorInputValue]="loanInfo.applyAmount" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyAmount')"
+          unitPipe='HtmlPipe.Element'></timi-input>
       </div>
     </li>
     <li>
@@ -98,9 +99,9 @@
     <li>
       <div class="form-group columns1">
         <timi-select freeSelectName="贷款期限" name="applyTerm" [(ngModel)]="loanInfo.applyTerm" [options]="loanInfo.termBindData" pholder="{{'请选择期限'}}"
-        [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
-        [validatorInputValue]="loanInfo.applyTerm === '0' ? null : loanInfo.applyTerm" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyTerm')"
-        validatorComponentType="select"></timi-select>
+          [customValidator]="validatorGather[1]['customValidator']" [validatorRequired]="validatorGather[1]['validatorRequired']"
+          [validatorInputValue]="loanInfo.applyTerm === '0' ? null : loanInfo.applyTerm" [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,'applyTerm')"
+          validatorComponentType="select"></timi-select>
       </div>
     </li>
     <li class="areasComponent">
@@ -110,7 +111,8 @@
         </div>
         <div class="box-item item-control-wrapper">
           <free-region name="applyAdCode" [(ngModel)]="loanInfo.applyAdCode" multiple="" [loginerBindAreas]="loanInfo.applyAdBindData"
-            [applyBindDataSwitch]="applyBindDataSwitch" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,'applyAdCode')" verificate="true"></free-region>
+            [applyBindDataSwitch]="applyBindDataSwitch" [manualVerificationForm]="submitVerify" (submitErrorData)="storeErrData($event,'applyAdCode')"
+            verificate="true"></free-region>
         </div>
       </div>
     </li>
@@ -129,7 +131,9 @@
       <div class="form-group columns1">
         <div class="label">贷款金额：</div>
         <div class="span">
-          <p>{{loanInfo.applyAmount}}</p>
+          <p>{{(loanInfo.applyAmount)}}
+            <span class="unit"> 元</span>
+          </p>
         </div>
       </div>
     </li>
@@ -145,7 +149,9 @@
       <div class="form-group columns1">
         <div class="label">贷款期限：</div>
         <div class="span">
-          <p>{{loanInfo.applyTerm}}</p>
+          <p>{{loanInfo.applyTerm}}
+            <span class="unit"> 月</span>
+          </p>
         </div>
       </div>
     </li>
