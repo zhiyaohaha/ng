@@ -344,4 +344,7 @@ html { overflow: hidden; }
 #tabEvent .eventLevelJudge{
     width:130px !important; 
 }
+#tabEvent .eventcmdFormDom{
+    max-width:130px !important; 
+}
 
