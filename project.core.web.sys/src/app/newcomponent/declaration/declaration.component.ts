@@ -120,12 +120,9 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
     if (product.checked) {
       this.addPadding = true;
       this.orderService.getRealName(this.productId).subscribe(res => {
-        console.log(res)
         if (res.data.needReal === false) {
           this.showCertification = 2;
-          console.log('不需要实名');
         } else {
-          console.log('需要实名');
           this.showCertification = 1;
         }
       })
@@ -211,7 +208,6 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
         "idCardOppositeImage": this.idCardOppositeImage,
         "photo": this.photo
       }).subscribe(res => {
-        console.log(res);
         this.loading.resolve("loading");
         if (res.success) {
           this.showPicError = false;
@@ -251,7 +247,6 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   //开户行
   getBank(e) {
     this.bank = e;
-    console.log(this.bank);
   }
   //获取电话号码
   getPhoneNum(phoneNum) {
@@ -331,13 +326,11 @@ export class DeclarationComponent extends BaseUIComponent implements OnInit {
   // 获取名字
   getName(e, name) {
     this.personName =name.value;
-    console.log(this.personName);
   }
   //选择产品不需要实名时的提交按钮
   onSubmit(){
     if(this.personName && this.idCard && this.phoneNum){
       this.orderService.toDeclaration(this.productId,this.personName,this.idCard,this.phoneNum).subscribe(res=>{
-        console.log(res);
         if(res.success){
           this.onPostOrderId.emit(res.data.id);
         }else{

@@ -15,12 +15,13 @@ import { BaseService } from "../../services/base.service";
 import { MdSidenav } from "@angular/material";
 import { CommonService } from "app/services/common/common.service";
 import { BaseUIComponent } from "../baseUI.component";
+import { SharepageService } from "../../services/sharepage-service/sharepage.service";
 
 @Component({
   selector: 'app-assessment',
   templateUrl: './assessment.component.html',
   styleUrls: ['./assessment.component.scss'],
-  providers: [TdLoadingService, CommonService]
+  providers: [TdLoadingService, CommonService, SharepageService]
 })
 
 export class AssessmentComponent extends BaseUIComponent implements OnInit {
@@ -31,7 +32,6 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
 
   selectRow; //每一行的具体数据
   new: boolean; //是否新添加
-  btnType: string; //表单模板按钮类型
   edit: boolean; //点击编辑过后变成true
   detail: boolean; //查看详情时变成true
 
@@ -62,6 +62,7 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
 
   modelDOMS; // 表单DOM结构
   pagecode: string;
+  detailModel; //查询详情的模板
 
 
   constructor(private fnUtil: FnUtil,
@@ -73,7 +74,8 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
               private el: ElementRef,
               private baseService: BaseService,
               private loading: TdLoadingService,
-              private commonService: CommonService) { 
+              private commonService: CommonService,
+              private sharepageService: SharepageService) { 
               
       super(loading, routerInfor);
       routerInfor.paramMap
@@ -155,7 +157,19 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
    * 点击行
    */
   rowClickEvent($event) {
-    console.log(1);
+    console.log($event);
+    this.commonService.getDetailModel({ id: $event.id }).subscribe(res=>{
+      console.log(res);
+    })
+    // this.sharepageService.getDetailModel({ id: $event.id })
+    //   .subscribe(res => {
+    //     console.log(res);
+    //     this.detailModel = res.data.doms;
+    //     this.selectRow = res.data.bindData;
+    //   },
+    //   err=>{
+    //     console.log(err);
+    //   });
   }
 
   /**
