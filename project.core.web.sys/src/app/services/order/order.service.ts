@@ -179,12 +179,16 @@ export class OrderService {
     })
   }
   //不需要认证合一和实名绑卡时候的接口
-  toDeclaration(product, name, idCard, mobilePhone){
-    return this.baseService.post("/api/LoanOrder/Step2SimpleRecord",{
+  toDeclaration(product, name, idCard, mobilePhone) {
+    return this.baseService.post("/api/LoanOrder/Step2SimpleRecord", {
       product: product,
       name: name,
       idCard: idCard,
       mobilePhone: mobilePhone
     })
+  }
+  //返佣接口
+  getToCommission(id) {
+    return this.baseService.post("/api/Statistics/LoanRakeInfo", { data: { orderId: id } })
   }
 }

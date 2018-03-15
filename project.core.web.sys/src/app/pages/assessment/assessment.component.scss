@@ -38,6 +38,19 @@ md-sidenav-container {
 md-sidenav {
   width: 60%;
 }
-
-
-
+.left,
+.right{
+  display: inline-block;
+  width: 45%;
+}
+.fl{
+  float: left;
+}
+.box li{
+  overflow: hidden;
+  margin:32px 0;
+}
+.btnCenter{
+  left: 50%;
+  transform: translateX(-50%);
+}
