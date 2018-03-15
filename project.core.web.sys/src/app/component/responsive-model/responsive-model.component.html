@@ -7,11 +7,11 @@
         <h4 class="">{{item.ui.label}}</h4>
         <ng-container *ngFor="let child of item.childrens">
           <ng-container [ngSwitch]="child.ui.displayType">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-input [labelName]="child.ui.label" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [placeholder]="child.ui.placeholder"
                 (blur)="commitData()" [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
                 [submitVerify]="submitVerify" [unitPipe]="child.ui.pipe" (storeErrData)="storeErrData($event,child.name)"></timi-input>
-              <p>{{addDispose(child.ui.pipe,child.name)}}</p>
+              <p>{{addDispose(child.ui.pipe,child.name)}}{{addEventHandlings(child.events,child.name)}}</p>
             </div>
             <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
@@ -32,7 +32,7 @@
             <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
               <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                 [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
-                (onChange)="selectChange($event, child.cmds)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
+                (onChange)="selectChange(child.name,$event, child.cmds,item.childrens)" [validatorRequired]="child.ui.required" [customValidator]="child.verifies"
                 validatorComponentType="select" [validatorInputValue]="_modelDOMSData[child.name]" [submitVerify]="submitVerify"
                 (storeErrData)="storeErrData($event,child.name)"></timi-select>
             </div>
