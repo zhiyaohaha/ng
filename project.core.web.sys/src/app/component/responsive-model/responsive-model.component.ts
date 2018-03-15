@@ -25,6 +25,7 @@ import { CalendarModule } from "../calendar/calendar.component";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
+import { isArray } from "util";
 @Component({
   selector: "timi-responsive-form",
   templateUrl: "./responsive-model.component.html",
@@ -92,6 +93,8 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
   }
   inputKeyDisposeArray: any = []; //存储有管道的，值需要处理的，input控件的key(是一个临时数据)。
   inputDisposeArray: any = [];   //存储有管道的，值需要处理的，input控件的key和pipe。
+
+  eventHandingsArray: any = [];  //存储控件事件处理
   @ViewChild("form") formDiv: ElementRef;
 
   constructor(private baseService: BaseService,
@@ -213,7 +216,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
    * @param $event 改变的值
    * @param option 需要联动的配置
    */
-  selectChange($event, option) {
+  selectChange(keyName, $event, option, dts) {
     // if (!$event) {
     //   return false;
     // }
@@ -259,6 +262,35 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
     }
 
     this.commitData();
+
+    //对控件事件的处理
+    let eventHandingsArray = this.eventHandingsArray;
+    if (eventHandingsArray.length > 0) {
+      eventHandingsArray.forEach(element => {
+        if (element['relevancyKey'].indexOf(keyName) !== -1) {  //该控件，有需要处理的事件
+          //使用当前控件的值，对 触发事件的 条件进行处理。
+          let that = this;
+          if (Array.isArray($event)) {  //多选
+            $event.forEach(e => {
+              let res = eval(element['eventHanding'].replace(/\[val]/g, 'e'));
+              dts.forEach(dt => {
+                if (dt.name == element['triggerKey']) {
+                  dt.ui.hidden = !res;
+                }
+              });
+
+            });
+          } else {  //单选
+            let res = eval(element['eventHanding'].replace(/\[val]/g, '$event'));
+            dts.forEach(dt => {
+              if (dt.name == element['triggerKey']) {
+                dt.ui.hidden = !res;
+              }
+            });
+          }
+        }
+      });
+    }
   }
 
   /**
@@ -393,6 +425,85 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
       }
     }
   }
+
+  /**
+   * 添加,控件的事件处理
+   * 
+   * @param {any} event 
+   * @memberof ResponsiveModelComponent
+   */
+  addEventHandlings(event, key) {
+    if (event && event.length > 0) {
+      //判断是否重复添加。 
+      let eventHandingsArray = this.eventHandingsArray;
+      let repeatToAdd = false;
+      if (eventHandingsArray.length > 0) {
+        for (const k in eventHandingsArray) {
+          if (eventHandingsArray[k]['triggerKey'] == key) {
+            repeatToAdd = true;
+            break;
+          }
+        }
+      }
+      //非重复添加，可以继续添加 
+      if (!repeatToAdd) {
+        // console.log('继续');
+        let eventHanding = "";
+        let relevancyKey = [];   //relevancyKey  触发事件的控件
+
+        event.forEach(e1 => {
+          if (e1['bracketsLogic'] && e1['bracketsLogic'].length > 0) {
+            e1['bracketsLogic'].forEach(e2 => {
+
+              if (e2['type'] == 'ConditionType.()') {
+                if (e2['relationsLogic'] && e2['relationsLogic'].length > 0) {
+
+                  // eventHanding = "@" + eventHanding;
+                  e2['relationsLogic'].forEach((e3,index3) => {
+                    if (e3['type'] == "ConditionType.RelationalExpression") {
+
+                      let domName = e3['relations']['dom'];
+                      if (relevancyKey.indexOf(domName) == -1) {
+                        relevancyKey.push(domName);
+                      }
+
+                      let e3Relations2 = e3['relations']['relations'].split('.');
+                      e3Relations2[1] = e3Relations2[1].replace('=', '==');   //将=修改为 == 
+                      e3['relations']['value'] = e3['relations']['value'].trim();  //将返回值的前后空格去除;
+
+                      let bracket;
+                      if(index3 == 0){  //多级表达式括号
+                        bracket = "((";
+                      }else{
+                        bracket = "(";
+                      }
+
+                      eventHanding += bracket + "[val]" + e3Relations2[1] + "'" + e3['relations']['value'] + "'" + ")";
+                    } else if (e3['type'] == "ConditionType.LogicalOperator") {
+                      let e3Logic = e3['logic'].split('.');
+                      eventHanding += e3Logic[1];
+                    }
+                  })
+                  
+                  eventHanding = eventHanding + ")";
+                }
+              } else if (e2['type'] == "ConditionType.LogicalOperator") {
+                let e2Logic = e2['logic'].split('.');
+                eventHanding += e2Logic[1];
+              }
+            });
+          }
+        });
+        // console.log(eventHanding)
+        // triggerKey 被触发事件的控件。  //relevancyKey  触发事件的控件  //eventHanding 事件触发的条件
+        this.eventHandingsArray.push({ 'triggerKey': key, 'relevancyKey': relevancyKey, 'eventHanding': eventHanding });
+        // console.log(this.eventHandingsArray);
+      }
+
+    }
+  }
+
+
 
 }
 
