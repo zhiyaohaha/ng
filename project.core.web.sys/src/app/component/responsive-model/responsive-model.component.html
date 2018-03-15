@@ -102,11 +102,11 @@
               <h4 class="staticPanelTwoLabel">{{child.ui.label}}</h4>
               <ng-container *ngFor="let grandson of child.childrens">
                 <ng-container [ngSwitch]="grandson.ui.displayType">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Text'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-input [labelName]="grandson.ui.label" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [placeholder]="grandson.ui.placeholder"
                       [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
                       [submitVerify]="submitVerify" [unitPipe]="grandson.ui.pipe" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
-                    <p>{{addDispose(grandson.ui.pipe,grandson.name)}}</p>
+                    <p>{{addDispose(grandson.ui.pipe,grandson.name)}}{{addEventHandlings(grandson.events,grandson.name)}}</p>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
                     <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
@@ -127,9 +127,9 @@
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
                     <timi-select name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" pholder="{{grandson.ui.placeholder || '请选择'}}"
                       [options]="grandson.bindData" [columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'"
-                      [filter]="grandson.ui.filter" (onChange)="selectChange($event, grandson.cmds)" [validatorRequired]="grandson.ui.required"
-                      [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]" [submitVerify]="submitVerify"
-                      (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="select"></timi-select>
+                      [filter]="grandson.ui.filter" (onChange)="selectChange(grandson.name,$event, grandson.cmds,child.childrens)"
+                      [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
+                      [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="select"></timi-select>
                   </div>
                   <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'daterange'">
                     <md-input-container>
