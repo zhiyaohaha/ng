@@ -1656,6 +1656,7 @@ $(".additional").on("click", ".delnotes", function(){
         $(this).next('.form-group ').remove();
         $(this).remove();
     }else if($(this).data("name") === "eventLevel3Add"){
+        $(this).parent().parent().next().next('.form-group').remove();
         $(this).parent().parent().next('.form-group').remove();
         $(this).parent().parent().remove();
     }else{
@@ -2092,6 +2093,12 @@ function bindEvents(type,data){
                         // 三级还原 （括号里面） （括号里面一定有表达式）
                         if(dt2['relationsLogic'] && dt2['relationsLogic'].length > 0){
                             dt2['relationsLogic'].forEach(function(dt3,index3){
+                                var faIconHtml2;
+                                if(index3 < dt2['relationsLogic'].length - 1){
+                                    faIconHtml2 = `<i class="fa fa-minus-circle delnotes" data-name="eventLevel3Add" aria-hidden="true"></i>`;
+                                }else{
+                                    faIconHtml2 = `<i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>`;
+                                }
                                 if(dt3.type == "ConditionType.RelationalExpression"){   //三级还原 （括号里面 表达式）
                                     var relations = dt3.relations;
                                     level3Dom += `
@@ -2112,7 +2119,7 @@ function bindEvents(type,data){
                                                 <input type="text" class="form-control input-sm m-b-10" placeholder="值" name="value" value="${relations.value}">
                                             </div>
                                             <div class="form-group">
-                                                <i class="fa fa-plus-circle addnotes" data-name="eventLevel3Add" aria-hidden="true"></i>
+                                                `+ faIconHtml2 +`
                                             </div>
                                         </div>
                                         <script>
@@ -2137,12 +2144,19 @@ function bindEvents(type,data){
                                 }
                             })
                         }
+
+                        var faIconHtml;
+                        if(index2 < dt1['bracketsLogic'].length - 1){
+                            faIconHtml = `<i class="fa fa-minus-circle delnotes" data-name="eventLevel2Add" aria-hidden="true"></i>`;
+                        }else{
+                            faIconHtml = `<i class="fa fa-plus-circle addnotes" data-name="eventLevel2Add" aria-hidden="true"></i>`;
+                        }
                         level2Dom += `
                         <div class="eventLevel2 ">
                             <div class="triggerWhereGroup">
                                 ${level3Dom}
                             </div>
-                        </div>`;
+                        </div> `+faIconHtml;
 
                      }else  if(dt2.type == "ConditionType.LogicalOperator"){
                         level2Dom += `
