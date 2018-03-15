@@ -264,33 +264,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
     this.commitData();
 
     //对控件事件的处理
-    let eventHandingsArray = this.eventHandingsArray;
-    if (eventHandingsArray.length > 0) {
-      eventHandingsArray.forEach(element => {
-        if (element['relevancyKey'].indexOf(keyName) !== -1) {  //该控件，有需要处理的事件
-          //使用当前控件的值，对 触发事件的 条件进行处理。
-          let that = this;
-          if (Array.isArray($event)) {  //多选
-            $event.forEach(e => {
-              let res = eval(element['eventHanding'].replace(/\[val]/g, 'e'));
-              dts.forEach(dt => {
-                if (dt.name == element['triggerKey']) {
-                  dt.ui.hidden = !res;
-                }
-              });
-
-            });
-          } else {  //单选
-            let res = eval(element['eventHanding'].replace(/\[val]/g, '$event'));
-            dts.forEach(dt => {
-              if (dt.name == element['triggerKey']) {
-                dt.ui.hidden = !res;
-              }
-            });
-          }
-        }
-      });
-    }
+    this.eventHandling(keyName, $event, dts)
   }
 
   /**
@@ -459,7 +433,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                 if (e2['relationsLogic'] && e2['relationsLogic'].length > 0) {
 
                   // eventHanding = "@" + eventHanding;
-                  e2['relationsLogic'].forEach((e3,index3) => {
+                  e2['relationsLogic'].forEach((e3, index3) => {
                     if (e3['type'] == "ConditionType.RelationalExpression") {
 
                       let domName = e3['relations']['dom'];
@@ -472,9 +446,9 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                       e3['relations']['value'] = e3['relations']['value'].trim();  //将返回值的前后空格去除;
 
                       let bracket;
-                      if(index3 == 0){  //多级表达式括号
+                      if (index3 == 0) {  //多级表达式括号
                         bracket = "((";
-                      }else{
+                      } else {
                         bracket = "(";
                       }
 
@@ -484,7 +458,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                       eventHanding += e3Logic[1];
                     }
                   })
-                  
+
                   eventHanding = eventHanding + ")";
                 }
               } else if (e2['type'] == "ConditionType.LogicalOperator") {
@@ -494,7 +468,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
             });
           }
         });
-        // console.log(eventHanding)
+        console.log(eventHanding)
         // triggerKey 被触发事件的控件。  //relevancyKey  触发事件的控件  //eventHanding 事件触发的条件
         this.eventHandingsArray.push({ 'triggerKey': key, 'relevancyKey': relevancyKey, 'eventHanding': eventHanding });
         // console.log(this.eventHandingsArray);
@@ -504,6 +478,62 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
   }
 
 
+  /**
+   * chebox组件修改事件
+   * 
+   * @param {any} keyName  被触发事件的dom的key
+   * @param {any} $event   当前值
+   * @param {any} dts      用于修改事件的dom的父级的数据
+   * @memberof ResponsiveModelComponent
+   */
+  checkboxChange(keyName, $event, dts) {
+    this.eventHandling(keyName, $event, dts);
+  }
+
+  /**
+   * 对触发事件的处理
+   * 
+   * @param {any} keyName 
+   * @param {any} $event 
+   * @param {any} dts 
+   * @memberof ResponsiveModelComponent
+   */
+  eventHandling(keyName, $event, dts) {
+    let eventHandingsArray = this.eventHandingsArray;
+    if (eventHandingsArray.length > 0) {
+      eventHandingsArray.forEach(element => {
+        if (element['relevancyKey'].indexOf(keyName) !== -1) {  //该控件，有需要处理的事件
+          //使用当前控件的值，对 触发事件的 条件进行处理。
+          let that = this;
+          if (Array.isArray($event)) {  //多选
+            $event.forEach(e => {
+              let res = eval(element['eventHanding'].replace(/\[val]/g, 'e'));
+              // console.log(e);
+              // console.log(element['eventHanding'].replace(/\[val]/g, 'e'))
+              // console.log(res);
+              // console.log(dts);
+              dts.forEach(dt => {
+                if (dt.name == element['triggerKey']) {
+                  dt.ui.hidden = !res;
+                }
+              });
+
+            });
+          } else {  //单选
+            let res = eval(element['eventHanding'].replace(/\[val]/g, '$event'));
+            console.log($event);
+            console.log(element['eventHanding'].replace(/\[val]/g, '$event'))
+            console.log(res);
+            dts.forEach(dt => {
+              if (dt.name == element['triggerKey']) {
+                dt.ui.hidden = !res;
+              }
+            });
+          }
+        }
+      });
+    }
+  }
 
 }
 

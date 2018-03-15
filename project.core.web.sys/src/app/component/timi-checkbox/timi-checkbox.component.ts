@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {Component, forwardRef, Input, NgModule, OnInit} from "@angular/core";
+import {Component, forwardRef, Input, NgModule, OnInit,Output,EventEmitter} from "@angular/core";
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {CheckboxModule} from "../checkbox/checkbox.component";
 
@@ -58,6 +58,7 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
   isShowCheckAll: boolean = true; //控制全选是否显示
 
   valueChange: Function = () => { };
+  @Output() checkboxChange: EventEmitter<any> = new EventEmitter();
 
   constructor() {
   }
@@ -101,8 +102,10 @@ export class TimiCheckboxComponent implements ControlValueAccessor, OnInit {
       }
       this.actived = this.outPutArr.length === this.checkboxs.length;
       this.valueChange(this.outPutArr);
+      this.checkboxChange.emit(this.outPutArr)
     } else {
       this.valueChange($event.checked);
+      this.checkboxChange.emit($event.checked)
     }
   }
 
