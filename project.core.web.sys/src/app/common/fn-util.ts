@@ -55,6 +55,7 @@ export class FnUtil {
     this.menus.forEach((item) => {
       if (item.childrens && item.childrens.length) {
         item.childrens.forEach(value => {
+          //  console.log(value);
           if (value.code === pageCode) {
             apis = value._functions;
           }

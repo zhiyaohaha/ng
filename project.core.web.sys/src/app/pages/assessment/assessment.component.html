@@ -2,7 +2,7 @@
 
   <div class="main-container clearfix">
     <search-form *ngIf="searchFilters" [filters]="searchFilters" [condition]="filters" (onSearch)="onSearch($event)"></search-form>
-
+    <button md-raised-button class="add-button" (click)="nuclearPrice();sidenav.open()">发起核价</button>
   </div>
 
   <timi-table [headers]="columns" [data]="filteredData" [selectable]="true" [clickRowable]="true" [totals]="filteredTotal"
@@ -13,8 +13,42 @@
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
       <div class="col-lg-12">
-        <ng-container>
+        <!-- 1点击行的时候展示的详情侧滑 -->
+        <ng-container *ngIf="showSideNav">
           <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
+        </ng-container>
+        <!-- 2点击发起核价的时候展示的人工评估侧滑 -->
+        <ng-container>
+          <div class="box">
+            <ul>
+              
+              <!-- <li>
+                <timi-select class="left fl" [options]="multipleFalseData" pholder="{{'请选择城市'}}" [freeSelectName]="'城市'"></timi-select>
+                <timi-input class="right fl" type="text" labelName="小区名称" placeholder="小区名称"></timi-input>
+              </li>
+              <li>
+                <timi-input type="text" labelName="详细地址"></timi-input>
+              </li>
+              <li>
+                <timi-input type="text" labelName="建筑面积" class="left fl"></timi-input>
+                <timi-select class="right fl" [options]="multipleFalseData" pholder="{{'请选择'}}" [freeSelectName]="'住宅类型'"></timi-select>
+              </li>
+              <li>
+                <timi-select class="left fl" [options]="direction" pholder="{{'请选择'}}" [freeSelectName]="'房屋朝向'"></timi-select>
+                <timi-select freeSelectName="还款方式" [options]="direction"></timi-select>
+                <timi-input type="text" labelName="建成年代" class="right fl"></timi-input>
+              </li>
+              <li>
+                <timi-input type="text" labelName="楼层情况" class="left fl"></timi-input>
+                <timi-input type="text" labelName="特殊原因" class="right fl"></timi-input>
+              </li>
+              <li>
+                <timi-input type="text" labelName="反馈单价" class="left fl"></timi-input>
+                <timi-input type="text" labelName="反馈总价" class="right fl"></timi-input>
+              </li>
+              <button md-raised-button class="add-button btnCenter">确定</button> -->
+            </ul>
+          </div>
         </ng-container>
       </div>
     </div>

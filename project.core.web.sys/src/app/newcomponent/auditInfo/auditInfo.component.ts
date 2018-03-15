@@ -7,6 +7,8 @@ import { ToastService } from "../../component/toast/toast.service";
 import { TdLoadingService, TdDialogService } from "@covalent/core";
 import { BaseUIComponent } from "../../pages/baseUI.component";
 import { ActivatedRoute } from "@angular/router";
+import { FnUtil } from "../../common/fn-util";
+
 
 @Component({
   selector: "free-auditInfo",
@@ -49,7 +51,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   org: any;
   auditOptionName: string;  //审核结果名字
 
-  @Input() id: string;
+  @Input() id: string;    // 订单ID
   @Input() status: string;  //用于区分当前侧滑状态
   @Output() closeRefreshData = new EventEmitter();
   @Output() detailClick = new EventEmitter();
@@ -81,17 +83,30 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
   ];
   submitVerify: boolean = false;
 
+  commissionBtn: boolean = false; // 用于判断是否具有LoanMgr.OrderMgr.RakeBack权限
+
   constructor(private orderService: OrderService,
     private fb: FormBuilder,
     private toastService: ToastService,
     private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
     private viewContainerRef: ViewContainerRef,
-    private routerInfor: ActivatedRoute) {
+    private routerInfor: ActivatedRoute,
+    private fnUtil: FnUtil) {
     super(loadingService, routerInfor);
   }
 
   ngOnInit() {
+    console.log(this.fnUtil.getFunctions())
+    let power = this.fnUtil.getFunctions();
+    power.forEach(res => {
+      if (res.indexOf('RakeBack') > -1){
+        this.commissionBtn = true;
+      }
+    });
+    // if (this.fnUtil.getFunctions().filter(r => { r.indexOf('RakeBack') > -1 }).length != 0) {
+    //   this.commissionBtn = true;
+    // }
     this.loadingService.register("loading");
 
     if (this.status == 'Detail') {
@@ -467,7 +482,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
 
 
         //2. 验证附件审核结果 
-        
+
         let attachmentGroups = this.loanInfo._attachmentGroups;
         let BreakException = {};
         let notPassNum = 0;
@@ -619,6 +634,12 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
     } else {
       this._errData[key] = e;
     }
+  }
+
+  toCommission() {
+    this.orderService.getToCommission(this.id).subscribe(res => {
+      super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+    })
   }
 
 }
