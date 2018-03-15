@@ -407,7 +407,9 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
    * @memberof ResponsiveModelComponent
    */
   addEventHandlings(event, key) {
+
     if (event && event.length > 0) {
+      // console.log(event)
       //判断是否重复添加。 
       let eventHandingsArray = this.eventHandingsArray;
       let repeatToAdd = false;
@@ -505,7 +507,8 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
         if (element['relevancyKey'].indexOf(keyName) !== -1) {  //该控件，有需要处理的事件
           //使用当前控件的值，对 触发事件的 条件进行处理。
           let that = this;
-          if (Array.isArray($event)) {  //多选
+          console.log($event)
+          if (Array.isArray($event)) {  //多选 （例如:select）
             $event.forEach(e => {
               let res = eval(element['eventHanding'].replace(/\[val]/g, 'e'));
               // console.log(e);
@@ -519,11 +522,11 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
               });
 
             });
-          } else {  //单选
+          } else {  //单选（例如:checkbox）
+            if ($event !== null) {
+              $event = $event.toString();  //将布尔值转换为字符串。
+            }
             let res = eval(element['eventHanding'].replace(/\[val]/g, '$event'));
-            console.log($event);
-            console.log(element['eventHanding'].replace(/\[val]/g, '$event'))
-            console.log(res);
             dts.forEach(dt => {
               if (dt.name == element['triggerKey']) {
                 dt.ui.hidden = !res;
