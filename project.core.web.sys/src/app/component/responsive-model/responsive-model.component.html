@@ -13,7 +13,7 @@
                 [submitVerify]="submitVerify" [unitPipe]="child.ui.pipe" (storeErrData)="storeErrData($event,child.name)"></timi-input>
               <p>{{addDispose(child.ui.pipe,child.name)}}{{addEventHandlings(child.events,child.name)}}</p>
             </div>
-            <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+            <div class="form-group columns{{child.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
                 [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"
                 (checkboxChange)="checkboxChange(child.name,$event,item.childrens)"></timi-checkbox>
@@ -26,13 +26,13 @@
             </div>
             <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]"
               placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-textarea name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" [labelName]="child.ui.label" [placeholder]="child.ui.placeholder"
                 [validatorRequired]="child.ui.required" [customValidator]="child.verifies" [validatorInputValue]="_modelDOMSData[child.name]"
                 [submitVerify]="submitVerify" validatorComponentType="textarea" (storeErrData)="storeErrData($event,child.name)"></timi-textarea>
               <p>{{addEventHandlings(child.events,child.name)}}</p>
             </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-select name="{{child.name}}" [(ngModel)]="_modelDOMSData[child.name]" pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData"
                 [columns]="child.ui.columns" [multiple]="child.ui.multiple" [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter"
                 (onChange)="selectChange(child.name,$event, child.cmds,item.childrens)" [validatorRequired]="child.ui.required"
@@ -112,7 +112,7 @@
                       [submitVerify]="submitVerify" [unitPipe]="grandson.ui.pipe" (storeErrData)="storeErrData($event,grandson.name)"></timi-input>
                     <p>{{addDispose(grandson.ui.pipe,grandson.name)}}{{addEventHandlings(grandson.events,grandson.name)}}</p>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+                  <div class="form-group columns{{grandson.ui.columns}} " *ngSwitchCase="'HtmlDomDisplayType.Checkbox'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-checkbox *ngIf="grandson.ui.multiple && grandson.bindData" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
                       [multiple]="grandson.ui.multiple" [labelName]="grandson.ui.label" [checkboxs]="grandson.bindData" [columns]="grandson.ui.columns"
                       (checkboxChange)="checkboxChange(grandson.name,$event,child.childrens)"></timi-checkbox>
@@ -125,13 +125,13 @@
                   </div>
                   <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]"
                     placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-textarea name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder"
                       [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="_modelDOMSData[grandson.name]"
                       [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
                     <p>{{addEventHandlings(grandson.events,grandson.name)}}</p>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-select name="{{grandson.name}}" [(ngModel)]="_modelDOMSData[grandson.name]" pholder="{{grandson.ui.placeholder || '请选择'}}"
                       [options]="grandson.bindData" [columns]="grandson.ui.columns" [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'"
                       [filter]="grandson.ui.filter" (onChange)="selectChange(grandson.name,$event, grandson.cmds,child.childrens)"
@@ -215,7 +215,7 @@
                 (storeErrData)="storeErrData($event,child.name)" [unitPipe]="child.ui.pipe"></timi-input>
               <p>{{addDispose(child.ui.pipe,child.name)}}{{addEventHandlings(child.events,child.name)}}</p>
             </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Checkbox'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-checkbox *ngIf="child.ui.multiple && child.bindData" name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData"
                 [multiple]="child.ui.multiple" [labelName]="child.ui.label" [checkboxs]="child.bindData" [columns]="child.ui.columns"
                 (checkboxChange)="checkboxChange(child.name,$event,item.childrens)"></timi-checkbox>
@@ -228,14 +228,14 @@
             </div>
             <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{child.name}}" [(ngModel)]="modelDOMSData[child.name]"
               placeholder="{{child.ui.placeholder}}" disabled="{{child.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'show'}">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-textarea name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                 [labelName]="child.ui.label" [placeholder]="child.ui.placeholder" [columns]="child.ui.columns" [validatorRequired]="child.ui.required"
                 [customValidator]="child.verifies" [validatorInputValue]="modelDOMSData[child.name]" [submitVerify]="submitVerify"
                 (storeErrData)="storeErrData($event,child.name)" validatorComponentType="textarea"></timi-textarea>
               <p>{{addEventHandlings(child.events,child.name)}}</p>
             </div>
-            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+            <div class="form-group columns{{child.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'" [ngStyle]="{'display': child.ui.hidden ? 'none' : 'block'}">
               <timi-select name="{{child.name}}" [ngModel]="child.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[child.name]"
                 pholder="{{child.ui.placeholder || '请选择'}}" [options]="child.bindData" [columns]="child.ui.columns" [multiple]="child.ui.multiple"
                 [freeSelectName]="child.ui.label || '请选择'" [filter]="child.ui.filter" (onChange)="selectChange(child.name,$event, child.cmds,item.childrens)"
@@ -338,14 +338,14 @@
                   </div>
                   <input *ngSwitchCase="'HtmlDomDisplayType.Hidden'" ngModel type="hidden" name="{{grandson.name}}" [(ngModel)]="modelDOMSData[grandson.name]"
                     placeholder="{{grandson.ui.placeholder}}" disabled="{{grandson.ui.disabled}}" spellcheck="false" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'show'}">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Textarea'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-textarea name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                       [labelName]="grandson.ui.label" [placeholder]="grandson.ui.placeholder" [columns]="grandson.ui.columns"
                       [validatorRequired]="grandson.ui.required" [customValidator]="grandson.verifies" [validatorInputValue]="grandson.name | ergodicJson : modelDOMSData"
                       [submitVerify]="submitVerify" (storeErrData)="storeErrData($event,grandson.name)" validatorComponentType="textarea"></timi-textarea>
                     <p>{{addEventHandlings(grandson.events,grandson.name)}}</p>
                   </div>
-                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'">
+                  <div class="form-group columns{{grandson.ui.columns}}" *ngSwitchCase="'HtmlDomDisplayType.Select'" [ngStyle]="{'display': grandson.ui.hidden ? 'none' : 'block'}">
                     <timi-select name="{{grandson.name}}" [ngModel]="grandson.name | ergodicJson : modelDOMSData" [(ngModel)]="modelDOMSData[grandson.name]"
                       pholder="{{grandson.ui.placeholder || '请选择'}}" [options]="grandson.bindData" [columns]="grandson.ui.columns"
                       [multiple]="grandson.ui.multiple" [freeSelectName]="grandson.ui.label || '请选择'" [filter]="grandson.ui.filter"
