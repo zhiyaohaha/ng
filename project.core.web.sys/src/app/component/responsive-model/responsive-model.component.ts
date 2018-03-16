@@ -454,7 +454,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                         bracket = "(";
                       }
 
-                      eventHanding += bracket + "[val]" + e3Relations2[1] + "'" + e3['relations']['value'] + "'" + ")";
+                      eventHanding += bracket + "'" + domName + "'" + e3Relations2[1] + "'" + e3['relations']['value'] + "'" + ")";
                     } else if (e3['type'] == "ConditionType.LogicalOperator") {
                       let e3Logic = e3['logic'].split('.');
                       eventHanding += e3Logic[1];
@@ -470,7 +470,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
             });
           }
         });
-        console.log(eventHanding)
+        // console.log(eventHanding)
         // triggerKey 被触发事件的控件。  //relevancyKey  触发事件的控件  //eventHanding 事件触发的条件
         this.eventHandingsArray.push({ 'triggerKey': key, 'relevancyKey': relevancyKey, 'eventHanding': eventHanding });
         // console.log(this.eventHandingsArray);
@@ -501,32 +501,40 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
    * @memberof ResponsiveModelComponent
    */
   eventHandling(keyName, $event, dts) {
+    // 默认，没有"同一个dom"  " 有2个值" 使用 "并且"的情况  ( 与或非表达式中，并没有一个值 可以 同时等于2个值 )
+
     let eventHandingsArray = this.eventHandingsArray;
     if (eventHandingsArray.length > 0) {
       eventHandingsArray.forEach(element => {
         if (element['relevancyKey'].indexOf(keyName) !== -1) {  //该控件，有需要处理的事件
           //使用当前控件的值，对 触发事件的 条件进行处理。
           let that = this;
-          console.log($event)
-          if (Array.isArray($event)) {  //多选 （例如:select）
+
+          if (Array.isArray($event)) {  //多选 （例如:select多选）
             $event.forEach(e => {
-              let res = eval(element['eventHanding'].replace(/\[val]/g, 'e'));
-              // console.log(e);
-              // console.log(element['eventHanding'].replace(/\[val]/g, 'e'))
-              // console.log(res);
-              // console.log(dts);
+
+              let eventHandingString = element['eventHanding'];
+              element['relevancyKey'].forEach(relevancyKey => {
+                if (relevancyKey.indexOf(keyName) !== -1) {
+                  eventHandingString = eventHandingString.replace(new RegExp("'" + keyName + "'", 'g'), "'" + e + "'");
+                } else {
+                  eventHandingString = eventHandingString.replace(new RegExp("'" + relevancyKey + "'", 'g'), "'" + this._modelDOMSData[relevancyKey] + "'");
+                }
+              });
+              let res = eval(eventHandingString);
               dts.forEach(dt => {
                 if (dt.name == element['triggerKey']) {
                   dt.ui.hidden = !res;
                 }
               });
 
-            });
-          } else {  //单选（例如:checkbox）
+            })
+          } else {  //单选（例如:select单选,checkbox）
+
             if ($event !== null) {
               $event = $event.toString();  //将布尔值转换为字符串。
             }
-            let res = eval(element['eventHanding'].replace(/\[val]/g, '$event'));
+            let res = eval(element['eventHanding'].replace(new RegExp("'" + keyName + "'", 'g'), "'" + $event + "'", '$event'));
             dts.forEach(dt => {
               if (dt.name == element['triggerKey']) {
                 dt.ui.hidden = !res;
