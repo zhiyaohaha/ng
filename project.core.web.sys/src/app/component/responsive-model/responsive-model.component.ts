@@ -522,12 +522,13 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                   let data;
                   if (this.btnType === "new") {
                     // console.log('新增')
-                    data = this._modelDOMSData;
+                    data = this._modelDOMSData[relevancyKey];
                   } else {
                     // console.log('修改')
-                    data = this.modelDOMSData;
+                    let modifiedRelevancyKey = relevancyKey.split(".");
+                    data = this.modelDOMSData[modifiedRelevancyKey[0]][modifiedRelevancyKey[1]];
                   }
-                  eventHandingString = eventHandingString.replace(new RegExp("'" + relevancyKey + "'", 'g'), "'" + data[relevancyKey] + "'");
+                  eventHandingString = eventHandingString.replace(new RegExp("'" + relevancyKey + "'", 'g'), "'" + data + "'");
                 }
               });
               let res = eval(eventHandingString);
