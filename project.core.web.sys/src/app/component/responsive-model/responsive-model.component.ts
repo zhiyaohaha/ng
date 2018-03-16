@@ -502,6 +502,7 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
    */
   eventHandling(keyName, $event, dts) {
     // 默认，没有"同一个dom"  " 有2个值" 使用 "并且"的情况  ( 与或非表达式中，并没有一个值 可以 同时等于2个值 )
+    //目前尚未实现所有组件的触发功能： select/checbox 组件 触发  slect/checkbox/input/tetxarea组件
 
     let eventHandingsArray = this.eventHandingsArray;
     if (eventHandingsArray.length > 0) {
@@ -518,7 +519,15 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
                 if (relevancyKey.indexOf(keyName) !== -1) {
                   eventHandingString = eventHandingString.replace(new RegExp("'" + keyName + "'", 'g'), "'" + e + "'");
                 } else {
-                  eventHandingString = eventHandingString.replace(new RegExp("'" + relevancyKey + "'", 'g'), "'" + this._modelDOMSData[relevancyKey] + "'");
+                  let data;
+                  if (this.btnType === "new") {
+                    // console.log('新增')
+                    data = this._modelDOMSData;
+                  } else {
+                    // console.log('修改')
+                    data = this.modelDOMSData;
+                  }
+                  eventHandingString = eventHandingString.replace(new RegExp("'" + relevancyKey + "'", 'g'), "'" + data[relevancyKey] + "'");
                 }
               });
               let res = eval(eventHandingString);
@@ -530,7 +539,6 @@ export class ResponsiveModelComponent extends BaseUIComponent implements OnInit 
 
             })
           } else {  //单选（例如:select单选,checkbox）
-
             if ($event !== null) {
               $event = $event.toString();  //将布尔值转换为字符串。
             }
