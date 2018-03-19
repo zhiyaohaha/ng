@@ -188,12 +188,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.id);
-    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { id: this.detailId }).subscribe(res=>{
-      console.log(res);
-      this.detailModel = res.data.doms;
-      this.selectRow = res.data.bindData;
-    })
-
+    
     // if ($event._rakeBack === "审批中") {
     //   this.isShowDetail = 1;
     // } else if ($event._rakeBack === "未返佣") {
@@ -425,7 +420,11 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     if (this.orderType === 'OrderType.CreditOrder') {
       // 展示订单详情
       this.sideNavType = 2;
-
+      this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { id: this.detailId }).subscribe(res => {
+        console.log(res);
+        this.detailModel = res.data.doms;
+        this.selectRow = res.data.bindData;
+      })
     } else if (this.orderType === 'OrderType.LoanOrder') {
       // 展示产品详情
       this.sideNavType = 3;

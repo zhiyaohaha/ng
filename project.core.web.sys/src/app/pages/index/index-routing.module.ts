@@ -44,6 +44,8 @@ const childRoutes: Routes = [
   // 工具（房价评估）
   { path: "Artificial/:pageCode", loadChildren: "../assessment/assessment.module#AssessmentModule"},
   { path: "OnLine/:pageCode", loadChildren: "../online-assessment/online-assessment.module#OnlineAssessmentModule"},
+  // 资金管理
+  // { path: "TradeWithDraw/:pageCode", loadChildren: "../online-assessment/online-assessment.module#OnlineAssessmentModule" },
   // 贷后管理
   {path: "LoanCount/:pageCode", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},
   {path: "LoanCount/:pageCode/:orgId", loadChildren: "../post-loan-management/loan-count/loan-count.module#LoanCountModule"},

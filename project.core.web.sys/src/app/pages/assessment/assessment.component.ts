@@ -196,5 +196,8 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
   getArea(e) {
     console.log(e);
   }
+  selectedRows(e){
+    console.log(e);
+  }
 
 }

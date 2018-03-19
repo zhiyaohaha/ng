@@ -175,4 +175,7 @@ export class OnlineAssessmentComponent extends BaseUIComponent implements OnInit
    */
   closeEnd() {
   }
+  selectedRows(e){
+    console.log(e);
+  }
 }

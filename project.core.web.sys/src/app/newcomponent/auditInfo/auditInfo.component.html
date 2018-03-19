@@ -3,7 +3,7 @@
   <free-personalLoanInfo [loanInfo]="loanInfo" [readyOnly]="readyOnly"></free-personalLoanInfo>
 
   <!-- 录入信息 -->
-  <div class="loan">
+  <div class="loan" *ngIf="loanInfo._applyDetailTemplate.doms">f
     <h4>录入信息</h4>
     <!-- 新增 -->
     <timi-responsive-form *ngIf="!loanInfo.applyFormData" [modelDOMS]="loanInfo._applyDetailTemplate.doms" btnType="new" submitBtnNeed=""></timi-responsive-form>
@@ -15,7 +15,7 @@
   </div>
 
   <!-- 所需附件 -->
-  <div class="m-b-20">
+  <div class="m-b-20" *ngIf="loanInfo._attachmentGroups">
     <h4>所需附件</h4>
     <p *ngIf="loanInfo.attachmentsZip">
       <a [href]="loanInfo.attachmentsZip" download>一键下载</a>
