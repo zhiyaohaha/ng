@@ -113,7 +113,7 @@ export class RegionComponent implements OnInit, AfterViewInit, ControlValueAcces
 
   //获取数据并处理
   setData(result) {
-    console.log(this.modifiedData)
+    // console.log(this.modifiedData)
     if (!this.modifiedData || this.modifiedData.length == 0) {  //新增状态下
       if (this.type == '2') {
         for (let i = 0; i < result.length; i++) {
