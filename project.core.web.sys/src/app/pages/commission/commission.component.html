@@ -15,82 +15,72 @@
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
-      <div class="col-lg-12">
-        <div class="distributionDetail" *ngIf="detailInfo">
+      <!-- 默认展示的侧滑 -->
+      <div class="col-lg-12"  *ngIf="sideNavType===1">
+        <div class="distributionDetail">
+          <div class="detailBtn">
+            <span>分销详情：</span>
+            <button md-raised-button class="passBtn" (click)="toDetail()">订单详情</button>
+          </div>
+          <p>
+            <span>产品类型：</span>
+            <span>{{detailInfo?._orderType}}</span>
+          </p>
           <p>
             <span>产品名称：</span>
-            <span>{{detailInfo.loanOrder._product.basic.name}}</span>
+            <span>{{detailInfo?.proName}}</span>
           </p>
           <p>
             <span>所属机构：</span>
-            <span>{{detailInfo.loanOrder._product._org}}</span>
-          </p>
-          <p>
-            <span>产品类型：</span>
-            <span>{{detailInfo.loanOrder._product.basic._type}}</span>
+            <span>{{detailInfo?.orgName}}</span>
           </p>
           <p>
             <span>介绍人姓名：</span>
-            <span>{{detailInfo.loanOrder.firstLevel?detailInfo.loanOrder.firstLevel.name:''}}</span>
+            <span>{{detailInfo?.firstLevelName?detailInfo.firstLevelName:''}}</span>
           </p>
           <p>
             <span>客户姓名：</span>
-            <span>{{detailInfo.loanOrder.name}}</span>
+            <span>{{detailInfo?.orderOwenerName}}</span>
           </p>
           <p>
-            <span>业务员姓名：</span>
-            <span>{{detailInfo.loanOrder._creater.name}}</span>
+            <span>分佣人姓名：</span>
+            <span>{{detailInfo?.userName}}({{detailInfo?.userStatus}})</span>
           </p>
           <p>
             <span>返佣总金额：</span>
-            <span>{{detailInfo.loanOrder.rakeBackValue}}</span>
+            <span>{{detailInfo?.totalValue}}</span>
           </p>
           <p>
-            <span>备注：</span>
-            <span>{{detailInfo.loanOrder.description}}</span>
+            <span>收到的返佣金额：</span>
+            <span>{{detailInfo?.value}}</span>
           </p>
+          <p>
+            <span>返佣状态：</span>
+            <span>{{detailInfo?._tradeState}}</span>
+          </p>
+          <div class="note">
+            <span>备注：</span>
+            <textarea name="note" id="first" cols="30" rows="10" (blur)="getMessage($event,note)" #note></textarea>
+          </div>
+          <div class="pass" *ngIf="audit">
+            <span>审核操作：</span>
+            <div class="btnBox" *ngIf="!showResult">
+              <button md-raised-button class="passBtn" (click)="pass()">通过</button>
+              <button md-raised-button class="passBtn" (click)="noPass()">不通过</button>
+            </div>
+            <span *ngIf="showResult">{{resultMessage}}</span>
+          </div>
         </div>
-        <!-- 返佣明细部分 -->
-        <div class="detail" *ngIf="detailInfo && (isShowDetail==1)">
-          <table>
-            <tr>
-              <th>姓名</th>
-              <th>用户状态</th>
-              <th>返佣金额（元）</th>
-              <th>返佣状态</th>
-              <th>操作</th>
-            </tr>
-            <tr *ngFor="let item of detailInfo.userInfo;let i = index">
-              <td>{{item.trade.userName}}</td>
-              <td>{{item._state}}</td>
-              <td>{{item.trade.value}}</td>
-              <td>{{item.trade._tradeState}}</td>
-              <td>
-                <input type="radio" id="pass{{i}}" name="btn{{i}}" (click)="toPass(item,i,pass,nopass)" #pass>
-                <label for="pass{{i}}">通过</label>
-                <input type="radio" id="noPass{{i}}" name="btn{{i}}" (click)="toNoPass(item,i,nopass,pass)" #nopass>
-                <label for="noPass{{i}}">未通过</label>
-              </td>
-            </tr>
-          </table>
-          <button md-raised-button class="add-button" (click)="sendMassage()">确定</button>
-        </div>
-        <div class="detail" *ngIf="detailInfo && (isShowDetail==2)">
-          <table>
-            <tr>
-              <th>姓名</th>
-              <th>操作人</th>
-              <th>操作时间</th>
-              <th>操作内容</th>
-            </tr>
-            <tr *ngFor="let item of detailInfo.userInfo;let i = index">
-              <td>{{item.trade.userName}}</td>
-              <td>{{item.trade._dealuser}}</td>
-              <td>{{item.time}}</td>
-              <td>{{item.trade.description}}</td>
-            </tr>
-          </table>
-        </div>
+        <button md-raised-button class="add-button" (click)="toSubmit()">确定</button>
+      </div>
+      <!-- 订单详情时的侧滑 -->
+      <div class="col-lg-12" *ngIf="sideNavType===2">
+        
+        <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
+      </div>
+      <!-- 产品详情时的侧滑 -->
+      <div class="col-lg-12" *ngIf="sideNavType===3">
+        <free-auditInfo [id]="detailId" status="Detail" (detailClick)="detailClick($event)"></free-auditInfo>
       </div>
     </div>
   </md-sidenav>

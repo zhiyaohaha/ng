@@ -117,19 +117,14 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
     return this._options;
   }
   set options(value: any) {
-    
-
+    console.log(value);
     this.value = "";
     if (!value) {
-      console.log(1)
       return;
-      
     }
     if (!this.multiple && value.length > 0 && value[0].text !== "请选择") {
-      console.log(2)
       value.unshift({ text: "请选择", value: null, childrens: null });
     } else if (this.multiple && this._selected) {
-      console.log(3)
       let arr = [];
       this.selected = [];
       value.map(r => {
@@ -141,6 +136,7 @@ export class TimiSelectComponent implements ControlValueAccessor, OnInit, AfterC
       });
       this.value = arr.join(",");
     }
+    
     this._options = value;
     this.getValue();
 

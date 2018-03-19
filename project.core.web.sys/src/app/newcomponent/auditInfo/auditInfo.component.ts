@@ -104,9 +104,7 @@ export class AuditInfoComponent extends BaseUIComponent implements OnInit {
         this.commissionBtn = true;
       }
     });
-    // if (this.fnUtil.getFunctions().filter(r => { r.indexOf('RakeBack') > -1 }).length != 0) {
-    //   this.commissionBtn = true;
-    // }
+
     this.loadingService.register("loading");
 
     if (this.status == 'Detail') {

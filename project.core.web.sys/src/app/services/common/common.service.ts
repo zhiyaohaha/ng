@@ -22,12 +22,9 @@ export class CommonService {
    */
   public getDetailModel(param, type = ".DetailTemplate"): Observable<any> {
     let key = this.fnUtil.getPageCode();
-    console.log(key);
     if (this.fnUtil.searchAPI(key + type)) {
-      console.log(1);
       return this.baseService.get(this.fnUtil.searchAPI(key + type), param);
     } else {
-      console.log(3);
       return this.fnUtil.getSubject();
     }
   }

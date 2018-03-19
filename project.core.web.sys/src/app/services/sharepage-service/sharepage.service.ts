@@ -23,8 +23,8 @@ export class SharepageService {
    */
   public getDetailModel(param) {
     this.key = this.fnUtil.getPageCode();
-    console.log(this.key);
     if (this.fnUtil.searchAPI(this.key + ".DetailTemplate")) {
+      console.log(this.fnUtil.searchAPI(this.key + ".DetailTemplate"));
       return this.service.get(this.fnUtil.searchAPI(this.key + ".DetailTemplate"), param);
     } else {
       return this.fnUtil.getSubject();

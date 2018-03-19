@@ -193,6 +193,7 @@ export class SharepageComponent extends BaseUIComponent implements OnInit {
 
     this.sharepageService.getDetailModel({id: $event.id})
       .subscribe(res => {
+        console.log(res);
         this.detailModel = res.data.doms;
         this.selectRow = res.data.bindData;
       });

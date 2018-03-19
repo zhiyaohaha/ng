@@ -1,4 +1,4 @@
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   Component,
   ComponentFactory,
@@ -9,20 +9,20 @@ import {
   ViewChild,
   ViewContainerRef,
 } from "@angular/core";
-import {SharepageService} from "../../services/sharepage-service/sharepage.service";
-import {ITdDataTableColumn, TdLoadingService} from "@covalent/core";
-import {globalVar} from "../../common/global.config";
-import {fadeIn} from "../../common/animations";
-import {FnUtil} from "../../common/fn-util";
-import {ToastService} from "../../component/toast/toast.service";
-import {ConvertUtil} from "../../common/convert-util";
-import {SetAuthorityComponent} from "../../component/set-authority/set-authority.component";
-import {BaseService} from "../../services/base.service";
-import {MdSidenav} from "@angular/material";
+import { SharepageService } from "../../services/sharepage-service/sharepage.service";
+import { ITdDataTableColumn, TdLoadingService, TdDialogService } from "@covalent/core";
+import { globalVar } from "../../common/global.config";
+import { fadeIn } from "../../common/animations";
+import { FnUtil } from "../../common/fn-util";
+import { ToastService } from "../../component/toast/toast.service";
+import { ConvertUtil } from "../../common/convert-util";
+import { SetAuthorityComponent } from "../../component/set-authority/set-authority.component";
+import { BaseService } from "../../services/base.service";
+import { MdSidenav } from "@angular/material";
 
-import {CommonService} from "app/services/common/common.service";
-import {CommissionService} from "app/services/commission/commission.service";
-import {BaseUIComponent} from "../baseUI.component";
+import { CommonService } from "app/services/common/common.service";
+import { CommissionService } from "app/services/commission/commission.service";
+import { BaseUIComponent } from "../baseUI.component";
 
 
 @Component({
@@ -35,7 +35,7 @@ import {BaseUIComponent} from "../baseUI.component";
 export class CommissionComponent extends BaseUIComponent implements OnInit {
 
   setAuthorityComponent: ComponentRef<SetAuthorityComponent>;
-  @ViewChild("authorityModal", {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild("authorityModal", { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild("sidenav")
   private sidenav: MdSidenav;
 
@@ -79,18 +79,35 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
   temp: object = {}; //用来传数据的
   isShowDetail: number; //用来控制展示切换的 1审批中 2已返佣 3未返佣
 
+  // 新增部分内容
+  showResult: boolean = false; //用于点击通过和不通过后切换展示内容
+  resultMessage: string; //展示通过和未通过
+  tradeRecordId: string; //当前交易记录ID
+  isPass: boolean; //通过还是未通过
+  description: string; //备注
+  audit: boolean; // 是否在审核状态，用于判断是否展示通过和未通过按钮
+
+  sideNavType: number = 1; // 1默认显示侧滑，2订单详情，3产品详情
+  orderType: string;  // 详情展示的判断条件
+
+  detailId: string; // 订单id
+  detailModel; //查询详情的模板
+
+
   constructor(private sharepageService: SharepageService,
-              private fnUtil: FnUtil,
-              private converUtil: ConvertUtil,
-              private routerInfor: ActivatedRoute,
-              private router: Router,
-              private toastService: ToastService,
-              private resolver: ComponentFactoryResolver,
-              private el: ElementRef,
-              private baseService: BaseService,
-              private loading: TdLoadingService,
-              private commonService: CommonService,
-              private commissionService: CommissionService) {
+    private fnUtil: FnUtil,
+    private converUtil: ConvertUtil,
+    private routerInfor: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private loading: TdLoadingService,
+    private commonService: CommonService,
+    private commissionService: CommissionService,
+    private dialogService: TdDialogService,
+    private viewContainerRef: ViewContainerRef, ) {
     super(loading, routerInfor);
 
     this.routerInfor.paramMap
@@ -135,7 +152,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
           }
           if (r.data.data && r.data.data.filters.length > 0) {
             r.data.data.filters.forEach(i => {
-              this.filters.push({"key": i.name, "value": i.value || ""});
+              this.filters.push({ "key": i.name, "value": i.value || "" });
             });
             this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
           }
@@ -171,13 +188,19 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.id);
-    if ($event._rakeBack === "审批中") {
-      this.isShowDetail = 1;
-    } else if ($event._rakeBack === "未返佣") {
-      this.isShowDetail = 3;
-    } else if ($event._rakeBack === "已返佣") {
-      this.isShowDetail = 2;
-    }
+    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { id: this.tradeRecordId }).subscribe(res=>{
+      console.log(res);
+      this.detailModel = res.data.doms;
+      this.selectRow = res.data.bindData;
+    })
+
+    // if ($event._rakeBack === "审批中") {
+    //   this.isShowDetail = 1;
+    // } else if ($event._rakeBack === "未返佣") {
+    //   this.isShowDetail = 3;
+    // } else if ($event._rakeBack === "已返佣") {
+    //   this.isShowDetail = 2;
+    // }
   }
 
   //临时代码3----资料收集
@@ -192,15 +215,17 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.loading.register("loading");
     this.commissionService.getDetail(param).subscribe(res => {
       this.loading.resolve("loading");
-      this.getDetail(res.data);
-    });
-  }
+      this.detailInfo = res.data;
+      this.orderType = res.data.orderType;
+      this.detailId = res.data.orderId;
+      this.tradeRecordId = res.data.id;
 
-  getDetail(res) {
-    this.detailInfo = res;
-    for (let i = 0; i < this.detailInfo.userInfo.length; i++) {
-      this.temp[this.detailInfo.userInfo[i].trade.id] = null;
-    }
+      if (res.data._tradeState === '审批中') {
+        this.audit = true;
+      } else {
+        this.audit = false;
+      }
+    });
   }
 
   /**
@@ -222,7 +247,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
         });
       }
     } else if (value.name === "HtmlDomCmd.API") {
-      this.baseService.post("/api/" + value.triggerUrl, {id: this.selectRow.id}).subscribe(res => {
+      this.baseService.post("/api/" + value.triggerUrl, { id: this.selectRow.id }).subscribe(res => {
         this.toastService.creatNewMessage(res.message);
       });
     } else if (value.name === "HtmlDomCmd.Form") {
@@ -252,6 +277,10 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "";
     this.sidenavKey = "";
     this.selectRow = null;
+    this.showResult = false;
+    this.resultMessage = '';
+    this.description = '';
+    this.sideNavType = 1;
   }
 
   /**
@@ -340,5 +369,66 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     });
   }
 
+  // 新需求改动部分
+  // 通过的时候
+  pass() {
+    super.openConfirm({
+      dialogService: this.dialogService,
+      viewContainerRef: this.viewContainerRef,
+      message: "确定通过选中订单的返佣吗？",
+    }, (accept) => {
+      if (accept) {
+        this.showResult = true;
+        this.resultMessage = '通过';
+        this.isPass = true;
+      }
+    });
+  }
+  // 不通过的时候
+  noPass() {
+    super.openConfirm({
+      dialogService: this.dialogService,
+      viewContainerRef: this.viewContainerRef,
+      message: "确定拒绝选中订单的返佣吗？",
+    }, (accept) => {
+      if (accept) {
+        this.showResult = true;
+        this.resultMessage = '不通过';
+        this.isPass = false;
+      }
+    });
+  }
+  // 获取备注
+  getMessage(e, note) {
+    this.description = note.value;
+  }
+  // 提交数据
+  toSubmit() {
+    if (this.showResult) {
+      this.loading.register("loading");
+      this.commissionService.sure(this.tradeRecordId, this.isPass, this.description).subscribe(res => {
+        this.loading.resolve("loading");
+        if (res.success) {
+          super.openAlert({ title: "提示", message: '设置成功！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        } else {
+          this.showResult = false;
+          this.resultMessage = '';
+          super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+        }
+      })
+    } else {
+      super.openAlert({ title: "提示", message: '请选择通过还是未通过！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+    }
+  }
+  // 订单详情
+  toDetail() {
+    if (this.orderType === 'OrderType.LoanOrder') {
+      // 展示订单详情
+      this.sideNavType = 2;
 
+    } else if (this.orderType === 'OrderType.CreditOrder') {
+      // 展示产品详情
+      this.sideNavType = 3;
+    } 
+  }
 }

@@ -66,130 +66,135 @@ export class AssessmentComponent extends BaseUIComponent implements OnInit {
   showSideNav: number;
 
   // 新增
-  direction: string[];
+  direction: Array<any> = [{ text: '东' }, { text: '南' }, { text: '西' }, { text: '北' }, { text: '东南' }, { text: '东北' }, { text: '西南' }, { text: '西北' }];
+  multipleFalseData: Array<any> = [{ text: '1' }, { text: '2' }, { text: '3' }, { text: '4' }, { text: '5' }, { text: '6' }];
 
-    constructor(private fnUtil: FnUtil,
-      private converUtil: ConvertUtil,
-      private routerInfor: ActivatedRoute,
-      private router: Router,
-      private toastService: ToastService,
-      private resolver: ComponentFactoryResolver,
-      private el: ElementRef,
-      private baseService: BaseService,
-      private loading: TdLoadingService,
-      private commonService: CommonService,
-      private sharepageService: SharepageService) {
+  constructor(private fnUtil: FnUtil,
+    private converUtil: ConvertUtil,
+    private routerInfor: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService,
+    private resolver: ComponentFactoryResolver,
+    private el: ElementRef,
+    private baseService: BaseService,
+    private loading: TdLoadingService,
+    private commonService: CommonService,
+    private sharepageService: SharepageService) {
 
-  super(loading, routerInfor);
-  routerInfor.paramMap
-    .subscribe(res => {
-      this.pagecode = this.fnUtil.getPageCode();
-      this.authorities = this.fnUtil.getFunctions();
-      this.authorityKey = this.pagecode;
-      let paginationInfo = this.fnUtil.getPaginationInfo();
+    super(loading, routerInfor);
+    routerInfor.paramMap
+      .subscribe(res => {
+        this.pagecode = this.fnUtil.getPageCode();
+        this.authorities = this.fnUtil.getFunctions();
+        this.authorityKey = this.pagecode;
+        let paginationInfo = this.fnUtil.getPaginationInfo();
 
-      /**
-       * 每页条数pagesize和当前页码currentPage
-       */
-      this.pageSize = paginationInfo.pageSize;
-      this.currentPage = paginationInfo.currentPage;
-      if (this.authorityKey) {
-        this.getParamsList({
-          size: this.pageSize,
-          index: this.currentPage,
-          filters: ""
-        });
-      }
-    });
-
-}
-
-ngOnInit() {
-  this.direction = ['东', '南', '西', '北', '东南', '西北', '西南', '西北'];
-}
-
-/**
-* 获取列表数据
-* @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
-*/
-
-getParamsList(params) {
-  this.loading.register("loading");
-  this.commonService.getTableList(params)
-    .subscribe(res => {
-      this.loading.resolve("loading");
-      if (res.code === "0") {
-        let r = res;
-        if (r.data.data && r.data.data.fields) {
-          this.columns = r.data.data.fields;
-        }
-        if (r.data.data && r.data.data.bindData) {
-          this.filteredData = this.basicData = r.data.data.bindData;
-        }
-        if (r.data.data && r.data.data.filters.length > 0) {
-          r.data.data.filters.forEach(i => {
-            this.filters.push({ "key": i.name, "value": i.value || "" });
+        /**
+         * 每页条数pagesize和当前页码currentPage
+         */
+        this.pageSize = paginationInfo.pageSize;
+        this.currentPage = paginationInfo.currentPage;
+        if (this.authorityKey) {
+          this.getParamsList({
+            size: this.pageSize,
+            index: this.currentPage,
+            filters: ""
           });
-          this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
         }
-        this.filteredTotal = r.data.total;
-      } else {
-        this.columns = [];
-        this.filteredData = [];
-      }
-    });
-}
+      });
 
-/**
- * 搜索
- */
-onSearch($event) {
-  this.listparam.filters = $event;
-  this.getParamsList(this.listparam);
-}
+  }
 
-/**
- * 翻页
- */
-page($event) {
-  this.listparam.index = $event.activeIndex;
-  this.listparam.size = $event.pageSize;
-  this.getParamsList(this.listparam);
-}
+  ngOnInit() {
+  }
 
-/**
- * 点击行
- */
-rowClickEvent($event) {
-  this.showSideNav = 1;
-  this.commonService.getDetailModel({ id: $event.id }).subscribe(res => {
-    this.detailModel = res.data.doms;
-    this.selectRow = res.data.bindData;
-  },
-    err => {
-      console.log(err);
-    })
-}
+  /**
+  * 获取列表数据
+  * @param params 传递的参数 size 每页条数  index 页码  filter 过滤条件
+  */
 
-/**
- * 添加
- */
-newAdd() {
-  this.selectRow = "";
-}
+  getParamsList(params) {
+    this.loading.register("loading");
+    this.commonService.getTableList(params)
+      .subscribe(res => {
+        this.loading.resolve("loading");
+        if (res.code === "0") {
+          let r = res;
+          if (r.data.data && r.data.data.fields) {
+            this.columns = r.data.data.fields;
+          }
+          if (r.data.data && r.data.data.bindData) {
+            this.filteredData = this.basicData = r.data.data.bindData;
+          }
+          if (r.data.data && r.data.data.filters.length > 0) {
+            r.data.data.filters.forEach(i => {
+              this.filters.push({ "key": i.name, "value": i.value || "" });
+            });
+            this.searchFilters = r.data.data.filters ? r.data.data.filters : false;
+          }
+          this.filteredTotal = r.data.total;
+        } else {
+          this.columns = [];
+          this.filteredData = [];
+        }
+      });
+  }
 
-/**
- * 打开
- */
-sidenavOpen() {
-}
+  /**
+   * 搜索
+   */
+  onSearch($event) {
+    this.listparam.filters = $event;
+    this.getParamsList(this.listparam);
+  }
 
-/**
- * 关闭
- */
-closeEnd() {
-}
-nuclearPrice(){
-  this.showSideNav = 2;
-}
+  /**
+   * 翻页
+   */
+  page($event) {
+    this.listparam.index = $event.activeIndex;
+    this.listparam.size = $event.pageSize;
+    this.getParamsList(this.listparam);
+  }
+
+  /**
+   * 点击行
+   */
+  rowClickEvent($event) {
+    this.showSideNav = 1;
+    this.commonService.getDetailModel({ id: $event.id }).subscribe(res => {
+      this.detailModel = res.data.doms;
+      this.selectRow = res.data.bindData;
+    },
+      err => {
+        console.log(err);
+      })
+  }
+
+  /**
+   * 添加
+   */
+  newAdd() {
+    this.selectRow = "";
+  }
+
+  /**
+   * 打开
+   */
+  sidenavOpen() {
+  }
+
+  /**
+   * 关闭
+   */
+  closeEnd() {
+  }
+  nuclearPrice() {
+    this.showSideNav = 2;
+  }
+  // 新增
+  getArea(e) {
+    console.log(e);
+  }
+
 }
