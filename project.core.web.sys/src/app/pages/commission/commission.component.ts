@@ -188,7 +188,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.id);
-    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { orderId: this.detailId }).subscribe(res=>{
+    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { id: this.detailId }).subscribe(res=>{
       console.log(res);
       this.detailModel = res.data.doms;
       this.selectRow = res.data.bindData;
