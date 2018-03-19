@@ -75,7 +75,6 @@
       </div>
       <!-- 订单详情时的侧滑 -->
       <div class="col-lg-12" *ngIf="sideNavType===2">
-        
         <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
       </div>
       <!-- 产品详情时的侧滑 -->

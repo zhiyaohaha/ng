@@ -188,7 +188,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.sidenavKey = "Detail";
     this.btnType = "edit";
     this.loadDetailModel($event.id);
-    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { id: this.tradeRecordId }).subscribe(res=>{
+    this.baseService.get("/api/Template/GetDetailTemplate/CreditCardOrder", { orderId: this.detailId }).subscribe(res=>{
       console.log(res);
       this.detailModel = res.data.doms;
       this.selectRow = res.data.bindData;
@@ -422,11 +422,11 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
   }
   // 订单详情
   toDetail() {
-    if (this.orderType === 'OrderType.LoanOrder') {
+    if (this.orderType === 'OrderType.CreditOrder') {
       // 展示订单详情
       this.sideNavType = 2;
 
-    } else if (this.orderType === 'OrderType.CreditOrder') {
+    } else if (this.orderType === 'OrderType.LoanOrder') {
       // 展示产品详情
       this.sideNavType = 3;
     } 
