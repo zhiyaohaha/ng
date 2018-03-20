@@ -428,6 +428,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     } else if (this.orderType === 'OrderType.LoanOrder') {
       // 展示产品详情
       this.sideNavType = 3;
-    } 
+    }
+     
   }
 }

@@ -153,7 +153,6 @@ export class MultipleFileUploaderComponent extends BaseUIComponent implements On
    * @memberof MultipleFileUploaderComponent
    */
   removeConfirm(back) {
-    // let confirmRes = confirm("确认要删除该文件吗?");
     super.openConfirm({
       message: "确认要删除该文件吗?",
       dialogService: this.dialogService,
