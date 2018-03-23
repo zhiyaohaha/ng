@@ -93,6 +93,10 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
   detailId: string; // 订单id
   detailModel; //查询详情的模板
 
+  justForJudge:string; //用于保存审批中，通过，不通过的状态
+
+
+
 
   constructor(private sharepageService: SharepageService,
     private fnUtil: FnUtil,
@@ -189,13 +193,6 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     this.btnType = "edit";
     this.loadDetailModel($event.id);
     
-    // if ($event._rakeBack === "审批中") {
-    //   this.isShowDetail = 1;
-    // } else if ($event._rakeBack === "未返佣") {
-    //   this.isShowDetail = 3;
-    // } else if ($event._rakeBack === "已返佣") {
-    //   this.isShowDetail = 2;
-    // }
   }
 
   //临时代码3----资料收集
@@ -209,13 +206,16 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
   loadDetailModel(param) {
     this.loading.register("loading");
     this.commissionService.getDetail(param).subscribe(res => {
+      console.log(res);
       this.loading.resolve("loading");
       this.detailInfo = res.data;
       this.orderType = res.data.orderType;
       this.detailId = res.data.orderId;
       this.tradeRecordId = res.data.id;
 
-      if (res.data._tradeState === '审批中') {
+      this.justForJudge = res.data._tradeState;
+
+      if (this.justForJudge === '审批中') {
         this.audit = true;
       } else {
         this.audit = false;
@@ -404,7 +404,9 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
       this.commissionService.sure(this.tradeRecordId, this.isPass, this.description).subscribe(res => {
         this.loading.resolve("loading");
         if (res.success) {
+          this.getParamsList(this.listparam);
           super.openAlert({ title: "提示", message: '设置成功！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+          this.closeEnd();
         } else {
           this.showResult = false;
           this.resultMessage = '';
@@ -413,6 +415,25 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
       })
     } else {
       super.openAlert({ title: "提示", message: '请选择通过还是未通过！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      // if(this.justForJudge === '审批中'){
+        
+      // }else{
+      //   if(this.justForJudge === '通过'){
+      //     this.isPass = true;
+      //   }else{
+      //     this.isPass = false;
+      //   }
+      //   this.loading.register('loading');
+      //   this.commissionService.sure(this.tradeRecordId,this.isPass,this.description).subscribe(res=>{
+      //     this.loading.resolve('loading');
+      //     if(res.success){
+      //       this.getParamsList(this.listparam);
+      //       super.openAlert({ title: "提示", message: '设置成功！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      //     }else{
+      //       super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+      //     }
+      //   })
+      // }
     }
   }
   // 订单详情
@@ -428,7 +449,7 @@ export class CommissionComponent extends BaseUIComponent implements OnInit {
     } else if (this.orderType === 'OrderType.LoanOrder') {
       // 展示产品详情
       this.sideNavType = 3;
-    }
-     
+    }    
   }
+
 }

@@ -209,7 +209,12 @@ export class WithdrawalComponent extends BaseUIComponent implements OnInit {
         if (accept) {
           this.withdrawalService.onSubmit(ids,this.isPass).subscribe(res=>{
             console.log(res);
-            super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            if(res.success){
+              super.openAlert({ title: "提示", message: '放款成功！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+              this.getParamsList(this.listparam);
+            }else{
+              super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            }
           })
         }
       });
@@ -234,7 +239,12 @@ export class WithdrawalComponent extends BaseUIComponent implements OnInit {
         if (accept) {
           this.withdrawalService.onSubmit(ids, this.isPass).subscribe(res => {
             console.log(res);
-            super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            if(res.success){
+              super.openAlert({ title: "提示", message: '拒绝成功！', dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+              this.getParamsList(this.listparam);
+            }else{
+              super.openAlert({ title: "提示", message: res.message, dialogService: this.dialogService, viewContainerRef: this.viewContainerRef });
+            }
           })
         }
       });
