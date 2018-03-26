@@ -18,7 +18,7 @@
 
   <md-sidenav #sidenav class="sidenav container-fluid" align="end" (open-start)="sidenavOpen()" (close)="closeEnd()">
     <div class="row">
-      <div class="col-lg-12" [ngSwitch]="sidenavKey">
+      <div class="col-lg-12" [ngSwitch]="sidenavKey" style="overflow:auto">
         <ng-container *ngSwitchCase="'Detail'">
           <detail-model *ngIf="detailModel && selectRow" [modelDOMS]="detailModel" [modelDOMSData]="selectRow" (onClick)="detailClick($event)"></detail-model>
         </ng-container>
@@ -31,9 +31,13 @@
             (ngSubmit)="submitMethod($event)"></timi-responsive-form>
         </ng-container>
 
-        <ng-container *ngSwitchCase="'SetFunction'" class="special">
+        <!-- <ng-container *ngSwitchCase="'SetFunction'" class="special">
           <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>
-        </ng-container>
+        </ng-container> -->
+
+        <div class="special" *ngSwitchCase="'SetFunction'">
+          <free-permissions *ngIf="selectRow" [id]="selectRow.id" [from]="pageFrom"></free-permissions>
+        </div>
 
         <ng-container *ngSwitchCase="'other'">
           <timi-responsive-form *ngIf="modalDOMS && selectRow" [modelDOMS]="modalDOMS" [modelDOMSData]="selectRow" (backClick)="backClick()"

@@ -25,11 +25,13 @@ export class MainComponent extends BaseUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    // let map = new AMap.Map('container', {
-    //   resizeEnable: true,
-    //   zoom: 11,
-    //   center: [116.397428, 39.90923]
-    // });
+    this.map();
   }
-
+  map(){
+    const mapObj = new AMap.Map('container', {
+      resizeEnable: true,
+      zoom: 11,
+      center: [116.397428, 39.90923]
+    });
+  }
 }
